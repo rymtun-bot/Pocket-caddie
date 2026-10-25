@@ -241,7 +241,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <h2>Courses</h2>
       <div class="row">
         <label for="teeSel">Tees I play (for scorecard yardages)</label>
-        <select id="teeSel"><option>Blue</option><option>White</option><option value="All">Show all tees</option></select>
+        <select id="teeSel"><option>Black</option><option>Blue</option><option>White</option><option>Yellow</option><option value="All">Show all tees</option></select>
       </div>
       <div class="row">
         <input id="newCourse" type="text" placeholder="Course name">
@@ -281,6 +281,16 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       tees: {
         Blue:  [108, 317, 176, 145, 267, 287, 286, 141, 336, 340, 160, 148, 148, 150, 515, 160, 355, 300],
         White: [100, 307, 166, 135, 255, 277, 276, 133, 314, 330, 149, 138, 135, 125, 485, 125, 335, 290]
+      }
+    },
+    rancho: { // Rancho Park scorecard from greenskeeper.org, screenshot shared 2026-10-25 (men's par and handicap)
+      par:   [4, 4, 3, 5, 4, 4, 4, 3, 4, 4, 4, 3, 4, 4, 4, 3, 5, 5],
+      hcp:   [7, 1, 15, 17, 5, 13, 9, 11, 3, 6, 4, 10, 12, 8, 2, 18, 16, 14],
+      tees: {
+        Black:  [387, 467, 198, 522, 401, 387, 372, 214, 401, 387, 462, 213, 383, 416, 443, 180, 522, 485],
+        Blue:   [366, 432, 173, 495, 375, 376, 357, 189, 376, 370, 435, 195, 372, 361, 420, 166, 491, 470],
+        White:  [344, 403, 141, 469, 356, 360, 337, 168, 366, 354, 411, 170, 357, 335, 381, 157, 475, 452],
+        Yellow: [338, 367, 123, 445, 335, 346, 308, 150, 328, 344, 371, 134, 352, 306, 374, 122, 461, 440]
       }
     }
   };

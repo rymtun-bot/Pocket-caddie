@@ -26,4 +26,5 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
 ## Course data
 - The golfer plays the Blue tees (Pocket Caddie default; changeable in Setup).
 - Westchester scorecard (from the golfer, 2026-10-25) is built into index.html (CARDS) and in courses/westchester.md.
-- Rancho Park: no scorecard from the golfer yet; do not add one from web sources.
+- Rancho Park scorecard (Greenskeeper.org screenshot from the golfer, 2026-10-25) is in CARDS and courses/rancho_park.md.
+  Tees there: Black 6,839 / Blue 6,419 / White 6,036 / Yellow 5,644. Ask which tees the golfer plays at Rancho.
