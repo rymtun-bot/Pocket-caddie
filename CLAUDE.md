@@ -24,5 +24,6 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   Note: measured shot yards are total distance (carry + roll), so weigh firmness when fitting.
 
 ## Course data
+- The golfer plays the Blue tees (Pocket Caddie default; changeable in Setup).
 - Westchester scorecard (from the golfer, 2026-10-25) is built into index.html (CARDS) and in courses/westchester.md.
 - Rancho Park: no scorecard from the golfer yet; do not add one from web sources.

@@ -2,6 +2,8 @@
 
 6900 West Manchester Avenue, Los Angeles, CA 90045. Par 64 (32 out, 32 in): nine par 3s, eight par 4s, one par 5 (hole 15).
 
+The golfer plays the **Blue** tees.
+
 Source: the course scorecard on westchestergc.com, screenshot shared by the golfer on 2026-10-25.
 
 | Tees | Yards | Rating / slope (men) | Rating / slope (women) |

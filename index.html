@@ -240,6 +240,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <section class="panel">
       <h2>Courses</h2>
       <div class="row">
+        <label for="teeSel">Tees I play (for scorecard yardages)</label>
+        <select id="teeSel"><option>Blue</option><option>White</option><option value="All">Show all tees</option></select>
+      </div>
+      <div class="row">
         <input id="newCourse" type="text" placeholder="Course name">
         <button id="addCourse" style="flex:0 0 auto">Add course</button>
       </div>
@@ -296,6 +300,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   S.factors = S.factors || { ...DEFAULT_F };
   S.firm = S.firm || "Normal";
   S.windOv = S.windOv || { speed: "", dir: "1" };
+  S.tee = S.tee || "Blue"; // the golfer plays the Blue tees
   let wx = null; // latest weather: {temp °F, press hPa, speed mph, gust mph, dir deg wind comes from, at, lat, lon}
 
   let fix = null; // latest {lat, lon, acc} in meters
@@ -399,7 +404,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     for (const [id, c] of Object.entries(S.courses)) sel.add(new Option(c.name, id, false, id === S.cur.course));
     $("holeNum").textContent = S.cur.hole;
     const par = holePar(), c = card(), i = S.cur.hole - 1;
-    const yds = c ? Object.entries(c.tees).map(([t, y]) => y[i] + " " + t).join(" · ") : "";
+    const yds = c ? (c.tees[S.tee] ? c.tees[S.tee][i] + " yd " + S.tee : Object.entries(c.tees).map(([t, y]) => y[i] + " " + t).join(" · ")) : "";
     $("parChip").hidden = !par;
     $("parChip").textContent = "Par " + par + (yds ? " · " + yds : "") + (c ? " · Hcp " + c.hcp[i] : "");
   }
@@ -566,6 +571,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     $("parIn").placeholder = card() ? "Scorecard: " + card().par[S.cur.hole - 1] : "";
   }
   $("parIn").onchange = e => { const v = Math.round(+e.target.value); if (v) hole().par = v; else delete hole().par; save(); renderHeader(); };
+  $("teeSel").value = S.tee;
+  $("teeSel").onchange = e => { S.tee = e.target.value; save(); renderHeader(); };
   $("addCourse").onclick = () => {
     const name = $("newCourse").value.trim(); if (!name) return;
     const id = "c" + Date.now(); S.courses[id] = { name, holes: {} };
