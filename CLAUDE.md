@@ -22,3 +22,7 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
 - Every measured shot logs temp, pressure, wind, head/cross component along the actual shot line, and fairway/green
   firmness. When the user pastes a shot log, fit their own factors from it and tell them what to enter in Setup.
   Note: measured shot yards are total distance (carry + roll), so weigh firmness when fitting.
+
+## Course data
+- Westchester scorecard (from the golfer, 2026-10-25) is built into index.html (CARDS) and in courses/westchester.md.
+- Rancho Park: no scorecard from the golfer yet; do not add one from web sources.

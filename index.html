@@ -45,6 +45,7 @@ main { padding-block: 16px 110px; display: grid; gap: 16px }
 section.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 12px; min-width: 0 }
 h2 { margin: 0; font: 600 13px/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted) }
 .chip { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted) }
+#parChip { grid-column: 1 / -1; justify-self: start; color: var(--ink) }
 .chip.ok { color: var(--good); border-color: currentColor }
 .chip.warn { color: var(--warn); border-color: currentColor }
 .yards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center }
@@ -218,7 +219,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <p class="note">Stand on the spot and wait until GPS shows ±5 yd or better, then tap Save.</p>
       <div class="points" id="pointList"></div>
       <div class="row">
-        <label for="parIn">Par for this hole (from your scorecard)</label>
+        <label for="parIn">Par for this hole (leave blank to use the built-in scorecard)</label>
         <input id="parIn" type="number" inputmode="numeric" min="3" max="6">
       </div>
     </section>
@@ -268,6 +269,19 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   const KEY = "pocket-caddie-v1";
   const $ = id => document.getElementById(id);
   const HOLES = 18;
+  // Scorecards the golfer supplied. A par typed in Setup overrides the card.
+  const CARDS = {
+    westchester: { // Westchester GC scorecard from westchestergc.com, photo shared 2026-10-25
+      par:   [3, 4, 3, 3, 4, 4, 4, 3, 4, 4, 3, 3, 3, 3, 5, 3, 4, 4],
+      hcp:   [15, 3, 1, 7, 9, 17, 11, 5, 13, 16, 8, 10, 12, 6, 14, 4, 2, 18],
+      tees: {
+        Blue:  [108, 317, 176, 145, 267, 287, 286, 141, 336, 340, 160, 148, 148, 150, 515, 160, 355, 300],
+        White: [100, 307, 166, 135, 255, 277, 276, 133, 314, 330, 149, 138, 135, 125, 485, 125, 335, 290]
+      }
+    }
+  };
+  const card = () => CARDS[S.cur.course];
+  const holePar = () => hole().par || (card() ? card().par[S.cur.hole - 1] : null);
   const fresh = () => ({
     clubs: [],
     courses: { westchester: { name: "Westchester Golf Course", holes: {} }, rancho: { name: "Rancho Park Golf Course", holes: {} } },
@@ -384,8 +398,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     sel.innerHTML = "";
     for (const [id, c] of Object.entries(S.courses)) sel.add(new Option(c.name, id, false, id === S.cur.course));
     $("holeNum").textContent = S.cur.hole;
-    const par = hole().par;
-    $("parChip").hidden = !par; $("parChip").textContent = "Par " + par;
+    const par = holePar(), c = card(), i = S.cur.hole - 1;
+    const yds = c ? Object.entries(c.tees).map(([t, y]) => y[i] + " " + t).join(" · ") : "";
+    $("parChip").hidden = !par;
+    $("parChip").textContent = "Par " + par + (yds ? " · " + yds : "") + (c ? " · Hcp " + c.hcp[i] : "");
   }
   $("course").onchange = e => { S.cur.course = e.target.value; S.cur.hole = 1; changedHole(); };
   $("prevHole").onclick = () => { S.cur.hole = S.cur.hole === 1 ? HOLES : S.cur.hole - 1; changedHole(); };
@@ -547,6 +563,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else { b.dataset.armed = 1; b.textContent = "Confirm"; }
     });
     $("parIn").value = h.par || "";
+    $("parIn").placeholder = card() ? "Scorecard: " + card().par[S.cur.hole - 1] : "";
   }
   $("parIn").onchange = e => { const v = Math.round(+e.target.value); if (v) hole().par = v; else delete hole().par; save(); renderHeader(); };
   $("addCourse").onclick = () => {
