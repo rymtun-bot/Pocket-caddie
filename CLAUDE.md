@@ -18,6 +18,7 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
 - Live wind/temp/pressure from Open-Meteo at the phone's position; wind resolved along the line to the saved green.
 - Plays-like = distance + wind + temperature + air-pressure terms + the user's own adjustment. Factors start at published
   averages (cited on the page's Setup tab) and are editable there.
+- Each hole has free-text green notes (the user's own reads); "Copy all notes for this course" exports them.
 - Every measured shot logs temp, pressure, wind, head/cross component along the actual shot line, and fairway/green
   firmness. When the user pastes a shot log, fit their own factors from it and tell them what to enter in Setup.
   Note: measured shot yards are total distance (carry + roll), so weigh firmness when fitting.

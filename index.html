@@ -172,6 +172,14 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         </div>
       </div>
     </section>
+
+    <section class="panel">
+      <h2>Green notes</h2>
+      <label for="greenNotes" class="note">Your own read of this green. Saved for this hole and shown every time you play it.</label>
+      <textarea id="greenNotes" rows="3" placeholder="e.g. back to front, fast downhill, breaks left near the flag"></textarea>
+      <div class="row"><button id="copyNotes">Copy all notes for this course</button></div>
+      <textarea id="notesFallback" rows="5" hidden aria-label="Green notes text"></textarea>
+    </section>
   </div>
 
   <!-- SHOTS -->
@@ -555,6 +563,23 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     } catch { toast("That doesn't look like a Pocket Caddie backup"); }
   };
 
+  // ---- green notes ----
+  // Filled only on hole change, never on GPS ticks, so typing is never overwritten.
+  function renderNotes() { $("greenNotes").value = hole().notes || ""; }
+  $("greenNotes").oninput = e => {
+    const v = e.target.value;
+    if (v.trim()) hole().notes = v; else delete hole().notes;
+    save();
+  };
+  $("copyNotes").onclick = () => {
+    const c = S.courses[S.cur.course];
+    const lines = Object.keys(c.holes).map(Number).sort((a, b) => a - b)
+      .filter(n => c.holes[n].notes)
+      .map(n => `Hole ${n}${c.holes[n].par ? " (par " + c.holes[n].par + ")" : ""}: ${c.holes[n].notes.trim()}`);
+    if (!lines.length) { toast("No green notes for this course yet"); return; }
+    copy(c.name + " green notes\n" + lines.join("\n"), $("notesFallback"));
+  };
+
   // ---- conditions and weather adjustments ----
   $("wxRefresh").onclick = () => loadWx(true);
   $("firmness").value = S.firm;
@@ -583,7 +608,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     window.scrollTo(0, 0);
   });
 
-  function renderAll() { renderHeader(); renderShotBox(); renderPlay(); renderShots(); renderClubs(); renderSetup(); }
+  function renderAll() { renderHeader(); renderNotes(); renderShotBox(); renderPlay(); renderShots(); renderClubs(); renderSetup(); }
   renderAll();
 })();
 </script>
