@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Pocket Caddie</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+/* Layout: one-thumb phone column; sticky hole bar on top, tab bar at the bottom, big sunlight-readable numbers. */
+:root {
+  --bg: #eef3ee; --surface: #ffffff; --ink: #102018; --muted: #55675c; --line: #cfdad1;
+  --accent: #b8321c; --accent-ink: #ffffff; --good: #1f6b3a; --warn: #8a5a00;
+  --display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --body: "Source Sans 3", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0d1511; --surface: #16211b; --ink: #e9f1eb; --muted: #9db1a4; --line: #2b3a31;
+  --accent: #ff6a4d; --accent-ink: #1a0905; --good: #6fd08f; --warn: #f0b84a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0d1511; --surface: #16211b; --ink: #e9f1eb; --muted: #9db1a4; --line: #2b3a31;
+  --accent: #ff6a4d; --accent-ink: #1a0905; --good: #6fd08f; --warn: #f0b84a; color-scheme: dark }
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px) }
+* { box-sizing: border-box }
+[hidden] { display: none !important }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.4 var(--body); -webkit-text-size-adjust: 100% }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface) }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); max-width: 560px; margin: 0 auto }
+header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line) }
+header .wrap { display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; align-items: center; padding-block: 10px }
+select, input, textarea, button { font: inherit; color: inherit }
+select, input[type=number], input[type=text], textarea {
+  background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; min-width: 0; width: 100% }
+.holebar { display: flex; align-items: center; gap: 6px }
+.holebar output { font: 700 28px/1 var(--display); min-width: 4.2ch; text-align: center; font-variant-numeric: tabular-nums }
+.holebar small { display: block; font: 500 11px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
+button { cursor: pointer; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); padding: 10px 14px; font-weight: 600 }
+button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px }
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
+button.sq { width: 44px; height: 44px; padding: 0; font-size: 20px }
+main { padding-block: 16px 110px; display: grid; gap: 16px }
+section.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 12px; min-width: 0 }
+h2 { margin: 0; font: 600 13px/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted) }
+.chip { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted) }
+.chip.ok { color: var(--good); border-color: currentColor }
+.chip.warn { color: var(--warn); border-color: currentColor }
+.yards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center }
+.yards div { display: grid; gap: 2px }
+.yards b { font: 700 52px/1 var(--display); font-variant-numeric: tabular-nums }
+.yards .mid b { font-size: 72px; color: var(--accent) }
+.yards span { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.row > * { flex: 1 1 auto }
+.row label { flex: 1 1 100%; font-size: 13px; color: var(--muted) }
+.adj button { flex: 1 1 0; padding: 10px 0 }
+.playslike { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap }
+.playslike b { font: 700 36px/1 var(--display); font-variant-numeric: tabular-nums }
+.rec { display: grid; gap: 6px }
+.rec .main { font: 700 40px/1 var(--display) }
+.rec .alts { color: var(--muted); font-size: 15px }
+.note { color: var(--muted); font-size: 14px; margin: 0 }
+.live { font: 700 44px/1 var(--display); font-variant-numeric: tabular-nums }
+table { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums }
+th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: middle }
+th { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600 }
+.scroll { overflow-x: auto }
+td input { width: 5.5em }
+td button { padding: 6px 10px; font-size: 13px }
+.points { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center }
+nav { position: fixed; inset: auto 0 0; z-index: 6; background: var(--surface); border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom, 0px) }
+nav .wrap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding-block: 6px }
+nav button { border: 0; background: transparent; padding: 10px 0; font-size: 15px; color: var(--muted); border-radius: 8px }
+nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(80px + env(safe-area-inset-bottom, 0px)); z-index: 7;
+  background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-weight: 600; max-width: calc(100% - 32px) }
+@media (prefers-reduced-motion: no-preference) { .toast { transition: opacity .2s } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <select id="course" aria-label="Course"></select>
+    <div class="holebar">
+      <button class="sq" id="prevHole" aria-label="Previous hole">‹</button>
+      <output id="holeOut"><small>Hole</small><span id="holeNum">1</span></output>
+      <button class="sq" id="nextHole" aria-label="Next hole">›</button>
+    </div>
+    <span class="chip" id="gpsChip">GPS starting…</span>
+    <span class="chip" id="parChip" hidden></span>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- PLAY -->
+  <div id="tab-play" class="tab" style="display:grid;gap:16px">
+    <section class="panel">
+      <h2>To the green</h2>
+      <div class="yards" id="yards">
+        <div><b id="yFront">—</b><span>Front</span></div>
+        <div class="mid"><b id="yCenter">—</b><span>Center</span></div>
+        <div><b id="yBack">—</b><span>Back</span></div>
+      </div>
+      <p class="note" id="greenHint">This hole's green isn't saved yet. When you're on the green, open Setup and tap Save for the front, center and back.</p>
+      <div class="row">
+        <label for="manualYds">Or type the yardage from your rangefinder (overrides GPS)</label>
+        <input id="manualYds" type="number" inputmode="numeric" placeholder="Yards">
+        <button id="clearManual" style="flex:0 0 auto">Clear</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Plays like</h2>
+      <div class="row adj" role="group" aria-label="Adjust yardage">
+        <button data-adj="-10">−10</button><button data-adj="-5">−5</button><button data-adj="0">0</button><button data-adj="5">+5</button><button data-adj="10">+10</button>
+      </div>
+      <div class="playslike"><span class="note">Adjustment <b id="adjOut" style="font-size:20px">0</b> yd for wind, slope, lie</span><b id="playsLike">—</b></div>
+      <div class="rec" id="rec"><span class="note">Add your clubs and carry distances on the Clubs tab to get a club suggestion.</span></div>
+    </section>
+
+    <section class="panel">
+      <h2>Measure a shot</h2>
+      <div id="shotIdle" class="row">
+        <label for="shotClub">Club you're hitting</label>
+        <select id="shotClub"></select>
+        <label for="shotLie">Lie</label>
+        <select id="shotLie"><option>Tee</option><option>Fairway</option><option>Rough</option><option>Sand</option><option>Other</option></select>
+        <button class="primary" id="markStart" style="flex:1 1 100%">Mark where I'm hitting from</button>
+      </div>
+      <div id="shotLiveBox" hidden style="display:grid;gap:10px">
+        <p class="note">Walk to your ball, then tap the button.</p>
+        <div class="live"><span id="shotLive">0</span> yd</div>
+        <label for="shotNote" class="note">Result (optional), e.g. "pin high, 10 left"</label>
+        <input id="shotNote" type="text">
+        <div class="row">
+          <button class="primary" id="markEnd">Mark my ball here</button>
+          <button id="cancelShot" style="flex:0 0 auto">Cancel</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- SHOTS -->
+  <div id="tab-shots" class="tab" hidden style="display:grid;gap:16px">
+    <section class="panel">
+      <h2>Measured on the course, by club</h2>
+      <div class="scroll"><table id="clubAvg"></table></div>
+    </section>
+    <section class="panel">
+      <div class="row" style="justify-content:space-between"><h2 style="flex:0 1 auto">Shot log</h2>
+        <button id="copyCsv" style="flex:0 0 auto">Copy for Claude</button></div>
+      <p class="note">Copy, then paste it into your chat with me after the round.</p>
+      <div class="scroll"><table id="shotTable"></table></div>
+      <textarea id="csvFallback" rows="5" hidden aria-label="Shot log text"></textarea>
+    </section>
+  </div>
+
+  <!-- CLUBS -->
+  <div id="tab-clubs" class="tab" hidden style="display:grid;gap:16px">
+    <section class="panel">
+      <h2>My clubs and carry yards</h2>
+      <p class="note">Use your carry numbers from the launch monitor or the range. These are what the club suggestion uses.</p>
+      <div class="scroll"><table id="clubTable"></table></div>
+      <div class="row">
+        <input id="newClub" type="text" placeholder="Club, e.g. 7i">
+        <input id="newCarry" type="number" inputmode="numeric" placeholder="Carry yd">
+        <button class="primary" id="addClub" style="flex:0 0 auto">Add</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- SETUP -->
+  <div id="tab-setup" class="tab" hidden style="display:grid;gap:16px">
+    <section class="panel">
+      <h2>Save this hole's green</h2>
+      <p class="note">Stand on the spot and wait until GPS shows ±5 yd or better, then tap Save.</p>
+      <div class="points" id="pointList"></div>
+      <div class="row">
+        <label for="parIn">Par for this hole (from your scorecard)</label>
+        <input id="parIn" type="number" inputmode="numeric" min="3" max="6">
+      </div>
+    </section>
+    <section class="panel">
+      <h2>Courses</h2>
+      <div class="row">
+        <input id="newCourse" type="text" placeholder="Course name">
+        <button id="addCourse" style="flex:0 0 auto">Add course</button>
+      </div>
+    </section>
+    <section class="panel">
+      <h2>Backup</h2>
+      <p class="note">Everything is saved on this phone only. Copy a backup now and then, or to move to another phone.</p>
+      <div class="row">
+        <button id="copyBackup">Copy backup</button>
+        <button id="restoreBackup">Restore from pasted backup</button>
+      </div>
+      <textarea id="backupText" rows="4" placeholder="Paste a backup here, then tap Restore" aria-label="Backup text"></textarea>
+    </section>
+  </div>
+</main>
+
+<nav><div class="wrap" role="tablist">
+  <button role="tab" data-tab="play" aria-selected="true">Play</button>
+  <button role="tab" data-tab="shots" aria-selected="false">Shots</button>
+  <button role="tab" data-tab="clubs" aria-selected="false">Clubs</button>
+  <button role="tab" data-tab="setup" aria-selected="false">Setup</button>
+</div></nav>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(() => {
+  const KEY = "pocket-caddie-v1";
+  const $ = id => document.getElementById(id);
+  const HOLES = 18;
+  const fresh = () => ({
+    clubs: [],
+    courses: { westchester: { name: "Westchester Golf Course", holes: {} }, rancho: { name: "Rancho Park Golf Course", holes: {} } },
+    cur: { course: "westchester", hole: 1 },
+    shots: [], pending: null, adj: 0
+  });
+  let S;
+  try { S = JSON.parse(localStorage.getItem(KEY)) || fresh(); } catch { S = fresh(); }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
+
+  let fix = null; // latest {lat, lon, acc} in meters
+  const YD = 1.0936133;
+  function dist(a, b) {
+    const R = 6371008.8, r = x => x * Math.PI / 180;
+    const dLat = r(b.lat - a.lat), dLon = r(b.lon - a.lon);
+    const h = Math.sin(dLat / 2) ** 2 + Math.cos(r(a.lat)) * Math.cos(r(b.lat)) * Math.sin(dLon / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(h)) * YD;
+  }
+  const accYd = f => Math.round(f.acc * YD);
+  const hole = () => {
+    const c = S.courses[S.cur.course];
+    return c.holes[S.cur.hole] || (c.holes[S.cur.hole] = {});
+  };
+
+  let toastT;
+  function toast(msg) { const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2200); }
+  async function copy(text, fallbackEl) {
+    try { await navigator.clipboard.writeText(text); toast("Copied"); }
+    catch { if (fallbackEl) { fallbackEl.hidden = false; fallbackEl.value = text; fallbackEl.select(); } toast("Select the text and copy it"); }
+  }
+
+  // ---- GPS ----
+  function gpsStatus(text, cls) { const c = $("gpsChip"); c.textContent = text; c.className = "chip " + (cls || ""); }
+  if ("geolocation" in navigator) {
+    navigator.geolocation.watchPosition(p => {
+      fix = { lat: p.coords.latitude, lon: p.coords.longitude, acc: p.coords.accuracy };
+      const a = accYd(fix);
+      gpsStatus("GPS ±" + a + " yd", a <= 6 ? "ok" : "warn");
+      renderPlay();
+    }, e => {
+      fix = null;
+      gpsStatus(e.code === 1 ? "Location blocked: type yardage" : "No GPS signal", "warn");
+      renderPlay();
+    }, { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 });
+  } else gpsStatus("No GPS on this device", "warn");
+  try { navigator.wakeLock && navigator.wakeLock.request("screen").catch(() => {}); } catch {}
+
+  // ---- header ----
+  function renderHeader() {
+    const sel = $("course");
+    sel.innerHTML = "";
+    for (const [id, c] of Object.entries(S.courses)) sel.add(new Option(c.name, id, false, id === S.cur.course));
+    $("holeNum").textContent = S.cur.hole;
+    const par = hole().par;
+    $("parChip").hidden = !par; $("parChip").textContent = "Par " + par;
+  }
+  $("course").onchange = e => { S.cur.course = e.target.value; S.cur.hole = 1; changedHole(); };
+  $("prevHole").onclick = () => { S.cur.hole = S.cur.hole === 1 ? HOLES : S.cur.hole - 1; changedHole(); };
+  $("nextHole").onclick = () => { S.cur.hole = S.cur.hole === HOLES ? 1 : S.cur.hole + 1; changedHole(); };
+  function changedHole() { S.adj = 0; $("manualYds").value = ""; save(); renderAll(); }
+
+  // ---- play ----
+  function targetYards() {
+    const m = parseFloat($("manualYds").value);
+    if (m > 0) return m;
+    const h = hole();
+    return fix && h.center ? dist(fix, h.center) : null;
+  }
+  function renderPlay() {
+    const h = hole();
+    for (const k of ["front", "center", "back"]) {
+      const el = $("y" + k[0].toUpperCase() + k.slice(1));
+      el.textContent = fix && h[k] ? Math.round(dist(fix, h[k])) : "—";
+    }
+    $("greenHint").hidden = !!(h.front || h.center || h.back);
+    $("adjOut").textContent = (S.adj > 0 ? "+" : "") + S.adj;
+    const t = targetYards();
+    const pl = t == null ? null : Math.round(t + S.adj);
+    $("playsLike").textContent = pl == null ? "—" : pl + " yd";
+    renderRec(pl);
+    if (S.pending) {
+      $("shotLive").textContent = fix ? Math.round(dist(S.pending.from, fix)) : "—";
+    }
+  }
+  function renderRec(pl) {
+    const rec = $("rec");
+    const clubs = S.clubs.filter(c => c.carry > 0).sort((a, b) => a.carry - b.carry);
+    if (!clubs.length) { rec.innerHTML = '<span class="note">Add your clubs and carry distances on the Clubs tab to get a club suggestion.</span>'; return; }
+    if (pl == null) { rec.innerHTML = '<span class="note">Waiting for a yardage: GPS to a saved green, or type one above.</span>'; return; }
+    if (pl < clubs[0].carry - 15) { rec.innerHTML = `<span class="main">Partial shot</span><span class="alts">${pl} yd is inside your shortest club on the list (${esc(clubs[0].name)}, ${clubs[0].carry} yd)</span>`; return; }
+    let best = clubs.reduce((b, c) => Math.abs(c.carry - pl) < Math.abs(b.carry - pl) ? c : b);
+    const i = clubs.indexOf(best);
+    const diff = c => { const d = c.carry - pl; return (d >= 0 ? "+" : "−") + Math.abs(d) + " yd"; };
+    const alts = [clubs[i - 1], clubs[i + 1]].filter(Boolean).map(c => `${esc(c.name)} ${c.carry} (${diff(c)})`).join(" · ");
+    rec.innerHTML = `<span class="main">${esc(best.name)}</span><span class="alts">Carries ${best.carry} yd (${diff(best)})${alts ? "<br>Next to it: " + alts : ""}</span>`;
+    if (!S.pending) $("shotClub").value = best.name;
+  }
+  $("manualYds").oninput = renderPlay;
+  $("clearManual").onclick = () => { $("manualYds").value = ""; renderPlay(); };
+  document.querySelectorAll("[data-adj]").forEach(b => b.onclick = () => {
+    const v = +b.dataset.adj; S.adj = v === 0 ? 0 : S.adj + v; save(); renderPlay();
+  });
+
+  // ---- shot measuring ----
+  function renderShotBox() {
+    const sc = $("shotClub"), keep = sc.value;
+    sc.innerHTML = "";
+    S.clubs.forEach(c => sc.add(new Option(c.name, c.name)));
+    sc.add(new Option("Other", "Other"));
+    if (keep) sc.value = keep;
+    $("shotIdle").hidden = !!S.pending;
+    $("shotLiveBox").hidden = !S.pending;
+  }
+  $("markStart").onclick = () => {
+    if (!fix) { toast("Waiting for GPS"); return; }
+    S.pending = { from: { ...fix }, club: $("shotClub").value, lie: $("shotLie").value, course: S.cur.course, hole: S.cur.hole, ts: Date.now() };
+    save(); renderShotBox(); renderPlay();
+  };
+  $("cancelShot").onclick = () => { S.pending = null; save(); renderShotBox(); };
+  $("markEnd").onclick = () => {
+    if (!fix) { toast("Waiting for GPS"); return; }
+    const p = S.pending, to = { ...fix };
+    S.shots.push({ ...p, to, yards: Math.round(dist(p.from, to)), note: $("shotNote").value.trim(), id: Date.now() });
+    S.pending = null; $("shotNote").value = "";
+    save(); renderAll(); toast("Shot saved");
+  };
+
+  // ---- shots tab ----
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  function renderShots() {
+    const by = {};
+    S.shots.forEach(s => (by[s.club] = by[s.club] || []).push(s.yards));
+    const rows = Object.entries(by).map(([c, ys]) => {
+      const avg = Math.round(ys.reduce((a, b) => a + b, 0) / ys.length);
+      return `<tr><td>${esc(c)}</td><td>${ys.length}</td><td>${avg}</td><td>${Math.min(...ys)}–${Math.max(...ys)}</td></tr>`;
+    }).join("");
+    $("clubAvg").innerHTML = rows ? `<tr><th>Club</th><th>Shots</th><th>Avg yd</th><th>Range</th></tr>${rows}`
+      : '<tr><td class="note">No shots measured yet. Use "Measure a shot" on the Play tab.</td></tr>';
+    const list = S.shots.slice().reverse().map(s => {
+      const d = new Date(s.ts), cn = S.courses[s.course] ? S.courses[s.course].name : s.course;
+      return `<tr><td>${d.toLocaleDateString()}<br><span class="note">${esc(cn)} #${s.hole}</span></td><td>${esc(s.club)}<br><span class="note">${esc(s.lie)}</span></td><td><b>${s.yards}</b></td><td>${esc(s.note || "")}</td><td><button data-del="${s.id}" aria-label="Delete shot">Delete</button></td></tr>`;
+    }).join("");
+    $("shotTable").innerHTML = list ? `<tr><th>When</th><th>Club</th><th>Yd</th><th>Result</th><th></th></tr>${list}` : "";
+    $("shotTable").querySelectorAll("[data-del]").forEach(b => b.onclick = () => {
+      if (b.dataset.armed) { S.shots = S.shots.filter(s => s.id !== +b.dataset.del); save(); renderShots(); }
+      else { b.dataset.armed = 1; b.textContent = "Confirm"; }
+    });
+  }
+  $("copyCsv").onclick = () => {
+    const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+    const lines = ["date,course,hole,club,lie,yards,gps_acc_start_yd,gps_acc_end_yd,result"];
+    S.shots.forEach(s => lines.push([new Date(s.ts).toISOString().slice(0, 10), S.courses[s.course] ? S.courses[s.course].name : s.course,
+      s.hole, s.club, s.lie, s.yards, accYd(s.from), accYd(s.to), s.note].map(q).join(",")));
+    copy(lines.join("\n"), $("csvFallback"));
+  };
+
+  // ---- clubs tab ----
+  function renderClubs() {
+    const rows = S.clubs.map((c, i) => `<tr><td>${esc(c.name)}</td><td><input type="number" inputmode="numeric" id="carry-${i}" value="${c.carry || ""}" aria-label="${esc(c.name)} carry"></td><td><button data-rm="${i}">Remove</button></td></tr>`).join("");
+    $("clubTable").innerHTML = rows ? `<tr><th>Club</th><th>Carry yd</th><th></th></tr>${rows}` : '<tr><td class="note">No clubs yet. Add them below, longest to shortest or any order.</td></tr>';
+    S.clubs.forEach((c, i) => $("carry-" + i).onchange = e => { c.carry = Math.round(+e.target.value) || 0; save(); renderPlay(); });
+    $("clubTable").querySelectorAll("[data-rm]").forEach(b => b.onclick = () => {
+      if (b.dataset.armed) { S.clubs.splice(+b.dataset.rm, 1); save(); renderAll(); }
+      else { b.dataset.armed = 1; b.textContent = "Confirm"; }
+    });
+  }
+  $("addClub").onclick = () => {
+    const name = $("newClub").value.trim(); if (!name) return;
+    S.clubs.push({ name, carry: Math.round(+$("newCarry").value) || 0 });
+    $("newClub").value = $("newCarry").value = ""; save(); renderAll();
+  };
+
+  // ---- setup tab ----
+  function renderSetup() {
+    const h = hole();
+    $("pointList").innerHTML = ["front", "center", "back"].map(k => {
+      const p = h[k];
+      const where = p ? `saved (±${accYd(p)} yd)` + (fix ? ` · ${Math.round(dist(fix, p))} yd away` : "") : "not saved";
+      return `<div><b style="text-transform:capitalize">${k} of green</b><br><span class="note">${where}</span></div>
+        <div class="row" style="flex-wrap:nowrap"><button data-save="${k}">Save here</button>${p ? `<button data-clear="${k}">Clear</button>` : ""}</div>`;
+    }).join("");
+    $("pointList").querySelectorAll("[data-save]").forEach(b => b.onclick = () => {
+      if (!fix) { toast("Waiting for GPS"); return; }
+      hole()[b.dataset.save] = { ...fix }; save(); renderAll(); toast("Saved " + b.dataset.save + " of green");
+    });
+    $("pointList").querySelectorAll("[data-clear]").forEach(b => b.onclick = () => {
+      if (b.dataset.armed) { delete hole()[b.dataset.clear]; save(); renderAll(); }
+      else { b.dataset.armed = 1; b.textContent = "Confirm"; }
+    });
+    $("parIn").value = h.par || "";
+  }
+  $("parIn").onchange = e => { const v = Math.round(+e.target.value); if (v) hole().par = v; else delete hole().par; save(); renderHeader(); };
+  $("addCourse").onclick = () => {
+    const name = $("newCourse").value.trim(); if (!name) return;
+    const id = "c" + Date.now(); S.courses[id] = { name, holes: {} };
+    S.cur = { course: id, hole: 1 }; $("newCourse").value = ""; save(); renderAll(); toast("Added " + name);
+  };
+  $("copyBackup").onclick = () => copy(JSON.stringify(S), $("backupText"));
+  $("restoreBackup").onclick = () => {
+    try {
+      const d = JSON.parse($("backupText").value);
+      if (!d.courses || !Array.isArray(d.clubs) || !Array.isArray(d.shots)) throw 0;
+      S = d; save(); renderAll(); toast("Backup restored");
+    } catch { toast("That doesn't look like a Pocket Caddie backup"); }
+  };
+
+  // ---- tabs ----
+  document.querySelectorAll("nav [data-tab]").forEach(b => b.onclick = () => {
+    document.querySelectorAll("nav [data-tab]").forEach(x => x.setAttribute("aria-selected", x === b));
+    document.querySelectorAll(".tab").forEach(t => t.hidden = t.id !== "tab-" + b.dataset.tab);
+    window.scrollTo(0, 0);
+  });
+
+  function renderAll() { renderHeader(); renderShotBox(); renderPlay(); renderShots(); renderClubs(); renderSetup(); }
+  renderAll();
+})();
+</script>
+</body>
+</html>
