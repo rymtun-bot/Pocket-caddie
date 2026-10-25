@@ -13,3 +13,11 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   ball speed, launch angle, launch direction, smash factor; no spin data, so leave spin/apex columns blank.
 - Laser rangefinder: Revasri. Its readings go in Pocket Caddie's "type the yardage" box.
 - Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (urethane cover).
+
+## Weather adjustments (added 2026-10-25, user chose "learn from my rounds")
+- Live wind/temp/pressure from Open-Meteo at the phone's position; wind resolved along the line to the saved green.
+- Plays-like = distance + wind + temperature + air-pressure terms + the user's own adjustment. Factors start at published
+  averages (cited on the page's Setup tab) and are editable there.
+- Every measured shot logs temp, pressure, wind, head/cross component along the actual shot line, and fairway/green
+  firmness. When the user pastes a shot log, fit their own factors from it and tell them what to enter in Setup.
+  Note: measured shot yards are total distance (carry + roll), so weigh firmness when fitting.

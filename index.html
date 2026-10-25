@@ -69,6 +69,16 @@ th { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: v
 .scroll { overflow-x: auto }
 td input { width: 5.5em }
 td button { padding: 6px 10px; font-size: 13px }
+.wx { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px }
+.wx div { display: grid; gap: 2px; min-width: 0 }
+.wx span { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
+.wx b { font: 700 26px/1.1 var(--display); font-variant-numeric: tabular-nums }
+.wx small { color: var(--muted); font-size: 13px }
+#breakdown td { padding: 4px 0; border-bottom: 1px dotted var(--line) }
+#breakdown td:last-child { text-align: right }
+.factors { display: grid; grid-template-columns: 1fr 6em; gap: 8px 12px; align-items: center }
+.factors label { font-size: 14px }
+a { color: var(--accent) }
 .points { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center }
 nav { position: fixed; inset: auto 0 0; z-index: 6; background: var(--surface); border-top: 1px solid var(--line);
   padding-bottom: env(safe-area-inset-bottom, 0px) }
@@ -113,11 +123,32 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     </section>
 
     <section class="panel">
+      <div class="row" style="justify-content:space-between"><h2 style="flex:0 1 auto">Conditions</h2>
+        <button id="wxRefresh" style="flex:0 0 auto">Refresh</button></div>
+      <div class="wx">
+        <div><span>Wind</span><b id="wxWind">—</b><small id="wxWindRel"></small></div>
+        <div><span>Temp</span><b id="wxTemp">—</b></div>
+        <div><span>Pressure</span><b id="wxPress">—</b></div>
+      </div>
+      <p class="note" id="wxStatus">Weather loads once GPS has a position.</p>
+      <div class="row">
+        <label for="windOvSpeed">Wind feels different here? Set it yourself (leave blank to use live wind)</label>
+        <input id="windOvSpeed" type="number" inputmode="numeric" placeholder="mph">
+        <select id="windOvDir" aria-label="Wind direction"><option value="1">Into me</option><option value="-1">Helping</option><option value="0">Straight across</option></select>
+      </div>
+      <div class="row">
+        <label for="firmness">Fairways and greens today (logged with your shots)</label>
+        <select id="firmness"><option>Firm</option><option selected>Normal</option><option>Soft</option></select>
+      </div>
+    </section>
+
+    <section class="panel">
       <h2>Plays like</h2>
       <div class="row adj" role="group" aria-label="Adjust yardage">
         <button data-adj="-10">−10</button><button data-adj="-5">−5</button><button data-adj="0">0</button><button data-adj="5">+5</button><button data-adj="10">+10</button>
       </div>
-      <div class="playslike"><span class="note">Adjustment <b id="adjOut" style="font-size:20px">0</b> yd for wind, slope, lie</span><b id="playsLike">—</b></div>
+      <div class="playslike"><span class="note">Your adjustment <b id="adjOut" style="font-size:20px">0</b> yd for slope, lie</span><b id="playsLike">—</b></div>
+      <table id="breakdown" class="note" hidden></table>
       <div class="rec" id="rec"><span class="note">Add your clubs and carry distances on the Clubs tab to get a club suggestion.</span></div>
     </section>
 
@@ -184,6 +215,20 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       </div>
     </section>
     <section class="panel">
+      <h2>Weather adjustments</h2>
+      <p class="note">These start at published averages for typical golfers. After a few rounds, send me your shot log and I'll work out your own numbers to put here.</p>
+      <div class="factors">
+        <label for="fHead">Headwind: add % of distance per mph</label><input id="fHead" type="number" step="0.05" inputmode="decimal">
+        <label for="fTail">Tailwind: subtract % of distance per mph</label><input id="fTail" type="number" step="0.05" inputmode="decimal">
+        <label for="fTemp">Yards per 10°F away from 75°F</label><input id="fTemp" type="number" step="0.1" inputmode="decimal">
+        <label for="fPress">% of distance per 1,000 ft of altitude (applied through air pressure)</label><input id="fPress" type="number" step="0.1" inputmode="decimal">
+      </div>
+      <p class="note" id="fSource"></p>
+      <div class="row"><button id="fReset">Reset to published averages</button></div>
+      <p class="note">Sources: wind, 1% per mph into and 0.5% per mph helping (<a href="https://www.galvingreen.com/blogs/theseriousgolfer/how-to-play-golf-in-the-wind" target="_blank" rel="noopener">Galvin Green</a>); temperature, about 2 yards per 10°F below 75°F (Andrew Rice TrackMan study, <a href="https://golf.com/instruction/temperature-affects-carry-distance-play-smart/" target="_blank" rel="noopener">Golf.com</a>); altitude, about 2% per 1,000 ft (<a href="https://thegolfnewsnet.com/ryan_ballengee/2025/04/25/how-much-temperature-humidity-elevation-affect-how-far-golf-ball-flies-103715/" target="_blank" rel="noopener">The Golf News Net</a>), with air pressure falling about 1 inHg (33.9 hPa) per 1,000 ft (<a href="https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/phak" target="_blank" rel="noopener">FAA Pilot's Handbook</a>). Weather from <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>.</p>
+    </section>
+
+    <section class="panel">
       <h2>Courses</h2>
       <div class="row">
         <input id="newCourse" type="text" placeholder="Course name">
@@ -224,6 +269,12 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   let S;
   try { S = JSON.parse(localStorage.getItem(KEY)) || fresh(); } catch { S = fresh(); }
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
+  // Published averages; replaced by the golfer's own numbers once their shot log shows them.
+  const DEFAULT_F = { head: 1, tail: 0.5, temp: 2, press: 2 };
+  S.factors = S.factors || { ...DEFAULT_F };
+  S.firm = S.firm || "Normal";
+  S.windOv = S.windOv || { speed: "", dir: "1" };
+  let wx = null; // latest weather: {temp °F, press hPa, speed mph, gust mph, dir deg wind comes from, at, lat, lon}
 
   let fix = null; // latest {lat, lon, acc} in meters
   const YD = 1.0936133;
@@ -234,6 +285,62 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     return 2 * R * Math.asin(Math.sqrt(h)) * YD;
   }
   const accYd = f => Math.round(f.acc * YD);
+  function bearing(a, b) {
+    const r = x => x * Math.PI / 180, dLon = r(b.lon - a.lon);
+    const y = Math.sin(dLon) * Math.cos(r(b.lat));
+    const x = Math.cos(r(a.lat)) * Math.sin(r(b.lat)) - Math.sin(r(a.lat)) * Math.cos(r(b.lat)) * Math.cos(dLon);
+    return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+  }
+  // Wind along a line of play: head > 0 is into you, cross > 0 blows from right to left.
+  function windAlong(brg) {
+    const ov = parseFloat(S.windOv.speed);
+    if (ov >= 0) return { head: ov * +S.windOv.dir, cross: null, mine: true };
+    if (!wx || brg == null) return null;
+    const a = (wx.dir - brg) * Math.PI / 180;
+    return { head: wx.speed * Math.cos(a), cross: wx.speed * Math.sin(a), mine: false };
+  }
+  const COMPASS = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+  const compass = d => COMPASS[Math.round(d / 22.5) % 16];
+
+  let wxBusy = false, wxFailed = false;
+  function renderWx(w, brg) {
+    if (wx) {
+      $("wxWind").textContent = Math.round(wx.speed) + " mph";
+      $("wxTemp").textContent = Math.round(wx.temp) + "°F";
+      $("wxPress").textContent = Math.round(wx.press) + " hPa";
+    }
+    let rel = wx ? "from " + compass(wx.dir) + (wx.gust > wx.speed + 3 ? ", gusts " + Math.round(wx.gust) : "") : "";
+    if (w && !w.mine && w.cross != null) {
+      const hd = Math.round(Math.abs(w.head)), cr = Math.round(Math.abs(w.cross));
+      rel = (w.head >= 0 ? hd + " into" : hd + " helping") + (cr ? ` · ${cr} ${w.cross > 0 ? "R→L" : "L→R"}` : "");
+    }
+    $("wxWindRel").textContent = rel;
+    const mins = wx ? Math.round((Date.now() - wx.at) / 60000) : 0;
+    $("wxStatus").textContent = wxBusy ? "Loading weather…"
+      : wxFailed && !wx ? "Couldn't load the weather. Check your signal and tap Refresh. Until then, only your own adjustment is used."
+      : !wx ? "Weather loads once GPS has a position."
+      : (wxFailed ? "Couldn't refresh; showing weather from " : "Updated ") + (mins ? mins + " min ago" : "just now") +
+        (S.windOv.speed !== "" ? ". Using the wind you set." : brg == null ? ". Save this hole's green to use wind direction." : ".");
+  }
+  async function loadWx(force) {
+    if (!fix || wxBusy) return;
+    if (!force && wx && Date.now() - wx.at < 600000 && dist(wx, fix) < 2000) return;
+    wxBusy = true;
+    $("wxStatus").textContent = "Loading weather…";
+    try {
+      const u = "https://api.open-meteo.com/v1/forecast?latitude=" + fix.lat.toFixed(4) + "&longitude=" + fix.lon.toFixed(4) +
+        "&current=temperature_2m,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m&temperature_unit=fahrenheit&wind_speed_unit=mph";
+      const r = await fetch(u);
+      if (!r.ok) throw new Error(r.status);
+      const c = (await r.json()).current;
+      wx = { temp: c.temperature_2m, press: c.surface_pressure, speed: c.wind_speed_10m, gust: c.wind_gusts_10m,
+        dir: c.wind_direction_10m, at: Date.now(), lat: fix.lat, lon: fix.lon };
+      wxFailed = false;
+    } catch { wxFailed = true; }
+    wxBusy = false;
+    renderPlay();
+  }
+  setInterval(() => { loadWx(false); renderPlay(); }, 60000);
   const hole = () => {
     const c = S.courses[S.cur.course];
     return c.holes[S.cur.hole] || (c.holes[S.cur.hole] = {});
@@ -253,6 +360,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       fix = { lat: p.coords.latitude, lon: p.coords.longitude, acc: p.coords.accuracy };
       const a = accYd(fix);
       gpsStatus("GPS ±" + a + " yd", a <= 6 ? "ok" : "warn");
+      loadWx(false);
       renderPlay();
     }, e => {
       fix = null;
@@ -291,8 +399,27 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     }
     $("greenHint").hidden = !!(h.front || h.center || h.back);
     $("adjOut").textContent = (S.adj > 0 ? "+" : "") + S.adj;
+    const greenPt = h.center || h.front || h.back;
+    const brg = fix && greenPt ? bearing(fix, greenPt) : null;
+    const w = windAlong(brg);
+    renderWx(w, brg);
     const t = targetYards();
-    const pl = t == null ? null : Math.round(t + S.adj);
+    let pl = null;
+    const bd = $("breakdown");
+    if (t != null) {
+      const f = S.factors, sgn = v => (v >= 0 ? "+" : "−") + Math.abs(Math.round(v));
+      const parts = [["Distance", t]];
+      if (w) parts.push([w.head >= 0 ? `Wind ${Math.round(w.head)} mph into you` : `Wind ${Math.round(-w.head)} mph helping`,
+        w.head >= 0 ? t * f.head / 100 * w.head : t * f.tail / 100 * w.head]);
+      if (wx) {
+        parts.push([`Temperature ${Math.round(wx.temp)}°F`, f.temp * (75 - wx.temp) / 10]);
+        parts.push([`Air pressure ${Math.round(wx.press)} hPa`, t * f.press / 100 * (wx.press - 1013.25) / 33.86]);
+      }
+      if (S.adj) parts.push(["Your adjustment", S.adj]);
+      pl = Math.round(parts.reduce((a, p) => a + p[1], 0));
+      bd.innerHTML = parts.map((p, i) => `<tr><td>${p[0]}</td><td>${i ? sgn(p[1]) : Math.round(p[1])} yd</td></tr>`).join("");
+      bd.hidden = parts.length < 2;
+    } else bd.hidden = true;
     $("playsLike").textContent = pl == null ? "—" : pl + " yd";
     renderRec(pl);
     if (S.pending) {
@@ -305,6 +432,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (!clubs.length) { rec.innerHTML = '<span class="note">Add your clubs and carry distances on the Clubs tab to get a club suggestion.</span>'; return; }
     if (pl == null) { rec.innerHTML = '<span class="note">Waiting for a yardage: GPS to a saved green, or type one above.</span>'; return; }
     if (pl < clubs[0].carry - 15) { rec.innerHTML = `<span class="main">Partial shot</span><span class="alts">${pl} yd is inside your shortest club on the list (${esc(clubs[0].name)}, ${clubs[0].carry} yd)</span>`; return; }
+    const top = clubs[clubs.length - 1];
+    if (pl > top.carry + 15) { rec.innerHTML = `<span class="main">Beyond your clubs</span><span class="alts">${pl} yd is longer than your longest club on the list (${esc(top.name)}, ${top.carry} yd). Lay up or take more club than listed.</span>`; return; }
     let best = clubs.reduce((b, c) => Math.abs(c.carry - pl) < Math.abs(b.carry - pl) ? c : b);
     const i = clubs.indexOf(best);
     const diff = c => { const d = c.carry - pl; return (d >= 0 ? "+" : "−") + Math.abs(d) + " yd"; };
@@ -337,7 +466,11 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   $("markEnd").onclick = () => {
     if (!fix) { toast("Waiting for GPS"); return; }
     const p = S.pending, to = { ...fix };
-    S.shots.push({ ...p, to, yards: Math.round(dist(p.from, to)), note: $("shotNote").value.trim(), id: Date.now() });
+    const w = windAlong(bearing(p.from, to));
+    const cond = { firm: S.firm, temp: wx ? wx.temp : null, press: wx ? wx.press : null, windMph: wx ? wx.speed : null,
+      windFrom: wx ? wx.dir : null, head: w ? +w.head.toFixed(1) : null, cross: w && w.cross != null ? +w.cross.toFixed(1) : null,
+      windSetByYou: !!(w && w.mine) };
+    S.shots.push({ ...p, to, cond, yards: Math.round(dist(p.from, to)), note: $("shotNote").value.trim(), id: Date.now() });
     S.pending = null; $("shotNote").value = "";
     save(); renderAll(); toast("Shot saved");
   };
@@ -365,9 +498,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   }
   $("copyCsv").onclick = () => {
     const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
-    const lines = ["date,course,hole,club,lie,yards,gps_acc_start_yd,gps_acc_end_yd,result"];
-    S.shots.forEach(s => lines.push([new Date(s.ts).toISOString().slice(0, 10), S.courses[s.course] ? S.courses[s.course].name : s.course,
-      s.hole, s.club, s.lie, s.yards, accYd(s.from), accYd(s.to), s.note].map(q).join(",")));
+    const lines = ["date,course,hole,club,lie,yards,gps_acc_start_yd,gps_acc_end_yd,result,temp_f,pressure_hpa,wind_mph,wind_from_deg,headwind_mph_into,crosswind_mph_r_to_l,wind_set_by_me,fairways_greens"];
+    S.shots.forEach(s => { const c = s.cond || {}; lines.push([new Date(s.ts).toISOString().slice(0, 10), S.courses[s.course] ? S.courses[s.course].name : s.course,
+      s.hole, s.club, s.lie, s.yards, accYd(s.from), accYd(s.to), s.note,
+      c.temp, c.press, c.windMph, c.windFrom, c.head, c.cross, c.windSetByYou ? "yes" : "", c.firm].map(q).join(",")); });
     copy(lines.join("\n"), $("csvFallback"));
   };
 
@@ -420,6 +554,27 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       S = d; save(); renderAll(); toast("Backup restored");
     } catch { toast("That doesn't look like a Pocket Caddie backup"); }
   };
+
+  // ---- conditions and weather adjustments ----
+  $("wxRefresh").onclick = () => loadWx(true);
+  $("firmness").value = S.firm;
+  $("firmness").onchange = e => { S.firm = e.target.value; save(); };
+  $("windOvSpeed").value = S.windOv.speed;
+  $("windOvDir").value = S.windOv.dir;
+  $("windOvSpeed").oninput = e => { S.windOv.speed = e.target.value; save(); renderPlay(); };
+  $("windOvDir").onchange = e => { S.windOv.dir = e.target.value; save(); renderPlay(); };
+  const FIELDS = { fHead: "head", fTail: "tail", fTemp: "temp", fPress: "press" };
+  function renderFactors() {
+    for (const [id, k] of Object.entries(FIELDS)) $(id).value = S.factors[k];
+    const same = Object.keys(DEFAULT_F).every(k => S.factors[k] === DEFAULT_F[k]);
+    $("fSource").textContent = same ? "Using published averages." : "Using your own numbers.";
+  }
+  for (const [id, k] of Object.entries(FIELDS)) $(id).onchange = e => {
+    const v = parseFloat(e.target.value);
+    S.factors[k] = v >= 0 ? v : DEFAULT_F[k]; save(); renderFactors(); renderPlay();
+  };
+  $("fReset").onclick = () => { S.factors = { ...DEFAULT_F }; save(); renderFactors(); renderPlay(); };
+  renderFactors();
 
   // ---- tabs ----
   document.querySelectorAll("nav [data-tab]").forEach(b => b.onclick = () => {
