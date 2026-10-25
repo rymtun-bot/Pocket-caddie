@@ -12,4 +12,4 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
 - Launch monitor: Rapsodo Mobile Launch Monitor, original model (label: Model No. MLM1.1). Reports carry, club speed,
   ball speed, launch angle, launch direction, smash factor; no spin data, so leave spin/apex columns blank.
 - Laser rangefinder: Revasri. Its readings go in Pocket Caddie's "type the yardage" box.
-- Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (name to confirm).
+- Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (urethane cover).
