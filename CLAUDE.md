@@ -21,7 +21,8 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
 - Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (urethane cover).
 
 ## First launch-monitor numbers (from the golfer, 2026-10-26; patio net, Callaway Supersoft)
-Not yet known whether these are single shots or averages. Stock lofts: 7-iron 31°, PW 45° (see equipment above).
+Hit from the golfer's usual setup (about 2-3 quarters under the toe at address), not the hip-hinge setup
+(about 5 quarters on a rug) tried 2026-10-26. Not yet known whether these are single shots or averages. Stock lofts: 7-iron 31°, PW 45° (see equipment above).
 
 | Club | Club mph | Smash | Carry / total yd | Launch angle | Launch dir | Apex ft | Shot type |
 |---|---|---|---|---|---|---|---|
