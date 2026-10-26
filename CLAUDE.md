@@ -13,18 +13,23 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   ball speed, launch angle, launch direction, smash factor, shot type, and apex in feet (an estimate: the unit measures
   no spin). Leave spin columns blank. Patio-net carry is also an estimate (ball flies ~8 ft into the net).
   Setup (Rapsodo FAQ, accessed 2026-10-26): monitor 6-8 ft behind the ball on the target line; ball ~8 ft from the net.
+- Irons (from the golfer, 2026-10-26): TaylorMade RSi 2, standard set, TaylorMade TM7-215 graphite shaft, regular flex.
+  Stock lofts per 2nd Swing's spec table (https://www.2ndswing.com/golf-clubs/iron-sets/taylormade-rsi-2-iron-set,
+  accessed 2026-10-26; not a TaylorMade sheet): 7-iron 31°, 8-iron 35°, 9-iron 40°, PW 45°. The golfer's own lofts
+  may differ if the clubs were ever bent; have them checked if gapping looks off.
 - Laser rangefinder: Revasri. Its readings go in Pocket Caddie's "type the yardage" box.
 - Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (urethane cover).
 
 ## First launch-monitor numbers (from the golfer, 2026-10-26; patio net, Callaway Supersoft)
-Not yet known whether these are single shots or averages. Lofts for both clubs not yet given.
+Not yet known whether these are single shots or averages. Stock lofts: 7-iron 31°, PW 45° (see equipment above).
 
 | Club | Club mph | Smash | Carry / total yd | Launch angle | Launch dir | Apex ft | Shot type |
 |---|---|---|---|---|---|---|---|
 | 7-iron | 71 | 1.35 | 128 / 132 | 23.5° | 8.4 (right) | 73 | right |
 | PW | 66 | 1.24 | 102 / 107 | 27.6° | 6.5 (right) | 61 | miss right |
 
-Open items: confirm monitor alignment (both clubs start right), then 10-shot sessions; lofts; carries for other clubs.
+Open items: confirm monitor alignment (both clubs start right), then 10-shot sessions; carries for other clubs. Launch gap 7-iron vs PW is only 4.1° for 14° of loft;
+check on video whether the 7-iron is getting extra loft at impact.
 
 ## Weather adjustments (added 2026-10-25, user chose "learn from my rounds")
 - Live wind/temp/pressure from Open-Meteo at the phone's position; wind resolved along the line to the saved green.
