@@ -9,10 +9,22 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   It stores clubs, saved greens and shots in the phone's browser only.
 
 ## User's equipment (from their photos, 2026-10-25)
-- Launch monitor: Rapsodo Mobile Launch Monitor, original model (label: Model No. MLM1.1). Reports carry, club speed,
-  ball speed, launch angle, launch direction, smash factor; no spin data, so leave spin/apex columns blank.
+- Launch monitor: Rapsodo Mobile Launch Monitor, original model (label: Model No. MLM1.1). Reports carry, total, club speed,
+  ball speed, launch angle, launch direction, smash factor, shot type, and apex in feet (an estimate: the unit measures
+  no spin). Leave spin columns blank. Patio-net carry is also an estimate (ball flies ~8 ft into the net).
+  Setup (Rapsodo FAQ, accessed 2026-10-26): monitor 6-8 ft behind the ball on the target line; ball ~8 ft from the net.
 - Laser rangefinder: Revasri. Its readings go in Pocket Caddie's "type the yardage" box.
 - Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (urethane cover).
+
+## First launch-monitor numbers (from the golfer, 2026-10-26; patio net, Callaway Supersoft)
+Not yet known whether these are single shots or averages. Lofts for both clubs not yet given.
+
+| Club | Club mph | Smash | Carry / total yd | Launch angle | Launch dir | Apex ft | Shot type |
+|---|---|---|---|---|---|---|---|
+| 7-iron | 71 | 1.35 | 128 / 132 | 23.5° | 8.4 (right) | 73 | right |
+| PW | 66 | 1.24 | 102 / 107 | 27.6° | 6.5 (right) | 61 | miss right |
+
+Open items: confirm monitor alignment (both clubs start right), then 10-shot sessions; lofts; carries for other clubs.
 
 ## Weather adjustments (added 2026-10-25, user chose "learn from my rounds")
 - Live wind/temp/pressure from Open-Meteo at the phone's position; wind resolved along the line to the saved green.
