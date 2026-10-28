@@ -13,6 +13,12 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   ball speed, launch angle, launch direction, smash factor, shot type, and apex in feet (an estimate: the unit measures
   no spin). Leave spin columns blank. Patio-net carry is also an estimate (ball flies ~8 ft into the net).
   Setup (Rapsodo FAQ, accessed 2026-10-26): monitor 6-8 ft behind the ball on the target line; ball ~8 ft from the net.
+- Second launch monitor (bought 2026-10-28): PRGR Black Pocket, model HS-130A. Doppler radar; measures club speed,
+  ball speed, smash factor; carry/total are estimated from ball speed (no launch angle, direction or spin).
+  Use it for the speed program; use the Rapsodo for carry, launch angle and direction. Reviews (accessed 2026-10-28):
+  ball speed within ~1 mph of high-end units; club speed reports vary (~1 to 8 mph off); readings drop if the unit
+  isn't aligned with the club path (https://pluggedingolf.com/prgr-black-portable-launch-monitor-review/,
+  https://golfersauthority.com/prgr-black-pocket-launch-monitor/).
 - Irons (from the golfer, 2026-10-26): TaylorMade RSi 2, standard set, TaylorMade TM7-215 graphite shaft, regular flex.
   Stock lofts per 2nd Swing's spec table (https://www.2ndswing.com/golf-clubs/iron-sets/taylormade-rsi-2-iron-set,
   accessed 2026-10-26; not a TaylorMade sheet): 7-iron 31°, 8-iron 35°, 9-iron 40°, PW 45°. The golfer's own lofts
