@@ -38,6 +38,10 @@ Hit from the golfer's usual setup (about 2-3 quarters under the toe at address),
 Open items: confirm monitor alignment (both clubs start right), then 10-shot sessions; carries for other clubs. Launch gap 7-iron vs PW is only 4.1° for 14° of loft;
 check on video whether the 7-iron is getting extra loft at impact.
 
+## Practice sessions
+One file per session in `practice/` (date, monitor, place, ball), with raw shots and a summary.
+- 2026-10-28: PRGR, patio, Supersoft, PW through 3W (`practice/2026-10-28-prgr-patio.md`).
+
 ## Weather adjustments (added 2026-10-25, user chose "learn from my rounds")
 - Live wind/temp/pressure from Open-Meteo at the phone's position; wind resolved along the line to the saved green.
 - Plays-like = distance + wind + temperature + air-pressure terms + the user's own adjustment. Factors start at published
