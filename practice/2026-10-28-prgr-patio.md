@@ -1,7 +1,7 @@
 # 2026-10-28 — PRGR HS-130A, patio net, Callaway Supersoft
 
 Source: the golfer's spreadsheet. Carry is the PRGR's estimate from ball speed (no launch angle or spin);
-total was not recorded. Address setup not noted.
+total was not recorded. Address setup: hip-hinge (first session with it), alignment clubs on the ground.
 
 ## Summary (median is the middle shot, less affected by one mishit)
 
