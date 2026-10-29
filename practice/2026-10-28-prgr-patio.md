@@ -17,8 +17,10 @@ total was not recorded. Address setup not noted.
 | 3W | 3 | 150 | 150 | 143–156 | 70 | 1.54 (1.51–1.56) |
 
 ## Notes
-- Rapsodo (golfer's report): PW, 9I and 8I launched about 2.3° off line, classed "straight". Down from 6.5–8.4° right
-  on 2026-10-26. Side (left/right) and readings for 7I and longer not yet reported.
+- Rapsodo ran in the same session, with alignment clubs on the ground (golfer's report): PW, 9I and 8I started about
+  2.3° right, classed "straight". Down from 6.5–8.4° right on 2026-10-26.
+- Rapsodo PW average: carry 98, club speed 68 mph, launch angle 34.3°, 2.4° right, "straight". The PRGR's 73 for the
+  same PW shots points to the PRGR under-reading wedges; use the Rapsodo for wedge carries.
 - PW: low smash and 73 yd vs the Rapsodo's 102 on 2026-10-26. Possible heavy contact or a wedge-reading issue. Re-test.
 - 3W: no longer than 4U/5W; 1.54 smash is above the PGA Tour driver average (~1.49, TrackMan via The Golf Performance
   Center, accessed 2026-10-26), so the PRGR likely reads club speed low on woods. Carry (from ball speed) is the more
