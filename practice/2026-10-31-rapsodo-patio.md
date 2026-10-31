@@ -14,7 +14,9 @@ PRGR smash, same order: 1.46, 1.40, 1.05, 1.48, 1.03, 1.41 — average 1.31 (mea
 Ball speed (club speed × smash): 81.8, 79.8, 83.0, 81.4, 80.3, 83.2 — average 81.6 mph, steady. Carry stayed 99–104
 whether club speed read 55 or 79, so the club-speed readings (and the smash built on them) are not trustworthy;
 ball speed is. Rapsodo PW ball speed on 2026-10-26 was about 82 (66 × 1.24).
-Not yet confirmed whether these are the same shots the Rapsodo averaged at 92.
+Same 6 shots as the Rapsodo average (both monitors running together, PRGR between the Rapsodo and the ball).
+On identical shots: PRGR ball speed 81.6 vs Rapsodo ~77.4 (65 × 1.19); carry 101.8 vs 92. Next: 5 shots with each
+monitor alone, to rule out the PRGR blocking the Rapsodo's view or the two radars interfering.
 
 ## Compared with earlier PW readings
 
