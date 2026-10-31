@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Swing Frames</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+/* Same tokens as Pocket Caddie. One column: video on top, frame controls, the four key frames, then share. */
+:root {
+  --bg: #eef3ee; --surface: #ffffff; --ink: #102018; --muted: #55675c; --line: #cfdad1;
+  --accent: #b8321c; --accent-ink: #ffffff; --good: #1f6b3a;
+  --display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --body: "Source Sans 3", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0d1511; --surface: #16211b; --ink: #e9f1eb; --muted: #9db1a4; --line: #2b3a31;
+  --accent: #ff6a4d; --accent-ink: #1a0905; --good: #6fd08f; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0d1511; --surface: #16211b; --ink: #e9f1eb; --muted: #9db1a4; --line: #2b3a31;
+  --accent: #ff6a4d; --accent-ink: #1a0905; --good: #6fd08f; color-scheme: dark }
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px) }
+* { box-sizing: border-box }
+[hidden] { display: none !important }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.4 var(--body); -webkit-text-size-adjust: 100% }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); max-width: 560px; margin: 0 auto }
+header { background: var(--surface); border-bottom: 1px solid var(--line) }
+header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px }
+header h1 { margin: 0; font: 700 26px/1 var(--display) }
+main { padding-block: 16px 40px; display: grid; gap: 16px }
+section.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 12px; min-width: 0 }
+h2 { margin: 0; font: 600 13px/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted) }
+select, input, textarea, button { font: inherit; color: inherit }
+select, input[type=text], textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; min-width: 0; width: 100% }
+button, .filebtn { cursor: pointer; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); padding: 10px 14px; font-weight: 600; text-align: center }
+button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible, .filebtn:focus-within { outline: 3px solid var(--accent); outline-offset: 2px }
+button.primary, .filebtn { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
+button[aria-pressed=true] { background: var(--ink); color: var(--bg); border-color: var(--ink) }
+button:disabled { opacity: .45; cursor: default }
+.filebtn input { position: absolute; opacity: 0; width: 1px; height: 1px }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.row > * { flex: 1 1 auto }
+.row label { flex: 1 1 100%; font-size: 13px; color: var(--muted) }
+.note { color: var(--muted); font-size: 14px; margin: 0 }
+a { color: var(--accent) }
+.stage { position: relative; background: #000; border-radius: 10px; overflow: hidden; touch-action: none }
+.stage video, .stage canvas { display: block; width: 100%; max-height: 70vh; object-fit: contain }
+.stage canvas { position: absolute; inset: 0; height: 100% }
+.time { font: 600 20px/1 var(--display); font-variant-numeric: tabular-nums; flex: 0 0 auto }
+input[type=range] { width: 100%; accent-color: var(--accent) }
+.step button { flex: 1 1 0; padding: 10px 0 }
+.marks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px }
+.frame { display: grid; gap: 6px; min-width: 0 }
+.frame img { width: 100%; aspect-ratio: 3 / 4; object-fit: contain; background: var(--bg); border: 1px solid var(--line); border-radius: 8px }
+.frame button { padding: 8px 6px; font-size: 14px }
+.frame b { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(24px + env(safe-area-inset-bottom, 0px)); z-index: 7;
+  background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-weight: 600; max-width: calc(100% - 32px) }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Swing Frames</h1>
+  <a href="./">Back to Pocket Caddie</a>
+</div></header>
+
+<main class="wrap">
+  <section class="panel">
+    <h2>1 · Pick a swing video</h2>
+    <label class="filebtn">Choose video from Photos<input id="file" type="file" accept="video/*"></label>
+    <p class="note">The video stays on this phone. Nothing is uploaded; only the picture you share in step 4 leaves the phone.</p>
+    <div class="row">
+      <label for="view">Camera view</label>
+      <select id="view"><option value="Face-on">Face-on</option><option value="Behind (down-the-line)">Behind (down-the-line)</option></select>
+    </div>
+    <div class="row">
+      <label for="info">Club and Rapsodo numbers for this swing (printed on the shared picture)</label>
+      <input id="info" type="text" placeholder="e.g. PW · carry 92 · launch 35.1° · 6.7 L · smash 1.19">
+    </div>
+  </section>
+
+  <section class="panel" id="player" hidden>
+    <h2>2 · Find each moment</h2>
+    <div class="stage" id="stage">
+      <video id="vid" playsinline muted preload="auto"></video>
+      <canvas id="ink" aria-label="Drawing layer: tap two points to draw a line"></canvas>
+    </div>
+    <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Position in video">
+    <div class="row">
+      <button id="play" style="flex:0 0 auto">Play</button>
+      <select id="rate" aria-label="Playback speed" style="flex:0 0 7em"><option value="1">1×</option><option value="0.5">½×</option><option value="0.25" selected>¼×</option><option value="0.1">⅒×</option></select>
+      <span class="time" id="time">0.000 s</span>
+    </div>
+    <div class="row step">
+      <button data-step="-10" aria-label="Back 10 frames">−10</button>
+      <button data-step="-1" aria-label="Back 1 frame">−1</button>
+      <button data-step="1" aria-label="Forward 1 frame">+1</button>
+      <button data-step="10" aria-label="Forward 10 frames">+10</button>
+    </div>
+    <div class="row">
+      <label for="fps">Frame step (match the video; iPhone Slo-mo is often 240 or 120)</label>
+      <select id="fps"><option>240</option><option>120</option><option>60</option><option selected>30</option></select>
+    </div>
+    <div class="row">
+      <button id="drawBtn" aria-pressed="false">Draw lines</button>
+      <button id="clearLines">Clear lines</button>
+    </div>
+    <p class="note">Draw lines: tap two points, for example along the shaft at address, or a line up the stick on the ground. Lines are copied onto the frames you save.</p>
+  </section>
+
+  <section class="panel" id="framesPanel" hidden>
+    <h2>3 · Save the four key frames</h2>
+    <div class="marks" id="marks"></div>
+  </section>
+
+  <section class="panel" id="sharePanel" hidden>
+    <h2>4 · Send to Claude</h2>
+    <p class="note">Makes one picture with all four frames and your numbers. Share it to the Claude app, or save it to Photos and attach it there.</p>
+    <div class="row">
+      <button class="primary" id="share">Share picture</button>
+    </div>
+    <img id="sheetPreview" alt="Preview of the picture to share" style="width:100%;border-radius:8px;border:1px solid var(--line)" hidden>
+  </section>
+</main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const MOMENTS = ["Address", "Top", "Impact", "Finish"];
+  const vid = $("vid"), ink = $("ink"), ictx = ink.getContext("2d");
+  let url = null, lines = [], pending = null, drawing = false, sheetBlob = null;
+  const frames = {};   // moment -> { t, dataURL, w, h }
+  let toastT;
+  const toast = msg => { const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2200); };
+
+  // ---- load ----
+  $("file").onchange = e => {
+    const f = e.target.files[0]; if (!f) return;
+    if (url) URL.revokeObjectURL(url);
+    url = URL.createObjectURL(f); vid.src = url; lines = []; pending = null;
+    MOMENTS.forEach(m => delete frames[m]);
+    $("player").hidden = false; $("framesPanel").hidden = false; $("sharePanel").hidden = true;
+    renderMarks();
+  };
+  vid.onloadedmetadata = () => { sizeInk(); seek(0); };
+  vid.onloadeddata = () => sizeInk();
+  window.addEventListener("resize", sizeInk);
+
+  // ---- playback ----
+  $("play").onclick = () => { if (vid.paused) { vid.playbackRate = +$("rate").value; vid.play(); } else vid.pause(); };
+  $("rate").onchange = () => vid.playbackRate = +$("rate").value;
+  vid.onplay = () => $("play").textContent = "Pause";
+  vid.onpause = () => $("play").textContent = "Play";
+  vid.ontimeupdate = showTime;
+  vid.onseeked = showTime;
+  function showTime() {
+    $("time").textContent = vid.currentTime.toFixed(3) + " s";
+    if (vid.duration) $("scrub").value = Math.round(vid.currentTime / vid.duration * 1000);
+  }
+  $("scrub").oninput = e => { vid.pause(); if (vid.duration) seek(e.target.value / 1000 * vid.duration); };
+  document.querySelectorAll("[data-step]").forEach(b => b.onclick = () => {
+    vid.pause(); seek(vid.currentTime + (+b.dataset.step) / +$("fps").value);
+  });
+  function seek(t) {
+    return new Promise(res => {
+      const d = vid.duration || 0;
+      vid.addEventListener("seeked", () => res(), { once: true });
+      vid.currentTime = Math.max(0, Math.min(d ? d - 0.001 : 0, t));
+    });
+  }
+
+  // ---- drawing layer (lines stored in video pixel coordinates) ----
+  function sizeInk() {
+    const r = ink.getBoundingClientRect(); if (!r.width) return;
+    ink.width = Math.round(r.width * devicePixelRatio); ink.height = Math.round(r.height * devicePixelRatio);
+    redraw();
+  }
+  function videoBox() { // where the video picture sits inside the canvas (object-fit: contain)
+    const vw = vid.videoWidth || 1, vh = vid.videoHeight || 1, cw = ink.width, ch = ink.height;
+    const s = Math.min(cw / vw, ch / vh); return { s, x: (cw - vw * s) / 2, y: (ch - vh * s) / 2 };
+  }
+  function toVideo(ev) {
+    const r = ink.getBoundingClientRect(), b = videoBox();
+    const cx = (ev.clientX - r.left) * devicePixelRatio, cy = (ev.clientY - r.top) * devicePixelRatio;
+    return { x: (cx - b.x) / b.s, y: (cy - b.y) / b.s };
+  }
+  function strokeLines(ctx, s, ox, oy, extra, lw) {
+    ctx.lineWidth = lw; ctx.lineCap = "round"; ctx.strokeStyle = "#ffd400";
+    lines.forEach(l => { ctx.beginPath(); ctx.moveTo(ox + l[0].x * s, oy + l[0].y * s); ctx.lineTo(ox + l[1].x * s, oy + l[1].y * s); ctx.stroke(); });
+    if (extra) { ctx.fillStyle = "#ffd400"; ctx.beginPath(); ctx.arc(ox + extra.x * s, oy + extra.y * s, lw * 1.6, 0, 7); ctx.fill(); }
+  }
+  function redraw() { ictx.clearRect(0, 0, ink.width, ink.height); const b = videoBox(); strokeLines(ictx, b.s, b.x, b.y, pending, 3 * devicePixelRatio); }
+  $("drawBtn").onclick = () => {
+    drawing = !drawing; pending = null; $("drawBtn").setAttribute("aria-pressed", drawing);
+    ink.style.pointerEvents = drawing ? "auto" : "none"; redraw();
+  };
+  ink.style.pointerEvents = "none";
+  ink.onpointerdown = ev => {
+    if (!drawing) return; ev.preventDefault();
+    const p = toVideo(ev);
+    if (!pending) pending = p; else { lines.push([pending, p]); pending = null; }
+    redraw();
+  };
+  $("clearLines").onclick = () => { lines = []; pending = null; redraw(); };
+
+  // ---- key frames ----
+  function renderMarks() {
+    $("marks").innerHTML = MOMENTS.map(m => `<div class="frame">
+      <b>${m}${frames[m] ? " · " + frames[m].t.toFixed(3) + " s" : ""}</b>
+      ${frames[m] ? `<img src="${frames[m].dataURL}" alt="${m} frame">` : `<img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">`}
+      <div class="row"><button data-grab="${m}">Save ${m.toLowerCase()}</button>${frames[m] ? `<button data-go="${m}" style="flex:0 0 auto">Go</button>` : ""}</div>
+    </div>`).join("");
+    $("marks").querySelectorAll("[data-grab]").forEach(b => b.onclick = () => grab(b.dataset.grab));
+    $("marks").querySelectorAll("[data-go]").forEach(b => b.onclick = () => { vid.pause(); seek(frames[b.dataset.go].t); });
+    $("sharePanel").hidden = !MOMENTS.some(m => frames[m]);
+  }
+  function grab(m) {
+    if (!vid.videoWidth) { toast("Video not ready yet"); return; }
+    vid.pause();
+    const c = document.createElement("canvas"); c.width = vid.videoWidth; c.height = vid.videoHeight;
+    const x = c.getContext("2d"); x.drawImage(vid, 0, 0); strokeLines(x, 1, 0, 0, null, Math.max(4, c.width / 150));
+    frames[m] = { t: vid.currentTime, dataURL: c.toDataURL("image/jpeg", 0.85), w: c.width, h: c.height };
+    renderMarks(); toast(m + " saved");
+  }
+
+  // ---- contact sheet ----
+  function loadImg(src) { return new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = src; }); }
+  async function buildSheet() {
+    const got = MOMENTS.filter(m => frames[m]);
+    const W = 1080, gap = 12, cellW = (W - gap * 3) / 2;
+    const ar = frames[got[0]].h / frames[got[0]].w, cellH = Math.round(cellW * ar);
+    const head = 120, rows = Math.ceil(got.length / 2), H = head + rows * (cellH + 44 + gap) + gap;
+    const c = document.createElement("canvas"); c.width = W; c.height = H;
+    const x = c.getContext("2d");
+    x.fillStyle = "#ffffff"; x.fillRect(0, 0, W, H);
+    x.fillStyle = "#102018"; x.font = "700 40px 'Barlow Condensed', sans-serif";
+    x.fillText(`${$("view").value} · ${new Date().toLocaleDateString()}`, gap, 52);
+    x.font = "28px 'Source Sans 3', sans-serif"; x.fillStyle = "#55675c";
+    x.fillText(($("info").value || "No numbers entered").slice(0, 70), gap, 96);
+    for (let i = 0; i < got.length; i++) {
+      const m = got[i], col = i % 2, row = Math.floor(i / 2);
+      const ox = gap + col * (cellW + gap), oy = head + row * (cellH + 44 + gap);
+      x.fillStyle = "#102018"; x.font = "600 30px 'Source Sans 3', sans-serif";
+      x.fillText(`${m}  ${frames[m].t.toFixed(3)} s`, ox, oy + 32);
+      x.drawImage(await loadImg(frames[m].dataURL), ox, oy + 44, cellW, cellH);
+    }
+    return new Promise(r => c.toBlob(r, "image/jpeg", 0.88));
+  }
+  $("share").onclick = async () => {
+    sheetBlob = await buildSheet();
+    const prev = $("sheetPreview"); prev.src = URL.createObjectURL(sheetBlob); prev.hidden = false;
+    const file = new File([sheetBlob], `swing-${$("view").value.startsWith("Face") ? "face-on" : "behind"}-${Date.now()}.jpg`, { type: "image/jpeg" });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], title: "Swing frames" }); } catch { /* user cancelled */ }
+    } else {
+      const a = document.createElement("a"); a.href = prev.src; a.download = file.name; a.click();
+      toast("Saved. Press and hold the preview to save it to Photos.");
+    }
+  };
+})();
+</script>
+</body>
+</html>
