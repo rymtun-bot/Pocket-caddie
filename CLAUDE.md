@@ -41,6 +41,8 @@ One file per session in `practice/` (date, monitor, place, ball), with raw shots
 - 2026-10-31: Rapsodo + PRGR, patio, Supersoft, PW (`practice/2026-10-31-rapsodo-patio.md`).
 - Current two-week plan and pre-shot routine: `practice/plan-2026-11.md` (first round planned January 2027).
 - Home course game (hole-by-hole Westchester/Rancho on the patio): `practice/home-course-game.md`.
+- `home.html` (Home Course page, linked from Setup) runs that game: Rapsodo carry/total/start direction place the ball;
+  long first putts count as a lag; assumptions (green radius, fairway width, trouble, lag leaves) are editable on the page.
 
 ## Weather adjustments (added 2026-10-25, user chose "learn from my rounds")
 - Live wind/temp/pressure from Open-Meteo at the phone's position; wind resolved along the line to the saved green.

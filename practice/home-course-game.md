@@ -1,5 +1,8 @@
 # Home course game: play Westchester or Rancho Park on the patio
 
+Pocket Caddie's Home Course page (Setup tab → Open Home Course) runs this game for you and keeps the score.
+The page places each ball from the Rapsodo carry, total and start direction instead of the Good/Near/Miss table.
+
 Every full shot goes into the net with the Rapsodo and the full pre-shot routine. Chips go to the towel on the patio
 mat. Putts are played later, inside on the rug, from the list you write down outside. Score each hole like a real round.
 

@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Home Course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+/* Same tokens as Pocket Caddie. One column: round setup, current hole, putts to play inside, scorecard, assumptions. */
+:root {
+  --bg: #eef3ee; --surface: #ffffff; --ink: #102018; --muted: #55675c; --line: #cfdad1;
+  --accent: #b8321c; --accent-ink: #ffffff; --good: #1f6b3a; --warn: #8a5a00;
+  --display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --body: "Source Sans 3", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0d1511; --surface: #16211b; --ink: #e9f1eb; --muted: #9db1a4; --line: #2b3a31;
+  --accent: #ff6a4d; --accent-ink: #1a0905; --good: #6fd08f; --warn: #f0b84a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0d1511; --surface: #16211b; --ink: #e9f1eb; --muted: #9db1a4; --line: #2b3a31;
+  --accent: #ff6a4d; --accent-ink: #1a0905; --good: #6fd08f; --warn: #f0b84a; color-scheme: dark }
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px) }
+* { box-sizing: border-box }
+[hidden] { display: none !important }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.4 var(--body); -webkit-text-size-adjust: 100% }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); max-width: 560px; margin: 0 auto }
+header { background: var(--surface); border-bottom: 1px solid var(--line) }
+header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px }
+header h1 { margin: 0; font: 700 26px/1 var(--display) }
+main { padding-block: 16px 40px; display: grid; gap: 16px }
+section.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 12px; min-width: 0 }
+h2 { margin: 0; font: 600 13px/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted) }
+select, input, button { font: inherit; color: inherit }
+select, input[type=number], input[type=text] { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; min-width: 0; width: 100% }
+button { cursor: pointer; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); padding: 10px 14px; font-weight: 600 }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px }
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
+button[aria-pressed=true] { background: var(--ink); color: var(--bg); border-color: var(--ink) }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.row > * { flex: 1 1 auto }
+.row label { flex: 1 1 100%; font-size: 13px; color: var(--muted) }
+.note { color: var(--muted); font-size: 14px; margin: 0 }
+a { color: var(--accent) }
+.big { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap }
+.big b { font: 700 44px/1 var(--display); font-variant-numeric: tabular-nums }
+.big span { font: 600 22px/1 var(--display) }
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center }
+.facts div { display: grid; gap: 2px }
+.facts b { font: 700 30px/1 var(--display); font-variant-numeric: tabular-nums }
+.facts span { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
+.msg { border-left: 4px solid var(--accent); padding: 8px 12px; background: var(--bg); border-radius: 0 8px 8px 0 }
+.msg.good { border-color: var(--good) }
+.tmn button { flex: 1 1 0 }
+table { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums }
+th, td { text-align: left; padding: 6px 5px; border-bottom: 1px solid var(--line); vertical-align: middle }
+th { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600 }
+.scroll { overflow-x: auto }
+.factors { display: grid; grid-template-columns: 1fr 6em; gap: 8px 12px; align-items: center }
+.factors label { font-size: 14px }
+details summary { cursor: pointer; font-weight: 600 }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(24px + env(safe-area-inset-bottom, 0px)); z-index: 7;
+  background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-weight: 600; max-width: calc(100% - 32px) }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Home Course</h1>
+  <a href="./">Back to Pocket Caddie</a>
+</div></header>
+
+<main class="wrap">
+  <section class="panel" id="setup">
+    <h2>New round on the patio</h2>
+    <div class="row"><label for="course">Course</label>
+      <select id="course"><option value="westchester">Westchester (par 64)</option><option value="rancho">Rancho Park (par 71)</option></select></div>
+    <div class="row"><label for="tees">Tees</label><select id="tees"></select></div>
+    <div class="row"><label for="holes">Holes</label>
+      <select id="holes"><option value="1-9">Front 9</option><option value="10-18">Back 9</option><option value="1-18">All 18</option></select></div>
+    <div class="row"><button class="primary" id="start">Start round</button></div>
+    <p class="note" id="clubNote"></p>
+    <p class="note">How it works: hit each full shot into the net, type the Rapsodo carry, total and start direction, and the
+      page places the ball. Chips go to your towel; putts of 6 ft or less are for your rug, now or later.</p>
+  </section>
+
+  <section class="panel" id="play" hidden>
+    <div class="big"><span id="hHead">Hole 1 · Par 3</span><span id="hScore"></span></div>
+    <div class="facts">
+      <div><b id="fTo">—</b><span>Yd to pin</span></div>
+      <div><b id="fLie">—</b><span>Lie</span></div>
+      <div><b id="fShot">1</b><span>Shot</span></div>
+    </div>
+    <div class="msg" id="msg" hidden></div>
+
+    <div id="fullShot" class="row" style="gap:10px">
+      <div class="row"><label for="club">Club (suggestion from your Clubs tab)</label><select id="club"></select></div>
+      <div class="row">
+        <div style="flex:1 1 30%"><label for="carry" style="display:block;font-size:13px;color:var(--muted)">Carry yd</label><input id="carry" type="number" inputmode="decimal"></div>
+        <div style="flex:1 1 30%"><label for="total" style="display:block;font-size:13px;color:var(--muted)">Total yd</label><input id="total" type="number" inputmode="decimal" placeholder="optional"></div>
+        <div style="flex:1 1 30%"><label for="dir" style="display:block;font-size:13px;color:var(--muted)">Start °</label><input id="dir" type="number" inputmode="decimal" min="0" step="0.1"></div>
+      </div>
+      <div class="row"><button id="dirL" aria-pressed="false">Left</button><button id="dirR" aria-pressed="true">Right</button></div>
+      <div class="row"><button class="primary" id="hit">Place the ball</button></div>
+      <p class="note" style="flex-basis:100%">Missed read? Hit it again. Use the Rapsodo launch direction for Start °.</p>
+    </div>
+
+    <div id="chip" hidden>
+      <p class="note" style="margin-bottom:8px">Chip one ball at the towel. Where did it land?</p>
+      <div class="row tmn">
+        <button data-chip="T">On the towel</button>
+        <button data-chip="N">Near miss</button>
+        <button data-chip="M">Farther</button>
+      </div>
+    </div>
+
+    <div id="putt" hidden>
+      <p class="note" id="puttText" style="margin-bottom:8px"></p>
+      <div class="row tmn">
+        <button data-putt="made">Made</button>
+        <button data-putt="missed">Missed</button>
+        <button data-putt="later">Putt later inside</button>
+      </div>
+    </div>
+    <div class="row"><button id="undo">Undo last step</button><button id="quit">End round</button></div>
+  </section>
+
+  <section class="panel" id="pendingPanel" hidden>
+    <h2>Putts to play on the rug</h2>
+    <div class="scroll"><table id="pending"></table></div>
+  </section>
+
+  <section class="panel" id="cardPanel" hidden>
+    <h2>Scorecard</h2>
+    <div class="scroll"><table id="card"></table></div>
+    <p class="note" id="summary"></p>
+    <div class="row"><button id="copy">Copy round for Claude</button></div>
+  </section>
+
+  <section class="panel">
+    <details>
+      <summary>Assumptions (editable)</summary>
+      <p class="note" style="margin-top:8px">The patio can't show lies, roll on greens or long putts, so these stand in. Change them as you learn the courses.</p>
+      <div class="factors" style="margin-top:8px">
+        <label for="aGreen">Green radius, yd (ball this close to the pin is on the green)</label><input id="aGreen" type="number" inputmode="decimal">
+        <label for="aFringe">Chipping zone beyond the green edge, yd</label><input id="aFringe" type="number" inputmode="decimal">
+        <label for="aPitch">Longest pitch played as a towel chip, yd to pin</label><input id="aPitch" type="number" inputmode="decimal">
+        <label for="aFair">Fairway half-width, yd</label><input id="aFair" type="number" inputmode="decimal">
+        <label for="aTrouble">Trouble beyond, yd off line (+1 stroke to punch out)</label><input id="aTrouble" type="number" inputmode="decimal">
+        <label for="aLag1">Long putt 7–20 ft: second putt from, ft</label><input id="aLag1" type="number" inputmode="decimal">
+        <label for="aLag2">Long putt 21–40 ft: second putt from, ft</label><input id="aLag2" type="number" inputmode="decimal">
+        <label for="aLag3">Long putt over 40 ft: second putt from, ft</label><input id="aLag3" type="number" inputmode="decimal">
+      </div>
+      <div class="row" style="margin-top:8px"><button id="aReset">Reset assumptions</button></div>
+      <p class="note" style="margin-top:8px">For comparison, Shot Scope data puts a 10-handicapper at about 35% greens in regulation and
+        1.8 three-putts per round (via <a href="https://golfity.com/blog/what-does-a-20-handicap-shoot" target="_blank" rel="noopener">golfity</a>;
+        <a href="https://shotscope.com/blog/practice-green/reduce-your-handicap/shot-scope-6-benchmarks-for-success/" target="_blank" rel="noopener">Shot Scope</a>),
+        and players above 15 handicap make about 1% of putts from over 18 ft
+        (<a href="https://mygolfspy.com/news-opinion/shot-scope-case-study/" target="_blank" rel="noopener">MyGolfSpy</a>), so a long first putt is counted as a lag.
+        Accessed 2026-10-31.</p>
+    </details>
+  </section>
+</main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const KEY = "pocket-caddie-home-v1", PC_KEY = "pocket-caddie-v1";
+  const CARDS = { // same scorecards as Pocket Caddie (index.html)
+    westchester: { name: "Westchester", par: [3,4,3,3,4,4,4,3,4,4,3,3,3,3,5,3,4,4],
+      tees: { Blue: [108,317,176,145,267,287,286,141,336,340,160,148,148,150,515,160,355,300],
+              White: [100,307,166,135,255,277,276,133,314,330,149,138,135,125,485,125,335,290] } },
+    rancho: { name: "Rancho Park", par: [4,4,3,5,4,4,4,3,4,4,4,3,4,4,4,3,5,5],
+      tees: { Black: [387,467,198,522,401,387,372,214,401,387,462,213,383,416,443,180,522,485],
+              Blue: [366,432,173,495,375,376,357,189,376,370,435,195,372,361,420,166,491,470],
+              White: [344,403,141,469,356,360,337,168,366,354,411,170,357,335,381,157,475,452],
+              Yellow: [338,367,123,445,335,346,308,150,328,344,371,134,352,306,374,122,461,440] } }
+  };
+  const DEF = { green: 12, fringe: 10, pitch: 40, fair: 15, trouble: 30, lag1: 2, lag2: 3, lag3: 5 };
+  let H; // { a: assumptions, round, hist: [] }
+  try { H = JSON.parse(localStorage.getItem(KEY)) || {}; } catch { H = {}; }
+  H.a = { ...DEF, ...(H.a || {}) }; H.hist = H.hist || [];
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(H)); } catch {} };
+  let toastT;
+  const toast = m => { const t = $("toast"); t.textContent = m; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2400); };
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  function clubs() {
+    try { const s = JSON.parse(localStorage.getItem(PC_KEY)); return (s && s.clubs || []).filter(c => c.carry > 0).sort((a, b) => b.carry - a.carry); }
+    catch { return []; }
+  }
+
+  // ---- setup ----
+  function fillTees() {
+    const c = $("course").value, t = Object.keys(CARDS[c].tees);
+    $("tees").innerHTML = t.map(x => `<option>${x}</option>`).join("");
+    $("tees").value = c === "westchester" ? "Blue" : "White";
+  }
+  $("course").onchange = fillTees; fillTees();
+  const cl = clubs();
+  $("clubNote").textContent = cl.length ? `Using ${cl.length} clubs from your Clubs tab (${cl.map(c => c.name + " " + c.carry).join(", ")}).`
+    : "No clubs found. Add your clubs and carries on Pocket Caddie's Clubs tab first, so the page can suggest a club.";
+
+  $("start").onclick = () => {
+    const [a, b] = $("holes").value.split("-").map(Number), c = $("course").value, tees = $("tees").value;
+    H.round = { course: c, tees, date: new Date().toISOString().slice(0, 10), from: a, to: b, i: a, holes: {} };
+    startHole(a); save(); render();
+  };
+
+  // ---- a hole: state = { par, yd, toPin, lie, strokes, putts, step, log[], snap[] } ----
+  const R = () => H.round;
+  function startHole(n) {
+    const c = CARDS[R().course];
+    R().i = n;
+    R().holes[n] = { par: c.par[n - 1], yd: c.tees[R().tees][n - 1], toPin: c.tees[R().tees][n - 1], side: 0,
+      lie: "Tee", strokes: 0, putts: 0, step: "full", gir: null, fir: null, pending: null, done: false, log: [], snap: [] };
+  }
+  const cur = () => R() && R().holes[R().i];
+  function snap() { const h = cur(); const { snap: _, ...rest } = h; h.snap.push(JSON.stringify(rest)); if (h.snap.length > 30) h.snap.shift(); }
+
+  let dirSide = "R";
+  $("dirL").onclick = () => { dirSide = "L"; $("dirL").setAttribute("aria-pressed", true); $("dirR").setAttribute("aria-pressed", false); };
+  $("dirR").onclick = () => { dirSide = "R"; $("dirR").setAttribute("aria-pressed", true); $("dirL").setAttribute("aria-pressed", false); };
+
+  function say(text, good) { const m = $("msg"); m.innerHTML = text; m.hidden = false; m.classList.toggle("good", !!good); }
+
+  $("hit").onclick = () => {
+    const h = cur(), A = H.a;
+    const carry = +$("carry").value, total = +$("total").value || carry, deg = (+$("dir").value || 0) * (dirSide === "L" ? -1 : 1);
+    if (!(carry > 0)) { toast("Type the Rapsodo carry"); return; }
+    snap();
+    const club = $("club").value, rad = deg * Math.PI / 180, wasTee = h.lie === "Tee", parTee = wasTee && h.par > 3;
+    h.strokes++;
+    const place = d => { const fwd = d * Math.cos(rad), sid = d * Math.sin(rad); const along = h.toPin - fwd, side = h.side + sid;
+      return { along, side, dist: Math.hypot(along, side) }; };
+    let p = place(carry);                       // approaches stop near where they land
+    if (p.dist > A.green + A.fringe) p = place(total); // shots that don't reach the green also roll
+    const yd = Math.round(p.dist), dirTxt = `${Math.abs(deg).toFixed(1)}° ${deg < 0 ? "left" : "right"}`;
+    const where = `${Math.abs(Math.round(p.along))} yd ${p.along >= 0 ? "short" : "long"}, ${Math.abs(Math.round(p.side))} yd ${p.side < 0 ? "left" : "right"}`;
+    h.log.push(`${club}: carry ${carry}${total !== carry ? ", total " + total : ""}, ${dirTxt}`);
+    if (p.dist <= A.green) {                                   // on the green
+      h.gir = h.gir ?? (h.strokes <= h.par - 2);
+      h.toPin = 0; h.side = 0; h.lie = "Green";
+      const ft = Math.max(1, Math.round(p.dist * 3));
+      setPutt(h, ft, `On the green, ${where}: ${ft} ft from the pin.`);
+    } else if (Math.abs(p.side) > A.trouble) {                 // well off line: trouble, punch out
+      if (h.gir === null && h.strokes >= h.par - 2) h.gir = false;
+      if (parTee) h.fir = false;
+      h.strokes++; h.toPin = yd; h.side = 0; h.lie = "Punch-out";
+      h.step = yd <= A.pitch ? "chip" : "full";
+      say(`${where}: in trouble, ${Math.round(Math.abs(p.side))} yd off line. +1 stroke to punch out; ${yd} yd to go.`
+        + (h.step === "chip" ? " Then chip one ball at the towel." : ""));
+    } else if (p.dist <= A.green + A.fringe || p.dist <= A.pitch) {   // chip or short pitch
+      if (h.gir === null && h.strokes >= h.par - 2) h.gir = false;
+      if (parTee) h.fir = Math.abs(p.side) <= A.fair;
+      h.toPin = yd; h.side = 0; h.lie = p.dist <= A.green + A.fringe ? "Fringe" : "Pitch";
+      h.step = "chip";
+      say(`${where}: ${yd} yd from the pin. Chip one ball at the towel.`);
+    } else {                                                   // still a full shot to come
+      if (h.gir === null && h.strokes >= h.par - 2) h.gir = false;
+      const off = Math.abs(p.side);
+      if (parTee) h.fir = off <= A.fair;
+      h.toPin = yd; h.side = 0;
+      h.lie = off <= A.fair ? "Fairway" : "Rough";
+      say(`${where}: ${h.lie.toLowerCase()}, ${yd} yd to the pin.`, h.lie === "Fairway");
+      h.step = "full";
+    }
+    $("carry").value = $("total").value = $("dir").value = "";
+    save(); render();
+  };
+
+  function setPutt(h, ft, lead) {
+    const A = H.a;
+    if (ft <= 6) { h.step = "putt"; h.pending = ft; say(`${lead} Putt from ${ft} ft on your rug.`, true); return; }
+    // long first putt: counted as a lag (patio can't simulate it), leaving a rug putt
+    h.strokes++; h.putts++;
+    const left = ft <= 20 ? A.lag1 : ft <= 40 ? A.lag2 : A.lag3;
+    h.step = "putt"; h.pending = left;
+    say(`${lead} First putt counted as a lag (+1). Second putt from ${left} ft on your rug.`, true);
+  }
+
+  document.querySelectorAll("[data-chip]").forEach(b => b.onclick = () => {
+    const h = cur(); snap(); h.strokes++;
+    const ft = { T: 3, N: 5, M: 6 }[b.dataset.chip];
+    h.log.push(`chip ${b.dataset.chip}`); h.lie = "Green";
+    setPutt(h, ft, `Chip ${b.textContent.toLowerCase()}.`); save(); render();
+  });
+
+  document.querySelectorAll("[data-putt]").forEach(b => b.onclick = () => {
+    const h = cur(), r = b.dataset.putt; snap();
+    if (r === "later") {
+      h.done = true; h.later = h.pending; h.log.push(`putt ${h.pending} ft: later`); h.step = "done";
+    } else {
+      finishPutt(h, r === "made");
+    }
+    save(); nextHole();
+  });
+  function finishPutt(h, made) {
+    h.strokes++; h.putts++;
+    if (!made) { h.strokes++; h.putts++; }
+    h.log.push(`putt ${h.pending} ft ${made ? "made" : "missed, tap-in"}`);
+    h.pending = null; h.later = null; h.done = true; h.step = "done";
+  }
+  function nextHole() {
+    const r = R();
+    if (r.i < r.to) { startHole(r.i + 1); toast(`Hole ${r.i}`); } else { r.finished = true; toast("Round complete"); }
+    $("msg").hidden = true; save(); render();
+  }
+  $("undo").onclick = () => {
+    const h = cur(); if (!h || !h.snap.length) { toast("Nothing to undo on this hole"); return; }
+    const prev = JSON.parse(h.snap.pop()); Object.assign(h, prev); $("msg").hidden = true; save(); render();
+  };
+  $("quit").onclick = () => { if (R()) { R().finished = true; save(); render(); } };
+
+  // ---- pending putts (played later inside) ----
+  function renderPending() {
+    const r = R(), rows = r ? Object.entries(r.holes).filter(([, h]) => h.later) : [];
+    $("pendingPanel").hidden = !rows.length;
+    $("pending").innerHTML = rows.map(([n, h]) => `<tr><td>Hole ${n}</td><td>${h.later} ft</td>
+      <td><button data-pm="${n}">Made</button> <button data-px="${n}">Missed</button></td></tr>`).join("");
+    $("pending").querySelectorAll("[data-pm],[data-px]").forEach(b => b.onclick = () => {
+      const h = r.holes[b.dataset.pm || b.dataset.px]; h.pending = h.later; finishPutt(h, !!b.dataset.pm); save(); render();
+    });
+  }
+
+  // ---- scorecard ----
+  function renderCard() {
+    const r = R(); if (!r) { $("cardPanel").hidden = true; return; }
+    $("cardPanel").hidden = false;
+    let par = 0, sc = 0, putts = 0, gir = 0, girN = 0, fir = 0, firN = 0, open = 0;
+    const rows = Object.entries(r.holes).map(([n, h]) => {
+      const fin = h.done && !h.later;
+      if (fin) { par += h.par; sc += h.strokes; putts += h.putts; }
+      if (h.done && h.later) open++;
+      if (h.gir !== null) { girN++; gir += h.gir ? 1 : 0; }
+      if (h.fir !== null && h.fir !== undefined) { firN++; fir += h.fir ? 1 : 0; }
+      const s = fin ? h.strokes : h.later ? `${h.strokes}+` : "…";
+      return `<tr><td>${n}</td><td>${h.par}</td><td>${h.yd}</td><td><b>${s}</b></td><td>${fin ? h.putts : ""}</td>
+        <td>${h.gir === null ? "" : h.gir ? "✓" : "–"}</td><td>${h.fir === null || h.fir === undefined ? "" : h.fir ? "✓" : "–"}</td></tr>`;
+    }).join("");
+    $("card").innerHTML = `<tr><th>Hole</th><th>Par</th><th>Yd</th><th>Score</th><th>Putts</th><th>GIR</th><th>FIR</th></tr>${rows}`;
+    const tp = sc - par, target = r.course === "westchester" ? "74 (+10) for 18" : "80 (+9) for 18";
+    $("summary").textContent = par ? `Finished holes: ${sc} on par ${par} (${tp >= 0 ? "+" : ""}${tp}) · ${putts} putts · GIR ${gir}/${girN}`
+      + (firN ? ` · fairways ${fir}/${firN}` : "") + (open ? ` · ${open} putt(s) still to play inside` : "") + ` · target ${target}.` : "No holes finished yet.";
+  }
+  $("copy").onclick = async () => {
+    const r = R(); if (!r) return;
+    const lines = [`Home Course round ${r.date}: ${CARDS[r.course].name} ${r.tees}, holes ${r.from}-${r.to}`];
+    Object.entries(r.holes).forEach(([n, h]) => lines.push(`#${n} par ${h.par} ${h.yd} yd: ${h.done && !h.later ? h.strokes : "unfinished"} | ${h.log.join(" · ")}`));
+    lines.push($("summary").textContent);
+    const text = lines.join("\n");
+    try { await navigator.clipboard.writeText(text); toast("Copied"); } catch { prompt("Copy this:", text); }
+  };
+
+  // ---- main render ----
+  function render() {
+    const r = R(), h = cur(), live = r && !r.finished && h;
+    $("play").hidden = !live; $("setup").hidden = !!live;
+    if (live) {
+      $("hHead").textContent = `${CARDS[r.course].name} ${r.tees} · Hole ${r.i} · Par ${h.par} · ${h.yd} yd`;
+      $("hScore").textContent = `${h.strokes} so far`;
+      $("fTo").textContent = h.lie === "Green" ? "—" : h.toPin; $("fLie").textContent = h.lie; $("fShot").textContent = h.strokes + 1;
+      $("fullShot").hidden = h.step !== "full"; $("chip").hidden = h.step !== "chip"; $("putt").hidden = h.step !== "putt";
+      if (h.step === "putt") $("puttText").textContent = `Putt from ${h.pending} ft on your rug: putt now, or save it for later inside.`;
+      if (h.step === "full") {
+        const cs = clubs(), tee = h.lie === "Tee" && h.par > 3;
+        const best = cs.length ? cs.reduce((b, c) => Math.abs(c.carry - h.toPin) < Math.abs(b.carry - h.toPin) ? c : b) : null;
+        const pick = tee ? cs[0] : best;
+        $("club").innerHTML = cs.map(c => `<option ${pick && c.name === pick.name ? "selected" : ""}>${esc(c.name)}</option>`).join("") + `<option>Other</option>`;
+      }
+    }
+    renderPending(); renderCard();
+  }
+
+  // ---- assumptions ----
+  const AF = { aGreen: "green", aFringe: "fringe", aPitch: "pitch", aFair: "fair", aTrouble: "trouble", aLag1: "lag1", aLag2: "lag2", aLag3: "lag3" };
+  function renderA() { Object.entries(AF).forEach(([id, k]) => $(id).value = H.a[k]); }
+  Object.entries(AF).forEach(([id, k]) => $(id).onchange = e => { const v = +e.target.value; if (v >= 0) { H.a[k] = v; save(); } else renderA(); });
+  $("aReset").onclick = () => { H.a = { ...DEF }; save(); renderA(); toast("Assumptions reset"); };
+  renderA(); render();
+})();
+</script>
+</body>
+</html>
