@@ -20,6 +20,8 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   Stock lofts per 2nd Swing's spec table (https://www.2ndswing.com/golf-clubs/iron-sets/taylormade-rsi-2-iron-set,
   accessed 2026-10-26; not a TaylorMade sheet): 7-iron 31°, 8-iron 35°, 9-iron 40°, PW 45°. The golfer's own lofts
   may differ if the clubs were ever bent; have them checked if gapping looks off.
+- Wedges (from the golfer, 2026-10-31): gap wedge 50°, Lazarus; also a sand wedge (loft and make not yet given).
+  Long clubs also in the bag: 1U, 2U, 3U (20°), 4U, 5U (26°, older King Cobra Baffler), 5W, 3W, driver.
 - Laser rangefinder: Revasri. Its readings go in Pocket Caddie's "type the yardage" box.
 - Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (urethane cover).
 

@@ -7,6 +7,12 @@ Only the Rapsodo's top-line average is used (golfer's instruction). Negative lau
 |---|---|---|---|---|---|---|---|
 | 109 | 67 | 1.27 | 1 left | 0.7° left | 27.5° | 67 | straight |
 
+## Gap wedge average (50°, Lazarus)
+| Carry yd | Total yd | Side carry yd | Smash | Launch dir | Launch angle | Apex ft | Shot type |
+|---|---|---|---|---|---|---|---|
+| 77 | 83 | 0 | 1.14 | 0.0° | 30.2° | 46 | straight |
+
 ## Notes
 - Start line 0.7° left on average: best so far.
+- Gap wedge: start line dead straight on average; launch 30.2° with 50° of loft, lower than the PW's 34–35° with 45°.
 - Launch 27.5° with a 40° 9-iron. The PW launched 34–35° on 10/28 and 10/31, so the extra loft shows up mainly with the PW.
