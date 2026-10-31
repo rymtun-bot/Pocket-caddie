@@ -3,7 +3,7 @@
 PW averages as reported by the golfer: about 6 shots, hip-hinge setup, Callaway Supersoft, alignment sticks down,
 ball slightly right of (behind) the middle of the stance. No string or powder contact check.
 Monitor placement: Rapsodo 8 ft behind the ball (top of its 6–8 ft range); PRGR 5 ft behind the ball (top of its
-3.5–5 ft range), slightly off the Rapsodo's line. Negative launch direction / side carry = left (confirmed by the golfer).
+3.5–5 ft range), slightly off the Rapsodo's line. Net 8 ft from the ball. Negative launch direction / side carry = left (confirmed by the golfer).
 
 | Club | Carry yd | Club mph | Smash | Launch angle | Launch dir | Side carry yd | Apex ft | Shot type |
 |---|---|---|---|---|---|---|---|---|
