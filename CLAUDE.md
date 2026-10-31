@@ -38,6 +38,8 @@ check on video whether the 7-iron is getting extra loft at impact.
 ## Practice sessions
 One file per session in `practice/` (date, monitor, place, ball), with raw shots and a summary.
 - 2026-10-28: PRGR, patio, Supersoft, PW through 3W (`practice/2026-10-28-prgr-patio.md`).
+- 2026-10-31: Rapsodo + PRGR, patio, Supersoft, PW (`practice/2026-10-31-rapsodo-patio.md`).
+- Current two-week plan and pre-shot routine: `practice/plan-2026-11.md` (first round planned January 2027).
 
 ## Weather adjustments (added 2026-10-25, user chose "learn from my rounds")
 - Live wind/temp/pressure from Open-Meteo at the phone's position; wind resolved along the line to the saved green.
