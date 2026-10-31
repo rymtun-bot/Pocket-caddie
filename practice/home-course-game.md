@@ -35,16 +35,14 @@ A shot is "close" if it starts within 1.5° and carries within 3% of the target:
    For tee shots, use the Rapsodo **total** (carry + roll) as the distance gained.
 2. **Next shots.** Remaining = yardage minus distance gained. Pick the club nearest the remaining yardage
    (approaches use **carry**). If the remaining yardage is longer than your longest club, hit the longest club you
-   trust and play on.
-   - 41–100 yd left: a wedge (PW ½, ¾ or full, whichever carries nearest).
-   - 40 yd or less: a pitch, played as a chip to the towel (step 3).
+   trust and play on. With 41–100 yd left: a wedge (PW ½, ¾ or full, whichever carries nearest).
+   With 40 yd or less: a pitch, played as a chip to the towel (step 3).
 3. **Around the green.** Chip one ball at the towel and write the letter:
    T = on the towel · N = within about one towel-width · M = farther away.
-4. **On the green.** Write the putt you get (all putts are played later on the rug):
-   - Green hit (Good approach): the first putt is a lag your rug can't simulate. Count it as 1 stroke, then
-     putt from **3 ft**.
-   - Close approach: putt from **6 ft** for birdie. Miss = tap-in, +1 stroke.
-   - After a chip: T = putt from **3 ft**, N = **5 ft**, M = **6 ft**. Miss that putt = tap-in, +1 stroke.
+4. **On the green.** Write the putt you get (all putts are played later on the rug).
+   Green hit (Good approach): the first putt is a lag your rug can't simulate; count it as 1 stroke, then putt from **3 ft**.
+   Close approach: putt from **6 ft** for birdie; a miss = tap-in, +1 stroke.
+   After a chip: T = putt from **3 ft**, N = **5 ft**, M = **6 ft**; a miss = tap-in, +1 stroke.
 5. **Later, inside:** putt each listed putt once, in order, and finish each hole's score.
 
 ## Example: Westchester #1, par 3, 108 yd (Blue)
