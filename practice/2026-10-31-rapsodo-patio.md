@@ -9,6 +9,8 @@ Sign convention assumed from the Rapsodo app: negative = left (to confirm).
 
 ## PRGR, PW (carry, 6 shots)
 103, 99, 103, 102, 100, 104 — average 101.8, median 102.5, range 99–104.
+PRGR club speed, same 6 shots in order: 56, 57, 79, 55, 78, 59 — average 64.0, median 58.
+Carry stayed 99–104 whether club speed read 55 or 79, so these club-speed readings are not trustworthy.
 Not yet confirmed whether these are the same shots the Rapsodo averaged at 92.
 
 ## Compared with earlier PW readings
