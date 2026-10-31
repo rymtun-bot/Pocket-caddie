@@ -102,6 +102,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     </div>
     <span class="chip" id="gpsChip">GPS starting…</span>
     <span class="chip" id="parChip" hidden></span>
+    <span class="chip warn" id="compChip" hidden>Competition mode</span>
   </div>
 </header>
 
@@ -123,7 +124,12 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       </div>
     </section>
 
-    <section class="panel">
+    <section class="panel" id="secComp" hidden>
+      <h2>Competition mode</h2>
+      <p class="note">Plain yardages only: conditions, plays-like distance, club suggestion and green notes are hidden for this round (Rules of Golf 4.3). Turn it off in Setup after the round.</p>
+    </section>
+
+    <section class="panel" id="secWx">
       <div class="row" style="justify-content:space-between"><h2 style="flex:0 1 auto">Conditions</h2>
         <button id="wxRefresh" style="flex:0 0 auto">Refresh</button></div>
       <div class="wx">
@@ -143,7 +149,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       </div>
     </section>
 
-    <section class="panel">
+    <section class="panel" id="secPlays">
       <h2>Plays like</h2>
       <div class="row adj" role="group" aria-label="Adjust yardage">
         <button data-adj="-10">−10</button><button data-adj="-5">−5</button><button data-adj="0">0</button><button data-adj="5">+5</button><button data-adj="10">+10</button>
@@ -174,7 +180,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       </div>
     </section>
 
-    <section class="panel">
+    <section class="panel" id="secNotes">
       <h2>Green notes</h2>
       <label for="greenNotes" class="note">Your own read of this green. Saved for this hole and shown every time you play it.</label>
       <textarea id="greenNotes" rows="3" placeholder="e.g. back to front, fast downhill, breaks left near the flag"></textarea>
@@ -185,7 +191,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
 
   <!-- SHOTS -->
   <div id="tab-shots" class="tab" hidden style="display:grid;gap:16px">
-    <section class="panel">
+    <section class="panel" id="secClubAvg">
       <h2>Measured on the course, by club</h2>
       <div class="scroll"><table id="clubAvg"></table></div>
     </section>
@@ -214,6 +220,12 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
 
   <!-- SETUP -->
   <div id="tab-setup" class="tab" hidden style="display:grid;gap:16px">
+    <section class="panel">
+      <h2>Competition mode</h2>
+      <p class="note">For club or league events. Distance-measuring devices may show distance only (if the event's Local Rule allows them at all). Turning this on hides the conditions, plays-like distance, club suggestion, your club averages and green notes. GPS yardages, the rangefinder box and shot measuring stay.</p>
+      <div class="row"><button id="compBtn" aria-pressed="false">Turn on competition mode</button></div>
+      <p class="note">Rule 4.3 and the USGA–R&amp;A statement on distance-measuring devices (<a href="https://www.usga.org/equipment-standards/usgara-joint-statement-on-electronic-devices-including-distancemeasuring-devices-21474847526.html" target="_blank" rel="noopener">USGA</a>, accessed 2026-10-31). Check each event's Local Rules.</p>
+    </section>
     <section class="panel">
       <h2>Save this hole's green</h2>
       <p class="note">Stand on the spot and wait until GPS shows ±5 yd or better, then tap Save.</p>
@@ -321,6 +333,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   S.firm = S.firm || "Normal";
   S.windOv = S.windOv || { speed: "", dir: "1" };
   S.tee = S.tee || "Blue"; // the golfer plays the Blue tees
+  S.comp = !!S.comp;       // competition mode: distance only (Rule 4.3)
   let wx = null; // latest weather: {temp °F, press hPa, speed mph, gust mph, dir deg wind comes from, at, lat, lon}
 
   let fix = null; // latest {lat, lon, acc} in meters
@@ -470,7 +483,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       bd.hidden = parts.length < 2;
     } else bd.hidden = true;
     $("playsLike").textContent = pl == null ? "—" : pl + " yd";
-    renderRec(pl);
+    if (!S.comp) renderRec(pl);
     if (S.pending) {
       $("shotLive").textContent = fix ? Math.round(dist(S.pending.from, fix)) : "—";
     }
@@ -652,7 +665,14 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     window.scrollTo(0, 0);
   });
 
-  function renderAll() { renderHeader(); renderNotes(); renderShotBox(); renderPlay(); renderShots(); renderClubs(); renderSetup(); }
+  function renderComp() {
+    ["secWx", "secPlays", "secNotes", "secClubAvg"].forEach(id => $(id).hidden = S.comp);
+    $("secComp").hidden = !S.comp; $("compChip").hidden = !S.comp;
+    $("compBtn").setAttribute("aria-pressed", S.comp);
+    $("compBtn").textContent = S.comp ? "Turn off competition mode" : "Turn on competition mode";
+  }
+  $("compBtn").onclick = () => { S.comp = !S.comp; save(); renderAll(); toast(S.comp ? "Competition mode on: distance only" : "Competition mode off"); };
+  function renderAll() { renderComp(); renderHeader(); renderNotes(); renderShotBox(); renderPlay(); renderShots(); renderClubs(); renderSetup(); }
   renderAll();
 })();
 </script>
