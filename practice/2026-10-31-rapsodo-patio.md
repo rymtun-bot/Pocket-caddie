@@ -1,7 +1,7 @@
 # 2026-10-31 — Rapsodo MLM and PRGR HS-130A, patio net (golfer's report)
 
-PW averages as reported by the golfer: about 6 shots, hip-hinge setup. Ball, ball position and alignment clubs not
-yet confirmed. Negative launch direction / side carry = left (confirmed by the golfer).
+PW averages as reported by the golfer: about 6 shots, hip-hinge setup, Callaway Supersoft, alignment sticks down,
+ball slightly right of (behind) the middle of the stance. No string or powder contact check. Negative launch direction / side carry = left (confirmed by the golfer).
 
 | Club | Carry yd | Club mph | Smash | Launch angle | Launch dir | Side carry yd | Apex ft | Shot type |
 |---|---|---|---|---|---|---|---|---|
@@ -29,3 +29,6 @@ monitor alone, to rule out the PRGR blocking the Rapsodo's view or the two radar
 ## Notes
 - "Straight" with 6.7° start and -9 side carry: the label does not describe start direction; the MLM measures no spin.
 - Launch has stayed ~34–35° since the hip-hinge setup (27.6° before); carry and smash are down.
+- Ball slightly back in the stance would normally lower launch and favour a right start, yet launch is high and the
+  start is left. One pattern that fits all three (high launch, lower smash, left start) is the clubhead passing the
+  hands through impact (a "flip"), which adds loft and closes the face. Hypothesis only: check on face-on video.
