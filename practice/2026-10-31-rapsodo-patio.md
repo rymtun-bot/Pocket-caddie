@@ -46,3 +46,14 @@ Notes:
 - 8-iron launches 28.4°, higher than the 9-iron's 27.5° on 10/30 despite 5° less loft, and carries 111 vs the
   9-iron's 109: the 8-iron is getting extra loft at impact too, so the 8/9 gap has nearly vanished.
 - 8-iron starts 4.5° right while PW, 9-iron and 50° start straight.
+
+## Driver session, 8 shots (Rapsodo top-line averages only)
+| Carry yd | Total yd | Side carry yd | Club mph | Smash | Launch dir | Launch angle | Apex ft |
+|---|---|---|---|---|---|---|---|
+| 166 | 177 | 28 right | 78 | 1.45 | 10.6° right | 17.0° | 69 |
+
+Notes:
+- Smash 1.45: solid contact (average male amateur driver about 1.44, TrackMan data via The Golf Performance Center,
+  accessed 2026-10-26). Club speed 78 mph = driver speed baseline for the speed program.
+- Start 10.6° right, 28 yd right of the line: the irons and wedges started straight the same day, so this is
+  driver-specific (setup/aim with the longer club or an open face). Check on the behind-view video.
