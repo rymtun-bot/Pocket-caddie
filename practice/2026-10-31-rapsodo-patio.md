@@ -1,11 +1,11 @@
 # 2026-10-31 — Rapsodo MLM and PRGR HS-130A, patio net (golfer's report)
 
-PW averages as reported by the golfer. Number of shots, ball, setup, ball position and alignment clubs not yet confirmed.
-Sign convention assumed from the Rapsodo app: negative = left (to confirm).
+PW averages as reported by the golfer: about 6 shots, hip-hinge setup. Ball, ball position and alignment clubs not
+yet confirmed. Negative launch direction / side carry = left (confirmed by the golfer).
 
 | Club | Carry yd | Club mph | Smash | Launch angle | Launch dir | Side carry yd | Apex ft | Shot type |
 |---|---|---|---|---|---|---|---|---|
-| PW | 92 | 65 | 1.19 | 35.1° | -6.7 (left?) | -9 (left?) | 74 | straight |
+| PW | 92 | 65 | 1.19 | 35.1° | 6.7 left | 9 left | 74 | straight |
 
 ## PRGR, PW (carry, 6 shots)
 103, 99, 103, 102, 100, 104 — average 101.8, median 102.5, range 99–104.
@@ -24,7 +24,7 @@ monitor alone, to rule out the PRGR blocking the Rapsodo's view or the two radar
 |---|---|---|---|---|---|---|
 | 2026-10-26 | Rapsodo, usual setup | 102 | 66 | 1.24 | 27.6° | 6.5 right |
 | 2026-10-28 | Rapsodo, hip-hinge, alignment clubs | 98 | 68 | — | 34.3° | 2.4 right |
-| 2026-10-31 | Rapsodo | 92 | 65 | 1.19 | 35.1° | 6.7 (left?) |
+| 2026-10-31 | Rapsodo, hip-hinge | 92 | 65 | 1.19 | 35.1° | 6.7 left |
 
 ## Notes
 - "Straight" with 6.7° start and -9 side carry: the label does not describe start direction; the MLM measures no spin.
