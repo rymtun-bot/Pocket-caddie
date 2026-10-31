@@ -10,7 +10,10 @@ Sign convention assumed from the Rapsodo app: negative = left (to confirm).
 ## PRGR, PW (carry, 6 shots)
 103, 99, 103, 102, 100, 104 — average 101.8, median 102.5, range 99–104.
 PRGR club speed, same 6 shots in order: 56, 57, 79, 55, 78, 59 — average 64.0, median 58.
-Carry stayed 99–104 whether club speed read 55 or 79, so these club-speed readings are not trustworthy.
+PRGR smash, same order: 1.46, 1.40, 1.05, 1.48, 1.03, 1.41 — average 1.31 (meaningless: it swings with club speed).
+Ball speed (club speed × smash): 81.8, 79.8, 83.0, 81.4, 80.3, 83.2 — average 81.6 mph, steady. Carry stayed 99–104
+whether club speed read 55 or 79, so the club-speed readings (and the smash built on them) are not trustworthy;
+ball speed is. Rapsodo PW ball speed on 2026-10-26 was about 82 (66 × 1.24).
 Not yet confirmed whether these are the same shots the Rapsodo averaged at 92.
 
 ## Compared with earlier PW readings
