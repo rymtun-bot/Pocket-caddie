@@ -1,4 +1,4 @@
-# 2026-10-31 — Rapsodo MLM, patio net (golfer's report)
+# 2026-10-31 — Rapsodo MLM and PRGR HS-130A, patio net (golfer's report)
 
 PW averages as reported by the golfer. Number of shots, ball, setup, ball position and alignment clubs not yet confirmed.
 Sign convention assumed from the Rapsodo app: negative = left (to confirm).
@@ -6,6 +6,10 @@ Sign convention assumed from the Rapsodo app: negative = left (to confirm).
 | Club | Carry yd | Club mph | Smash | Launch angle | Launch dir | Side carry yd | Apex ft | Shot type |
 |---|---|---|---|---|---|---|---|---|
 | PW | 92 | 65 | 1.19 | 35.1° | -6.7 (left?) | -9 (left?) | 74 | straight |
+
+## PRGR, PW (carry, 6 shots)
+103, 99, 103, 102, 100, 104 — average 101.8, median 102.5, range 99–104.
+Not yet confirmed whether these are the same shots the Rapsodo averaged at 92.
 
 ## Compared with earlier PW readings
 
