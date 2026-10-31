@@ -34,3 +34,15 @@ monitor alone, to rule out the PRGR blocking the Rapsodo's view or the two radar
 - Ball slightly back in the stance would normally lower launch and favour a right start, yet launch is high and the
   start is left. One pattern that fits all three (high launch, lower smash, left start) is the clubhead passing the
   hands through impact (a "flip"), which adds loft and closes the face. Hypothesis only: check on face-on video.
+
+## Second session, 13 shots (Rapsodo top-line averages only, golfer's screenshots)
+| Club | Carry yd | Total yd | Club mph | Smash | Launch dir | Launch angle | Apex ft | Shot type |
+|---|---|---|---|---|---|---|---|---|
+| PW | 95 | 99 | 64 | 1.20 | 0.2° left | 31.8° | 66 | straight |
+| 8-iron | 111 | 115 | 69 | 1.24 | 4.5° right | 28.4° | 71 | right |
+
+Notes:
+- PW launch down to 31.8° (35.1° earlier today, 34.3° on 10/28) and carry up to 95; start line straight.
+- 8-iron launches 28.4°, higher than the 9-iron's 27.5° on 10/30 despite 5° less loft, and carries 111 vs the
+  9-iron's 109: the 8-iron is getting extra loft at impact too, so the 8/9 gap has nearly vanished.
+- 8-iron starts 4.5° right while PW, 9-iron and 50° start straight.
