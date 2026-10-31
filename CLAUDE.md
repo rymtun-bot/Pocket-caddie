@@ -37,7 +37,10 @@ check on video whether the 7-iron is getting extra loft at impact.
 
 ## Practice sessions
 One file per session in `practice/` (date, monitor, place, ball), with raw shots and a summary.
+From Rapsodo screenshots, use only the top-line average row for each club; ignore the individual shot rows (golfer's
+instruction, 2026-10-31). The golfer sends each club's averages separately.
 - 2026-10-28: PRGR, patio, Supersoft, PW through 3W (`practice/2026-10-28-prgr-patio.md`).
+- 2026-10-30: Rapsodo, patio, 9-iron averages (`practice/2026-10-30-rapsodo-patio.md`).
 - 2026-10-31: Rapsodo + PRGR, patio, Supersoft, PW (`practice/2026-10-31-rapsodo-patio.md`).
 - Current two-week plan and pre-shot routine: `practice/plan-2026-11.md` (first real round planned Tuesday 2026-12-01).
 - Day-by-day session list to Dec 1: `practice/daily-sessions.md`.
