@@ -321,7 +321,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   <button role="tab" data-tab="setup" aria-selected="false">Setup</button>
 </div></nav>
 <div class="wiz" id="wiz" hidden><div class="wrap">
-  <div class="wizTop"><span id="wizTitle"></span><button id="wizExit">Show the full app</button></div>
+  <div class="wizTop"><span id="wizTitle"></span><button id="wizExit">Menu</button></div>
   <div id="wizBody" style="display:grid;gap:18px"></div>
 </div></div>
 <div class="toast" id="toast" hidden></div>
@@ -738,7 +738,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   }
   $("guideHide").onclick = () => { S.guide.on = false; save(); renderPlay(); toast("Guide off: turn it on again in Setup"); };
   $("guideBtn").onclick = () => { S.guide.on = !S.guide.on; save(); renderPlay(); if (S.guide.on) openWiz(); };
-  $("wizExit").onclick = () => { $("wiz").hidden = true; renderAll(); };
+  $("wizExit").onclick = () => { if (S.wiz.step !== "menu") { S.wiz.back = S.wiz.step; step("menu"); } else step(S.wiz.back || "yds"); };
   function openWiz() {
     $("wiz").hidden = false;
     step(S.guide.day === today() ? (S.wiz.step || "yds") : "course");
@@ -791,68 +791,83 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (name === "warm") return screen(before, `<h3>Warm up</h3><p class="q">10 minutes of warm-up, then 15 minutes on the practice green.</p>`,
       [["Start round on hole " + S.cur.hole, () => { S.guide.day = today(); save(); step("yds"); }, true]]);
 
-    if (name === "yds") {
+    if (name === "menu") {   // everything that isn't the one thing on a screen lives here
+      const back = S.wiz.back || "yds";
+      return screen("Menu", `<h3>Menu</h3>`, [
+        ["Back to the guide", () => step(back), true],
+        ...(S.pending ? [["Cancel the shot being measured", () => { $("cancelShot").click(); step("after"); }]] : []),
+        ["Skip to the next hole", () => step("next")],
+        ["Change course or tees", () => step("course")],
+        ["Show the full app", () => { $("wiz").hidden = true; renderAll(); }]]);
+    }
+    if (name === "yds") {   // one thing: the yardage
       const saved = greenSaved() && fix;
-      screen(holeInfo(), `<h3>How far to the flag?</h3>
-        ${saved ? `<p class="q">GPS to the center of the green:</p><div class="huge" id="wizYds"></div>` : `<p class="q">Laser the flag and type the yards.</p>`}
-        <input id="wizIn" type="number" inputmode="numeric" placeholder="${saved ? "or type laser yards" : "Yards"}" aria-label="Yards to the flag">`,
+      screen(holeInfo(), saved
+        ? `<h3>Yards to the green center</h3><div class="huge" id="wizYds"></div>
+           <input id="wizIn" type="number" inputmode="numeric" placeholder="or type laser yards" aria-label="Yards">`
+        : `<h3>Laser the flag. How many yards?</h3>
+           <input id="wizIn" type="number" inputmode="numeric" placeholder="Yards" aria-label="Yards to the flag">`,
         [["Next", () => {
-            const v = parseFloat($("wizIn").value);
-            if (!(v > 0) && !saved) { toast("Type the yards first"); return; }
-            $("manualYds").value = v > 0 ? v : ""; renderPlay(); step("club"); }, true],
-         ["My ball is on the green", () => step("green")],
-         ["Skip to the next hole", () => step("next")]]);
+          const v = parseFloat($("wizIn").value);
+          if (!(v > 0) && !saved) { toast("Type the yards first"); return; }
+          $("manualYds").value = v > 0 ? v : ""; renderPlay(); step(S.comp ? "club" : "plays"); }, true]]);
       return wizLive();
     }
-    if (name === "club") {
+    if (name === "plays") {   // one thing: the adjusted number
       renderPlay();
-      const t = targetYards(), pl = $("playsLike").textContent;
-      const choose = `<label class="q" for="wizClub">Club</label><select id="wizClub">${S.clubs.map(c =>
-        `<option ${c.name === $("shotClub").value ? "selected" : ""}>${esc(c.name)}</option>`).join("")}<option>Other</option></select>`;
-      screen(holeInfo(), S.comp
-        ? `<h3>${t ? Math.round(t) + " yd" : "—"}</h3><p class="q">Competition: choose your club yourself.</p>${choose}`
-        : `<p class="q">Plays like</p><div class="huge">${pl}</div><div class="rec">${$("rec").innerHTML}</div>${choose}`, []);
-      $("wizBody").insertAdjacentHTML("beforeend", `<p class="q">Routine: target · spot 2–3 ft ahead · one rehearsal swing · face to the spot · one look · swing.</p>`);
-      $("wizBody").appendChild(opts([
-        ["Measure this shot (tap before you hit)", () => {
-          if (!fix) { toast("Waiting for GPS"); return; }
-          renderShotBox(); $("shotClub").value = $("wizClub").value; $("markStart").click(); step("walk"); }, true],
-        ["Hit it without measuring", () => step("after")]]));
+      return screen(holeInfo(), `<h3>Plays like</h3><div class="huge">${$("playsLike").textContent}</div>`,
+        [["Next", () => step("club"), true]]);
+    }
+    if (name === "club") {   // one thing: pick the club (the suggestion is preselected)
+      renderPlay();
+      const sug = S.comp ? "" : $("shotClub").value, t = targetYards();
+      screen(holeInfo(), `<h3>${S.comp ? `${t ? Math.round(t) : "—"} yd. Your club?` : `Suggested: ${esc(sug || "—")}`}</h3>
+        <select id="wizClub" aria-label="Club">${S.clubs.map(c => `<option ${c.name === sug ? "selected" : ""}>${esc(c.name)}</option>`).join("")}<option>Other</option></select>`,
+        [["Next", () => { S.wiz.club = $("wizClub").value; save(); step("measure"); }, true]]);
       return;
     }
-    if (name === "walk") {
+    if (name === "measure") return screen(holeInfo(), `<h3>Measure this shot?</h3><p class="q">Stand at your ball, then answer.</p>`,
+      [["Yes", () => {
+          if (!fix) { toast("Waiting for GPS"); return; }
+          renderShotBox(); $("shotClub").value = S.wiz.club || "Other"; $("markStart").click(); step("routine"); }, true],
+       ["No", () => step("routine")]]);
+    if (name === "routine") return screen(holeInfo(), `<h3>Your routine</h3>
+      <p class="q">1. Pick the target<br>2. Spot 2–3 ft ahead<br>3. One rehearsal swing<br>4. Clubface to the spot, then feet<br>5. One look, then swing</p>`,
+      [["I've hit it", () => step(S.pending ? "walk" : "after"), true]]);
+    if (name === "walk") {   // one thing: mark the ball
       if (!S.pending) return step("after");
-      screen(holeInfo(), `<h3>Walk to your ball</h3><p class="q">Distance so far:</p><div class="huge" id="wizWalk">—</div>
-        <input id="wizNote" type="text" placeholder="Result, e.g. pin high, 10 left" style="font-size:20px" aria-label="Result">`,
+      screen(holeInfo(), `<h3>Walk to your ball</h3><div class="huge" id="wizWalk">—</div>`,
         [["Mark my ball here", () => {
-            if (!fix) { toast("Waiting for GPS"); return; }
-            $("shotNote").value = $("wizNote").value; $("markEnd").click(); step("after"); }, true],
-         ["Cancel this measurement", () => { $("cancelShot").click(); step("after"); }]]);
+          if (!fix) { toast("Waiting for GPS"); return; }
+          $("markEnd").click(); step("after"); }, true]]);
       return wizLive();
     }
     if (name === "after") return screen(holeInfo(), `<h3>Where's your ball?</h3>`,
-      [["Another shot to the green", () => { $("manualYds").value = ""; renderPlay(); step("yds"); }, true],
-       ["On the green", () => step("green")],
+      [["Not on the green yet", () => { $("manualYds").value = ""; renderPlay(); step("yds"); }, true],
+       ["On the green", () => step(greenSaved() ? "putt" : "askSave")],
        ["Holed out", () => step("next")]]);
-    if (name === "green" && greenSaved()) return screen(holeInfo(), `<h3>On the green</h3><p class="q">Putt out. Read from behind the ball, see it go in, one look, putt.</p>`,
-      [["Holed out", () => step("next"), true]]);
-    if (name === "green" || name === "saveGreen") {   // save the green once; stays on this screen until "Holed out"
-      S.wiz.step = "saveGreen"; save();
-      const h = hole(), saveAt = k => [(h[k] ? "✓ " : "") + "Save " + k, () => {
-        if (!fix) { toast("Waiting for GPS"); return; }
-        h[k] = { ...fix }; save(); renderAll(); toast("Saved " + k); step("saveGreen"); }];
-      screen(holeInfo(), `<h3>Save this green (once)</h3><p class="q">Stand on each spot, wait for good GPS, then tap. Skip if you're holding people up.</p>
-        <p class="q"><b id="wizGps"></b></p>`,
-        [saveAt("front"), saveAt("center"), saveAt("back"), ["Holed out", () => step("next"), true]]);
+    if (name === "askSave") return screen(holeInfo(), `<h3>Save this green now?</h3><p class="q">Once per hole. Then GPS gives exact yards next time.</p>`,
+      [["Yes", () => step("saveFront"), true], ["No, not now", () => step("putt")]]);
+    if (name === "saveFront" || name === "saveCenter" || name === "saveBack") {   // one thing: one point
+      const k = { saveFront: "front", saveCenter: "center", saveBack: "back" }[name];
+      const next = { saveFront: "saveCenter", saveCenter: "saveBack", saveBack: "putt" }[name];
+      screen(holeInfo(), `<h3>Stand on the ${k.toUpperCase()} of the green</h3><p class="q"><b id="wizGps"></b></p>`,
+        [["Save " + k, () => {
+          if (!fix) { toast("Waiting for GPS"); return; }
+          hole()[k] = { ...fix }; save(); renderAll(); toast("Saved " + k); step(next); }, true]]);
       return wizLive();
     }
+    if (name === "putt") return screen(holeInfo(), `<h3>Putt out</h3><p class="q">Read from behind the ball, see it go in, one look, putt.</p>`,
+      [["Holed out", () => step("next"), true]]);
+    if (name === "green") return step(greenSaved() ? "putt" : "askSave");   // older saved steps
     if (name === "next") {
       if (S.cur.hole < HOLES) { S.cur.hole++; changedHole(); return step("yds"); }
       return step("end");
     }
-    if (name === "end") return screen("Round over", `<h3>Nice round</h3><p class="q">Copy your shot log and paste it in your chat with Claude.</p>`,
-      [["Copy shot log for Claude", () => { $("copyCsv").click(); }, true],
-       ["Close the guide", () => { S.guide.day = ""; S.wiz.step = null; save(); $("wiz").hidden = true; renderAll(); }]]);
+    if (name === "end") return screen("Round over", `<h3>Copy your shot log</h3><p class="q">Then paste it in your chat with Claude.</p>`,
+      [["Copy shot log", () => { $("copyCsv").click(); step("done"); }, true]]);
+    if (name === "done") return screen("Round over", `<h3>Nice round</h3>`,
+      [["Close the guide", () => { S.guide.day = ""; S.wiz.step = null; save(); $("wiz").hidden = true; renderAll(); }, true]]);
   }
 
   function renderComp() {
