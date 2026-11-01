@@ -22,6 +22,9 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   may differ if the clubs were ever bent; have them checked if gapping looks off.
 - Wedges (from the golfer, 2026-10-31): gap wedge 50°, Lazarus; sand wedge 54°, Lazarus (Rapsodo labels it SW).
   Long clubs also in the bag: 1U, 2U, 3U (20°), 4U, 5U (26°, older King Cobra Baffler), 5W, 3W, driver.
+- Driver (golfer's photo, 2026-11-01): TaylorMade SIM Max, Fujikura Ventus 6-R shaft. Head loft and sleeve setting not yet
+  given. SIM Max: 9 / 10.5 / 12° heads, sleeve adjusts loft about ±2°, and adding loft opens the face (retailer and
+  tuning-guide pages, accessed 2026-11-01).
 - Laser rangefinder: Revasri. Its readings go in Pocket Caddie's "type the yardage" box.
 - Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (urethane cover).
 
