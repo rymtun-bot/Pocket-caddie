@@ -13,6 +13,9 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   ball speed, launch angle, launch direction, smash factor, shot type, and apex in feet (an estimate: the unit measures
   no spin). Leave spin columns blank. Patio-net carry is also an estimate (ball flies ~8 ft into the net).
   Setup (Rapsodo FAQ, accessed 2026-10-26): monitor 6-8 ft behind the ball on the target line; ball ~8 ft from the net.
+  Device: iPhone so far (stalls when hot). iPad 9th generation (MK2K3LL/A) has the MLM app installed (golfer, 2026-11-01);
+  listed as supported (rapsodo.com/products/mobile-launch-monitor-demo, accessed 2026-11-01); net mode and the 5-shot PW
+  check vs the iPhone still to confirm. Plan: iPad runs the MLM (its replay = behind view), iPhone films face-on.
 - PRGR Black Pocket HS-130A: bought 2026-10-28, being returned (golfer's decision 2026-10-31). The Rapsodo is the only
   launch monitor: use it for carry, launch, direction, and club/ball speed (speed progress = 10 real shots every 2 weeks).
   PRGR sessions stay in `practice/` for the record; its club speed was erratic and its carry estimates unreliable.
