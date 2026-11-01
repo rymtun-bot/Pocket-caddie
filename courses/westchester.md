@@ -33,27 +33,29 @@ Source: the course scorecard on westchestergc.com, screenshot shared by the golf
 | 18 | 4 | 300 | 290 | 18 | | |
 
 ## Hazards from the course map (westchestergc.com map, golfer's screenshot, 2026-11-01)
-The map is a drawing, not to scale: positions are rough, left/right as seen from the tee. Trees line most holes.
-The Google satellite view (golfer's screenshot, 2026-11-01) also shows one pond (hole 2) and sand mainly around greens.
-Pocket Caddie reads these at each tee ("Course map: ...") until the golfer saves hazards of their own on that hole.
+Distances are yards from the Blue tee, measured by scaling each hole on the drawing to its Blue scorecard yardage
+(tee to green center). The drawing is not to scale, so treat them as rough (plus or minus 15-20 yd). Left/right as seen
+from the tee. Trees line most holes. The Google satellite view (golfer's screenshot, 2026-11-01) also shows one pond
+(hole 2) and sand mainly around greens. Pocket Caddie reads these at each tee ("Course map: ...") until the golfer
+saves hazards of their own on that hole; GPS-saved hazards are exact and replace them.
 
-| Hole | Par | Blue yd | From the map |
+| Hole | Par | Blue yd | From the map (yd from the Blue tee) |
 |---|---|---|---|
-| 1 | 3 | 108 | Small bunker just short of the green |
-| 2 | 4 | 317 | Pond in the fairway, right of center, about 3/4 of the way to the green |
-| 3 | 3 | 176 | No bunkers shown; trees around the green |
-| 4 | 3 | 145 | Small bunker left of the green |
-| 5 | 4 | 267 | Small bunker front left of the green |
+| 1 | 3 | 108 | Small bunker short left of the green, about 90 from the tee |
+| 2 | 4 | 317 | A pond right of center, about 215 to 265 from the tee, 50 to 100 short of the green |
+| 3 | 3 | 176 | No bunkers shown. Trees around the green |
+| 4 | 3 | 145 | Small bunker left of the green, about 135 from the tee |
+| 5 | 4 | 267 | Small bunker front left of the green, about 255 from the tee |
 | 6 | 4 | 287 | No bunkers shown |
-| 7 | 4 | 286 | Dogleg left; no bunkers shown |
+| 7 | 4 | 286 | Dogleg left. No bunkers shown |
 | 8 | 3 | 141 | No bunkers shown |
-| 9 | 4 | 336 | Fairway bunker left about halfway; bunker left of the green |
-| 10 | 4 | 340 | Bunker right of the green |
-| 11 | 3 | 160 | Small bunker front left of the green |
+| 9 | 4 | 336 | Fairway bunker on the left, about 190 to 195 from the tee. Bunker left of the green, about 325 |
+| 10 | 4 | 340 | Bunker right of the green, about 315 to 325 from the tee |
+| 11 | 3 | 160 | Small bunker front left of the green, about 140 from the tee |
 | 12 | 3 | 148 | No bunkers shown |
 | 13 | 3 | 148 | No bunkers shown |
 | 14 | 3 | 150 | No bunkers shown |
-| 15 | 5 | 515 | Slight dogleg left; fairway bunker right about 3/4 of the way; 4-5 bunkers short and right of the green |
-| 16 | 3 | 160 | Bunkers front left and right of the green |
-| 17 | 4 | 355 | Fairway bunkers both sides about 2/3 of the way; bunkers left and right of the green |
-| 18 | 4 | 300 | Bunker beside the green, on the left |
+| 15 | 5 | 515 | Slight dogleg left. Bunker in the right rough about 375 to 385 from the tee. A cluster of bunkers in front of the green, mostly front right, from about 450 to 500 |
+| 16 | 3 | 160 | Bunker front right, about 145 to 155 from the tee, and bunker left of the green |
+| 17 | 4 | 355 | Bunkers in the rough on both sides, about 225 to 265 from the tee. Bunkers short left of the green, about 315, and right of the green |
+| 18 | 4 | 300 | Bunker beside the green, on the left, about 290 from the tee |
