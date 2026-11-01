@@ -75,7 +75,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   "a hundred and twelve" or digits fill the box; typing stays available. Every voice input is repeated back ("Got it. 145 yards."), even
   with read-aloud off; if not understood it says what it heard and asks again.
   The club screen always speaks the suggestion too: "Plays like 108. Use the 8 iron. It carries 113. One club less: ...
-  One club more: ..." (not in competition mode). The plays-like screen lists and always speaks each adjustment (wind, temperature,
+  One club more: ..." (not in competition mode). If the club has measured shots it adds "On the course you've averaged N
+  with it, over K shots" (total distance incl. roll). The plays-like screen lists and always speaks each adjustment (wind, temperature,
   air pressure, own adjustment) with how many yards it adds or takes off.
   The putt screen shows and always speaks the hole's green note (not in competition mode) and then the putting routine;
   Menu → add or change the note.

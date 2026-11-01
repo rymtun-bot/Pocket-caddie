@@ -980,11 +980,17 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       .replace(/(\d+)°F/g, "$1 degrees").replace(/\bmph\b/g, "miles per hour").replace(/\bhPa\b/g, "hectopascals");
     speechSynthesis.speak(new SpeechSynthesisUtterance(sayable(text)));
   }
+  function measured(name) {   // the golfer's on-course average for a club (measured shots are total distance: carry + roll)
+    const ys = S.shots.filter(x => x.club === name).map(x => x.yards);
+    return ys.length ? { n: ys.length, avg: Math.round(ys.reduce((a, b) => a + b, 0) / ys.length) } : null;
+  }
+  const measuredText = name => { const m = measured(name);
+    return m ? `On the course you've averaged ${m.avg} with it, over ${m.n} ${m.n === 1 ? "shot" : "shots"}.` : ""; };
   function clubLines(name) {   // "It carries 147. One club less: 8i, 113. One club more: 4U, 154." for the club screen
     const clubs = S.clubs.filter(c => c.carry > 0).sort((a, b) => a.carry - b.carry), i = clubs.findIndex(c => c.name === name);
     if (i < 0) return "";
     const lo = clubs[i - 1], hi = clubs[i + 1];
-    return `<p class="q">It carries ${clubs[i].carry}.</p>` + (lo ? `<p class="live">One club less: ${esc(lo.name)}, ${lo.carry}</p>` : "")
+    return `<p class="q">It carries ${clubs[i].carry}.</p>` + (measured(name) ? `<p class="q">${measuredText(name)}</p>` : "") + (lo ? `<p class="live">One club less: ${esc(lo.name)}, ${lo.carry}</p>` : "")
       + (hi ? `<p class="live">One club more: ${esc(hi.name)}, ${hi.carry}</p>` : "");
   }
   function sayClub() {   // "Plays like 108. Suggested club: 8 iron, carries 113. Shorter: ... Longer: ..."
@@ -998,7 +1004,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       if (i < 0) text = `${main.textContent}. ${$("rec").querySelector(".alts").textContent}`;
       else {
         const c = clubs[i], lo = clubs[i - 1], hi = clubs[i + 1];
-        text = `Use the ${c.name}. It carries ${c.carry}.` + (lo ? ` One club less: ${lo.name}, ${lo.carry}.` : "") + (hi ? ` One club more: ${hi.name}, ${hi.carry}.` : "");
+        text = `Use the ${c.name}. It carries ${c.carry}. ${measuredText(c.name)}` + (lo ? ` One club less: ${lo.name}, ${lo.carry}.` : "") + (hi ? ` One club more: ${hi.name}, ${hi.carry}.` : "");
       }
     }
     speechSynthesis.cancel();
@@ -1098,10 +1104,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       const sug = S.comp ? "" : plan ? plan.tee.name : $("shotClub").value, t = targetYards();
       screen(holeInfo(), `<h3>${S.comp ? `${t ? Math.round(t) : "—"} yd. Your club?` : plan ? `Tee shot: ${esc(plan.tee.name)}` : `Use the ${esc(sug || "—")}`}</h3>
         ${!S.comp && !plan ? clubLines(sug) : ""}
-        ${plan ? `<p class="q">${esc(plan.text)}</p>` : ""}
+        ${plan ? `<p class="q">${esc(plan.text)}</p>${measured(plan.tee.name) ? `<p class="live">${measuredText(plan.tee.name)}</p>` : ""}` : ""}
         <select id="wizClub" aria-label="Club">${S.clubs.map(c => `<option ${c.name === sug ? "selected" : ""}>${esc(c.name)}</option>`).join("")}<option>Other</option></select>`,
         [["Next", () => { S.wiz.club = $("wizClub").value; save(); step("measure"); }, true]]);
-      if (plan && canSpeak) { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(sayable(`Plays like ${pl}. Tee shot: ${plan.tee.name}, carries ${plan.tee.carry}. ${plan.text}`))); }
+      if (plan && canSpeak) { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(sayable(`Plays like ${pl}. Tee shot: ${plan.tee.name}, carries ${plan.tee.carry}. ${measuredText(plan.tee.name)} ${plan.text}`))); }
       else if (!S.comp) sayClub();   // always spoken, like the yardage echo (golfer's request)
       return;
     }
