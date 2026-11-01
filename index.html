@@ -828,6 +828,20 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     u.rate = 0.95;
     speechSynthesis.cancel(); speechSynthesis.speak(u);
   }
+  function sayPlays(rows) {   // "Plays like 151. Wind 8 mph into you, adds 6 yards. Temperature 62°F, adds 3 yards."
+    if (!canSpeak) return;
+    const pl = parseInt($("playsLike").textContent);
+    const parts = rows.map(([k, v]) => {
+      const n = parseInt(v.replace("−", "-")), amt = Math.abs(n);
+      return amt ? `${k}, ${n > 0 ? "adds" : "takes off"} ${amt} ${amt === 1 ? "yard" : "yards"}` : `${k}, no change`;
+    });
+    speechSynthesis.cancel();
+    // wind only counts once the line to the green is known (saved green or own wind setting)
+    const windNote = wx && !rows.some(([k]) => k.startsWith("Wind")) ? ` Wind ${Math.round(wx.speed)} mph is not included until this green is saved.` : "";
+    const text = ((pl ? `Plays like ${pl}.` : "") + (parts.length ? " " + parts.join(". ") + "." : " No weather adjustment yet.") + windNote)
+      .replace(/(\d+)°F/g, "$1 degrees").replace(/\bmph\b/g, "miles per hour").replace(/\bhPa\b/g, "hectopascals");
+    speechSynthesis.speak(new SpeechSynthesisUtterance(sayable(text)));
+  }
   function sayClub() {   // "Plays like 108. Suggested club: 8 iron, carries 113. Shorter: ... Longer: ..."
     if (!canSpeak) return;
     const pl = parseInt($("playsLike").textContent), main = $("rec").querySelector(".main");
@@ -908,10 +922,15 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       wireMic();
       return wizLive();
     }
-    if (name === "plays") {   // one thing: the adjusted number
+    if (name === "plays") {   // one thing: the adjusted number, with what changed it
       renderPlay();
-      return screen(holeInfo(), `<h3>Plays like</h3><div class="huge">${$("playsLike").textContent}</div>`,
+      const rows = $("breakdown").hidden ? [] : [...$("breakdown").rows].slice(1).map(r => [r.cells[0].textContent, r.cells[1].textContent]);
+      screen(holeInfo(), `<h3>Plays like</h3><div class="huge">${$("playsLike").textContent}</div>
+        ${rows.map(([k, v]) => `<p class="live">${esc(k)}: ${esc(v)}</p>`).join("")}
+        ${wx && !rows.some(([k]) => k.startsWith("Wind")) ? `<p class="live">Wind ${Math.round(wx.speed)} mph: not included until this green is saved</p>` : ""}`,
         [["Next", () => step("club"), true]]);
+      sayPlays(rows);   // always spoken, like the yardage and club (golfer's request)
+      return;
     }
     if (name === "club") {   // one thing: pick the club (the suggestion is preselected)
       renderPlay();
