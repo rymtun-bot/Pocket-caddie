@@ -16,7 +16,7 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
 - PRGR Black Pocket HS-130A: bought 2026-10-28, being returned (golfer's decision 2026-10-31). The Rapsodo is the only
   launch monitor: use it for carry, launch, direction, and club/ball speed (speed progress = 10 real shots every 2 weeks).
   PRGR sessions stay in `practice/` for the record; its club speed was erratic and its carry estimates unreliable.
-- Irons (from the golfer, 2026-10-26): TaylorMade RSi 2, standard set, TaylorMade TM7-215 graphite shaft, regular flex.
+- Irons (from the golfer, 2026-10-26; 5- and 6-iron confirmed 2026-11-01, untested): TaylorMade RSi 2, standard set, TaylorMade TM7-215 graphite shaft, regular flex.
   Stock lofts per 2nd Swing's spec table (https://www.2ndswing.com/golf-clubs/iron-sets/taylormade-rsi-2-iron-set,
   accessed 2026-10-26; not a TaylorMade sheet): 7-iron 31°, 8-iron 35°, 9-iron 40°, PW 45°. The golfer's own lofts
   may differ if the clubs were ever bent; have them checked if gapping looks off.
