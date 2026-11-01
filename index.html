@@ -828,6 +828,15 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     u.rate = 0.95;
     speechSynthesis.cancel(); speechSynthesis.speak(u);
   }
+  function sayHole() {   // "Hole 4. Par 3. 145 yards from the Blue tees. Handicap 7."
+    if (!canSpeak) return;
+    const c = card(), i = S.cur.hole - 1, par = holePar();
+    const y = c && c.tees[S.tee] ? c.tees[S.tee][i] : null;
+    const text = `Hole ${S.cur.hole}.` + (par ? ` Par ${par}.` : "") + (y ? ` ${y} yards from the ${S.tee} tees.` : "")
+      + (c ? ` Handicap ${c.hcp[i]}.` : "") + (!S.comp && hole().notes ? " This hole has a green note." : "")
+      + " " + $("wizBody").querySelector("h3").innerText;
+    speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(sayable(text)));
+  }
   function sayPlays(rows) {   // "Plays like 151. Wind 8 mph into you, adds 6 yards. Temperature 62°F, adds 3 yards."
     if (!canSpeak) return;
     const pl = parseInt($("playsLike").textContent);
@@ -897,7 +906,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <p class="q"><b id="wizGps"></b></p><p class="live">Make sure your phone is charged.</p>`,
       [["Continue", () => step("warm"), true]]), wizLive();
     if (name === "warm") return screen(before, `<h3>Warm up</h3><p class="q">10 minutes of warm-up, then 15 minutes on the practice green.</p>`,
-      [["Start round on hole " + S.cur.hole, () => { S.guide.day = today(); save(); step("yds"); }, true]]);
+      [["Start round on hole " + S.cur.hole, () => { S.guide.day = today(); S.wiz.newHole = true; save(); step("yds"); }, true]]);
 
     if (name === "menu") {   // everything that isn't the one thing on a screen lives here
       const back = S.wiz.back || "yds";
@@ -921,6 +930,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
           if (!(v > 0) && !saved) { toast("Type the yards first"); return; }
           $("manualYds").value = v > 0 ? v : ""; renderPlay(); step(S.comp ? "club" : "plays"); }, true]]);
       wireMic();
+      if (S.wiz.newHole) { S.wiz.newHole = false; save(); sayHole(); }   // always spoken at the start of each hole
       return wizLive();
     }
     if (name === "plays") {   // one thing: the adjusted number, with what changed it
@@ -975,11 +985,14 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     }
     if (name === "putt") {
       const note = !S.comp && hole().notes ? hole().notes.trim() : "";   // notes stay hidden in competition mode
+      const routine = ["Read the putt from behind the ball and see it roll in", "One practice stroke looking at the hole",
+        "Set the putter square to your line", "One look at the hole", "Putt"];
       screen(holeInfo(), `<h3>Putt out</h3>${note ? `<p class="q"><b>Your green note:</b> ${esc(note)}</p>` : ""}
-        <p class="q">Read from behind the ball, see it go in, one look, putt.</p>`,
+        <p class="q">${routine.map((r, i) => `${i + 1}. ${r}`).join("<br>")}</p>`,
         [["Holed out", () => step("next"), true]]);
-      if (note && canSpeak) {   // always spoken, like the yardage and club (golfer's request)
-        speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance("Your green note: " + note));
+      if (canSpeak) {   // always spoken, like the yardage and club (golfer's request): note first, then the routine
+        speechSynthesis.cancel();
+        speechSynthesis.speak(new SpeechSynthesisUtterance((note ? "Your green note: " + note + ". " : "") + "Putting routine. " + routine.join(". ") + "."));
       }
       return;
     }
@@ -992,7 +1005,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     }
     if (name === "green") return step(greenSaved() ? "putt" : "askSave");   // older saved steps
     if (name === "next") {
-      if (S.cur.hole < HOLES) { S.cur.hole++; changedHole(); return step("yds"); }
+      if (S.cur.hole < HOLES) { S.cur.hole++; changedHole(); S.wiz.newHole = true; return step("yds"); }
       return step("end");
     }
     if (name === "end") return screen("Round over", `<h3>Copy your shot log</h3><p class="q">Then paste it in your chat with Claude.</p>`,

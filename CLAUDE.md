@@ -77,7 +77,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   The club screen always speaks the suggestion too: "Plays like 108. Suggested club: 8 iron, carries 113. Shorter: ...
   Longer: ..." (not in competition mode). The plays-like screen lists and always speaks each adjustment (wind, temperature,
   air pressure, own adjustment) with how many yards it adds or takes off.
-  The putt screen shows and always speaks the hole's green note (not in competition mode); Menu → add or change it.
+  The putt screen shows and always speaks the hole's green note (not in competition mode) and then the putting routine;
+  Menu → add or change the note.
+  At the start of each hole it always says the hole number, par, yardage from the chosen tees and handicap.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 
