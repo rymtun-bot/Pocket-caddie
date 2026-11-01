@@ -764,6 +764,47 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     speakScreen(title);
   }
 
+  // ---- say the yardage: Safari's speech recognition, typing stays as the fallback ----
+  const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const micBtn = () => Rec ? `<button id="wizMic" style="font-size:20px;padding:14px">🎤 Say the yards</button>` : "";
+  function spokenYards(text) {   // "145", "one forty five", "a hundred and twelve" -> number
+    const t = text.toLowerCase().replace(/-/g, " ");
+    const d = t.match(/\d{2,3}/); if (d) return +d[0];
+    const U = { zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10,
+      eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16, seventeen: 17, eighteen: 18, nineteen: 19 };
+    const T = { twenty: 20, thirty: 30, forty: 40, fifty: 50, sixty: 60, seventy: 70, eighty: 80, ninety: 90 };
+    const w = t.split(/\s+/).filter(x => x && x !== "and" && x !== "yards" && x !== "yard");
+    let total = 0, cur = 0, small = [];
+    for (const x of w) {
+      if (x === "a" ) { cur = 1; continue; }
+      if (x in U) { cur += U[x]; small.push(U[x]); }
+      else if (x in T) { cur += T[x]; small.push(T[x]); }
+      else if (x === "hundred") { total += (cur || 1) * 100; cur = 0; small = []; }
+    }
+    // "one forty five": a leading single digit followed by a two-digit number means hundreds
+    if (!total && small.length >= 2 && small[0] < 10 && small.slice(1).reduce((a, b) => a + b, 0) < 100)
+      return small[0] * 100 + small.slice(1).reduce((a, b) => a + b, 0);
+    return total + cur || null;
+  }
+  function wireMic() {
+    const b = document.getElementById("wizMic"); if (!b) return;
+    b.onclick = () => {
+      if (canSpeak) speechSynthesis.cancel();
+      const r = new Rec(); r.lang = "en-US"; r.interimResults = false; r.maxAlternatives = 3;
+      b.textContent = "🎤 Listening…";
+      r.onresult = e => {
+        const alts = [...e.results[0]].map(a => a.transcript);
+        const n = alts.map(spokenYards).find(v => v > 0 && v < 700);
+        b.textContent = "🎤 Say the yards";
+        if (n) { $("wizIn").value = n; if (S.voice && canSpeak) { const u = new SpeechSynthesisUtterance(n + " yards"); speechSynthesis.speak(u); } }
+        else toast(`Heard "${alts[0]}". Try again or type it.`);
+      };
+      r.onerror = ev => { b.textContent = "🎤 Say the yards"; toast(ev.error === "not-allowed" ? "Allow the microphone in Settings, or type it" : "Didn't catch that. Try again or type it."); };
+      r.onend = () => { if (b.textContent.includes("Listening")) b.textContent = "🎤 Say the yards"; };
+      r.start();
+    };
+  }
+
   // ---- read aloud: the phone's own voice speaks each guide screen (no data or account needed) ----
   if (S.voice === undefined) S.voice = true;
   const canSpeak = "speechSynthesis" in window;
@@ -836,13 +877,14 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       const saved = greenSaved() && fix;
       screen(holeInfo(), saved
         ? `<h3>Yards to the green center</h3><div class="huge" id="wizYds"></div>
-           <input id="wizIn" type="number" inputmode="numeric" placeholder="or type laser yards" aria-label="Yards">`
+           <input id="wizIn" type="number" inputmode="numeric" placeholder="or type laser yards" aria-label="Yards">${micBtn()}`
         : `<h3>Laser the flag. How many yards?</h3>
-           <input id="wizIn" type="number" inputmode="numeric" placeholder="Yards" aria-label="Yards to the flag">`,
+           <input id="wizIn" type="number" inputmode="numeric" placeholder="Yards" aria-label="Yards to the flag">${micBtn()}`,
         [["Next", () => {
           const v = parseFloat($("wizIn").value);
           if (!(v > 0) && !saved) { toast("Type the yards first"); return; }
           $("manualYds").value = v > 0 ? v : ""; renderPlay(); step(S.comp ? "club" : "plays"); }, true]]);
+      wireMic();
       return wizLive();
     }
     if (name === "plays") {   // one thing: the adjusted number
