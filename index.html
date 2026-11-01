@@ -762,6 +762,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const body = $("wizBody"); body.innerHTML = html;
     if (list) body.appendChild(opts(list));
     window.scrollTo(0, 0); $("wiz").scrollTop = 0;
+    wireVoiceAnswer();
     speakScreen(title);
   }
 
@@ -806,6 +807,70 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         if (canSpeak && ev.error !== "not-allowed") { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance("I didn't catch that. Please say it again.")); }
         toast(ev.error === "not-allowed" ? "Allow the microphone in Settings, or type it" : "Didn't catch that. Try again or type it."); };
       r.onend = () => { if (b.textContent.includes("Listening")) b.textContent = "🎤 Say the yards"; };
+      r.start();
+    };
+  }
+
+  // ---- answer any guide screen by voice: matches the spoken words to a button or a club, repeats it back, then acts ----
+  const DIGITS = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10 };
+  const norm = t => t.toLowerCase().replace(/[✓·.,!?'’]/g, " ").replace(/\b(one|two|three|four|five|six|seven|eight|nine|ten)\b/g, w => DIGITS[w])
+    .replace(/\s+/g, " ").trim();
+  const ALIASES = [   // spoken shortcuts -> start of a button label
+    [/^(next|continue|ok(ay)?|go|done|ready|save( it)?)$/, null],   // null = the main (highlighted) button
+    [/^(yes|yeah|yep|sure)$/, "yes"], [/^(no|nope|not now|skip( it)?)$/, "no"],
+    [/^(i ?ve hit it|hit it|hit|done hitting)$/, "i ve hit it"], [/^(mark|mark it|mark (my )?ball( here)?)$/, "mark my ball here"],
+    [/^(not on( the)? green|not yet|another shot|still going)$/, "not on the green"], [/^(on( the)? green|green)$/, "on the green"],
+    [/^(holed( out)?|in the hole|it s in|made it)$/, "holed out"], [/^(casual|no competition)$/, "no casual round"],
+    [/^(competition|yes competition)$/, "yes competition"]
+  ];
+  function matchAnswer(said, buttons, select) {
+    const t = norm(said);
+    if (select) {   // club screen: "8 iron", "pitching wedge", "5 utility"
+      const opt = [...select.options].find(o => { const v = o.value.toLowerCase(), sp = norm(sayable(o.value));
+        return t === v || t === sp || t.includes(sp) || (v.length > 1 && t.split(" ").includes(v)); });
+      if (opt) return { label: sayable(opt.value), act: () => { select.value = opt.value; buttons[0] && buttons[0].click(); } };
+    }
+    const labels = buttons.map(b => norm(b.textContent));
+    const n = spokenYards(said);   // score screen: "four", "4"
+    if (n && n < 20) { const i = labels.findIndex(l => l.split(" ")[0] === String(n)); if (i >= 0) return { label: buttons[i].textContent, act: () => buttons[i].click() }; }
+    for (const [re, start] of ALIASES) if (re.test(t)) {
+      const i = start === null ? buttons.findIndex(b => b.classList.contains("primary")) : labels.findIndex(l => l.startsWith(start));
+      if (i >= 0) return { label: buttons[i].textContent, act: () => buttons[i].click() };
+    }
+    let i = labels.findIndex(l => l === t);   // exact label, then a label containing the words, then the words containing a label
+    if (i < 0) { const c = labels.map((l, k) => [l, k]).filter(([l]) => l.includes(t)).sort((a, b) => a[0].length - b[0].length); if (c.length) i = c[0][1]; }
+    if (i < 0) { const c = labels.map((l, k) => [l, k]).filter(([l]) => t.includes(l)).sort((a, b) => b[0].length - a[0].length); if (c.length) i = c[0][1]; }
+    if (i < 0) { const c = labels.map((l, k) => [l, k]).filter(([l]) => l.split(" ").filter(w => w.length > 3).some(w => t.includes(w))); if (c.length === 1) i = c[0][1]; }
+    return i >= 0 ? { label: buttons[i].textContent, act: () => buttons[i].click() } : null;
+  }
+  function wireVoiceAnswer() {
+    const body = $("wizBody");
+    if (!Rec || document.getElementById("wizMic") || body.querySelector("textarea")) return;   // yardage has its own mic; notes use dictation
+    const buttons = [...body.querySelectorAll(".opts button")], select = body.querySelector("select");
+    if (!buttons.length) return;
+    const b = document.createElement("button");
+    b.textContent = "🎤 Answer by voice"; b.style.cssText = "font-size:20px;padding:14px";
+    body.appendChild(b);
+    b.onclick = () => {
+      if (canSpeak) speechSynthesis.cancel();
+      const r = new Rec(); r.lang = "en-US"; r.interimResults = false; r.maxAlternatives = 3;
+      b.textContent = "🎤 Listening…";
+      const say = (text, then) => {   // repeat the answer back, then act once it has been said
+        if (!canSpeak) return then && then();
+        const u = new SpeechSynthesisUtterance(text); let done = false;
+        const go = () => { if (!done) { done = true; then && then(); } };
+        u.onend = go; setTimeout(go, 2500); speechSynthesis.cancel(); speechSynthesis.speak(u);
+      };
+      r.onresult = e => {
+        b.textContent = "🎤 Answer by voice";
+        const alts = [...e.results[0]].map(a => a.transcript);
+        const m = alts.map(a => matchAnswer(a, buttons, select)).find(Boolean);
+        if (m) say("Got it. " + sayable(m.label.replace(/[✓·]/g, " ")) + ".", m.act);
+        else { toast(`Heard "${alts[0]}". Try again or tap.`); say(`I heard ${alts[0]}. Please say it again, or tap.`); }
+      };
+      r.onerror = ev => { b.textContent = "🎤 Answer by voice";
+        toast(ev.error === "not-allowed" ? "Allow the microphone in Settings, or tap" : "Didn't catch that. Try again or tap."); };
+      r.onend = () => { if (b.textContent.includes("Listening")) b.textContent = "🎤 Answer by voice"; };
       r.start();
     };
   }

@@ -84,6 +84,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   After "Mark my ball here" it always says the measured distance (total, carry + roll) and the club.
   After "Holed out" it asks the hole score (full shots tapped + 2 putts preselected), then always says e.g. "Bogey, 4 on a
   par 3. After 1 hole: 4, 1 over par." Scores are kept per guided round (S.round); the end screen copies scorecard + shot log.
+  Every guide screen with buttons has "🎤 Answer by voice": matches button labels, clubs ("pitching wedge"), scores
+  ("four"), and shortcuts (next, yes/no, hit it, mark, on the green, holed out); repeats "Got it, ..." then acts.
+  Listening always starts with a tap (browser rule).
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 
