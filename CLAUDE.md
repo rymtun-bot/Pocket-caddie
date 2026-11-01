@@ -81,6 +81,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Menu → add or change the note.
   At the start of each hole it always says the hole number, par, yardage from the chosen tees and handicap.
   The routine screen always speaks the 5-step pre-shot routine, naming the chosen club.
+  After "Mark my ball here" it always says the measured distance (total, carry + roll) and the club.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 

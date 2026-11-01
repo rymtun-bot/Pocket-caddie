@@ -974,7 +974,13 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       screen(holeInfo(), `<h3>Walk to your ball</h3><div class="huge" id="wizWalk">—</div>`,
         [["Mark my ball here", () => {
           if (!fix) { toast("Waiting for GPS"); return; }
-          $("markEnd").click(); step("after"); }, true]]);
+          $("markEnd").click(); step("after");
+          const shot = S.shots[S.shots.length - 1];   // always spoken: the measured distance (golfer's request)
+          if (shot && canSpeak) {
+            const club = shot.club && shot.club !== "Other" ? ` with the ${sayable(shot.club)}` : "";
+            speechSynthesis.cancel();
+            speechSynthesis.speak(new SpeechSynthesisUtterance(`That shot went ${shot.yards} yards${club}. Where's your ball?`));
+          } }, true]]);
       return wizLive();
     }
     if (name === "after") return screen(holeInfo(), `<h3>Where's your ball?</h3>`,
