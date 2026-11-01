@@ -828,6 +828,23 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     u.rate = 0.95;
     speechSynthesis.cancel(); speechSynthesis.speak(u);
   }
+  function sayClub() {   // "Plays like 108. Suggested club: 8 iron, carries 113. Shorter: ... Longer: ..."
+    if (!canSpeak) return;
+    const pl = parseInt($("playsLike").textContent), main = $("rec").querySelector(".main");
+    const clubs = S.clubs.filter(c => c.carry > 0).sort((a, b) => a.carry - b.carry);
+    let text;
+    if (!main) text = "Add your clubs on the Clubs tab to get a suggestion.";
+    else {
+      const i = clubs.findIndex(c => c.name === main.textContent);
+      if (i < 0) text = `${main.textContent}. ${$("rec").querySelector(".alts").textContent}`;
+      else {
+        const c = clubs[i], lo = clubs[i - 1], hi = clubs[i + 1];
+        text = `Suggested club: ${c.name}, carries ${c.carry}.` + (lo ? ` Shorter: ${lo.name}, ${lo.carry}.` : "") + (hi ? ` Longer: ${hi.name}, ${hi.carry}.` : "");
+      }
+    }
+    speechSynthesis.cancel();
+    speechSynthesis.speak(new SpeechSynthesisUtterance(sayable((pl ? `Plays like ${pl}. ` : "") + text)));
+  }
   function renderVoiceBtn() {
     const b = $("wizVoice");
     b.hidden = !canSpeak;
@@ -902,6 +919,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       screen(holeInfo(), `<h3>${S.comp ? `${t ? Math.round(t) : "—"} yd. Your club?` : `Suggested: ${esc(sug || "—")}`}</h3>
         <select id="wizClub" aria-label="Club">${S.clubs.map(c => `<option ${c.name === sug ? "selected" : ""}>${esc(c.name)}</option>`).join("")}<option>Other</option></select>`,
         [["Next", () => { S.wiz.club = $("wizClub").value; save(); step("measure"); }, true]]);
+      if (!S.comp) sayClub();   // always spoken, like the yardage echo (golfer's request)
       return;
     }
     if (name === "measure") return screen(holeInfo(), `<h3>Measure this shot?</h3><p class="q">Stand at your ball, then answer.</p>`,
