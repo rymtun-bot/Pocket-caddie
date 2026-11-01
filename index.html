@@ -395,7 +395,29 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         Blue:   [366, 432, 173, 495, 375, 376, 357, 189, 376, 370, 435, 195, 372, 361, 420, 166, 491, 470],
         White:  [344, 403, 141, 469, 356, 360, 337, 168, 366, 354, 411, 170, 357, 335, 381, 157, 475, 452],
         Yellow: [338, 367, 123, 445, 335, 346, 308, 150, 328, 344, 371, 134, 352, 306, 374, 122, 461, 440]
-      }
+      },
+      // Read from the golf.lacity.gov aerial course map and local rules (golfer's screenshots, 2026-11-01). [g-N] = the
+      // chosen tees' yardage minus N (N = yards short of the green center, measured on the map): rough, plus or minus 15-20 yd.
+      map: [
+        "Fences down both sides (immovable obstructions). Bunker short left of the green, about [g-20] from the tee, and short right, about [g-40]",
+        "Bunker left of the green",
+        "Bunker left of the green",
+        "Out of bounds beyond the road (local rule). Bunker front right of the green, about [g-35] from the tee",
+        "Fairway bunker on the left, about [g-70] from the tee. Small bunker left of the green and one back right",
+        "Bunker short right of the green, about [g-20] from the tee",
+        "Bunkers in the left rough, about [g-170] and [g-120] from the tee. Bunkers behind and back left of the green",
+        "No bunkers shown at the green. Trees around it",
+        "Out of bounds on the left: the driving range posts. Bunker short left of the green, about [g-35] from the tee",
+        "Bunker left of the green",
+        "Bunker left of the green",
+        "Bunkers short right, about [g-30] from the tee, right and back right of the green, and one on the left",
+        "No bunkers shown. Trees both sides",
+        "Fence along the right side (an immovable obstruction). No bunkers shown",
+        "Fairway bunker on the right, about [g-205] from the tee. Bunker front left of the green, and short right, about [g-35]",
+        "Bunker short left of the green, about [g-15] from the tee",
+        "The drainage ditch down the left side is a red penalty area. Bunkers on both sides about 35 short of the green, about [g-35] from the tee",
+        "Out of bounds right (curb and range posts), left (beyond the low fence) and behind the green. Fairway bunker on the right, about [g-185] from the tee. Bunker right of the green and one behind it"
+      ]
     }
   };
   const card = () => CARDS[S.cur.course];
@@ -1195,7 +1217,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   }
   const mapNote = () => {   // course-map description of the hole, used when the golfer hasn't saved hazards of their own
     const c = CARDS[S.cur.course];
-    return c && c.map && !(hole().hazards || []).length ? c.map[S.cur.hole - 1] || "" : "";
+    const t = c && c.map && !(hole().hazards || []).length ? c.map[S.cur.hole - 1] || "" : "", y = cardYards();
+    return t.replace(/\[g-(\d+)\]/g, (m, n) => y ? String(Math.round((y - n) / 5) * 5) : `${n} short of the green`);
   };
   const planText = () => (S.plans[S.cur.course] || {})[S.cur.hole] || "";
   function applyDark() { if (S.dark) document.documentElement.dataset.theme = "dark"; else delete document.documentElement.dataset.theme; }
