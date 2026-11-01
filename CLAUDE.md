@@ -107,6 +107,12 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   that clears it, or lay up (water/OB prefer lay-up); side hazards → aim away, and a warning if the club's miss tendency
   points at water/OB. Competition mode: hazard distances only.
   At each tee the hole announcement includes the hole's hazards with distances from the tee (names only without GPS).
+- Swing check (`swing.html`, Setup → Open Swing Frames, or guide Menu → Record or check a swing; hidden in competition
+  mode): record (camera) or pick a video, save address/impact frames, then tap points. Face-on: head + ball at address,
+  head, lead hand, clubhead at impact → head slide toward target (>8% of head-to-ball height) and shaft lean (hands
+  behind >3° = adding loft). Behind: head rise (>5%) or dip, toward/away from the ball (early extension). Thresholds are
+  rough guides, not published standards. Compares with the club's Rapsodo averages typed in (launch/loft > 0.75 = high,
+  start right with a slide, smash < 1.25 with standing up). Findings are spoken, copyable, and printed on the shared picture.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 

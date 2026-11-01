@@ -1250,6 +1250,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         ["Save a hazard on this hole", () => step("hzType")],
         [`Hazards on this hole (${(hole().hazards || []).length})`, () => step("hzList")],
         ["Skip to the next hole", () => step("next")],
+        ...(S.comp ? [] : [["Record or check a swing", () => { location.href = "swing.html"; }]]),
         [S.dark ? "Normal screen" : "Dark screen (saves battery)", () => { S.dark = !S.dark; save(); applyDark(); step("menu"); }],
         ...(S.comp ? [] : [["Add or change this hole's green note", () => step("note")]]),
         ["Change course or tees", () => step("course")],

@@ -38,6 +38,7 @@ select, input[type=text], textarea { background: var(--bg); border: 1px solid va
 button, .filebtn { cursor: pointer; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); padding: 10px 14px; font-weight: 600; text-align: center }
 button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible, .filebtn:focus-within { outline: 3px solid var(--accent); outline-offset: 2px }
 button.primary, .filebtn { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
+.row label.filebtn { color: var(--accent-ink); font-size: 17px; text-transform: none; letter-spacing: 0 }
 button[aria-pressed=true] { background: var(--ink); color: var(--bg); border-color: var(--ink) }
 button:disabled { opacity: .45; cursor: default }
 .filebtn input { position: absolute; opacity: 0; width: 1px; height: 1px }
@@ -70,14 +71,31 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
 <main class="wrap">
   <section class="panel">
     <h2>1 · Pick a swing video</h2>
-    <label class="filebtn">Choose video from Photos<input id="file" type="file" accept="video/*"></label>
+    <div class="row">
+      <label class="filebtn">Record a swing<input id="recVid" type="file" accept="video/*" capture="environment"></label>
+      <label class="filebtn">Choose from Photos<input id="file" type="file" accept="video/*"></label>
+    </div>
+    <p class="note">Record opens the camera (normal speed). For Slo-mo, film with the Camera app's Slo-mo, then choose it from Photos.</p>
     <p class="note">The video stays on this phone. Nothing is uploaded; only the picture you share in step 4 leaves the phone.</p>
     <div class="row">
       <label for="view">Camera view</label>
       <select id="view"><option value="Face-on">Face-on</option><option value="Behind (down-the-line)">Behind (down-the-line)</option></select>
     </div>
     <div class="row">
-      <label for="info">Club and Rapsodo numbers for this swing (printed on the shared picture)</label>
+      <label for="target">In the video, the target is to the</label>
+      <select id="target"><option value="1">Right (face-on, right-handed golfer)</option><option value="-1">Left</option></select>
+    </div>
+    <div class="row">
+      <label for="ckClub">Club in this swing</label><select id="ckClub"></select>
+    </div>
+    <div class="row">
+      <label>This club's Rapsodo averages (optional, used to compare with the swing)</label>
+      <input id="ckLaunch" type="number" inputmode="decimal" placeholder="Launch °" aria-label="Launch angle">
+      <input id="ckDir" type="number" inputmode="decimal" placeholder="Start ° (− = left)" aria-label="Start direction, negative is left">
+      <input id="ckSmash" type="number" inputmode="decimal" step="0.01" placeholder="Smash" aria-label="Smash factor">
+    </div>
+    <div class="row">
+      <label for="info">Other notes for the shared picture</label>
       <input id="info" type="text" placeholder="e.g. PW · carry 92 · launch 35.1° · 6.7 L · smash 1.19">
     </div>
   </section>
@@ -116,6 +134,17 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
     <div class="marks" id="marks"></div>
   </section>
 
+  <section class="panel" id="checkPanel" hidden>
+    <h2>Swing check</h2>
+    <p class="note">Save the address and impact frames first. Then tap the points it asks for on each frame.</p>
+    <div class="row"><button class="primary" id="ckStart">Start the swing check</button></div>
+    <p class="q" id="ckPrompt" style="font-size:19px;margin:0"></p>
+    <div class="stage" style="touch-action:none"><canvas id="ckCanvas" style="position:static;width:100%;height:auto" hidden></canvas></div>
+    <div class="row"><button id="ckUndo" hidden>Undo last tap</button></div>
+    <div id="ckOut" style="display:grid;gap:8px"></div>
+    <p class="note">The checks measure what you tap, so tap carefully on the frame. The limits used (for example, how far the head may move) are rough coaching guides, not published standards; send the result to Claude for a full read.</p>
+  </section>
+
   <section class="panel" id="sharePanel" hidden>
     <h2>4 · Send to Claude</h2>
     <p class="note">Makes one picture with all four frames and your numbers. Share it to the Claude app, or save it to Photos and attach it there.</p>
@@ -138,12 +167,13 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
   const toast = msg => { const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2200); };
 
   // ---- load ----
+  $("recVid").onchange = e => $("file").onchange(e);
   $("file").onchange = e => {
     const f = e.target.files[0]; if (!f) return;
     if (url) URL.revokeObjectURL(url);
     url = URL.createObjectURL(f); vid.src = url; lines = []; pending = null;
     MOMENTS.forEach(m => delete frames[m]);
-    $("player").hidden = false; $("framesPanel").hidden = false; $("sharePanel").hidden = true;
+    $("player").hidden = false; $("framesPanel").hidden = false; $("sharePanel").hidden = true; $("checkPanel").hidden = true; findings = [];
     renderMarks();
   };
   vid.onloadedmetadata = () => { sizeInk(); seek(0); };
@@ -217,6 +247,7 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
     $("marks").querySelectorAll("[data-grab]").forEach(b => b.onclick = () => grab(b.dataset.grab));
     $("marks").querySelectorAll("[data-go]").forEach(b => b.onclick = () => { vid.pause(); seek(frames[b.dataset.go].t); });
     $("sharePanel").hidden = !MOMENTS.some(m => frames[m]);
+    $("checkPanel").hidden = !(frames.Address && frames.Impact);
   }
   function grab(m) {
     if (!vid.videoWidth) { toast("Video not ready yet"); return; }
@@ -227,13 +258,100 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
     renderMarks(); toast(m + " saved");
   }
 
+  // ---- swing check: the golfer taps points; the page measures and compares with the Rapsodo averages ----
+  let findings = [], ck = null;
+  const LOFT = { "7i": 31, "8i": 35, "9i": 40, "PW": 45, "50°": 50, "54°": 54, "55°": 55, "58°": 58 };   // RSi 2 stock lofts (2nd Swing) and wedge stamps
+  (() => {   // club list from Pocket Caddie (same phone)
+    let clubs = []; try { clubs = (JSON.parse(localStorage.getItem("pocket-caddie-v1")) || {}).clubs || []; } catch {}
+    $("ckClub").innerHTML = clubs.map(c => `<option>${c.name.replace(/[<>&"]/g, "")}</option>`).join("") + "<option>Other</option>";
+  })();
+  const say = t => { if ("speechSynthesis" in window) { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(t)); } };
+  const isFace = () => $("view").value.startsWith("Face");
+  function plan() {   // [frame, key, prompt]
+    return isFace()
+      ? [["Address", "head", "Address: tap the center of your head"], ["Address", "ball", "Address: tap the ball"],
+         ["Impact", "head", "Impact: tap the center of your head"], ["Impact", "hands", "Impact: tap your lead hand"], ["Impact", "club", "Impact: tap the clubhead"]]
+      : [["Address", "head", "Address: tap the center of your head"], ["Address", "ball", "Address: tap the ball"],
+         ["Impact", "head", "Impact: tap the center of your head"]];
+  }
+  async function showCk() {
+    const steps = plan(), i = ck.pts.length, cv = $("ckCanvas"), x = cv.getContext("2d");
+    $("ckUndo").hidden = !i;
+    if (i >= steps.length) { cv.hidden = true; $("ckPrompt").textContent = ""; return analyse(); }
+    const [fr, , prompt] = steps[i], img = await loadImg(frames[fr].dataURL);
+    cv.width = img.width; cv.height = img.height; cv.hidden = false;
+    x.drawImage(img, 0, 0);
+    const r = Math.max(6, img.width / 90); x.lineWidth = r / 2;
+    ck.pts.forEach(([f, k, p]) => { if (f !== fr) return; x.fillStyle = "#ffd400"; x.beginPath(); x.arc(p.x, p.y, r, 0, 7); x.fill(); });
+    if (fr === "Impact") {   // address head position as a reference line
+      const ah = ck.pts.find(([f, k]) => f === "Address" && k === "head");
+      if (ah) { x.strokeStyle = "#ff3b30"; x.setLineDash([r, r]); x.beginPath();
+        if (isFace()) { x.moveTo(ah[2].x, 0); x.lineTo(ah[2].x, img.height); } else { x.moveTo(0, ah[2].y); x.lineTo(img.width, ah[2].y); }
+        x.stroke(); x.setLineDash([]); }
+    }
+    $("ckPrompt").textContent = `${i + 1}/${steps.length} · ${prompt}`;
+    say(prompt);
+  }
+  $("ckStart").onclick = async () => { ck = { pts: [] }; findings = []; $("ckOut").innerHTML = ""; await showCk(); $("ckPrompt").scrollIntoView({ behavior: "smooth", block: "start" }); };
+  $("ckUndo").onclick = () => { ck.pts.pop(); showCk(); };
+  $("ckCanvas").onpointerdown = ev => {
+    if (!ck) return; ev.preventDefault();
+    const cv = $("ckCanvas"), r = cv.getBoundingClientRect(), steps = plan(), i = ck.pts.length; if (i >= steps.length) return;
+    const p = { x: (ev.clientX - r.left) * cv.width / r.width, y: (ev.clientY - r.top) * cv.height / r.height };
+    ck.pts.push([steps[i][0], steps[i][1], p]); showCk();
+  };
+  function analyse() {
+    const P = (f, k) => (ck.pts.find(([a, b]) => a === f && b === k) || [])[2];
+    const ah = P("Address", "head"), ball = P("Address", "ball"), ih = P("Impact", "head");
+    const scale = Math.abs(ball.y - ah.y) || 1, dir = +$("target").value, out = [];
+    const club = $("ckClub").value, launch = parseFloat($("ckLaunch").value), sdir = parseFloat($("ckDir").value), smash = parseFloat($("ckSmash").value);
+    const loft = LOFT[club], highLaunch = loft && launch > 0 && launch / loft > 0.75;   // 0.75: rough guide (your 9-iron: 27.5° / 40° = 0.69)
+    let handsBehind = false, slide = false, rose = false;
+    if (isFace()) {
+      const shift = (ih.x - ah.x) * dir / scale;
+      if (shift > 0.08) { slide = true; out.push(["fix", `Head moved toward the target by about ${Math.round(shift * 100)}% of your head-to-ball height. Keep your head behind the ball through impact.`]); }
+      else if (shift < -0.12) out.push(["fix", "Head hung well back at impact. Let your weight move to your lead side."]);
+      else out.push(["ok", "Head stayed steady from address to impact."]);
+      const hands = P("Impact", "hands"), cl = P("Impact", "club");
+      const lean = Math.atan2((hands.x - cl.x) * dir, Math.abs(cl.y - hands.y) || 1) * 180 / Math.PI;
+      if (lean > 3) out.push(["ok", `Hands ahead of the clubhead at impact (shaft leans about ${Math.round(lean)}° toward the target).`]);
+      else if (lean < -3) { handsBehind = true; out.push(["fix", `Hands behind the clubhead at impact (about ${Math.round(-lean)}°): the club is adding loft. Hold-off drill: hands lead, face to the target.`]); }
+      else out.push(["fix", "Shaft about vertical at impact. Aim for the hands slightly ahead of the ball."]);
+    } else {
+      const up = (ah.y - ih.y) / scale, toward = (ih.x - ah.x) * Math.sign(ball.x - ah.x || 1) / scale;
+      if (up > 0.05) { rose = true; out.push(["fix", `Head rose about ${Math.round(up * 100)}% of your head-to-ball height: you stood up through impact. Keep your hip hinge.`]); }
+      else if (up < -0.06) out.push(["fix", "Head dipped toward the ball at impact. Stay level."]);
+      else out.push(["ok", "Head height held from address to impact: posture kept."]);
+      if (toward < -0.06) out.push(["fix", "Head moved away from the ball (back of the head toward the camera side): early extension. Keep your seat back."]);
+      else if (toward > 0.08) out.push(["fix", "Head moved toward the ball. Keep your weight balanced in the middle of your feet."]);
+    }
+    // compare with the Rapsodo averages the golfer typed
+    if (launch > 0 && loft) {
+      if (highLaunch && handsBehind) out.push(["link", `Matches your numbers: ${launch}° launch is high for a ${loft}° ${club}, which is what hands behind at impact produces.`]);
+      else if (highLaunch) out.push(["link", `Your ${launch}° launch is high for a ${loft}° ${club}, but this frame doesn't show the hands behind. Check another swing or the other view.`]);
+      else if (handsBehind) out.push(["link", `Your ${launch}° launch looks normal for the ${club}, so this swing may be an exception. Check a few more.`]);
+      else out.push(["link", `Your ${launch}° launch looks normal for a ${loft}° ${club}, consistent with this frame.`]);
+    }
+    if (Number.isFinite(sdir) && slide && sdir > 2) out.push(["link", `Your ${sdir}° right start can go with a head slide toward the target, which tends to leave the face open.`]);
+    if (smash > 0 && rose && smash < 1.25) out.push(["link", `Your smash of ${smash} is on the low side; standing up through impact often goes with thin or toe strikes.`]);
+    findings = out;
+    $("ckOut").innerHTML = out.map(([k, t]) => `<p class="note" style="color:var(--ink);font-size:16px">${k === "ok" ? "✓" : k === "fix" ? "▲" : "↔"} ${t}</p>`).join("")
+      + `<div class="row"><button id="ckCopy">Copy the check for Claude</button></div>`;
+    $("ckCopy").onclick = async () => { const t = checkText(); try { await navigator.clipboard.writeText(t); toast("Copied"); } catch { prompt("Copy this:", t); } };
+    say(out.map(([, t]) => t).join(" "));
+  }
+  const checkText = () => `Swing check ${new Date().toLocaleDateString()}, ${$("view").value}, club ${$("ckClub").value}`
+    + `${$("ckLaunch").value ? ", launch " + $("ckLaunch").value + "°" : ""}${$("ckDir").value ? ", start " + $("ckDir").value + "°" : ""}${$("ckSmash").value ? ", smash " + $("ckSmash").value : ""}:\n`
+    + findings.map(([, t]) => "- " + t).join("\n");
+
   // ---- contact sheet ----
   function loadImg(src) { return new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = src; }); }
   async function buildSheet() {
     const got = MOMENTS.filter(m => frames[m]);
     const W = 1080, gap = 12, cellW = (W - gap * 3) / 2;
     const ar = frames[got[0]].h / frames[got[0]].w, cellH = Math.round(cellW * ar);
-    const head = 120, rows = Math.ceil(got.length / 2), H = head + rows * (cellH + 44 + gap) + gap;
+    const head = 120, rows = Math.ceil(got.length / 2), fH = findings.length ? 30 + findings.length * 34 : 0;
+    const H = head + rows * (cellH + 44 + gap) + gap + fH;
     const c = document.createElement("canvas"); c.width = W; c.height = H;
     const x = c.getContext("2d");
     x.fillStyle = "#ffffff"; x.fillRect(0, 0, W, H);
@@ -248,6 +366,8 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
       x.fillText(`${m}  ${frames[m].t.toFixed(3)} s`, ox, oy + 32);
       x.drawImage(await loadImg(frames[m].dataURL), ox, oy + 44, cellW, cellH);
     }
+    x.fillStyle = "#102018"; x.font = "24px 'Source Sans 3', sans-serif";   // swing check results under the frames
+    findings.forEach(([, t], i) => x.fillText(("• " + t).slice(0, 88), gap, H - fH + 30 + i * 34));
     return new Promise(r => c.toBlob(r, "image/jpeg", 0.88));
   }
   $("share").onclick = async () => {
