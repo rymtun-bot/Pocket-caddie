@@ -363,7 +363,29 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       tees: {
         Blue:  [108, 317, 176, 145, 267, 287, 286, 141, 336, 340, 160, 148, 148, 150, 515, 160, 355, 300],
         White: [100, 307, 166, 135, 255, 277, 276, 133, 314, 330, 149, 138, 135, 125, 485, 125, 335, 290]
-      }
+      },
+      // Read from the westchestergc.com course map (golfer's screenshot, 2026-11-01). The map is a drawing, not to scale:
+      // positions are rough, left/right as seen from the tee. Trees line most holes.
+      map: [
+        "Small bunker just short of the green",
+        "A pond in the fairway, right of center, about three quarters of the way to the green",
+        "No bunkers shown. Trees around the green",
+        "Small bunker left of the green",
+        "Small bunker front left of the green",
+        "No bunkers shown",
+        "Dogleg left. No bunkers shown",
+        "No bunkers shown",
+        "Fairway bunker on the left about halfway. Bunker left of the green",
+        "Bunker right of the green",
+        "Small bunker front left of the green",
+        "No bunkers shown",
+        "No bunkers shown",
+        "No bunkers shown",
+        "Slight dogleg left. Fairway bunker on the right about three quarters of the way. Four or five bunkers short and right of the green",
+        "Bunkers front left and right of the green",
+        "Fairway bunkers on both sides about two thirds of the way. Bunkers left and right of the green",
+        "Bunker beside the green, on the left"
+      ]
     },
     rancho: { // Rancho Park scorecard from greenskeeper.org, screenshot shared 2026-10-25 (men's par and handicap)
       par:   [4, 4, 3, 5, 4, 4, 4, 3, 4, 4, 4, 3, 4, 4, 4, 3, 5, 5],
@@ -1123,7 +1145,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const c = card(), i = S.cur.hole - 1, par = holePar();
     const y = c && c.tees[S.tee] ? c.tees[S.tee][i] : null;
     const text = `Hole ${S.cur.hole}.` + (par ? ` Par ${par}.` : "") + (y ? ` ${y} yards from the ${S.tee} tees.` : "")
-      + (c ? ` Handicap ${c.hcp[i]}.` : "") + (teeHazards() ? ` ${teeHazards()}` : "") + (planText() ? ` Your plan: ${planText()}.` : "") + (!S.comp && hole().notes ? " This hole has a green note." : "")
+      + (c ? ` Handicap ${c.hcp[i]}.` : "") + (teeHazards() ? ` ${teeHazards()}` : "") + (mapNote() ? ` Course map: ${mapNote()}.` : "") + (planText() ? ` Your plan: ${planText()}.` : "") + (!S.comp && hole().notes ? " This hole has a green note." : "")
       + " " + $("wizBody").querySelector("h3").innerText;
     const pre = S.wiz.pre || ""; S.wiz.pre = ""; save();
     speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(pre + " " + sayable(text)));
@@ -1171,6 +1193,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (L / m.length >= 0.6) return `Your ${name} misses left ${L} of ${m.length}. Aim a little right.`;
     return "";
   }
+  const mapNote = () => {   // course-map description of the hole, used when the golfer hasn't saved hazards of their own
+    const c = CARDS[S.cur.course];
+    return c && c.map && !(hole().hazards || []).length ? c.map[S.cur.hole - 1] || "" : "";
+  };
   const planText = () => (S.plans[S.cur.course] || {})[S.cur.hole] || "";
   function applyDark() { if (S.dark) document.documentElement.dataset.theme = "dark"; else delete document.documentElement.dataset.theme; }
   function clubLines(name) {   // "It carries 147. One club less: 8i, 113. One club more: 4U, 154." for the club screen
@@ -1259,6 +1285,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (name === "yds") {   // one thing: the yardage
       const saved = greenSaved() && fix, cardYds = teeShot() ? cardYards() : null;
       const planHtml = S.wiz.strokes ? "" : (teeHazards() ? `<p class="q"><b>${esc(teeHazards())}</b></p>` : "")
+        + (mapNote() ? `<p class="q"><b>Course map:</b> ${esc(mapNote())}.</p>` : "")
         + (planText() ? `<p class="q"><b>Plan:</b> ${esc(planText())}</p>` : "");
       screen(holeInfo(), (planHtml) + (cardYds && !saved
         ? `<h3>Tee shot. Hole length ${cardYds} yards</h3>

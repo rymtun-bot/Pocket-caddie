@@ -131,5 +131,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
 ## Course data
 - The golfer plays the Blue tees (Pocket Caddie default; changeable in Setup).
 - Westchester scorecard (from the golfer, 2026-10-25) is built into index.html (CARDS) and in courses/westchester.md.
+  Westchester hole-by-hole hazards from the course map (2026-11-01) are in CARDS.westchester.map and courses/westchester.md;
+  read at the tee as "Course map: ..." until the golfer saves their own hazards on that hole. Map not to scale: rough.
 - Rancho Park scorecard (Greenskeeper.org screenshot from the golfer, 2026-10-25) is in CARDS and courses/rancho_park.md.
   Tees there: Black 6,839 / Blue 6,419 / White 6,036 / Yellow 5,644. Ask which tees the golfer plays at Rancho.
