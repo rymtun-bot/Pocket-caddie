@@ -100,6 +100,12 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   thought (Setup, default "Hands lead through impact") is read with the routine. Menu: add a penalty stroke, dark screen.
   End of round: says and copies fairways, GIR, putts, 3-putts, penalties, start-line counts and a "next week, practice ..."
   line chosen from those stats.
+  Hazards (golfer's request 2026-11-01): hole().hazards = [{type bunker|water|ob|trees, side, pts, src me|osm}]. Saved in the
+  guide (Menu → Save a hazard: type, side, near edge, far edge) or loaded once per course from OpenStreetMap (Overpass API;
+  hazards assigned to holes via mapped golf=hole lines; ODbL attribution in Setup; coverage varies, not verified for
+  Westchester or Rancho). Club advice: a hazard in the middle where the club would land (±10 yd) → carry it with a club
+  that clears it, or lay up (water/OB prefer lay-up); side hazards → aim away, and a warning if the club's miss tendency
+  points at water/OB. Competition mode: hazard distances only.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 
