@@ -796,10 +796,14 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         const alts = [...e.results[0]].map(a => a.transcript);
         const n = alts.map(spokenYards).find(v => v > 0 && v < 700);
         b.textContent = "🎤 Say the yards";
-        if (n) { $("wizIn").value = n; if (S.voice && canSpeak) { const u = new SpeechSynthesisUtterance(n + " yards"); speechSynthesis.speak(u); } }
-        else toast(`Heard "${alts[0]}". Try again or type it.`);
+        // always repeat what was understood, even with read-aloud off: the golfer asked to hear every voice input back
+        const echo = t => { if (canSpeak) { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(t)); } };
+        if (n) { $("wizIn").value = n; echo(`Got it. ${n} yards.`); }
+        else { toast(`Heard "${alts[0]}". Try again or type it.`); echo(`I heard ${alts[0]}. Please say the yards again.`); }
       };
-      r.onerror = ev => { b.textContent = "🎤 Say the yards"; toast(ev.error === "not-allowed" ? "Allow the microphone in Settings, or type it" : "Didn't catch that. Try again or type it."); };
+      r.onerror = ev => { b.textContent = "🎤 Say the yards";
+        if (canSpeak && ev.error !== "not-allowed") { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance("I didn't catch that. Please say it again.")); }
+        toast(ev.error === "not-allowed" ? "Allow the microphone in Settings, or type it" : "Didn't catch that. Try again or type it."); };
       r.onend = () => { if (b.textContent.includes("Listening")) b.textContent = "🎤 Say the yards"; };
       r.start();
     };

@@ -72,7 +72,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Secondary actions (skip hole, cancel measurement, change course, full app) are under Menu. Resumes at the saved step.
   Read aloud (🔊 button, on by default): the phone's built-in speech reads each screen; golf shorthand spoken as words.
   Say the yards (🎤 on the yardage screen, only where the browser supports speech recognition): "one forty five",
-  "a hundred and twelve" or digits fill the box; typing stays available.
+  "a hundred and twelve" or digits fill the box; typing stays available. Every voice input is repeated back ("Got it. 145 yards."), even
+  with read-aloud off; if not understood it says what it heard and asks again.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 
