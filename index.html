@@ -957,9 +957,18 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
           if (!fix) { toast("Waiting for GPS"); return; }
           renderShotBox(); $("shotClub").value = S.wiz.club || "Other"; $("markStart").click(); step("routine"); }, true],
        ["No", () => step("routine")]]);
-    if (name === "routine") return screen(holeInfo(), `<h3>Your routine</h3>
-      <p class="q">1. Pick the target<br>2. Spot 2–3 ft ahead<br>3. One rehearsal swing<br>4. Clubface to the spot, then feet<br>5. One look, then swing</p>`,
-      [["I've hit it", () => step(S.pending ? "walk" : "after"), true]]);
+    if (name === "routine") {
+      const routine = ["Stand behind the ball, pick the target and see the shot", "Pick a spot 2 to 3 feet ahead on that line",
+        "One rehearsal swing, hands leading", "Clubface square to the spot, then feet, hips and shoulders", "One look at the target, one at the ball, swing"];
+      screen(holeInfo(), `<h3>Your routine</h3><p class="q">${routine.map((r, i) => `${i + 1}. ${r}`).join("<br>")}</p>`,
+        [["I've hit it", () => step(S.pending ? "walk" : "after"), true]]);
+      if (canSpeak) {   // always spoken, like the yardage, club and putting routine (golfer's request)
+        speechSynthesis.cancel();
+        const club = S.wiz.club && S.wiz.club !== "Other" ? `, with the ${sayable(S.wiz.club)}` : "";
+        speechSynthesis.speak(new SpeechSynthesisUtterance(`Your routine${club}. ` + routine.join(". ") + "."));
+      }
+      return;
+    }
     if (name === "walk") {   // one thing: mark the ball
       if (!S.pending) return step("after");
       screen(holeInfo(), `<h3>Walk to your ball</h3><div class="huge" id="wizWalk">—</div>`,
