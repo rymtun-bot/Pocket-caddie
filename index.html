@@ -89,6 +89,22 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(80px + env(safe-area-inset-bottom, 0px)); z-index: 7;
   background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-weight: 600; max-width: calc(100% - 32px) }
 @media (prefers-reduced-motion: no-preference) { .toast { transition: opacity .2s } }
+/* Step-by-step guide: one full-screen step at a time, big type and buttons for use on the course. */
+.wiz { position: fixed; inset: 0; z-index: 8; background: var(--bg); overflow-y: auto;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)) }
+.wiz .wrap { display: grid; gap: 18px; padding-block: 14px }
+.wizTop { display: flex; justify-content: space-between; align-items: center; gap: 8px }
+.wizTop span { font: 600 13px/1.2 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
+.wizTop button { padding: 8px 12px; font-size: 14px }
+.wiz h3 { margin: 0; font: 700 34px/1.1 var(--display) }
+.wiz .q { font-size: 19px; margin: 0 }
+.wiz .huge { font: 700 84px/1 var(--display); color: var(--accent); font-variant-numeric: tabular-nums }
+.wiz .opts { display: grid; gap: 12px }
+.wiz .opts button { font-size: 21px; padding: 18px 14px; border-radius: 14px; text-align: left }
+.wiz .opts button.primary { text-align: center }
+.wiz input, .wiz select { font-size: 30px; padding: 12px 14px; text-align: center }
+.wiz .live { font-size: 17px; color: var(--muted); margin: 0 }
+.wiz .rec .main { font-size: 46px }
 </style>
 </head>
 <body>
@@ -110,7 +126,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   <!-- PLAY -->
   <div id="tab-play" class="tab" style="display:grid;gap:16px">
     <section class="panel" id="secGuide" hidden>
-      <div class="row" style="justify-content:space-between"><h2 style="flex:0 1 auto">Round guide</h2>
+      <div class="row" style="justify-content:space-between"><h2 style="flex:0 1 auto">Step-by-step guide</h2>
         <button id="guideHide" style="flex:0 0 auto;padding:6px 10px;font-size:13px">Hide</button></div>
       <div id="guideBody" style="display:grid;gap:10px"></div>
     </section>
@@ -232,9 +248,9 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   <!-- SETUP -->
   <div id="tab-setup" class="tab" hidden style="display:grid;gap:16px">
     <section class="panel">
-      <h2>Round guide</h2>
-      <p class="note">Step-by-step prompts at the top of the Play tab: a before-the-round checklist, then what to do next on each hole.</p>
-      <div class="row"><button id="guideBtn" aria-pressed="true">Turn off round guide</button></div>
+      <h2>Step-by-step guide</h2>
+      <p class="note">Opens when you start Pocket Caddie: one question per screen, first the round setup, then each shot and hole.</p>
+      <div class="row"><button id="guideBtn" aria-pressed="true">Turn off step-by-step guide</button></div>
     </section>
     <section class="panel">
       <h2>Competition mode</h2>
@@ -304,6 +320,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   <button role="tab" data-tab="clubs" aria-selected="false">Clubs</button>
   <button role="tab" data-tab="setup" aria-selected="false">Setup</button>
 </div></nav>
+<div class="wiz" id="wiz" hidden><div class="wrap">
+  <div class="wizTop"><span id="wizTitle"></span><button id="wizExit">Show the full app</button></div>
+  <div id="wizBody" style="display:grid;gap:18px"></div>
+</div></div>
 <div class="toast" id="toast" hidden></div>
 
 <script>
@@ -501,7 +521,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     } else bd.hidden = true;
     $("playsLike").textContent = pl == null ? "—" : pl + " yd";
     if (!S.comp) renderRec(pl);
-    renderGuide(t, pl);
+    renderGuide();
     if (S.pending) {
       $("shotLive").textContent = fix ? Math.round(dist(S.pending.from, fix)) : "—";
     }
@@ -704,51 +724,136 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     window.scrollTo(0, 0);
   });
 
-  // ---- round guide: tells the golfer the next step ----
+  // ---- step-by-step guide: one full-screen step at a time ----
   const today = () => new Date().toISOString().slice(0, 10);
-  const goTab = name => document.querySelector(`nav [data-tab="${name}"]`).click();
-  function renderGuide(t, pl) {
-    const sec = $("secGuide"), body = $("guideBody");
-    sec.hidden = !S.guide.on;
+  S.wiz = S.wiz || { step: null };
+  const wizOpen = () => !$("wiz").hidden;
+  function renderGuide() {
+    $("secGuide").hidden = !S.guide.on;
     $("guideBtn").setAttribute("aria-pressed", S.guide.on);
-    $("guideBtn").textContent = S.guide.on ? "Turn off round guide" : "Turn on round guide";
-    if (!S.guide.on) return;
-    const c = S.courses[S.cur.course], h = hole();
-    if (S.guide.day !== today()) {
-      const items = [
-        ["Phone charged (bring a battery pack if you have one)", false],
-        [fix ? `Location on: GPS ±${Math.round(fix.acc * YD)} yd` : "Allow location when asked (GPS starting…)", !!fix],
-        [`Course: ${c.name}, hole ${S.cur.hole}`, S.cur.hole === 1],
-        [`Tees: ${S.tee} (change in Setup)`, false],
-        [S.comp ? "Competition mode ON: distance only" : "Competition mode off (turn on in Setup for club events)", false],
-        ["Warm up 10 min, then 15 min on the practice green", false]
-      ];
-      body.innerHTML = `<p class="note">Before you tee off:</p><ol style="margin:0;padding-left:20px">${items.map(([x, ok]) =>
-        `<li>${ok ? "✓ " : ""}${esc(x)}</li>`).join("")}</ol>
-        <div class="row"><button class="primary" id="guideStart">Start round</button></div>`;
-      $("guideStart").onclick = () => { S.guide.day = today(); save(); renderPlay(); toast("Have a good round"); };
-      return;
-    }
-    const saved = !!(h.front || h.center || h.back), steps = [];
-    if (S.pending) steps.push("<b>Walk to your ball</b>, then tap <b>Mark my ball here</b> in Measure a shot.");
-    else if (!fix && !(t > 0)) steps.push("Waiting for GPS. Meanwhile laser the flag and type the yardage below.");
-    else if (t == null) steps.push("<b>Laser the flag</b> and type the yardage in the box below (this green isn't saved yet).");
-    else {
-      steps.push(S.comp ? `<b>${Math.round(t)} yd.</b> Choose your club (competition mode: no suggestions).`
-        : `<b>Plays like ${pl} yd.</b> Check the club suggestion below; aim at the center of the green.`);
-      steps.push("Tap <b>Mark where I'm hitting from</b> (Measure a shot) if you want this shot measured.");
-      steps.push("Routine: target, spot 2–3 ft ahead, one rehearsal swing, face to the spot, one look, swing.");
-    }
-    body.innerHTML = `<ol style="margin:0;padding-left:20px">${steps.map(x => `<li>${x}</li>`).join("")}</ol>
-      ${saved ? "" : `<div class="row"><button id="guideSave">On the green? Save front, center, back</button></div>`}
-      <div class="row">${S.cur.hole < HOLES ? `<button class="primary" id="guideNext">Holed out: next hole</button>`
-        : `<button class="primary" id="guideEnd">Round over: copy shot log for Claude</button>`}</div>`;
-    if ($("guideSave")) $("guideSave").onclick = () => goTab("setup");
-    if ($("guideNext")) $("guideNext").onclick = () => $("nextHole").click();
-    if ($("guideEnd")) $("guideEnd").onclick = () => { S.guide.day = ""; save(); goTab("shots"); $("copyCsv").click(); };
+    $("guideBtn").textContent = S.guide.on ? "Turn off step-by-step guide" : "Turn on step-by-step guide";
+    $("guideBody").innerHTML = '<div class="row"><button class="primary" id="guideOpen">Open the step-by-step guide</button></div>';
+    $("guideOpen").onclick = openWiz;
+    if (wizOpen()) wizLive();
   }
   $("guideHide").onclick = () => { S.guide.on = false; save(); renderPlay(); toast("Guide off: turn it on again in Setup"); };
-  $("guideBtn").onclick = () => { S.guide.on = !S.guide.on; save(); renderPlay(); };
+  $("guideBtn").onclick = () => { S.guide.on = !S.guide.on; save(); renderPlay(); if (S.guide.on) openWiz(); };
+  $("wizExit").onclick = () => { $("wiz").hidden = true; renderAll(); };
+  function openWiz() {
+    $("wiz").hidden = false;
+    step(S.guide.day === today() ? (S.wiz.step || "yds") : "course");
+  }
+  const holeInfo = () => {
+    const c = card(), i = S.cur.hole - 1, par = holePar();
+    const y = c && c.tees[S.tee] ? c.tees[S.tee][i] : null;
+    return `Hole ${S.cur.hole}` + (par ? ` · Par ${par}` : "") + (y ? ` · ${y} yd` : "");
+  };
+  const greenSaved = () => { const h = hole(); return !!(h.front || h.center || h.back); };
+  function opts(list) {   // list of [label, fn, primary?]
+    const wrap = document.createElement("div"); wrap.className = "opts";
+    list.forEach(([label, fn, pri]) => { const b = document.createElement("button"); b.innerHTML = label;
+      if (pri) b.className = "primary"; b.onclick = fn; wrap.appendChild(b); });
+    return wrap;
+  }
+  function screen(title, html, list) {
+    $("wizTitle").textContent = title;
+    const body = $("wizBody"); body.innerHTML = html;
+    if (list) body.appendChild(opts(list));
+    window.scrollTo(0, 0); $("wiz").scrollTop = 0;
+  }
+  function wizLive() {   // refresh GPS-dependent numbers without redrawing the step
+    const el = document.getElementById("wizGps");
+    if (el) el.textContent = fix ? `GPS ready: ±${accYd(fix)} yd` : "Waiting for GPS…";
+    const w = document.getElementById("wizWalk");
+    if (w && S.pending) w.textContent = fix ? Math.round(dist(S.pending.from, fix)) + " yd" : "—";
+    const g = document.getElementById("wizYds");
+    if (g) { const h = hole(), pt = h.center || h.front || h.back; g.textContent = fix && pt ? Math.round(dist(fix, pt)) : "—"; }
+  }
+  function step(name) {
+    S.wiz.step = name; save();
+    const before = "Before you tee off";
+    if (name === "course") return screen(before, `<h3>Which course?</h3>`,
+      Object.entries(S.courses).map(([id, c]) => [esc(c.name) + (id === S.cur.course ? " ✓" : ""),
+        () => { S.cur.course = id; S.cur.hole = 1; changedHole(); step("tees"); }]));
+    if (name === "tees") {
+      const c = card();
+      if (!c) return step("comp");
+      return screen(before, `<h3>Which tees?</h3>`, Object.keys(c.tees).map(t => [t + (t === S.tee ? " ✓" : ""),
+        () => { S.tee = t; $("teeSel").value = t; save(); renderHeader(); step("comp"); }]));
+    }
+    if (name === "comp") return screen(before, `<h3>Is this a club or league competition?</h3>
+      <p class="q">If yes, Pocket Caddie shows distance only (Rule 4.3).</p>`,
+      [["Yes, competition: distance only", () => { S.comp = true; save(); renderAll(); step("gps"); }],
+       ["No, casual round", () => { S.comp = false; save(); renderAll(); step("gps"); }]]);
+    if (name === "gps") return screen(before, `<h3>Location</h3><p class="q">Allow location if your phone asks.</p>
+      <p class="q"><b id="wizGps"></b></p><p class="live">Make sure your phone is charged.</p>`,
+      [["Continue", () => step("warm"), true]]), wizLive();
+    if (name === "warm") return screen(before, `<h3>Warm up</h3><p class="q">10 minutes of warm-up, then 15 minutes on the practice green.</p>`,
+      [["Start round on hole " + S.cur.hole, () => { S.guide.day = today(); save(); step("yds"); }, true]]);
+
+    if (name === "yds") {
+      const saved = greenSaved() && fix;
+      screen(holeInfo(), `<h3>How far to the flag?</h3>
+        ${saved ? `<p class="q">GPS to the center of the green:</p><div class="huge" id="wizYds"></div>` : `<p class="q">Laser the flag and type the yards.</p>`}
+        <input id="wizIn" type="number" inputmode="numeric" placeholder="${saved ? "or type laser yards" : "Yards"}" aria-label="Yards to the flag">`,
+        [["Next", () => {
+            const v = parseFloat($("wizIn").value);
+            if (!(v > 0) && !saved) { toast("Type the yards first"); return; }
+            $("manualYds").value = v > 0 ? v : ""; renderPlay(); step("club"); }, true],
+         ["My ball is on the green", () => step("green")],
+         ["Skip to the next hole", () => step("next")]]);
+      return wizLive();
+    }
+    if (name === "club") {
+      renderPlay();
+      const t = targetYards(), pl = $("playsLike").textContent;
+      const choose = `<label class="q" for="wizClub">Club</label><select id="wizClub">${S.clubs.map(c =>
+        `<option ${c.name === $("shotClub").value ? "selected" : ""}>${esc(c.name)}</option>`).join("")}<option>Other</option></select>`;
+      screen(holeInfo(), S.comp
+        ? `<h3>${t ? Math.round(t) + " yd" : "—"}</h3><p class="q">Competition: choose your club yourself.</p>${choose}`
+        : `<p class="q">Plays like</p><div class="huge">${pl}</div><div class="rec">${$("rec").innerHTML}</div>${choose}`, []);
+      $("wizBody").insertAdjacentHTML("beforeend", `<p class="q">Routine: target · spot 2–3 ft ahead · one rehearsal swing · face to the spot · one look · swing.</p>`);
+      $("wizBody").appendChild(opts([
+        ["Measure this shot (tap before you hit)", () => {
+          if (!fix) { toast("Waiting for GPS"); return; }
+          renderShotBox(); $("shotClub").value = $("wizClub").value; $("markStart").click(); step("walk"); }, true],
+        ["Hit it without measuring", () => step("after")]]));
+      return;
+    }
+    if (name === "walk") {
+      if (!S.pending) return step("after");
+      screen(holeInfo(), `<h3>Walk to your ball</h3><p class="q">Distance so far:</p><div class="huge" id="wizWalk">—</div>
+        <input id="wizNote" type="text" placeholder="Result, e.g. pin high, 10 left" style="font-size:20px" aria-label="Result">`,
+        [["Mark my ball here", () => {
+            if (!fix) { toast("Waiting for GPS"); return; }
+            $("shotNote").value = $("wizNote").value; $("markEnd").click(); step("after"); }, true],
+         ["Cancel this measurement", () => { $("cancelShot").click(); step("after"); }]]);
+      return wizLive();
+    }
+    if (name === "after") return screen(holeInfo(), `<h3>Where's your ball?</h3>`,
+      [["Another shot to the green", () => { $("manualYds").value = ""; renderPlay(); step("yds"); }, true],
+       ["On the green", () => step("green")],
+       ["Holed out", () => step("next")]]);
+    if (name === "green" && greenSaved()) return screen(holeInfo(), `<h3>On the green</h3><p class="q">Putt out. Read from behind the ball, see it go in, one look, putt.</p>`,
+      [["Holed out", () => step("next"), true]]);
+    if (name === "green" || name === "saveGreen") {   // save the green once; stays on this screen until "Holed out"
+      S.wiz.step = "saveGreen"; save();
+      const h = hole(), saveAt = k => [(h[k] ? "✓ " : "") + "Save " + k, () => {
+        if (!fix) { toast("Waiting for GPS"); return; }
+        h[k] = { ...fix }; save(); renderAll(); toast("Saved " + k); step("saveGreen"); }];
+      screen(holeInfo(), `<h3>Save this green (once)</h3><p class="q">Stand on each spot, wait for good GPS, then tap. Skip if you're holding people up.</p>
+        <p class="q"><b id="wizGps"></b></p>`,
+        [saveAt("front"), saveAt("center"), saveAt("back"), ["Holed out", () => step("next"), true]]);
+      return wizLive();
+    }
+    if (name === "next") {
+      if (S.cur.hole < HOLES) { S.cur.hole++; changedHole(); return step("yds"); }
+      return step("end");
+    }
+    if (name === "end") return screen("Round over", `<h3>Nice round</h3><p class="q">Copy your shot log and paste it in your chat with Claude.</p>`,
+      [["Copy shot log for Claude", () => { $("copyCsv").click(); }, true],
+       ["Close the guide", () => { S.guide.day = ""; S.wiz.step = null; save(); $("wiz").hidden = true; renderAll(); }]]);
+  }
 
   function renderComp() {
     ["secWx", "secPlays", "secNotes", "secClubAvg"].forEach(id => $(id).hidden = S.comp);
@@ -767,6 +872,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   function renderAll() { renderComp(); renderHeader(); renderNotes(); renderShotBox(); renderPlay(); renderShots(); renderClubs(); renderSetup(); }
   renderAll();
   clubsFromLink();
+  if (S.guide.on) openWiz();
 })();
 </script>
 </body>
