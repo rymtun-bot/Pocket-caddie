@@ -30,7 +30,7 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   4U = Lazarus 21° (golfer, 2026-11-01). All below untested on the Rapsodo (golfer's photos, 2026-11-01):
   1U King Cobra Baffler Pro 16°, Fujikura Speeder Baffler Pro S-flex (stiff); 2U King Cobra Baffler DWS 18°;
   3U King Cobra Baffler 20°; an Aldila NV-HL 65 regular (Cobra) shaft on one Baffler; Adams Tight Lies 19°.
-  Also: Lazarus 58° forged milled wedge; a chrome "S 55°" sand wedge (make not shown); two putters, a Scotty
+  Also: Lazarus 58° forged milled wedge; the TaylorMade RSi 2 sand wedge "S" 55° (golfer, 2026-11-01); two putters, a Scotty
   Cameron (Newport-style, coloured dots) and a Titleist Scotty Cameron. One shaft reads "Regular flex, mid kick,
   65 g, 4.5°" (club not identified). About 20 clubs in total: 14 max (Rule 4.1b).
 - Laser rangefinder: Revasri. Its readings go in Pocket Caddie's "type the yardage" box.
