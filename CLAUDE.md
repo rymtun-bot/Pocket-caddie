@@ -135,3 +135,5 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   read at the tee as "Course map: ..." until the golfer saves their own hazards on that hole. Map not to scale: rough.
 - Rancho Park scorecard (Greenskeeper.org screenshot from the golfer, 2026-10-25) is in CARDS and courses/rancho_park.md.
   Tees there: Black 6,839 / Blue 6,419 / White 6,036 / Yellow 5,644. Ask which tees the golfer plays at Rancho.
+  Rancho hazards from the golf.lacity.gov aerial map, local rules and City ratings (2026-11-01): CARDS.rancho.map and
+  courses/rancho_park.md. Map notes use [g-N] = chosen tees' yardage minus N, so distances follow the tees in Setup.
