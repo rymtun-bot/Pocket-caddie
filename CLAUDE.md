@@ -111,7 +111,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   mode): record (camera) or pick a video, save address/impact frames, then tap points. Face-on: head + ball at address,
   head, lead hand, clubhead at impact → head slide toward target (>8% of head-to-ball height) and shaft lean (hands
   behind >3° = adding loft). Behind: head rise (>5%) or dip, toward/away from the ball (early extension). Thresholds are
-  rough guides, not published standards. Compares with the club's Rapsodo averages typed in (launch/loft > 0.75 = high,
+  rough guides, not published standards. Compares with Rapsodo numbers typed in (selector: this shot or club average) (launch/loft > 0.75 = high,
   start right with a slide, smash < 1.25 with standing up). Findings are spoken, copyable, and printed on the shared picture.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.

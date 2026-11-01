@@ -89,7 +89,8 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
       <label for="ckClub">Club in this swing</label><select id="ckClub"></select>
     </div>
     <div class="row">
-      <label>This club's Rapsodo averages (optional, used to compare with the swing)</label>
+      <label for="ckSrc">Rapsodo numbers below are (optional, used to compare with the swing)</label>
+      <select id="ckSrc"><option value="shot">This shot (its own row in the Rapsodo app)</option><option value="avg">The club's average</option></select>
       <input id="ckLaunch" type="number" inputmode="decimal" placeholder="Launch °" aria-label="Launch angle">
       <input id="ckDir" type="number" inputmode="decimal" placeholder="Start ° (− = left)" aria-label="Start direction, negative is left">
       <input id="ckSmash" type="number" inputmode="decimal" step="0.01" placeholder="Smash" aria-label="Smash factor">
@@ -305,6 +306,7 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
     const ah = P("Address", "head"), ball = P("Address", "ball"), ih = P("Impact", "head");
     const scale = Math.abs(ball.y - ah.y) || 1, dir = +$("target").value, out = [];
     const club = $("ckClub").value, launch = parseFloat($("ckLaunch").value), sdir = parseFloat($("ckDir").value), smash = parseFloat($("ckSmash").value);
+    const src = $("ckSrc").value === "shot" ? "this shot's" : "your average", tag = $("ckSrc").value === "shot" ? "this shot" : "club average";
     const loft = LOFT[club], highLaunch = loft && launch > 0 && launch / loft > 0.75;   // 0.75: rough guide (your 9-iron: 27.5° / 40° = 0.69)
     let handsBehind = false, slide = false, rose = false;
     if (isFace()) {
@@ -327,13 +329,13 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
     }
     // compare with the Rapsodo averages the golfer typed
     if (launch > 0 && loft) {
-      if (highLaunch && handsBehind) out.push(["link", `Matches your numbers: ${launch}° launch is high for a ${loft}° ${club}, which is what hands behind at impact produces.`]);
-      else if (highLaunch) out.push(["link", `Your ${launch}° launch is high for a ${loft}° ${club}, but this frame doesn't show the hands behind. Check another swing or the other view.`]);
-      else if (handsBehind) out.push(["link", `Your ${launch}° launch looks normal for the ${club}, so this swing may be an exception. Check a few more.`]);
-      else out.push(["link", `Your ${launch}° launch looks normal for a ${loft}° ${club}, consistent with this frame.`]);
+      if (highLaunch && handsBehind) out.push(["link", `Matches the numbers: ${src} ${launch}° launch is high for a ${loft}° ${club}, which is what hands behind at impact produces.`]);
+      else if (highLaunch) out.push(["link", `The ${launch}° launch (${tag}) is high for a ${loft}° ${club}, but this frame doesn't show the hands behind. Check another swing or the other view.`]);
+      else if (handsBehind) out.push(["link", $("ckSrc").value === "shot" ? `This shot's ${launch}° launch looks normal for the ${club} even with the hands behind; check the frame taps.` : `Your average ${launch}° launch looks normal for the ${club}, so this swing may be an exception. Check a few more.`]);
+      else out.push(["link", `The ${launch}° launch (${tag}) looks normal for a ${loft}° ${club}, consistent with this frame.`]);
     }
-    if (Number.isFinite(sdir) && slide && sdir > 2) out.push(["link", `Your ${sdir}° right start can go with a head slide toward the target, which tends to leave the face open.`]);
-    if (smash > 0 && rose && smash < 1.25) out.push(["link", `Your smash of ${smash} is on the low side; standing up through impact often goes with thin or toe strikes.`]);
+    if (Number.isFinite(sdir) && slide && sdir > 2) out.push(["link", `The ${sdir}° right start (${tag}) can go with a head slide toward the target, which tends to leave the face open.`]);
+    if (smash > 0 && rose && smash < 1.25) out.push(["link", `The smash of ${smash} (${tag}) is on the low side; standing up through impact often goes with thin or toe strikes.`]);
     findings = out;
     $("ckOut").innerHTML = out.map(([k, t]) => `<p class="note" style="color:var(--ink);font-size:16px">${k === "ok" ? "✓" : k === "fix" ? "▲" : "↔"} ${t}</p>`).join("")
       + `<div class="row"><button id="ckCopy">Copy the check for Claude</button></div>`;
@@ -341,7 +343,7 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
     say(out.map(([, t]) => t).join(" "));
   }
   const checkText = () => `Swing check ${new Date().toLocaleDateString()}, ${$("view").value}, club ${$("ckClub").value}`
-    + `${$("ckLaunch").value ? ", launch " + $("ckLaunch").value + "°" : ""}${$("ckDir").value ? ", start " + $("ckDir").value + "°" : ""}${$("ckSmash").value ? ", smash " + $("ckSmash").value : ""}:\n`
+    + `${$("ckLaunch").value || $("ckDir").value || $("ckSmash").value ? ", Rapsodo " + ($("ckSrc").value === "shot" ? "this shot" : "club average") : ""}${$("ckLaunch").value ? ", launch " + $("ckLaunch").value + "°" : ""}${$("ckDir").value ? ", start " + $("ckDir").value + "°" : ""}${$("ckSmash").value ? ", smash " + $("ckSmash").value : ""}:\n`
     + findings.map(([, t]) => "- " + t).join("\n");
 
   // ---- contact sheet ----
