@@ -35,8 +35,8 @@ bump-and-run and PW), then the up-and-down game: chip 9 balls and write T / N / 
 | Date | Session | Type | Clubs / holes | Focus |
 |---|---|---|---|---|
 | Sat 10/31 | 1 | V (face-on) | PW ½ · PW ¾ | Hold-off: hands lead, launch toward 28–30° |
-| Sun 11/1 | 1 | V (behind) | Driver · 3W | Start line within 3°; driver speed baseline |
-| Mon 11/2 | 1 | M +S | 7-iron · 5U | Center contact, start within 3° |
+| Sun 11/1 | 1 | V (behind + face-on) | 3W (Burner, low tee) · 7-iron | Start line within 3°; first Rapsodo 7-iron average (driver done 10/31) |
+| Mon 11/2 | 1 | M +S | 5U · 4U | Center contact, start within 3° |
 | Tue 11/3 | 1 | P3 | Westchester Blue: 108, 176, 145, 141, 160, 148, 148, 150, 160 | Routine on every ball |
 | Wed 11/4 | 1 | M +S | Driver · 8-iron | Start line |
 | Wed 11/4 | 2 | SG + M | PW ½ (10 balls), then short game | Contact first, then landing spot |
