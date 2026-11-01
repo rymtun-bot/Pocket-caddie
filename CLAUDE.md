@@ -54,6 +54,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
 - Home course game (hole-by-hole Westchester/Rancho on the patio): `practice/home-course-game.md`.
 - `home.html` (Home Course page, linked from Setup) runs that game: Rapsodo carry/total/start direction place the ball;
   long first putts count as a lag; assumptions (green radius, fairway width, trouble, lag leaves) are editable on the page.
+- Club list loading: one-tap link `https://rymtun-bot.github.io/Pocket-caddie/#clubs=Driver:185,8i:113` or paste
+  "Driver 185, 8i 113" on the Clubs tab. Same-name clubs are updated, new ones added, nothing removed. Send both forms:
+  on iPhone a Home Screen web app keeps its own storage, so the link (opens Safari) may not reach it; the paste box does.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 

@@ -216,6 +216,12 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         <button class="primary" id="addClub" style="flex:0 0 auto">Add</button>
       </div>
     </section>
+    <section class="panel">
+      <h2>Load a club list</h2>
+      <p class="note">Paste a list from Claude, e.g. "Driver 185, 8i 113, PW 100", then tap Load. Clubs with the same name get the new carry; new clubs are added; clubs not in the list stay as they are.</p>
+      <textarea id="clubPaste" rows="3" placeholder="Driver 185, 5W 160, 8i 113, PW 100" aria-label="Club list to load"></textarea>
+      <div class="row"><button class="primary" id="clubLoad">Load club list</button></div>
+    </section>
   </div>
 
   <!-- SETUP -->
@@ -577,6 +583,27 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else { b.dataset.armed = 1; b.textContent = "Confirm"; }
     });
   }
+  // Club list from Claude: "Driver 185, 8i 113" (pasted) or #clubs=Driver:185,8i:113 (one-tap link)
+  function parseClubList(text) {
+    return text.split(/[,;\n]+/).map(t => t.trim()).filter(Boolean).map(t => {
+      const m = t.match(/^(.+?)[\s:=]+(\d{2,3})\s*(?:yds?|yards?)?$/i);
+      return m ? { name: m[1].trim(), carry: +m[2] } : null;
+    });
+  }
+  function loadClubList(text) {
+    const items = parseClubList(text);
+    if (!items.length || items.some(x => !x)) { toast("Couldn't read that list"); return false; }
+    const list = items.map(c => `${c.name} ${c.carry}`).join(", ");
+    if (!confirm(`Load these ${items.length} clubs?\n${list}\n\nSame-name clubs get the new carry; others are added.`)) return false;
+    let changed = 0, added = 0;
+    for (const c of items) {
+      const old = S.clubs.find(x => x.name.toLowerCase() === c.name.toLowerCase());
+      if (old) { if (old.carry !== c.carry) { old.carry = c.carry; changed++; } } else { S.clubs.push(c); added++; }
+    }
+    save(); renderAll(); toast(`${changed} updated, ${added} added`);
+    return true;
+  }
+  $("clubLoad").onclick = () => { if (loadClubList($("clubPaste").value)) $("clubPaste").value = ""; };
   $("addClub").onclick = () => {
     const name = $("newClub").value.trim(); if (!name) return;
     S.clubs.push({ name, carry: Math.round(+$("newCarry").value) || 0 });
@@ -672,8 +699,16 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     $("compBtn").textContent = S.comp ? "Turn off competition mode" : "Turn on competition mode";
   }
   $("compBtn").onclick = () => { S.comp = !S.comp; save(); renderAll(); toast(S.comp ? "Competition mode on: distance only" : "Competition mode off"); };
+  function clubsFromLink() {
+    const m = location.hash.match(/^#clubs=(.+)$/);
+    if (!m) return;
+    history.replaceState(null, "", location.pathname + location.search);
+    let text; try { text = decodeURIComponent(m[1]); } catch { return; }
+    loadClubList(text);
+  }
   function renderAll() { renderComp(); renderHeader(); renderNotes(); renderShotBox(); renderPlay(); renderShots(); renderClubs(); renderSetup(); }
   renderAll();
+  clubsFromLink();
 })();
 </script>
 </body>
