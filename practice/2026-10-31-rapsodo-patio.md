@@ -57,3 +57,6 @@ Notes:
   accessed 2026-10-26). Club speed 78 mph = driver speed baseline for the speed program.
 - Start 10.6° right, 28 yd right of the line: the irons and wedges started straight the same day, so this is
   driver-specific (setup/aim with the longer club or an open face). Check on the behind-view video.
+- Golfer's report (2026-11-01): a few weeks earlier at a range, driver carries with range balls were 200–220 yd,
+  far above the patio's 166. Not yet known whether that was carry (first bounce) or where the ball stopped, or how
+  it was judged. Until the course measures it, treat the patio driver carry as an underestimate.
