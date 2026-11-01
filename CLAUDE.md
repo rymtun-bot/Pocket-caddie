@@ -93,6 +93,13 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   tune from shot logs). Par 4/5 tee shot: the card yardage can be used, and when the hole is longer than the longest club
   the guide plans it: longest club off the tee, then the club nearest each remaining distance (no driver or 3-wood off
   the fairway; the golfer tees the 3W only).
+  Round stats (golfer's request 2026-11-01): after "Holed out": fairway? (par 4/5: hit/left/right), putts (0–4), then score
+  (preselected = full shots + putts + penalties). GIR = score − putts ≤ par − 2. After every full shot: "Left, right or on
+  line?" (S.misses; also in the shot log's start_line column). Club advice adds "Your X misses right N of M. Aim a little
+  left." once a club has 3+ shots and 60% to one side. Hole plans (Menu → Plan for this hole) are read at the tee. Swing
+  thought (Setup, default "Hands lead through impact") is read with the routine. Menu: add a penalty stroke, dark screen.
+  End of round: says and copies fairways, GIR, putts, 3-putts, penalties, start-line counts and a "next week, practice ..."
+  line chosen from those stats.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 
