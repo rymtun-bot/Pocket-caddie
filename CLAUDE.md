@@ -27,7 +27,7 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
 - Fairway woods (golfer's photos, 2026-11-01): Cleveland Launcher XL Halo 3-wood 15° (Cleveland shaft, flex not shown);
   TaylorMade Burner 3-wood (sole appears to read 15°) and Burner 5-wood 18°, both TaylorMade REAX 49 R shafts.
   The "3W" in Rapsodo sessions so far is the Burner (golfer, 2026-11-01); the Cleveland 3W is untested.
-  4U = Lazarus 21° (golfer, 2026-11-01). Adams Tight Lies 19° also in the photo: no data yet; role in the bag unconfirmed.
+  4U = Lazarus 21° (golfer, 2026-11-01). 1U and 2U are King Cobra Baffler like the 5U (lofts not given), untested. Adams Tight Lies 19° also in the photo: no data yet; role in the bag unconfirmed.
 - Laser rangefinder: Revasri. Its readings go in Pocket Caddie's "type the yardage" box.
 - Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (urethane cover).
 
