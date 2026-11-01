@@ -549,8 +549,9 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let best = clubs.reduce((b, c) => Math.abs(c.carry - pl) < Math.abs(b.carry - pl) ? c : b);
     const i = clubs.indexOf(best);
     const diff = c => { const d = c.carry - pl; return (d >= 0 ? "+" : "−") + Math.abs(d) + " yd"; };
-    const alts = [clubs[i - 1], clubs[i + 1]].filter(Boolean).map(c => `${esc(c.name)} ${c.carry} (${diff(c)})`).join(" · ");
-    rec.innerHTML = `<span class="main">${esc(best.name)}</span><span class="alts">Carries ${best.carry} yd (${diff(best)})${alts ? "<br>Next to it: " + alts : ""}</span>`;
+    const lo = clubs[i - 1], hi = clubs[i + 1];
+    const alts = (lo ? `<br>One club less: ${esc(lo.name)} ${lo.carry} (${diff(lo)})` : "") + (hi ? `<br>One club more: ${esc(hi.name)} ${hi.carry} (${diff(hi)})` : "");
+    rec.innerHTML = `<span class="main">Use the ${esc(best.name)}</span><span class="alts">It carries ${best.carry} yd (${diff(best)})${alts}</span>`;
     if (!S.pending) $("shotClub").value = best.name;
   }
   $("manualYds").oninput = renderPlay;
@@ -979,6 +980,13 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       .replace(/(\d+)°F/g, "$1 degrees").replace(/\bmph\b/g, "miles per hour").replace(/\bhPa\b/g, "hectopascals");
     speechSynthesis.speak(new SpeechSynthesisUtterance(sayable(text)));
   }
+  function clubLines(name) {   // "It carries 147. One club less: 8i, 113. One club more: 4U, 154." for the club screen
+    const clubs = S.clubs.filter(c => c.carry > 0).sort((a, b) => a.carry - b.carry), i = clubs.findIndex(c => c.name === name);
+    if (i < 0) return "";
+    const lo = clubs[i - 1], hi = clubs[i + 1];
+    return `<p class="q">It carries ${clubs[i].carry}.</p>` + (lo ? `<p class="live">One club less: ${esc(lo.name)}, ${lo.carry}</p>` : "")
+      + (hi ? `<p class="live">One club more: ${esc(hi.name)}, ${hi.carry}</p>` : "");
+  }
   function sayClub() {   // "Plays like 108. Suggested club: 8 iron, carries 113. Shorter: ... Longer: ..."
     if (!canSpeak) return;
     const pl = parseInt($("playsLike").textContent), main = $("rec").querySelector(".main");
@@ -986,11 +994,11 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let text;
     if (!main) text = "Add your clubs on the Clubs tab to get a suggestion.";
     else {
-      const i = clubs.findIndex(c => c.name === main.textContent);
+      const i = clubs.findIndex(c => c.name === main.textContent.replace(/^Use the /, ""));
       if (i < 0) text = `${main.textContent}. ${$("rec").querySelector(".alts").textContent}`;
       else {
         const c = clubs[i], lo = clubs[i - 1], hi = clubs[i + 1];
-        text = `Suggested club: ${c.name}, carries ${c.carry}.` + (lo ? ` Shorter: ${lo.name}, ${lo.carry}.` : "") + (hi ? ` Longer: ${hi.name}, ${hi.carry}.` : "");
+        text = `Use the ${c.name}. It carries ${c.carry}.` + (lo ? ` One club less: ${lo.name}, ${lo.carry}.` : "") + (hi ? ` One club more: ${hi.name}, ${hi.carry}.` : "");
       }
     }
     speechSynthesis.cancel();
@@ -1088,7 +1096,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       renderPlay();
       const pl = parseInt($("playsLike").textContent), plan = !S.comp && teeShot() ? teePlan(pl) : null;
       const sug = S.comp ? "" : plan ? plan.tee.name : $("shotClub").value, t = targetYards();
-      screen(holeInfo(), `<h3>${S.comp ? `${t ? Math.round(t) : "—"} yd. Your club?` : plan ? `Tee shot: ${esc(plan.tee.name)}` : `Suggested: ${esc(sug || "—")}`}</h3>
+      screen(holeInfo(), `<h3>${S.comp ? `${t ? Math.round(t) : "—"} yd. Your club?` : plan ? `Tee shot: ${esc(plan.tee.name)}` : `Use the ${esc(sug || "—")}`}</h3>
+        ${!S.comp && !plan ? clubLines(sug) : ""}
         ${plan ? `<p class="q">${esc(plan.text)}</p>` : ""}
         <select id="wizClub" aria-label="Club">${S.clubs.map(c => `<option ${c.name === sug ? "selected" : ""}>${esc(c.name)}</option>`).join("")}<option>Other</option></select>`,
         [["Next", () => { S.wiz.club = $("wizClub").value; save(); step("measure"); }, true]]);
