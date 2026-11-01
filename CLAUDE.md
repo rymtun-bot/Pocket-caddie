@@ -106,6 +106,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Westchester or Rancho). Club advice: a hazard in the middle where the club would land (±10 yd) → carry it with a club
   that clears it, or lay up (water/OB prefer lay-up); side hazards → aim away, and a warning if the club's miss tendency
   points at water/OB. Competition mode: hazard distances only.
+  At each tee the hole announcement includes the hole's hazards with distances from the tee (names only without GPS).
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 

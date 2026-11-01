@@ -1004,6 +1004,12 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       if (tend.includes(`misses ${z.side}`)) lines.push(`Careful: your ${club.name} tends to miss ${z.side}, toward the ${HZ[z.type]}.`);
     return { club, lines };
   }
+  function teeHazards() {   // "Hazards: bunker on the right from 200 to 215, water on the left from 250 to 270."
+    const zs = hazardsAhead();
+    if (zs.length) return "Hazards: " + zs.map(z => `${hzName(z).toLowerCase()} from ${z.a0} to ${z.a1}`).join(", ") + ".";
+    const n = (hole().hazards || []).length;   // no GPS yet: at least say what's there
+    return n ? "Hazards: " + hole().hazards.map(z => hzName({ ...z, side: z.side || "" }).toLowerCase()).join(", ") + "." : "";
+  }
   function hazardDistances() {   // competition mode: distances only
     return hazardsAhead().map(z => `${hzName(z)}: ${z.a0} to ${z.a1} yd.`);
   }
@@ -1117,7 +1123,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const c = card(), i = S.cur.hole - 1, par = holePar();
     const y = c && c.tees[S.tee] ? c.tees[S.tee][i] : null;
     const text = `Hole ${S.cur.hole}.` + (par ? ` Par ${par}.` : "") + (y ? ` ${y} yards from the ${S.tee} tees.` : "")
-      + (c ? ` Handicap ${c.hcp[i]}.` : "") + (planText() ? ` Your plan: ${planText()}.` : "") + (!S.comp && hole().notes ? " This hole has a green note." : "")
+      + (c ? ` Handicap ${c.hcp[i]}.` : "") + (teeHazards() ? ` ${teeHazards()}` : "") + (planText() ? ` Your plan: ${planText()}.` : "") + (!S.comp && hole().notes ? " This hole has a green note." : "")
       + " " + $("wizBody").querySelector("h3").innerText;
     const pre = S.wiz.pre || ""; S.wiz.pre = ""; save();
     speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(pre + " " + sayable(text)));
@@ -1251,7 +1257,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     }
     if (name === "yds") {   // one thing: the yardage
       const saved = greenSaved() && fix, cardYds = teeShot() ? cardYards() : null;
-      const planHtml = S.wiz.strokes ? "" : planText() ? `<p class="q"><b>Plan:</b> ${esc(planText())}</p>` : "";
+      const planHtml = S.wiz.strokes ? "" : (teeHazards() ? `<p class="q"><b>${esc(teeHazards())}</b></p>` : "")
+        + (planText() ? `<p class="q"><b>Plan:</b> ${esc(planText())}</p>` : "");
       screen(holeInfo(), (planHtml) + (cardYds && !saved
         ? `<h3>Tee shot. Hole length ${cardYds} yards</h3>
            <input id="wizIn" type="number" inputmode="numeric" placeholder="${cardYds} (or your own number)" aria-label="Yards">${micBtn()}`
