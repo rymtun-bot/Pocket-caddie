@@ -321,7 +321,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   <button role="tab" data-tab="setup" aria-selected="false">Setup</button>
 </div></nav>
 <div class="wiz" id="wiz" hidden><div class="wrap">
-  <div class="wizTop"><span id="wizTitle"></span><button id="wizExit">Menu</button></div>
+  <div class="wizTop"><span id="wizTitle"></span><span style="display:flex;gap:8px">
+    <button id="wizVoice" aria-pressed="true" aria-label="Read aloud">🔊 On</button><button id="wizExit">Menu</button></span></div>
   <div id="wizBody" style="display:grid;gap:18px"></div>
 </div></div>
 <div class="toast" id="toast" hidden></div>
@@ -760,7 +761,38 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const body = $("wizBody"); body.innerHTML = html;
     if (list) body.appendChild(opts(list));
     window.scrollTo(0, 0); $("wiz").scrollTop = 0;
+    speakScreen(title);
   }
+
+  // ---- read aloud: the phone's own voice speaks each guide screen (no data or account needed) ----
+  if (S.voice === undefined) S.voice = true;
+  const canSpeak = "speechSynthesis" in window;
+  function sayable(text) {   // golf shorthand -> words the voice reads naturally
+    return text.replace(/·/g, ",").replace(/±/g, "plus or minus ").replace(/✓/g, "")
+      .replace(/\b(\d+)\s*yd\b/g, "$1 yards").replace(/\b(\d+)\s*ft\b/g, "$1 feet").replace(/(\d+)°/g, "$1 degree")
+      .replace(/\bPW\b/g, "pitching wedge").replace(/\bGW\b/g, "gap wedge").replace(/\bSW\b/g, "sand wedge")
+      .replace(/\b(\d{1,2})i\b/g, "$1 iron").replace(/\b(\d)U\b/g, "$1 utility").replace(/\b(\d)W\b/g, "$1 wood")
+      .replace(/\bPar\b/g, "par");
+  }
+  function speakScreen(title) {
+    if (!canSpeak || !S.voice || $("wiz").hidden) return;
+    const parts = [title, ...[...$("wizBody").querySelectorAll("h3, .huge, p.q")].map(e => e.innerText)];
+    const sel = $("wizBody").querySelector("select");
+    if (sel && !parts.join(" ").includes(sel.value)) parts.push(sel.value);
+    const u = new SpeechSynthesisUtterance(sayable(parts.filter(Boolean).join(". ")));
+    u.rate = 0.95;
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+  }
+  function renderVoiceBtn() {
+    const b = $("wizVoice");
+    b.hidden = !canSpeak;
+    b.setAttribute("aria-pressed", !!S.voice); b.textContent = S.voice ? "🔊 On" : "🔇 Off";
+  }
+  $("wizVoice").onclick = () => {
+    S.voice = !S.voice; save(); renderVoiceBtn();
+    if (S.voice) speakScreen($("wizTitle").textContent); else speechSynthesis.cancel();
+  };
+  renderVoiceBtn();
   function wizLive() {   // refresh GPS-dependent numbers without redrawing the step
     const el = document.getElementById("wizGps");
     if (el) el.textContent = fix ? `GPS ready: ±${accYd(fix)} yd` : "Waiting for GPS…";
