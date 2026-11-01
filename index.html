@@ -253,6 +253,16 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><button id="guideBtn" aria-pressed="true">Turn off step-by-step guide</button></div>
     </section>
     <section class="panel">
+      <h2>Uphill and downhill (guide)</h2>
+      <p class="note">Yards the guide adds or takes off when you answer "uphill" or "downhill". These are starting values to tune with your own shots, not published figures.</p>
+      <div class="factors">
+        <label for="slUp">Uphill</label><input id="slUp" type="number" inputmode="numeric">
+        <label for="slSteepUp">Steep uphill</label><input id="slSteepUp" type="number" inputmode="numeric">
+        <label for="slDown">Downhill</label><input id="slDown" type="number" inputmode="numeric">
+        <label for="slSteepDown">Steep downhill</label><input id="slSteepDown" type="number" inputmode="numeric">
+      </div>
+    </section>
+    <section class="panel">
       <h2>Competition mode</h2>
       <p class="note">For club or league events. Distance-measuring devices may show distance only (if the event's Local Rule allows them at all). Turning this on hides the conditions, plays-like distance, club suggestion, your club averages and green notes. GPS yardages, the rangefinder box and shot measuring stay.</p>
       <div class="row"><button id="compBtn" aria-pressed="false">Turn on competition mode</button></div>
@@ -371,6 +381,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   S.windOv = S.windOv || { speed: "", dir: "1" };
   S.tee = S.tee || "Blue"; // the golfer plays the Blue tees
   S.comp = !!S.comp;       // competition mode: distance only (Rule 4.3)
+  S.slope = S.slope || { up: 5, steepUp: 10, down: -5, steepDown: -10 };   // guide's uphill/downhill yards: starting values, editable in Setup
   S.guide = S.guide || { on: true, day: "" }; // round guide: on by default; day = date the pre-round checklist was done
   let wx = null; // latest weather: {temp °F, press hPa, speed mph, gust mph, dir deg wind comes from, at, lat, lon}
 
@@ -716,6 +727,9 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const v = parseFloat(e.target.value);
     S.factors[k] = v >= 0 ? v : DEFAULT_F[k]; save(); renderFactors(); renderPlay();
   };
+  const SLF = { slUp: "up", slSteepUp: "steepUp", slDown: "down", slSteepDown: "steepDown" };
+  Object.entries(SLF).forEach(([id, k]) => { $(id).value = S.slope[k];
+    $(id).onchange = e => { const v = Math.round(+e.target.value); if (Number.isFinite(v)) { S.slope[k] = v; save(); } else e.target.value = S.slope[k]; }; });
   $("fReset").onclick = () => { S.factors = { ...DEFAULT_F }; save(); renderFactors(); renderPlay(); };
   renderFactors();
 
@@ -821,7 +835,9 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     [/^(i ?ve hit it|hit it|hit|done hitting)$/, "i ve hit it"], [/^(mark|mark it|mark (my )?ball( here)?)$/, "mark my ball here"],
     [/^(not on( the)? green|not yet|another shot|still going)$/, "not on the green"], [/^(on( the)? green|green)$/, "on the green"],
     [/^(holed( out)?|in the hole|it s in|made it)$/, "holed out"], [/^(casual|no competition)$/, "no casual round"],
-    [/^(competition|yes competition)$/, "yes competition"]
+    [/^(competition|yes competition)$/, "yes competition"],
+    [/^(flat|level)$/, "flat"], [/^(up|uphill|up hill)$/, "uphill"], [/^(down|downhill|down hill)$/, "downhill"],
+    [/^steep (up|uphill|up hill)$/, "steep uphill"], [/^steep (down|downhill|down hill)$/, "steep downhill"]
   ];
   function matchAnswer(said, buttons, select) {
     const t = norm(said);
@@ -894,6 +910,23 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     u.rate = 0.95;
     speechSynthesis.cancel(); speechSynthesis.speak(u);
   }
+  // ---- tee shots and slope ----
+  const cardYards = () => { const c = card(); return c && c.tees[S.tee] ? c.tees[S.tee][S.cur.hole - 1] : null; };
+  const teeShot = () => (S.wiz.strokes || 0) === 0 && (holePar() || 0) >= 4;
+  const fmtAdj = v => (v > 0 ? "+" : "") + v;
+  function teePlan(pl) {   // longest club off the tee, then the club nearest what's left (up to three more shots)
+    const clubs = S.clubs.filter(c => c.carry > 0).sort((a, b) => b.carry - a.carry);
+    if (!clubs.length || !(pl > clubs[0].carry + 15)) return null;   // reachable: the normal suggestion is better
+    const tee = clubs[0]; let left = pl - tee.carry; const parts = [];
+    const deck = clubs.filter(c => !/driver|^d$|3 ?w|3 ?wood/i.test(c.name));   // off the fairway: no driver or 3-wood (golfer tees the 3W only)
+    if (!deck.length) return null;
+    for (let k = 0; k < 3 && left > 15; k++) {
+      const c = left > deck[0].carry + 15 ? deck[0] : deck.reduce((b, x) => Math.abs(x.carry - left) < Math.abs(b.carry - left) ? x : b);
+      parts.push(`${k ? "then " : ""}about ${Math.round(left)}: ${c.name}`); left -= c.carry;
+    }
+    return { tee, text: "Leaves " + (parts.join(", ") || "a short pitch") + "." };
+  }
+
   // ---- scorecard for the guided round ----
   function scoreName(n, par) {
     const d = n - par;
@@ -1015,19 +1048,31 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         ["Show the full app", () => { $("wiz").hidden = true; renderAll(); }]]);
     }
     if (name === "yds") {   // one thing: the yardage
-      const saved = greenSaved() && fix;
-      screen(holeInfo(), saved
+      const saved = greenSaved() && fix, cardYds = teeShot() ? cardYards() : null;
+      screen(holeInfo(), cardYds && !saved
+        ? `<h3>Tee shot. Hole length ${cardYds} yards</h3>
+           <input id="wizIn" type="number" inputmode="numeric" placeholder="${cardYds} (or your own number)" aria-label="Yards">${micBtn()}`
+        : saved
         ? `<h3>Yards to the green center</h3><div class="huge" id="wizYds"></div>
            <input id="wizIn" type="number" inputmode="numeric" placeholder="or type laser yards" aria-label="Yards">${micBtn()}`
         : `<h3>Laser the flag. How many yards?</h3>
            <input id="wizIn" type="number" inputmode="numeric" placeholder="Yards" aria-label="Yards to the flag">${micBtn()}`,
         [["Next", () => {
-          const v = parseFloat($("wizIn").value);
+          const v = parseFloat($("wizIn").value) || cardYds;
           if (!(v > 0) && !saved) { toast("Type the yards first"); return; }
-          $("manualYds").value = v > 0 ? v : ""; renderPlay(); step(S.comp ? "club" : "plays"); }, true]]);
+          $("manualYds").value = v > 0 ? v : ""; S.adj = 0; renderPlay(); step(S.comp ? "club" : "slope"); }, true]]);
       wireMic();
       if (S.wiz.newHole) { S.wiz.newHole = false; save(); sayHole(); }   // always spoken at the start of each hole
       return wizLive();
+    }
+    if (name === "slope") {   // one question: elevation to the target; sets the golfer's own adjustment for this shot
+      const sl = S.slope;
+      return screen(holeInfo(), `<h3>Uphill, downhill or flat?</h3>`, [
+        ["Flat", () => { S.adj = 0; save(); step("plays"); }, true],
+        [`Uphill (${fmtAdj(sl.up)} yd)`, () => { S.adj = sl.up; save(); step("plays"); }],
+        [`Steep uphill (${fmtAdj(sl.steepUp)} yd)`, () => { S.adj = sl.steepUp; save(); step("plays"); }],
+        [`Downhill (${fmtAdj(sl.down)} yd)`, () => { S.adj = sl.down; save(); step("plays"); }],
+        [`Steep downhill (${fmtAdj(sl.steepDown)} yd)`, () => { S.adj = sl.steepDown; save(); step("plays"); }]]);
     }
     if (name === "plays") {   // one thing: the adjusted number, with what changed it
       renderPlay();
@@ -1041,11 +1086,14 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     }
     if (name === "club") {   // one thing: pick the club (the suggestion is preselected)
       renderPlay();
-      const sug = S.comp ? "" : $("shotClub").value, t = targetYards();
-      screen(holeInfo(), `<h3>${S.comp ? `${t ? Math.round(t) : "—"} yd. Your club?` : `Suggested: ${esc(sug || "—")}`}</h3>
+      const pl = parseInt($("playsLike").textContent), plan = !S.comp && teeShot() ? teePlan(pl) : null;
+      const sug = S.comp ? "" : plan ? plan.tee.name : $("shotClub").value, t = targetYards();
+      screen(holeInfo(), `<h3>${S.comp ? `${t ? Math.round(t) : "—"} yd. Your club?` : plan ? `Tee shot: ${esc(plan.tee.name)}` : `Suggested: ${esc(sug || "—")}`}</h3>
+        ${plan ? `<p class="q">${esc(plan.text)}</p>` : ""}
         <select id="wizClub" aria-label="Club">${S.clubs.map(c => `<option ${c.name === sug ? "selected" : ""}>${esc(c.name)}</option>`).join("")}<option>Other</option></select>`,
         [["Next", () => { S.wiz.club = $("wizClub").value; save(); step("measure"); }, true]]);
-      if (!S.comp) sayClub();   // always spoken, like the yardage echo (golfer's request)
+      if (plan && canSpeak) { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(sayable(`Plays like ${pl}. Tee shot: ${plan.tee.name}, carries ${plan.tee.carry}. ${plan.text}`))); }
+      else if (!S.comp) sayClub();   // always spoken, like the yardage echo (golfer's request)
       return;
     }
     if (name === "measure") return screen(holeInfo(), `<h3>Measure this shot?</h3><p class="q">Stand at your ball, then answer.</p>`,

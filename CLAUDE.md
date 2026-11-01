@@ -87,6 +87,10 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Every guide screen with buttons has "🎤 Answer by voice": matches button labels, clubs ("pitching wedge"), scores
   ("four"), and shortcuts (next, yes/no, hit it, mark, on the green, holed out); repeats "Got it, ..." then acts.
   Listening always starts with a tap (browser rule).
+  Each full shot asks "Uphill, downhill or flat?" (yards from Setup; starting values +5/+10/−5/−10 are not published figures,
+  tune from shot logs). Par 4/5 tee shot: the card yardage can be used, and when the hole is longer than the longest club
+  the guide plans it: longest club off the tee, then the club nearest each remaining distance (no driver or 3-wood off
+  the fairway; the golfer tees the 3W only).
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 
