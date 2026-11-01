@@ -905,6 +905,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         ["Back to the guide", () => step(back), true],
         ...(S.pending ? [["Cancel the shot being measured", () => { $("cancelShot").click(); step("after"); }]] : []),
         ["Skip to the next hole", () => step("next")],
+        ...(S.comp ? [] : [["Add or change this hole's green note", () => step("note")]]),
         ["Change course or tees", () => step("course")],
         ["Show the full app", () => { $("wiz").hidden = true; renderAll(); }]]);
     }
@@ -972,8 +973,23 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
           hole()[k] = { ...fix }; save(); renderAll(); toast("Saved " + k); step(next); }, true]]);
       return wizLive();
     }
-    if (name === "putt") return screen(holeInfo(), `<h3>Putt out</h3><p class="q">Read from behind the ball, see it go in, one look, putt.</p>`,
-      [["Holed out", () => step("next"), true]]);
+    if (name === "putt") {
+      const note = !S.comp && hole().notes ? hole().notes.trim() : "";   // notes stay hidden in competition mode
+      screen(holeInfo(), `<h3>Putt out</h3>${note ? `<p class="q"><b>Your green note:</b> ${esc(note)}</p>` : ""}
+        <p class="q">Read from behind the ball, see it go in, one look, putt.</p>`,
+        [["Holed out", () => step("next"), true]]);
+      if (note && canSpeak) {   // always spoken, like the yardage and club (golfer's request)
+        speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance("Your green note: " + note));
+      }
+      return;
+    }
+    if (name === "note") {   // write or change this hole's green note (from the Menu)
+      return screen(holeInfo(), `<h3>Green note for this hole</h3>
+        <textarea id="wizNote" rows="4" style="font-size:20px" placeholder="e.g. breaks left, fast downhill">${esc(hole().notes || "")}</textarea>
+        <p class="live">Tip: tap the microphone on your keyboard to dictate.</p>`,
+        [["Save note", () => { const v = $("wizNote").value.trim();
+          if (v) hole().notes = v; else delete hole().notes; save(); renderNotes(); toast("Note saved"); step(S.wiz.back || "yds"); }, true]]);
+    }
     if (name === "green") return step(greenSaved() ? "putt" : "askSave");   // older saved steps
     if (name === "next") {
       if (S.cur.hole < HOLES) { S.cur.hole++; changedHole(); return step("yds"); }
