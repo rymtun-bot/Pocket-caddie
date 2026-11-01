@@ -65,6 +65,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
 - Club list loading: one-tap link `https://rymtun-bot.github.io/Pocket-caddie/#clubs=Driver:185,8i:113` or paste
   "Driver 185, 8i 113" on the Clubs tab. Same-name clubs are updated, new ones added, nothing removed. Send both forms:
   on iPhone a Home Screen web app keeps its own storage, so the link (opens Safari) may not reach it; the paste box does.
+- Round guide (Play tab, on by default; toggle in Setup): pre-round checklist once a day, then the next step on each
+  hole (laser/GPS yardage, plays-like and club, measure the shot, routine, save the green, next hole, copy the log).
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 

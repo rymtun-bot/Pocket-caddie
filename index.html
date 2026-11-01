@@ -109,6 +109,11 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
 <main class="wrap">
   <!-- PLAY -->
   <div id="tab-play" class="tab" style="display:grid;gap:16px">
+    <section class="panel" id="secGuide" hidden>
+      <div class="row" style="justify-content:space-between"><h2 style="flex:0 1 auto">Round guide</h2>
+        <button id="guideHide" style="flex:0 0 auto;padding:6px 10px;font-size:13px">Hide</button></div>
+      <div id="guideBody" style="display:grid;gap:10px"></div>
+    </section>
     <section class="panel">
       <h2>To the green</h2>
       <div class="yards" id="yards">
@@ -227,6 +232,11 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   <!-- SETUP -->
   <div id="tab-setup" class="tab" hidden style="display:grid;gap:16px">
     <section class="panel">
+      <h2>Round guide</h2>
+      <p class="note">Step-by-step prompts at the top of the Play tab: a before-the-round checklist, then what to do next on each hole.</p>
+      <div class="row"><button id="guideBtn" aria-pressed="true">Turn off round guide</button></div>
+    </section>
+    <section class="panel">
       <h2>Competition mode</h2>
       <p class="note">For club or league events. Distance-measuring devices may show distance only (if the event's Local Rule allows them at all). Turning this on hides the conditions, plays-like distance, club suggestion, your club averages and green notes. GPS yardages, the rangefinder box and shot measuring stay.</p>
       <div class="row"><button id="compBtn" aria-pressed="false">Turn on competition mode</button></div>
@@ -340,6 +350,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   S.windOv = S.windOv || { speed: "", dir: "1" };
   S.tee = S.tee || "Blue"; // the golfer plays the Blue tees
   S.comp = !!S.comp;       // competition mode: distance only (Rule 4.3)
+  S.guide = S.guide || { on: true, day: "" }; // round guide: on by default; day = date the pre-round checklist was done
   let wx = null; // latest weather: {temp °F, press hPa, speed mph, gust mph, dir deg wind comes from, at, lat, lon}
 
   let fix = null; // latest {lat, lon, acc} in meters
@@ -490,6 +501,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     } else bd.hidden = true;
     $("playsLike").textContent = pl == null ? "—" : pl + " yd";
     if (!S.comp) renderRec(pl);
+    renderGuide(t, pl);
     if (S.pending) {
       $("shotLive").textContent = fix ? Math.round(dist(S.pending.from, fix)) : "—";
     }
@@ -691,6 +703,52 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     document.querySelectorAll(".tab").forEach(t => t.hidden = t.id !== "tab-" + b.dataset.tab);
     window.scrollTo(0, 0);
   });
+
+  // ---- round guide: tells the golfer the next step ----
+  const today = () => new Date().toISOString().slice(0, 10);
+  const goTab = name => document.querySelector(`nav [data-tab="${name}"]`).click();
+  function renderGuide(t, pl) {
+    const sec = $("secGuide"), body = $("guideBody");
+    sec.hidden = !S.guide.on;
+    $("guideBtn").setAttribute("aria-pressed", S.guide.on);
+    $("guideBtn").textContent = S.guide.on ? "Turn off round guide" : "Turn on round guide";
+    if (!S.guide.on) return;
+    const c = S.courses[S.cur.course], h = hole();
+    if (S.guide.day !== today()) {
+      const items = [
+        ["Phone charged (bring a battery pack if you have one)", false],
+        [fix ? `Location on: GPS ±${Math.round(fix.acc * YD)} yd` : "Allow location when asked (GPS starting…)", !!fix],
+        [`Course: ${c.name}, hole ${S.cur.hole}`, S.cur.hole === 1],
+        [`Tees: ${S.tee} (change in Setup)`, false],
+        [S.comp ? "Competition mode ON: distance only" : "Competition mode off (turn on in Setup for club events)", false],
+        ["Warm up 10 min, then 15 min on the practice green", false]
+      ];
+      body.innerHTML = `<p class="note">Before you tee off:</p><ol style="margin:0;padding-left:20px">${items.map(([x, ok]) =>
+        `<li>${ok ? "✓ " : ""}${esc(x)}</li>`).join("")}</ol>
+        <div class="row"><button class="primary" id="guideStart">Start round</button></div>`;
+      $("guideStart").onclick = () => { S.guide.day = today(); save(); renderPlay(); toast("Have a good round"); };
+      return;
+    }
+    const saved = !!(h.front || h.center || h.back), steps = [];
+    if (S.pending) steps.push("<b>Walk to your ball</b>, then tap <b>Mark my ball here</b> in Measure a shot.");
+    else if (!fix && !(t > 0)) steps.push("Waiting for GPS. Meanwhile laser the flag and type the yardage below.");
+    else if (t == null) steps.push("<b>Laser the flag</b> and type the yardage in the box below (this green isn't saved yet).");
+    else {
+      steps.push(S.comp ? `<b>${Math.round(t)} yd.</b> Choose your club (competition mode: no suggestions).`
+        : `<b>Plays like ${pl} yd.</b> Check the club suggestion below; aim at the center of the green.`);
+      steps.push("Tap <b>Mark where I'm hitting from</b> (Measure a shot) if you want this shot measured.");
+      steps.push("Routine: target, spot 2–3 ft ahead, one rehearsal swing, face to the spot, one look, swing.");
+    }
+    body.innerHTML = `<ol style="margin:0;padding-left:20px">${steps.map(x => `<li>${x}</li>`).join("")}</ol>
+      ${saved ? "" : `<div class="row"><button id="guideSave">On the green? Save front, center, back</button></div>`}
+      <div class="row">${S.cur.hole < HOLES ? `<button class="primary" id="guideNext">Holed out: next hole</button>`
+        : `<button class="primary" id="guideEnd">Round over: copy shot log for Claude</button>`}</div>`;
+    if ($("guideSave")) $("guideSave").onclick = () => goTab("setup");
+    if ($("guideNext")) $("guideNext").onclick = () => $("nextHole").click();
+    if ($("guideEnd")) $("guideEnd").onclick = () => { S.guide.day = ""; save(); goTab("shots"); $("copyCsv").click(); };
+  }
+  $("guideHide").onclick = () => { S.guide.on = false; save(); renderPlay(); toast("Guide off: turn it on again in Setup"); };
+  $("guideBtn").onclick = () => { S.guide.on = !S.guide.on; save(); renderPlay(); };
 
   function renderComp() {
     ["secWx", "secPlays", "secNotes", "secClubAvg"].forEach(id => $(id).hidden = S.comp);
