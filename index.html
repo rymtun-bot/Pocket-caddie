@@ -966,6 +966,22 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const pre = S.wiz.pre || ""; S.wiz.pre = ""; save();
     speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(pre + " " + sayable(text)));
   }
+  function windWords() {   // "Wind 8 mph from the northwest, gusts 12. About 6 into you and 5 from your right."
+    const ov = parseFloat(S.windOv.speed);
+    if (ov >= 0) return `Wind set by you: ${Math.round(ov)} mph ${+S.windOv.dir > 0 ? "into you" : +S.windOv.dir < 0 ? "helping" : "across"}.`;
+    if (!wx) return "";
+    const W = { N: "north", E: "east", S: "south", W: "west" }, name = compass(wx.dir).split("").map(ch => W[ch]);
+    const dirName = name.length === 3 ? `${name[0]}-${name[1]}${name[2]}` : name.join("");
+    let t = Math.round(wx.speed) < 1 ? "Almost no wind." : `Wind ${Math.round(wx.speed)} mph from the ${dirName}` + (wx.gust > wx.speed + 3 ? `, gusts ${Math.round(wx.gust)}.` : ".");
+    const h = hole(), pt = h.center || h.front || h.back, w = fix && pt ? windAlong(bearing(fix, pt)) : null;
+    if (w && Math.round(wx.speed) >= 1) {
+      const parts = [];
+      if (Math.abs(w.head) >= 1.5) parts.push(`${Math.round(Math.abs(w.head))} ${w.head > 0 ? "into you" : "helping"}`);
+      if (w.cross != null && Math.abs(w.cross) >= 1.5) parts.push(`${Math.round(Math.abs(w.cross))} from your ${w.cross > 0 ? "right" : "left"}`);
+      if (parts.length) t += ` About ${parts.join(" and ")}.`;
+    } else if (Math.round(wx.speed) >= 1) t += " Save this green to know if it's into you or across.";
+    return t;
+  }
   function sayPlays(rows) {   // "Plays like 151. Wind 8 mph into you, adds 6 yards. Temperature 62°F, adds 3 yards."
     if (!canSpeak) return;
     const pl = parseInt($("playsLike").textContent);
@@ -975,8 +991,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     });
     speechSynthesis.cancel();
     // wind only counts once the line to the green is known (saved green or own wind setting)
-    const windNote = wx && !rows.some(([k]) => k.startsWith("Wind")) ? ` Wind ${Math.round(wx.speed)} mph is not included until this green is saved.` : "";
-    const text = ((pl ? `Plays like ${pl}.` : "") + (parts.length ? " " + parts.join(". ") + "." : " No weather adjustment yet.") + windNote)
+    const text = ((pl ? `Plays like ${pl}. ` : "") + windWords() + (parts.length ? " " + parts.join(". ") + "." : " No weather adjustment yet."))
       .replace(/(\d+)°F/g, "$1 degrees").replace(/\bmph\b/g, "miles per hour").replace(/\bhPa\b/g, "hectopascals");
     speechSynthesis.speak(new SpeechSynthesisUtterance(sayable(text)));
   }
@@ -1093,7 +1108,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       const rows = $("breakdown").hidden ? [] : [...$("breakdown").rows].slice(1).map(r => [r.cells[0].textContent, r.cells[1].textContent]);
       screen(holeInfo(), `<h3>Plays like</h3><div class="huge">${$("playsLike").textContent}</div>
         ${rows.map(([k, v]) => `<p class="live">${esc(k)}: ${esc(v)}</p>`).join("")}
-        ${wx && !rows.some(([k]) => k.startsWith("Wind")) ? `<p class="live">Wind ${Math.round(wx.speed)} mph: not included until this green is saved</p>` : ""}`,
+        ${windWords() ? `<p class="q">${esc(windWords())}</p>` : ""}`,
         [["Next", () => step("club"), true]]);
       sayPlays(rows);   // always spoken, like the yardage and club (golfer's request)
       return;

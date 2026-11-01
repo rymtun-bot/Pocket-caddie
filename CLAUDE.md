@@ -77,7 +77,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   The club screen always speaks the suggestion too: "Plays like 108. Use the 8 iron. It carries 113. One club less: ...
   One club more: ..." (not in competition mode). If the club has measured shots it adds "On the course you've averaged N
   with it, over K shots" (total distance incl. roll). The plays-like screen lists and always speaks each adjustment (wind, temperature,
-  air pressure, own adjustment) with how many yards it adds or takes off.
+  air pressure, own adjustment) with how many yards it adds or takes off. It first says the wind speed, compass direction and gusts,
+  and (with a saved green) how much is into/helping and from the left/right.
   The putt screen shows and always speaks the hole's green note (not in competition mode) and then the putting routine;
   Menu → add or change the note.
   At the start of each hole it always says the hole number, par, yardage from the chosen tees and handicap.
