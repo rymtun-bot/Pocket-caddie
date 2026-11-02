@@ -39,9 +39,9 @@ bump-and-run and PW), then the up-and-down game: chip 9 balls and write T / N / 
 | Mon 11/2 | 1 | M +S | 5U · 4U | Center contact, start within 3° |
 | Tue 11/3 | 1 | P3 | Westchester Blue: 108, 176, 145, 141, 160, 148, 148, 150, 160 | Routine on every ball |
 | Wed 11/4 | 1 | M +S | Driver · 8-iron | Start line |
-| Wed 11/4 | 2 | SG + M | PW ½ (10 balls), then short game | Contact first, then landing spot |
+| Wed 11/4 | 2 | SG + M | Wedge ladder PW + 54°: full, full choked 2 in, hip high, 5 balls each (30), then short game | Each set within about 5 yd |
 | Thu 11/5 | — | Rest | Optional: 3U · 2U · 1U, 7 each (M) | Keep or drop |
-| Fri 11/6 | 1 | M +S | PW full · 9-iron | Fix from the videos |
+| Fri 11/6 | 1 | M +S | 50° ladder (full, full choked 2 in, hip high, 5 each) · 9-iron | Fix from the videos; fill the wedge gaps |
 | Fri 11/6 | 2 | HC | Westchester front 9, Blue | Score it |
 | Sat 11/7 | 1 | V (face-on) | Driver · 4U | Tee club decision by Sun 11/8 |
 | Sun 11/8 | 1 | V (behind) | PW ½ · PW ¾ · 9-iron ¾ | Wedge ladder carries |
