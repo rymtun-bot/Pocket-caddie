@@ -367,6 +367,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
 <div class="wiz" id="rc" hidden style="z-index:9"><div class="wrap">
   <div class="wizTop"><span>Range conditions</span><button id="rcClose">Back</button></div>
   <p class="q">Which way are you hitting?</p>
+  <div class="row"><button id="rcCompass">🧭 Point the phone at your target and tap</button></div>
+  <p class="note" id="rcCompassOut" style="margin:0">Hold the phone flat, top edge toward the target. Or pick a direction below.</p>
   <div class="row" id="rcDirs" role="group" aria-label="Target direction"></div>
   <div class="row"><button class="primary" id="rcCheck">Check conditions now</button></div>
   <div id="rcNow" style="display:grid;gap:8px"></div>
@@ -789,10 +791,28 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (canSpeak && S.voice) { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(rcEntryText(e, true))); }
     renderRc();
   }
+  async function rcCompass() {   // phone compass: iPhone needs a tap and a permission prompt
+    const out = $("rcCompassOut");
+    try {
+      if (typeof DeviceOrientationEvent !== "undefined" && DeviceOrientationEvent.requestPermission &&
+          await DeviceOrientationEvent.requestPermission() !== "granted") { out.textContent = "Compass not allowed. Pick a direction below instead."; return; }
+    } catch { out.textContent = "Compass not available. Pick a direction below instead."; return; }
+    out.textContent = "Reading the compass…";
+    const h = await new Promise(res => {
+      const done = v => { window.removeEventListener("deviceorientationabsolute", f); window.removeEventListener("deviceorientation", f); res(v); };
+      const f = ev => { const v = ev.webkitCompassHeading != null ? ev.webkitCompassHeading : ev.absolute && ev.alpha != null ? (360 - ev.alpha) % 360 : null; if (v != null) done(v); };
+      window.addEventListener("deviceorientationabsolute", f); window.addEventListener("deviceorientation", f);
+      setTimeout(() => done(null), 3000);
+    });
+    if (h == null) { out.textContent = "Couldn't read the compass on this phone. Pick a direction below instead."; return; }
+    S.rangeDir = Math.round(h); S.rangeDirName = "compass"; save(); renderRc();
+    out.textContent = `Hitting ${Math.round(h)}° (${dirWords(h)}). Saved.`;
+  }
   const openRc = () => { renderRc(); $("rcNow").innerHTML = ""; $("rc").hidden = false; $("rc").scrollTop = 0; };
   document.addEventListener("click", e => {
-    const t = e.target.closest("#rcOpen, #rcClose, #rcCheck, #rcCopy, #rcClear"); if (!t) return;
+    const t = e.target.closest("#rcOpen, #rcClose, #rcCheck, #rcCopy, #rcClear, #rcCompass"); if (!t) return;
     if (t.id === "rcOpen") openRc();
+    else if (t.id === "rcCompass") rcCompass();
     else if (t.id === "rcClose") $("rc").hidden = true;
     else if (t.id === "rcCheck") rcCheck();
     else if (t.id === "rcCopy") { const today = new Date().toDateString();
