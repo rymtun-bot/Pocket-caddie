@@ -120,6 +120,10 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
 - My Rapsodo numbers (Clubs tab → Show my Rapsodo distances; guide Menu outside competition mode): the MLM array in
   index.html holds each club's Rapsodo top-line averages (patio and range, date, carry, total, mph, smash, launch,
   start). Add every new session's averages there. Each card shows the carry Pocket Caddie uses now; "Switch Pocket Caddie to N" sets it.
+- Range conditions (Clubs tab → Range conditions; guide Menu outside competition mode): pick the hitting direction
+  (preset "Westchester range (south)": mats at the north end, targets to the south, from the aerial 2026-11-01), tap
+  Check → Open-Meteo wind/gusts/temp/pressure at the phone, wind split into/helping and left/right, spoken and logged
+  (S.rangeLog). "Copy for Claude" sends the day's checks; use them when reading range Rapsodo carries.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 

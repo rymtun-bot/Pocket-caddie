@@ -97,7 +97,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
 .wizTop span { font: 600 13px/1.2 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
 .wizTop button { padding: 8px 12px; font-size: 14px }
 .wiz h3 { margin: 0; font: 700 34px/1.1 var(--display) }
-[data-mlmf][aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
+[data-mlmf][aria-pressed="true"], [data-rcd][aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
 .wiz .q { font-size: 19px; margin: 0 }
 .wiz .huge { font: 700 84px/1 var(--display); color: var(--accent); font-variant-numeric: tabular-nums }
 .wiz .opts { display: grid; gap: 12px }
@@ -232,6 +232,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <h2>My Rapsodo numbers</h2>
       <p class="note">Your launch-monitor averages for each club (patio and range), added by Claude from your screenshots.</p>
       <div class="row"><button class="primary" id="mlmOpen">Show my Rapsodo distances</button></div>
+      <div class="row"><button id="rcOpen">Range conditions (wind, temperature)</button></div>
     </section>
     <section class="panel">
       <h2>My clubs and carry yards</h2>
@@ -362,6 +363,18 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   <div id="mlmBody" style="display:grid;gap:12px"></div>
   <p class="note">Carry and total are Rapsodo estimates (it measures no spin; on the patio the ball flies only about 8 ft).
   Range = Westchester range, range balls. Patio = net, Callaway Supersoft. Start: left/right of the target line at launch.</p>
+</div></div>
+<div class="wiz" id="rc" hidden style="z-index:9"><div class="wrap">
+  <div class="wizTop"><span>Range conditions</span><button id="rcClose">Back</button></div>
+  <p class="q">Which way are you hitting?</p>
+  <div class="row" id="rcDirs" role="group" aria-label="Target direction"></div>
+  <div class="row"><button class="primary" id="rcCheck">Check conditions now</button></div>
+  <div id="rcNow" style="display:grid;gap:8px"></div>
+  <h2 style="margin:8px 0 0">Today's checks</h2>
+  <div id="rcLog" style="display:grid;gap:6px"></div>
+  <div class="row"><button id="rcCopy">Copy for Claude</button><button id="rcClear">Clear the list</button></div>
+  <p class="note">Weather from Open-Meteo at your phone's position (needs GPS). Check at the start and whenever the wind
+  changes; send the list with your Rapsodo averages so Claude can allow for wind and temperature.</p>
 </div></div>
 <div class="toast" id="toast" hidden></div>
 
@@ -738,6 +751,54 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (t.id === "mlmOpen") openMlm();
     else if (t.id === "mlmClose") $("mlm").hidden = true;
     else { mlmF = t.dataset.mlmf; renderMlm(); }
+  });
+  // ---- range conditions: weather on demand, wind along the target line (S.rangeLog) ----
+  S.rangeLog = S.rangeLog || []; S.rangeDir = S.rangeDir ?? null;
+  const RC_DIRS = [["Westchester range (south)", 180], ["N", 0], ["NE", 45], ["E", 90], ["SE", 135], ["S", 180], ["SW", 225], ["W", 270], ["NW", 315]];
+  const dirWords = d => { const W = { N: "north", E: "east", S: "south", W: "west" }, n = compass(d).split("").map(ch => W[ch]);
+    return n.length === 3 ? `${n[0]}-${n[1]}${n[2]}` : n.join(""); };
+  function rcEntryText(e, spoken) {
+    const t = new Date(e.at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }), cd = spoken ? dirWords : compass;
+    let w = Math.round(e.speed) < 1 ? "almost no wind" : `wind ${Math.round(e.speed)} mph from the ${cd(e.dir)}` + (e.gust > e.speed + 3 ? `, gusts ${Math.round(e.gust)}` : "");
+    if (e.target != null && Math.round(e.speed) >= 1) {
+      const p = [];
+      if (Math.abs(e.head) >= 1) p.push(`${Math.round(Math.abs(e.head))} ${e.head > 0 ? "into you" : "helping"}`);
+      if (Math.abs(e.cross) >= 1) p.push(`${Math.round(Math.abs(e.cross))} from your ${e.cross > 0 ? "right" : "left"}`);
+      if (p.length) w += ` (${p.join(", ")})`;
+    }
+    if (spoken) return `${w[0].toUpperCase() + w.slice(1)}. ${Math.round(e.temp)} degrees. Air pressure ${Math.round(e.press)} hectopascals.`;
+    return `${t}: ${w}; ${Math.round(e.temp)}°F; ${Math.round(e.press)} hPa` + (e.target != null ? `; hitting ${compass(e.target)}` : "");
+  }
+  function renderRc() {
+    $("rcDirs").innerHTML = RC_DIRS.map(([n, d], i) => `<button data-rcd="${i}" aria-pressed="${S.rangeDirName === n}">${n}</button>`).join("");
+    $("rcDirs").querySelectorAll("[data-rcd]").forEach(b => b.onclick = () => { const [n, d] = RC_DIRS[+b.dataset.rcd]; S.rangeDir = d; S.rangeDirName = n; save(); renderRc(); });
+    const today = new Date().toDateString(), log = S.rangeLog.filter(e => new Date(e.at).toDateString() === today);
+    $("rcLog").innerHTML = log.length ? log.map(e => `<p class="note" style="margin:0;color:var(--ink)">${esc(rcEntryText(e))}</p>`).join("") : `<p class="note" style="margin:0">None yet today.</p>`;
+  }
+  async function rcCheck() {
+    if (!fix) { $("rcNow").innerHTML = `<p class="q">Waiting for GPS. Allow location for Pocket Caddie and try again.</p>`; return; }
+    $("rcNow").innerHTML = `<p class="q">Checking…</p>`;
+    await loadWx(true);
+    if (!wx || wxFailed) { $("rcNow").innerHTML = `<p class="q">Couldn't load the weather. Check your signal and try again.</p>`; return; }
+    const e = { at: Date.now(), temp: wx.temp, press: wx.press, speed: wx.speed, gust: wx.gust, dir: wx.dir, target: S.rangeDir };
+    if (S.rangeDir != null) { const a = (wx.dir - S.rangeDir) * Math.PI / 180; e.head = wx.speed * Math.cos(a); e.cross = wx.speed * Math.sin(a); }
+    S.rangeLog.push(e); S.rangeLog = S.rangeLog.slice(-60); save();
+    const txt = rcEntryText(e).replace(/^.*?(AM|PM|\d\d):\s*/, "");
+    $("rcNow").innerHTML = `<p class="q" style="font-size:22px"><b>${esc(txt[0].toUpperCase() + txt.slice(1))}</b></p>` +
+      (S.rangeDir == null ? `<p class="note">Pick the direction you're hitting to see how much is into you or across.</p>` : "");
+    if (canSpeak && S.voice) { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(rcEntryText(e, true))); }
+    renderRc();
+  }
+  const openRc = () => { renderRc(); $("rcNow").innerHTML = ""; $("rc").hidden = false; $("rc").scrollTop = 0; };
+  document.addEventListener("click", e => {
+    const t = e.target.closest("#rcOpen, #rcClose, #rcCheck, #rcCopy, #rcClear"); if (!t) return;
+    if (t.id === "rcOpen") openRc();
+    else if (t.id === "rcClose") $("rc").hidden = true;
+    else if (t.id === "rcCheck") rcCheck();
+    else if (t.id === "rcCopy") { const today = new Date().toDateString();
+      copy(`Range conditions ${new Date().toLocaleDateString()}:\n` + S.rangeLog.filter(x => new Date(x.at).toDateString() === today).map(rcEntryText).join("\n")); }
+    else if (t.id === "rcClear") { if (t.dataset.armed) { S.rangeLog = []; save(); renderRc(); t.textContent = "Clear the list"; delete t.dataset.armed; }
+      else { t.dataset.armed = 1; t.textContent = "Tap again to clear"; } }
   });
   function renderClubs() {
     const rows = S.clubs.map((c, i) => `<tr><td>${esc(c.name)}</td><td><input type="number" inputmode="numeric" id="carry-${i}" value="${c.carry || ""}" aria-label="${esc(c.name)} carry"></td><td><button data-rm="${i}">Remove</button></td></tr>`).join("");
@@ -1357,7 +1418,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         ["Save a hazard on this hole", () => step("hzType")],
         [`Hazards on this hole (${(hole().hazards || []).length})`, () => step("hzList")],
         ["Skip to the next hole", () => step("next")],
-        ...(S.comp ? [] : [["Record or check a swing", () => { location.href = "swing.html"; }], ["My Rapsodo numbers", () => openMlm()]]),
+        ...(S.comp ? [] : [["Record or check a swing", () => { location.href = "swing.html"; }], ["My Rapsodo numbers", () => openMlm()], ["Range conditions (wind, temperature)", () => openRc()]]),
         [S.dark ? "Normal screen" : "Dark screen (saves battery)", () => { S.dark = !S.dark; save(); applyDark(); step("menu"); }],
         ...(S.comp ? [] : [["Add or change this hole's green note", () => step("note")]]),
         ["Change course or tees", () => step("course")],
