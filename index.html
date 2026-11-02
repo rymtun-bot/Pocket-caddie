@@ -723,7 +723,14 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     { club: "PW", place: "Range", date: "2026-09-02", carry: 100, total: 105, mph: 72, smash: 1.14, launch: 28.0, dir: -5.3 },
     { club: "PW", place: "Patio", date: "2026-10-31", carry: 95, total: 99, mph: 64, smash: 1.20, launch: 31.8, dir: -0.2 },
     { club: "50°", place: "Patio", date: "2026-10-30", carry: 77, total: 83, smash: 1.14, launch: 30.2, dir: 0 },
-    { club: "54°", place: "Patio", date: "2026-10-30", carry: 74, total: 79, smash: 1.08, launch: 32.8, dir: 5.2 }
+    { club: "54°", place: "Patio", date: "2026-10-30", carry: 74, total: 79, smash: 1.08, launch: 32.8, dir: 5.2 },
+    { club: "Driver", place: "Range", date: "2026-11-02", carry: 203, total: 206, mph: 87, smash: 1.44, launch: 30.1, dir: 11.4, note: "Tagged PW in the app; launch misread, carry likely ~194" },
+    { club: "Driver", place: "Range", date: "2026-11-02", carry: 207, total: 208, mph: 87, smash: 1.45, launch: 34.7, dir: 18.1, note: "Fuller shoulder turn; launch misread, carry likely ~194" },
+    { club: "3W", place: "Range", date: "2026-11-02", carry: 188, total: 190, mph: 83, smash: 1.45, launch: 31.2, dir: 20.3, note: "Cleveland 3W, short tee; launch misread, carry likely ~180" },
+    { club: "1U", place: "Range", date: "2026-11-02", carry: 180, total: 182, mph: 80, smash: 1.44, launch: 30.6, dir: 21.0, note: "Tagged 5W in the app, short tee; launch misread, carry likely ~175" },
+    { club: "PW", place: "Range", date: "2026-11-02", carry: 91, total: 94, mph: 68, smash: 1.14, launch: 30.4, dir: -3.8, note: "Average of 7 full swings (half swings left out)" },
+    { club: "50°", place: "Range", date: "2026-11-02", carry: 69, total: 73, mph: 59, smash: 1.10, launch: 29.0, dir: -4.3, note: "Tagged GW; may include part swings" },
+    { club: "54°", place: "Range", date: "2026-11-02", carry: 63, total: 66, mph: 60, smash: 1.04, launch: 32.5, dir: -6.4, note: "Tagged SW; may include part swings" }
   ];
   const clubKey = n => { const t = String(n).toLowerCase().replace(/[\s°-]/g, "").replace(/iron$/, "i");
     return ({ driver: "1w", dr: "1w", pitchingwedge: "pw", gw: "50", gapwedge: "50", "50": "50", sw: "54", sandwedge: "54", "54": "54" })[t] || t; };
