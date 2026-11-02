@@ -119,7 +119,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   start right with a slide, smash < 1.25 with standing up). Findings are spoken, copyable, and printed on the shared picture.
 - My Rapsodo numbers (Clubs tab → Show my Rapsodo distances; guide Menu outside competition mode): the MLM array in
   index.html holds each club's Rapsodo top-line averages (patio and range, date, carry, total, mph, smash, launch,
-  start). Add every new session's averages there. "Use N as my carry" sets that club's carry in the Clubs tab.
+  start). Add every new session's averages there. Each card shows the carry Pocket Caddie uses now; "Switch Pocket Caddie to N" sets it.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 

@@ -719,15 +719,16 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     $("mlmBody").innerHTML = clubs.map(c => {
       const rows = MLM.filter(r => r.club === c && (mlmF === "all" || r.place === mlmF));
       if (!rows.length) return "";
-      return `<section class="panel"><h2>${esc(c)}</h2>` + rows.map(r => `<p style="margin:0 0 6px">
+      const mine = S.clubs.find(x => clubKey(x.name) === clubKey(c));
+      return `<section class="panel"><h2>${esc(c)}</h2><p class="q" style="margin:0 0 10px">Pocket Caddie uses now: <b>${mine && mine.carry ? mine.carry + " yd" : "not in your clubs"}</b></p>` + rows.map(r => `<p style="margin:0 0 6px">
         <b style="font-size:26px;font-variant-numeric:tabular-nums">${r.carry}</b> carry${r.total ? ` · ${r.total} total` : ""}
         <span class="note" style="display:block">${r.place}, ${fmtD(r.date)}${r.mph ? ` · ${r.mph} mph` : ""}${r.smash ? ` · smash ${r.smash.toFixed(2)}` : ""}${r.launch != null ? ` · launch ${r.launch}°` : ""}${r.dir != null ? ` · start ${r.dir === 0 ? "straight" : Math.abs(r.dir) + "° " + (r.dir < 0 ? "left" : "right")}` : ""}${r.note ? ` · ${esc(r.note)}` : ""}</span></p>
-        <div class="row" style="margin-bottom:10px"><button data-use="${esc(c)}" data-carry="${r.carry}">Use ${r.carry} as my ${esc(c)} carry</button></div>`).join("") + "</section>";
+        <div class="row" style="margin-bottom:10px">${mine && mine.carry === r.carry ? `<p class="note" style="margin:0">✓ This is the number Pocket Caddie uses</p>` : `<button data-use="${esc(c)}" data-carry="${r.carry}">${mine ? `Switch Pocket Caddie to ${r.carry}` : `Add ${esc(c)} at ${r.carry}`}</button>`}</div>`).join("") + "</section>";
     }).join("");
     $("mlmBody").querySelectorAll("[data-use]").forEach(b => b.onclick = () => {
       const k = clubKey(b.dataset.use), cur = S.clubs.find(x => clubKey(x.name) === k), v = +b.dataset.carry;
       if (cur) cur.carry = v; else S.clubs.push({ name: b.dataset.use, carry: v });
-      save(); renderAll(); toast(`${cur ? cur.name : b.dataset.use}: carry set to ${v}`);
+      save(); renderAll(); renderMlm(); toast(`${cur ? cur.name : b.dataset.use}: carry set to ${v}`);
     });
     document.querySelectorAll("[data-mlmf]").forEach(b => b.setAttribute("aria-pressed", b.dataset.mlmf === mlmF));
   }
