@@ -100,7 +100,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
 .wiz.kl #wizMic, .wiz.kl .vaBtn { display: none }
 #wizListen[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
 #klBar.need { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; text-align: center; cursor: pointer }
-[data-mlmf][aria-pressed="true"], [data-rcd][aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
+[data-mlmf][aria-pressed="true"], [data-rcd][aria-pressed="true"], [data-ts][aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
 .wiz .q { font-size: 19px; margin: 0 }
 .wiz .huge { font: 700 84px/1 var(--display); color: var(--accent); font-variant-numeric: tabular-nums }
 .wiz .opts { display: grid; gap: 12px }
@@ -273,6 +273,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><label for="thoughtIn">Swing thought, read before each full shot (leave blank for none)</label>
         <input id="thoughtIn" type="text"></div>
       <div class="row"><button id="darkBtn" aria-pressed="false">Dark screen (saves battery)</button></div>
+      <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
+      <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
     <section class="panel">
@@ -946,6 +948,12 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   $("thoughtIn").value = S.thought; $("thoughtIn").onchange = e => { S.thought = e.target.value.trim(); save(); };
   const renderDarkBtn = () => { $("darkBtn").setAttribute("aria-pressed", S.dark); $("darkBtn").textContent = S.dark ? "Normal screen" : "Dark screen (saves battery)"; };
   $("darkBtn").onclick = () => { S.dark = !S.dark; save(); applyDark(); renderDarkBtn(); };
+  function applyTextSize() {   // whole-page zoom keeps every layout in proportion; 1 / 1.2 / 1.4
+    const z = +S.textSize || 1; document.documentElement.style.zoom = z === 1 ? "" : z;
+    document.querySelectorAll("[data-ts]").forEach(b => b.setAttribute("aria-pressed", +b.dataset.ts === z));
+  }
+  document.querySelectorAll("[data-ts]").forEach(b => b.onclick = () => { S.textSize = +b.dataset.ts; save(); applyTextSize(); });
+  applyTextSize();
   const SLF = { slUp: "up", slSteepUp: "steepUp", slDown: "down", slSteepDown: "steepDown" };
   Object.entries(SLF).forEach(([id, k]) => { $(id).value = S.slope[k];
     $(id).onchange = e => { const v = Math.round(+e.target.value); if (Number.isFinite(v)) { S.slope[k] = v; save(); } else e.target.value = S.slope[k]; }; });

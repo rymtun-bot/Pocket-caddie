@@ -158,6 +158,7 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
 <div class="toast" id="toast" hidden></div>
 
 <script>
+  try { const z = +(JSON.parse(localStorage.getItem("pocket-caddie-v1")) || {}).textSize || 1; if (z !== 1) document.documentElement.style.zoom = z; } catch {}   // Pocket Caddie's text size
 (() => {
   const $ = id => document.getElementById(id);
   const MOMENTS = ["Address", "Top", "Impact", "Finish"];

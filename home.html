@@ -165,6 +165,7 @@ details summary { cursor: pointer; font-weight: 600 }
 <div class="toast" id="toast" hidden></div>
 
 <script>
+  try { const z = +(JSON.parse(localStorage.getItem("pocket-caddie-v1")) || {}).textSize || 1; if (z !== 1) document.documentElement.style.zoom = z; } catch {}   // Pocket Caddie's text size
 (() => {
   const $ = id => document.getElementById(id);
   const KEY = "pocket-caddie-home-v1", PC_KEY = "pocket-caddie-v1";
