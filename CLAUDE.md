@@ -37,6 +37,9 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   Also: Lazarus 58° forged milled wedge; the TaylorMade RSi 2 sand wedge "S" 55° (golfer, 2026-11-01); two putters, a Scotty
   Cameron (Newport-style, coloured dots) and a Titleist Scotty Cameron. One shaft reads "Regular flex, mid kick,
   65 g, 4.5°" (club not identified). About 20 clubs in total: 14 max (Rule 4.1b).
+- Bag decision (golfer, 2026-11-02): 5-wood (Burner 18°) left out of the bag from now on; 4U is the fairway club
+  for that slot (patio PRGR 10/28: 4U 154, spread 8 yd; 5W 160, spread 30 yd). Remind the golfer to reconsider the 5W
+  if the 4U fails the planned range test off the mat, or if a needed ~160-yd slot opens up after the long-club test.
 - Laser rangefinder: Revasri. Its readings go in Pocket Caddie's "type the yardage" box.
 - Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (urethane cover).
 
