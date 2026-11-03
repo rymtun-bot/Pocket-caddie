@@ -26,3 +26,9 @@ Several clubs were tagged with the wrong club in the app; the real club is liste
 - Range-ball wedge smash (PW 1.14 here and on 9/02) runs below patio Supersoft smash (1.19–1.24), so part of the
   wedge gap is the ball.
 - Gapping: PW 91 → 50° 69 is ~20 yd; 50° → 54° is 6 yd (patio: 18 and 3). Driver/3W/1U only ~8–12 yd apart.
+
+## Conditions (golfer's weather screenshot, 2026-11-02 around noon)
+72°F, partly sunny, wind 4–7 mph, light (arrows suggest from roughly the west-southwest; the range hits south, so
+mostly a light crosswind from the right with at most 1–2 mph into the golfer). The Rapsodo computes carry from its
+launch readings and does not see wind, so these conditions do not change the recorded numbers; at 72°F the
+temperature effect is under 1 yd.
