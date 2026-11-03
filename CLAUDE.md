@@ -103,6 +103,11 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Every guide screen with buttons has "🎤 Answer by voice": matches button labels, clubs ("pitching wedge"), scores
   ("four"), and shortcuts (next, yes/no, hit it, mark, on the green, holed out); repeats "Got it, ..." then acts.
   Listening always starts with a tap (browser rule).
+  Keep listening (golfer's request 2026-11-03): 👂 button in the guide's top bar. One tap starts continuous Safari speech
+  recognition; only phrases starting "Caddie" (also caddy/katie...) act: yards on the yardage screen, otherwise the same
+  matching as Answer by voice; "Caddie, stop" ends it. Restarts itself after pauses; if Safari refuses (or 4 restarts in
+  10 s) a big "Tap here to keep listening" bar and spoken prompt appear. Ignores the phone's own speech. Needs the screen
+  on (screen lock stops Safari's mic). Not yet tested on a real iPhone.
   Each full shot asks "Uphill, downhill or flat?" (yards from Setup; starting values +5/+10/−5/−10 are not published figures,
   tune from shot logs). Par 4/5 tee shot: the card yardage can be used, and when the hole is longer than the longest club
   the guide plans it: longest club off the tee, then the club nearest each remaining distance (no driver or 3-wood off

@@ -97,6 +97,9 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
 .wizTop span { font: 600 13px/1.2 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
 .wizTop button { padding: 8px 12px; font-size: 14px }
 .wiz h3 { margin: 0; font: 700 34px/1.1 var(--display) }
+.wiz.kl #wizMic, .wiz.kl .vaBtn { display: none }
+#wizListen[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
+#klBar.need { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; text-align: center; cursor: pointer }
 [data-mlmf][aria-pressed="true"], [data-rcd][aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
 .wiz .q { font-size: 19px; margin: 0 }
 .wiz .huge { font: 700 84px/1 var(--display); color: var(--accent); font-variant-numeric: tabular-nums }
@@ -352,7 +355,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
 </div></nav>
 <div class="wiz" id="wiz" hidden><div class="wrap">
   <div class="wizTop"><span id="wizTitle"></span><span style="display:flex;gap:8px">
-    <button id="wizVoice" aria-pressed="true" aria-label="Read aloud">🔊 On</button><button id="wizExit">Menu</button></span></div>
+    <button id="wizListen" aria-pressed="false" aria-label="Keep listening" hidden>👂 Off</button><button id="wizVoice" aria-pressed="true" aria-label="Read aloud">🔊 On</button><button id="wizExit">Menu</button></span></div>
+  <div id="klBar" hidden style="padding:10px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font-size:17px"></div>
   <div id="wizBody" style="display:grid;gap:18px"></div>
 </div></div>
 <div class="wiz" id="mlm" hidden style="z-index:9"><div class="wrap">
@@ -1084,7 +1088,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const buttons = [...body.querySelectorAll(".opts button")], select = body.querySelector("select");
     if (!buttons.length) return;
     const b = document.createElement("button");
-    b.textContent = "🎤 Answer by voice"; b.style.cssText = "font-size:20px;padding:14px";
+    b.textContent = "🎤 Answer by voice"; b.style.cssText = "font-size:20px;padding:14px"; b.className = "vaBtn";
     body.appendChild(b);
     b.onclick = () => {
       if (canSpeak) speechSynthesis.cancel();
@@ -1109,6 +1113,70 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       r.start();
     };
   }
+
+  // ---- keep listening: one tap, then "Caddie, <answer>" works on every guide screen while the screen stays on ----
+  // Safari needs a tap to turn the microphone on and stops it when the screen locks; this restarts it after pauses and
+  // asks for a tap (big bar + spoken prompt) when the phone won't let it restart.
+  const WAKE = /\b(caddie|caddy|caddies|cady|katie|katy|kaddy|catty)\b[\s,.:!-]*(.*)$/i;
+  const kl = { on: false, rec: null, starts: [], need: false, muteUntil: 0, lastText: "" };
+  if ("speechSynthesis" in window) {   // remember what the phone itself says, so its own voice never counts as a command
+    const sp = speechSynthesis.speak.bind(speechSynthesis);
+    speechSynthesis.speak = u => { kl.lastText = norm(u.text || ""); kl.muteUntil = Date.now() + 1500 + 450 * (u.text || "").split(/\s+/).length;
+      u.addEventListener("end", () => { kl.muteUntil = Date.now() + 1500; }); u.addEventListener("error", () => { kl.muteUntil = Date.now() + 500; });
+      sp(u); };
+  }
+  function klSay(text, then) {
+    if (!canSpeak) return then && then();
+    const u = new SpeechSynthesisUtterance(text); let done = false;
+    const go = () => { if (!done) { done = true; then && then(); } };
+    u.onend = go; setTimeout(go, 3000); speechSynthesis.cancel(); speechSynthesis.speak(u);
+  }
+  function klRender() {
+    const b = $("wizListen"); b.hidden = !Rec;
+    b.setAttribute("aria-pressed", kl.on); b.textContent = kl.on ? "👂 On" : "👂 Off";
+    $("wiz").classList.toggle("kl", kl.on && !kl.need);
+    const bar = $("klBar"); bar.hidden = !kl.on; bar.classList.toggle("need", kl.need);
+    bar.textContent = kl.need ? "👂 Tap here to keep listening" : "👂 Listening. Say \u201cCaddie\u201d, then your answer: \u201cCaddie, mark\u201d, \u201cCaddie, one forty five\u201d.";
+  }
+  function klCommand(cmd) {
+    const body = $("wizBody"), t = norm(cmd);
+    if (/^(stop|stop listening|quiet)$/.test(t)) { klStop(); klSay("Stopped listening. Tap the ear to start again."); return; }
+    const yIn = document.getElementById("wizIn");
+    if (yIn && document.getElementById("wizMic")) {   // yardage screen: "Caddie, one forty five"
+      const n = spokenYards(cmd);
+      if (n >= 20 && n < 700) { yIn.value = n; klSay(`Got it. ${n} yards.`); return; }
+    }
+    const buttons = [...body.querySelectorAll(".opts button")], select = body.querySelector("select");
+    const m = buttons.length ? matchAnswer(cmd, buttons, select) : null;
+    if (m) klSay("Got it. " + sayable(m.label.replace(/[✓·]/g, " ")) + ".", m.act);
+    else { toast(`Heard "${cmd}"`); klSay(`I heard ${cmd || "nothing after the wake word"}. Please say it again.`); }
+  }
+  function klStart() {   // must run from a tap the first time
+    if (!Rec) return;
+    if (kl.rec) try { kl.rec.abort(); } catch {}
+    const r = new Rec(); r.lang = "en-US"; r.continuous = true; r.interimResults = false; r.maxAlternatives = 3;
+    r.onresult = e => {
+      if ((canSpeak && speechSynthesis.speaking) || Date.now() < kl.muteUntil) return;   // don't act on the phone's own voice
+      const res = e.results[e.results.length - 1]; if (!res.isFinal) return;
+      const alts = [...res].map(a => a.transcript), hit = alts.map(a => a.match(WAKE)).find(Boolean);
+      if (hit && Date.now() < kl.muteUntil + 3000 && kl.lastText.includes(norm(hit[0]))) return;
+      if (hit) klCommand(hit[2].trim());
+    };
+    r.onerror = ev => { if (ev.error === "not-allowed" || ev.error === "service-not-allowed") { kl.need = true; klRender(); } };
+    r.onend = () => {
+      if (!kl.on || kl.rec !== r) return;
+      const now = Date.now(); kl.starts = kl.starts.filter(x => now - x < 10000);
+      if (kl.need || kl.starts.length >= 4) { kl.need = true; klRender(); if (canSpeak && !speechSynthesis.speaking) klSay("Tap the screen to keep listening."); return; }
+      try { kl.starts.push(now); r.start(); } catch { kl.need = true; klRender(); }
+    };
+    kl.rec = r; kl.on = true; kl.need = false; kl.starts = [Date.now()];
+    try { r.start(); } catch { kl.need = true; }
+    klRender();
+  }
+  function klStop() { kl.on = false; kl.need = false; const r = kl.rec; kl.rec = null; if (r) try { r.abort(); } catch {} klRender(); }
+  $("wizListen").onclick = () => { if (kl.on) { klStop(); toast("Stopped listening"); } else { klStart(); klSay("Listening. Say Caddie, then your answer."); } };
+  $("klBar").onclick = () => { if (kl.need) { klStart(); klSay("Listening again."); } };
+  klRender();
 
   // ---- read aloud: the phone's own voice speaks each guide screen (no data or account needed) ----
   if (S.voice === undefined) S.voice = true;
