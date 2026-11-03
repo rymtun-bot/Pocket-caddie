@@ -40,6 +40,11 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
 - Bag decision (golfer, 2026-11-02): 5-wood (Burner 18°) left out of the bag from now on; 4U is the fairway club
   for that slot (patio PRGR 10/28: 4U 154, spread 8 yd; 5W 160, spread 30 yd). Remind the golfer to reconsider the 5W
   if the 4U fails the planned range test off the mat, or if a needed ~160-yd slot opens up after the long-club test.
+- Bag decision (golfer, 2026-11-02): 5U (King Cobra Baffler 26°, N.S. Pro 950 R steel) also out, as too similar to
+  the 4U (patio PRGR 10/28: 5U 147, 4U 154). Concern raised: those were PRGR patio numbers at reduced speed, the 5U is
+  the club the golfer hits best, and without it nothing measured covers ~140-150 (7-iron 120-128, 6-iron untested,
+  4U 154). Remind the golfer to reconsider if the range test shows the 4U and 5U clearly apart (10+ yd) or if a gap
+  below the 4U remains after the 6-iron test.
 - Laser rangefinder: Revasri. Its readings go in Pocket Caddie's "type the yardage" box.
 - Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (urethane cover).
 
