@@ -412,6 +412,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   <div class="wizTop"><span style="display:flex;gap:6px;align-items:center"><button id="hmPrev" aria-label="Previous hole" style="padding:8px 12px">◀</button><span id="hmTitle" style="font-size:16px">Hole map</span><button id="hmNext" aria-label="Next hole" style="padding:8px 12px">▶</button></span><span style="display:flex;gap:6px"><button id="hmLayer">Map</button><button id="hmClose">Back</button></span></div>
   <div style="position:relative">
     <div id="hmMap" style="height:calc(100vh - 150px);min-height:360px;border-radius:12px;border:1px solid var(--line);background:#20302a"></div>
+    <p id="hmStatus" style="position:absolute;left:8px;right:8px;bottom:78px;z-index:1000;margin:0;padding:6px 8px;border-radius:8px;background:#ffffffe6;color:#000;font:600 13px/1.3 sans-serif"></p>
     <button id="hmSetupFloat" class="primary" hidden style="position:absolute;left:12px;right:12px;bottom:14px;z-index:1000;font-size:18px;padding:14px;box-shadow:0 2px 8px #0009">🧭 Set up this course</button>
     <p id="hmPrompt" hidden style="position:absolute;left:12px;right:12px;top:12px;z-index:1000;margin:0;padding:10px 12px;border-radius:10px;background:#ffd400;color:#000;font:700 18px sans-serif;text-align:center;box-shadow:0 2px 8px #0009"></p>
   </div>
@@ -1061,14 +1062,14 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   async function hmOsm(id) {   // course outline and numbered hole lines from OpenStreetMap, cached per course
     S.osmMap = S.osmMap || {};
     const cached = S.osmMap[id];
-    if (cached && cached.v === 3 && Date.now() - cached.at < 30 * 864e5) return cached;
+    if (cached && cached.v === 4 && Date.now() - cached.at < 30 * 864e5) return cached;
     const c = COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
     // outlines can be ways or multipolygon relations; neighbouring courses (Hillcrest next to Rancho, Rancho's own par-3
     // nine) also have holes numbered 1-18, so only holes inside this course's outline are kept
     const q = `[out:json][timeout:25];(way["leisure"="golf_course"](around:2500,${c.lat},${c.lon});relation["leisure"="golf_course"](around:2500,${c.lat},${c.lon});way["golf"="hole"](around:2500,${c.lat},${c.lon});way["golf"="green"](around:2500,${c.lat},${c.lon}););out geom tags;`;
     try {
       const r = await fetch("https://overpass-api.de/api/interpreter", { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" } });
-      if (!r.ok) return null;
+      if (!r.ok) { hm.osmErr = `OpenStreetMap busy (error ${r.status}); try again in a minute`; return null; }
       const els = (await r.json()).elements || [], pts = g => (g || []).map(x => ({ lat: x.lat, lon: x.lon }));
       const courses = els.filter(e => e.tags && e.tags.leisure === "golf_course").map(e => ({ name: e.tags.name || "",
         rings: e.type === "relation" ? (e.members || []).filter(m => m.role !== "inner" && m.geometry).map(m => pts(m.geometry)) : [pts(e.geometry)] }))
@@ -1085,8 +1086,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       const cen = l => ({ lat: l.reduce((t, q) => t + q.lat, 0) / l.length, lon: l.reduce((t, q) => t + q.lon, 0) / l.length });
       let greens = els.filter(e => e.tags && e.tags.golf === "green" && e.geometry && e.geometry.length > 2).map(e => cen(pts(e.geometry)));
       if (course) greens = greens.filter(gp => course.rings.some(rg => inRing(gp, rg)));
-      S.osmMap[id] = { v: 3, at: Date.now(), name: course ? course.name : "", outline: course ? course.rings[0] : [], holes, nearby, greens }; save(); return S.osmMap[id];
-    } catch { return null; }
+      const res = { v: 4, at: Date.now(), name: course ? course.name : "", outline: course ? course.rings.reduce((m, r) => r.length > m.length ? r : m, []) : [], holes, nearby, greens, courses: courses.map(x => x.name).slice(0, 5) };
+      if (res.outline.length || holes.length || greens.length) { S.osmMap[id] = res; save(); }   // don't remember an empty answer
+      return res;
+    } catch (e) { hm.osmErr = "OpenStreetMap didn't answer: check your signal"; return null; }
   }
   let hm = { map: null, layer: S.hmLayer || "sat", from: null, pickFrom: false, marks: null, tapM: null, fromM: null, lines: null };
   function loadLeaflet() {
@@ -1385,10 +1388,15 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
-    hm.osmInfo = o ? `OpenStreetMap: ${o.name ? "course outline found" : "no course outline"}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : "OpenStreetMap: couldn't load.";
+    hm.osmInfo = o ? `OpenStreetMap: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
-    if (o && !(S.georef[S.cur.course] || []).length && autoGeoref(S.cur.course, o))
-      toast(`Course placed automatically from OpenStreetMap (${S.georefAuto[S.cur.course].how}). If a hole looks off, use More… to fix it.`);
+    let auto = "";
+    if (o && !(S.georef[S.cur.course] || []).length && CARDS[S.cur.course] && CARDS[S.cur.course].img) {
+      if (autoGeoref(S.cur.course, o)) { auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`; toast("Course placed automatically. If a hole looks off, use More… to fix it."); }
+      else auto = "Couldn't place it automatically from that.";
+    } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
+    else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
+    $("hmStatus").textContent = `Pocket Caddie 4 Nov (e) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");

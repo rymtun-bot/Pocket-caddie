@@ -181,6 +181,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   CARDS.rancho.img.outline = the picture's course edge (non-beige mask, ~144 points, image borders dropped); trimmed ICP
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
+  Status box on the map (#hmStatus): build label "4 Nov (e)", what OSM returned (outline/name, hole lines, greens, or
+  the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   ◀ Hole / Hole ▶ step through holes; a hole with no OSM line or saved points keeps the current view (no zoom-out),
   says which holes OSM has, and opens Set the tee / Set the green. OSM hole lines more than max(60 yd, 30%) off the
   card yardage are ignored (golfer saw zoom-outs on Westchester 5, 7, 9, 13 on 2026-11-04, likely mislabelled or old-layout lines).
