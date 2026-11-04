@@ -1354,6 +1354,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
+    hm.osmInfo = o ? `OpenStreetMap: ${o.name ? "course outline found" : "no course outline"}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : "OpenStreetMap: couldn't load.";
+    $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
     if (o && !(S.georef[S.cur.course] || []).length && autoGeoref(S.cur.course, o))
       toast(`Course placed automatically from ${S.georefAuto[S.cur.course].n} mapped greens. If a hole looks off, use More… to fix it.`);
     if (o && hm.map) {
