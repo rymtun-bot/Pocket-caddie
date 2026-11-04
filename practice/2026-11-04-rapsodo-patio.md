@@ -104,3 +104,14 @@ Non-carry averages leave out the outlier.
 - Carries the same as the only patio 7-iron number (128 on 10/26, 71 mph): no gap between 6- and 7-iron yet.
   Launch fell shot by shot (22.8 → 17.8°). All three started 4-6° right and finished 7-11 yd right.
 - Gap below the 4U (154) remains after the 6-iron test: per the bag note, reconsider the 5U.
+
+## 7-iron, 2:54 (2 shots, phone battery low). Rapsodo average row: carry 122, smash 1.30, launch dir 5.3° R, launch 17.9°, apex 50
+
+| Shot | Carry | Total | Club mph | Side carry | Smash | Launch dir | Launch | Apex ft |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 119 | 130 | 70 | 10 R | 1.33 | 5.1° R | 17.6° | 47 |
+| 2 | 124 | 133 | 75 | 11 R | 1.26 | 5.5° R | 18.1° | 53 |
+| **Average** | **122** | **132** | **73** | **11 R** | **1.30** | **5.3° R** | **17.9°** | **50** |
+
+- 6-iron 124 and 7-iron 122 today: no gap. Both launched low (6i 20°, 7i 18°; the 7-iron launched 23.5° on 10/26) and
+  started ~5° right. Check on video: ball position / shaft lean (delofting) and the monitor's alignment to the target line.
