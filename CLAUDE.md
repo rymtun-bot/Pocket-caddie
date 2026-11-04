@@ -186,7 +186,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "4 Nov (m)" (also a "v 4 Nov (m) ⟳" chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "4 Nov (n)" (also a "v 4 Nov (n) ⟳" chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
@@ -200,7 +200,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   4 Nov (m) (golfer's screenshots: all three servers too slow from the phone): GitHub Actions (.github/workflows/osm.yml,
   on push of tools/fetch_osm.py, manual, weekly; ±0.03° name box, 5 patient rounds, saves the courses that loaded) runs tools/fetch_osm.py, which saves the same two answers (course outline
   by name; hole lines + greens around its centre) to osm/<course>.json on the site. hmOsm loads that file first (15 s
-  limit) and asks the live servers only if it's missing. Status shows "OpenStreetMap (saved DATE)". Cache v: 8, 7 days. 4 Nov (m): the first saved data showed Rancho is an OSM multipolygon relation and that "out geom tags" drops its members, so the query is "out geom"; outline pieces are chained into rings (joinRings); "Rancho Park 3 Par Course" is now recognised as the par-3 course. OSM has Rancho hole lines (and the par-3 and Hillcrest ones nearby). Golfer confirmed the Rancho map works on the phone (2026-11-04, build m, first saved data).
+  limit) and asks the live servers only if it's missing. Status shows "OpenStreetMap (saved DATE)". Cache v: 8, 7 days. 4 Nov (m): the first saved data showed Rancho is an OSM multipolygon relation and that "out geom tags" drops its members, so the query is "out geom"; outline pieces are chained into rings (joinRings); "Rancho Park 3 Par Course" is now recognised as the par-3 course. OSM has Rancho hole lines (and the par-3 and Hillcrest ones nearby). Golfer confirmed the Rancho map works on the phone (2026-11-04, build m, first saved data). Second fetch (with the outline): 18 Rancho lines kept, par-3 and Hillcrest dropped. 4 Nov (n): OSM hole lines
+  start at the back tee (Rancho 3 read 181 for White 141), so holeGeo moves the tee up the line to the chosen tees'
+  card yardage when the line is 8+ yd longer; tested on all 18 Rancho (White) and Westchester (Blue) holes.
   ◀ Hole / Hole ▶ step through holes; a hole with no OSM line or saved points keeps the current view (no zoom-out),
   says which holes OSM has, and opens Set the tee / Set the green. OSM hole lines more than max(60 yd, 30%) off the
   card yardage are ignored (golfer saw zoom-outs on Westchester 5, 7, 9, 13 on 2026-11-04, likely mislabelled or old-layout lines).
