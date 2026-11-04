@@ -91,3 +91,16 @@ Non-carry averages leave out the outlier.
 | **Average** | **1.21** | **57** | **85** | **79** | **2.1° L** | **30.8°** | **48** | |
 
 54° ladder (assumed labels): full 81 · gripped down 1 in 79 · hip to hip 57.
+
+## 6-iron, later session (2:53 screenshots; 3 shots, phone battery low; tagged "Gw" in the app). Rapsodo 124
+
+| Shot | Carry | Total | Club mph | Side carry | Smash | Launch dir | Launch | Apex ft |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 127 | 131 | 68 | 7 R | 1.41 | 3.7° R | 22.8° | 70 |
+| 2 | 123 | 130 | 71 | 11 R | 1.32 | 5.5° R | 20.0° | 58 |
+| 3 | 121 | 131 | 70 | 9 R | 1.33 | 4.4° R | 17.8° | 50 |
+| **Average** | **124** | **131** | **70** | **9 R** | **1.35** | **4.5° R** | **20.2°** | **59** |
+
+- Carries the same as the only patio 7-iron number (128 on 10/26, 71 mph): no gap between 6- and 7-iron yet.
+  Launch fell shot by shot (22.8 → 17.8°). All three started 4-6° right and finished 7-11 yd right.
+- Gap below the 4U (154) remains after the 6-iron test: per the bag note, reconsider the 5U.

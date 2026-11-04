@@ -73,7 +73,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
 - 2026-10-28: PRGR, patio, Supersoft, PW through 3W (`practice/2026-10-28-prgr-patio.md`).
 - 2026-10-30: Rapsodo, patio, 9-iron averages (`practice/2026-10-30-rapsodo-patio.md`).
 - 2026-10-31: Rapsodo + PRGR, patio, Supersoft, PW (`practice/2026-10-31-rapsodo-patio.md`).
-- 2026-11-04: Rapsodo, patio, PW full, PW choked 1 in, PW hip to hip, 54° full, choked 1 in and hip to hip (assumed labels; tagged PW in the app) (MLM clubs "PW choked 1 in", "PW hip to hip", "54° choked 1 in", "54° hip to hip"), no average row on the screenshot, so mean of the rows (Supersoft; `practice/2026-11-04-rapsodo-patio.md`).
+- 2026-11-04: Rapsodo, patio, PW full, PW choked 1 in, PW hip to hip, 54° full, choked 1 in and hip to hip (assumed labels; tagged PW in the app) (MLM clubs "PW choked 1 in", "PW hip to hip", "54° choked 1 in", "54° hip to hip"); 6-iron 3 shots, 124 (same as 7-iron), no average row on the screenshot, so mean of the rows (Supersoft; `practice/2026-11-04-rapsodo-patio.md`).
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
 - Current two-week plan and pre-shot routine: `practice/plan-2026-11.md` (first real round planned Tuesday 2026-12-01).
