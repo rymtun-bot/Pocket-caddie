@@ -167,7 +167,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   tap tee, tap green, auto-advance (north-up, zoom 16.5 to find the next tee); warns if tee-to-green differs from the
   card by more than max(40 yd, 20%). OSM hole numbers come from ref, or the name ("Hole 7") when ref is missing.
   Rancho quick setup (golfer's request 2026-11-04): CARDS.rancho.img holds each green and a point toward the tee, read
-  off the City aerial picture (pixels). The golfer taps the 3rd and 18th greens once (S.georef); a similarity transform
+  off the City aerial picture (pixels). The golfer taps the 2nd green (far NE tip, Pico & Motor) and the 18th (far west
+  edge, by the range) once (S.georef; S.georefCtrl records the anchors, an alignment made with other anchors is dropped:
+  the first version asked for the 3rd green and called it the NE tip, which it isn't). A similarity transform
   places every green, and each tee is put at the chosen tees' card yardage back toward the tee point. Order of use:
   saved green / tapped points (S.mapPts) > OSM line > picture. Accuracy depends on the picture (rough, ±15-25 yd);
   warns if the two tapped greens are >25% off the picture's spacing. More… → Line up the course map again.
