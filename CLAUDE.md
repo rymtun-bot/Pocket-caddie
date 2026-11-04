@@ -155,9 +155,12 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   framing the current hole and measuring from its tee end when OSM has it (golfer reported 2026-11-04 that the map
   didn't show Westchester: it had centered on the phone's home position); also Leaflet broke under the text-size CSS zoom, so the
   zoom is switched off while the map is open). Confirmed working on the golfer's phone 2026-11-04.
-  Landing marks (golfer's request 2026-11-04): on par 4/5 the two longest Clubs-tab carries get rings around the tee and
-  dots along the OSM hole line (or toward the green from GPS at the tee, or from a tapped point), with the yards left
-  to the green; warns when the mapped line differs from the card by 25+ yd. ◀ Hole / Hole ▶ step through holes.
+  Club lines (golfer's redesign 2026-11-04): par 4/5 from the tee = two lines (longest two Clubs-tab carries) along the
+  OSM hole line or toward the green, labelled "Driver 195 · 178 left". From the ball (📍 GPS at the course, or 👆 tap)
+  and on par 3 tees = lines to front (blue), hole high (yellow) and back (red), each with the nearest-carry club; driver
+  and 3W excluded off the fairway; front/back from the saved green, else ±12 yd estimated; one line per club when a club
+  covers two targets. More… → Set the tee / Set the green (tap; saved per hole in S.mapPts) for holes OSM lacks.
+  ◀ Hole / Hole ▶ step through holes. Decorations are non-interactive so taps reach the map.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 

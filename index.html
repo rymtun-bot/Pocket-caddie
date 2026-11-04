@@ -413,8 +413,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   <div id="hmMap" style="height:62vh;border-radius:12px;border:1px solid var(--line);background:var(--surface)"></div>
   <p class="q" id="hmOut" style="margin:0;font-size:19px">Tap the map to measure.</p>
   <div class="row"><button id="hmPrev">◀ Hole</button><button id="hmNext">Hole ▶</button></div>
+  <div class="row"><button id="hmHere">📍 Hitting from where I stand</button><button id="hmTapShot">👆 Tap where my ball is</button></div>
+  <div class="row"><button id="hmTee">⛳ Tee shot lines</button><button id="hmMore">More…</button></div>
+  <div class="row" id="hmMoreRow" hidden><button id="hmSetTee">Set the tee (tap)</button><button id="hmSetGreen">Set the green (tap)</button><button id="hmMe">Center on me</button></div>
   <p class="q" id="hmClubs" style="margin:0"></p>
-  <div class="row"><button id="hmFrom">Measure from a point I tap</button><button id="hmMe">Center on me</button></div>
   <p class="note" id="hmCredit" style="margin:0"></p>
 </div></div>
 <div class="toast" id="toast" hidden></div>
@@ -856,7 +858,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   }
   const openRc = () => { renderRc(); $("rcNow").innerHTML = ""; $("rc").hidden = false; $("rc").scrollTop = 0; };
   document.addEventListener("click", e => {
-    const g = e.target.closest("#hmPrev, #hmNext, #gapOpen, #gapClose, #rlOpen, #rlClose, #rlMic, #rlSave, #rlUndo, #rlCopy, #rlClear, #rlEar, [data-rl], #hmOpen, #hmClose, #hmLayer, #hmFrom, #hmMe");
+    const g = e.target.closest("#hmHere, #hmTapShot, #hmTee, #hmMore, #hmSetTee, #hmSetGreen, #hmPrev, #hmNext, #gapOpen, #gapClose, #rlOpen, #rlClose, #rlMic, #rlSave, #rlUndo, #rlCopy, #rlClear, #rlEar, [data-rl], #hmOpen, #hmClose, #hmLayer, #hmFrom, #hmMe");
     if (g) {
       const id = g.id;
       if (id === "gapOpen") { renderGap(); $("gap").hidden = false; $("gap").scrollTop = 0; }
@@ -882,10 +884,15 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       }
       else if (id === "hmOpen") openHm();
       else if (id === "hmPrev" || id === "hmNext") { S.cur.hole = id === "hmNext" ? (S.cur.hole % HOLES) + 1 : S.cur.hole === 1 ? HOLES : S.cur.hole - 1;
-        save(); hm.from = null; if (hm.fromM) { hm.map.removeLayer(hm.fromM); hm.fromM = null; } if (hm.lines) hm.lines.clearLayers(); $("hmFrom").textContent = "Measure from a point I tap"; renderAll(); openHm(); }
+        save(); hm.shot = null; hm.pick = null; renderAll(); openHm(); }
+      else if (id === "hmHere") { if (!fix) toast("No GPS position yet"); else if (!hm.here) toast("You're not at the course: use 👆 and tap where your ball is"); else { hm.shot = { lat: fix.lat, lon: fix.lon }; hmRender(); } }
+      else if (id === "hmTapShot") { hm.pick = "shot"; $("hmOut").textContent = "Tap where your ball is."; }
+      else if (id === "hmTee") { hm.shot = null; hmRender(); }
+      else if (id === "hmMore") $("hmMoreRow").hidden = !$("hmMoreRow").hidden;
+      else if (id === "hmSetTee") { hm.pick = "tee"; $("hmOut").textContent = "Tap the tee box for this hole."; }
+      else if (id === "hmSetGreen") { hm.pick = "green"; $("hmOut").textContent = "Tap the middle of the green."; }
       else if (id === "hmClose") { $("hm").hidden = true; applyTextSize(); }
       else if (id === "hmLayer" && hm.map) { hm.layer = hm.layer === "osm" ? "sat" : "osm"; S.hmLayer = hm.layer; save(); hmSetLayer(); }
-      else if (id === "hmFrom") { if (hm.from) { hm.from = null; if (hm.fromM) hm.map.removeLayer(hm.fromM); hm.lines.clearLayers(); g.textContent = "Measure from a point I tap"; $("hmOut").textContent = "Measuring from you (GPS)."; } else { hm.pickFrom = true; $("hmOut").textContent = "Tap the point to measure from (for example the tee)."; } }
       else if (id === "hmMe" && hm.map) { if (fix) hm.map.setView([fix.lat, fix.lon], 18); else toast("No GPS position yet"); hmDraw(); if (fix && !hm.here) toast("You're away from the course: measuring from you won't mean much"); }
       return;
     }
@@ -1033,58 +1040,90 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (!g && mapNote2) $("hmOut").textContent = "Course map: " + mapNote2 + ". Tap the map to measure.";
     return g;
   }
-  function hmMeasure(p) {
-    const h = hole(), g = h.center || h.front || h.back, from = hm.from || hm.here;
-    hm.lines.clearLayers();
-    L.circleMarker([p.lat, p.lon], { radius: 6, color: "#000", weight: 2, fillColor: "#ffd400", fillOpacity: 1 }).addTo(hm.lines);
-    const parts = [];
-    if (from) { L.polyline([[from.lat, from.lon], [p.lat, p.lon]], { color: "#ffd400", weight: 3 }).addTo(hm.lines); parts.push(`${Math.round(dist(from, p))} yd ${hm.from ? "from your point" : "from you"}`); }
-    if (!g) { const o = (S.osmMap || {})[S.cur.course], mine = o && o.holes.find(x => x.n === S.cur.hole && x.line.length > 1);
-      if (mine) { const end = mine.line[mine.line.length - 1]; L.polyline([[p.lat, p.lon], [end.lat, end.lon]], { color: "#fff", weight: 2, dashArray: "6 6" }).addTo(hm.lines); parts.push(`about ${Math.round(dist(p, end))} yd to the green (map)`); } }
-    if (g) { L.polyline([[p.lat, p.lon], [g.lat, g.lon]], { color: "#fff", weight: 2, dashArray: "6 6" }).addTo(hm.lines); parts.push(`${Math.round(dist(p, g))} yd to the green`); }
-    const txt = parts.length ? parts.join(" · ") : "Tap “Measure from a point I tap” first, or turn on GPS.";
-    $("hmOut").textContent = txt; if (parts.length && S.voice && canSpeak) rlSay(txt.replace(/ · /g, ". ").replace(/yd/g, "yards"));
-  }
-  // ---- where the two longest clubs land on par 4s and 5s: rings around the tee, dots along the hole line ----
+  // ---- club lines: tee shot = the two longest clubs along the hole; from the ball = front / hole-high / back clubs ----
+  S.mapPts = S.mapPts || {};   // { course: { hole: { tee, green } } } points the golfer tapped on the map
+  const HM_COL = { first: "#ffd400", second: "#ff8c00", front: "#4da3ff", center: "#ffd400", back: "#ff4d4d" };
   function destPt(a, brg, yd) {   // point yd yards from a on a bearing
     const R = 6371008.8, d = yd / YD / R, b = brg * Math.PI / 180, la = a.lat * Math.PI / 180, lo = a.lon * Math.PI / 180;
     const la2 = Math.asin(Math.sin(la) * Math.cos(d) + Math.cos(la) * Math.sin(d) * Math.cos(b));
     const lo2 = lo + Math.atan2(Math.sin(b) * Math.sin(d) * Math.cos(la), Math.cos(d) - Math.sin(la) * Math.sin(la2));
     return { lat: la2 * 180 / Math.PI, lon: lo2 * 180 / Math.PI };
   }
-  function alongLine(line, yd) {   // point yd yards along a polyline (follows doglegs); past the end = beyond the last point
-    let left = yd;
+  function pathAlong(line, yd) {   // the hole line from its start up to yd yards (follows a dogleg)
+    const out = [line[0]]; let left = yd;
     for (let i = 1; i < line.length; i++) { const seg = dist(line[i - 1], line[i]);
-      if (left <= seg) return destPt(line[i - 1], bearing(line[i - 1], line[i]), left); left -= seg; }
-    const n = line.length; return destPt(line[n - 1], bearing(line[n - 2], line[n - 1]), left);
+      if (left <= seg) { out.push(destPt(line[i - 1], bearing(line[i - 1], line[i]), left)); return out; }
+      out.push(line[i]); left -= seg; }
+    const n = line.length; out.push(destPt(line[n - 1], bearing(line[n - 2], line[n - 1]), left)); return out;
   }
-  function hmClubs() {
-    if (!hm.map) return;
-    if (hm.clubL) hm.map.removeLayer(hm.clubL);
-    hm.clubL = L.layerGroup().addTo(hm.map);
-    const c = CARDS[S.cur.course], par = c ? c.par[S.cur.hole - 1] : null, out = $("hmClubs");
-    if (!par || par < 4) { out.textContent = par ? `Par ${par}: no tee-shot landing marks.` : ""; return; }
+  function holeGeo() {
     const o = (S.osmMap || {})[S.cur.course], line = o && (o.holes.find(x => x.n === S.cur.hole && x.line.length > 1) || {}).line;
-    const h = hole(), g = h.center || h.front || h.back || (line && line[line.length - 1]);
-    const atTee = hm.here && line && dist(hm.here, line[0]) < 60;
-    const tee = hm.here && (!line || atTee) ? hm.here : line ? line[0] : hm.from;
-    if (!tee) { out.textContent = "Tap \u201cMeasure from a point I tap\u201d, then tap the tee, to see where your longest clubs land."; return; }
-    const clubs = S.clubs.filter(x => x.carry > 0).sort((a, b) => b.carry - a.carry).slice(0, 2);
+    const mp = (S.mapPts[S.cur.course] || {})[S.cur.hole] || {}, h = hole();
+    const tee = mp.tee || (line && line[0]) || null;
+    const green = h.center || mp.green || (line && line[line.length - 1]) || h.front || h.back || null;
+    return { line: line && !mp.tee ? line : null, tee, green, front: h.front, back: h.back, saved: !!h.center };
+  }
+  function label(p, text, col, row = 0) {   // row staggers labels that would otherwise sit on top of each other
+    L.marker([p.lat, p.lon], { interactive: false, icon: L.divIcon({ className: "", iconSize: [0, 0], iconAnchor: [-8, 10 - row * 24],
+      html: `<span style="white-space:nowrap;padding:2px 6px;border-radius:8px;background:${col};color:#000;font:700 13px sans-serif;border:1px solid #000">${esc(text)}</span>` }) }).addTo(hm.lines);
+  }
+  function hmRender() {
+    if (!hm.map) return;
+    hm.lines.clearLayers();
+    const geo = holeGeo(), c = CARDS[S.cur.course], par = c ? c.par[S.cur.hole - 1] : 4, out = $("hmClubs");
+    const clubs = S.clubs.filter(x => x.carry > 0).sort((a, b) => b.carry - a.carry);
     if (!clubs.length) { out.textContent = "Add your clubs in the Clubs tab first."; return; }
-    const cols = ["#ffd400", "#ff8c00"], lines = [], useLine = line && !hm.here;
-    const lineLen = line ? line.slice(1).reduce((t, p, i) => t + dist(line[i], p), 0) : 0, card = cardYards();
-    clubs.forEach((cl, i) => {
-      L.circle([tee.lat, tee.lon], { radius: cl.carry / YD, color: cols[i], weight: 2, fill: false, dashArray: "8 6" }).addTo(hm.clubL);
-      const land = line && !hm.here ? alongLine(line, cl.carry) : g ? destPt(tee, bearing(tee, g), cl.carry) : null;
-      if (land) {
-        L.circleMarker([land.lat, land.lon], { radius: 7, color: "#000", weight: 2, fillColor: cols[i], fillOpacity: 1 }).addTo(hm.clubL)
-          .bindTooltip(`${cl.name} ${cl.carry}`, { permanent: true, direction: "right", offset: [8, 0] });
-        const rem = useLine && !(h.center || h.front || h.back) ? lineLen - cl.carry : g ? dist(land, g) : null;
-        lines.push(`${cl.name} carries ${cl.carry}` + (rem != null ? `, leaving about ${Math.max(0, Math.round(rem))} to the green` : ""));
-      } else lines.push(`${cl.name}: ring at ${cl.carry}`);
+    const dot = (p, col) => L.circleMarker([p.lat, p.lon], { interactive: false, radius: 7, color: "#000", weight: 2, fillColor: col, fillOpacity: 1 }).addTo(hm.lines);
+    if (geo.tee) L.circleMarker([geo.tee.lat, geo.tee.lon], { interactive: false, radius: 6, color: "#000", weight: 2, fillColor: "#fff", fillOpacity: 1 }).addTo(hm.lines).bindTooltip("Tee");
+    if (geo.green) L.circleMarker([geo.green.lat, geo.green.lon], { interactive: false, radius: 7, color: "#fff", weight: 2, fillColor: "#c0392b", fillOpacity: 1 }).addTo(hm.lines).bindTooltip("Green");
+    const from = hm.shot || (par < 4 ? geo.tee : null);
+    const fromTee = !hm.shot, approachClubs = fromTee ? clubs : clubs.filter(x => !/^(driver|dr|1w|3w|3 ?wood)\b/i.test(x.name.trim()));
+    if (from) {   // three lines to the green: front, hole high, back
+      if (!geo.green) { out.textContent = "Tap More… → Set the green, then tap the middle of the green."; return; }
+      dot(from, "#fff");
+      const brg = bearing(from, geo.green), dC = dist(from, geo.green);
+      const dF = geo.front ? dist(from, geo.front) : dC - 12, dB = geo.back ? dist(from, geo.back) : dC + 12, est = !geo.front || !geo.back;
+      const pick = d => approachClubs.reduce((best, x) => Math.abs(x.carry - d) < Math.abs(best.carry - d) ? x : best);
+      const rows = [["front", "Front", dF], ["center", "Hole high", dC], ["back", "Back", dB]].map(([k, n, d]) => ({ k, n, d: Math.round(d), cl: pick(d) }));
+      const groups = [];   // one line per club: the same club can cover the front and the middle, say
+      rows.forEach(r => { const g = groups.find(x => x.cl === r.cl); if (g) g.rs.push(r); else groups.push({ cl: r.cl, rs: [r] }); });
+      groups.forEach((gr, i) => {
+        const k = gr.rs.find(r => r.k === "center") ? "center" : gr.rs[0].k, spread = groups.length > 1 ? (i - (groups.length - 1) / 2) * 4 : 0;
+        const end = destPt(from, brg + spread, gr.cl.carry);   // fan the lines a little so they don't sit on top of each other
+        L.polyline([[from.lat, from.lon], [end.lat, end.lon]], { interactive: false, color: HM_COL[k], weight: 5, opacity: .95 }).addTo(hm.lines);
+        dot(end, HM_COL[k]); label(end, `${gr.cl.name} ${gr.cl.carry} · ${gr.rs.map(r => r.n.toLowerCase()).join(", ")}`, HM_COL[k], groups.length - 1 - i);
+      });
+      const longest = approachClubs[0] || clubs[0];
+      out.innerHTML = rows.map(r => `<span style="color:${HM_COL[r.k]};text-shadow:0 0 1px #000">●</span> ${r.n} ${r.d}: <b>${esc(r.cl.name)}</b> (${r.cl.carry})`).join("<br>") +
+        (dC > longest.carry + 10 ? `<br>Out of reach: your ${esc(longest.name)} (${longest.carry}) leaves about ${Math.round(dC - longest.carry)}.` : "") +
+        (est ? `<br><span class="note">Front and back are estimated at 12 yd either side of the middle. Save the green on the course for exact numbers.</span>` : "");
+      hm.map.fitBounds([[from.lat, from.lon], [geo.green.lat, geo.green.lon]], { padding: [60, 60], maxZoom: 18 });
+      return;
+    }
+    // tee shot on a par 4 or 5: the two longest clubs
+    if (!geo.tee) { out.textContent = "OpenStreetMap doesn't have this hole. Tap More… → Set the tee, then Set the green."; return; }
+    if (!geo.line && !geo.green) { out.textContent = "Tap More… → Set the green so the lines know which way to point."; return; }
+    const two = clubs.slice(0, 2), txt = [], pts = [geo.tee];
+    two.forEach((cl, i) => {
+      const path = geo.line ? pathAlong(geo.line, cl.carry) : [geo.tee, destPt(geo.tee, bearing(geo.tee, geo.green), cl.carry)];
+      const col = i ? HM_COL.second : HM_COL.first, end = path[path.length - 1];
+      L.polyline(path.map(p => [p.lat, p.lon]), { interactive: false, color: col, weight: i ? 5 : 7, opacity: .95 }).addTo(hm.lines);
+      dot(end, col); pts.push(end); hm._row = i;
+      const left = geo.green ? Math.max(0, Math.round(geo.line ? geo.line.slice(1).reduce((t, p, k) => t + dist(geo.line[k], p), 0) - cl.carry : dist(end, geo.green))) : null;
+      label(end, `${cl.name} ${cl.carry}` + (left != null ? ` · ${left} left` : ""), col, i ? -1 : 0);
+      txt.push(`<span style="color:${col};text-shadow:0 0 1px #000">●</span> <b>${esc(cl.name)}</b> carries ${cl.carry}` + (left != null ? `, leaving about ${left}` : ""));
     });
-    out.textContent = lines.join(". ") + "." + (useLine ? ` Measured along the OpenStreetMap hole line (${Math.round(lineLen)} yd` +
-      (card && Math.abs(lineLen - card) > 25 ? `; your scorecard says ${card}, so the mapped tee may be a different one` : "") + ").": "");
+    if (geo.green) pts.push(geo.green);
+    out.innerHTML = txt.join("<br>") + `<br><span class="note">Lines show carry; the ball rolls a little more. On the course tap 📍 or 👆 when you reach your ball.</span>`;
+    hm.map.fitBounds(pts.map(p => [p.lat, p.lon]), { padding: [50, 50], maxZoom: 18 });
+  }
+  function hmMeasure(p) {   // a tap that isn't setting a point: yards from the ball (or tee) to the tap, and on to the green
+    const geo = holeGeo(), from = hm.shot || hm.here || geo.tee, parts = [];
+    hmRender();
+    L.circleMarker([p.lat, p.lon], { interactive: false, radius: 6, color: "#000", weight: 2, fillColor: "#fff", fillOpacity: 1 }).addTo(hm.lines);
+    if (from) { L.polyline([[from.lat, from.lon], [p.lat, p.lon]], { interactive: false, color: "#fff", weight: 2, dashArray: "4 6" }).addTo(hm.lines); parts.push(`${Math.round(dist(from, p))} yd from ${hm.shot ? "your ball" : hm.here ? "you" : "the tee"}`); }
+    if (geo.green) parts.push(`${Math.round(dist(p, geo.green))} yd to the green`);
+    $("hmOut").textContent = parts.join(" · ") || "Set the tee or your ball first.";
   }
   async function openHm() {
     document.documentElement.style.zoom = "";   // Leaflet misplaces tiles and taps under CSS zoom; text size returns on Back
@@ -1094,33 +1133,27 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (!hm.map) {
       hm.map = L.map("hmMap", { zoomControl: true, attributionControl: false });
       hm.marks = L.layerGroup().addTo(hm.map); hm.lines = L.layerGroup().addTo(hm.map); hmSetLayer();
-      hm.map.on("click", ev => { const p = { lat: ev.latlng.lat, lon: ev.latlng.lng };
-        if (hm.pickFrom) { hm.from = p; hm.pickFrom = false; hm.lines.clearLayers(); if (hm.fromM) hm.map.removeLayer(hm.fromM);
-          hm.fromM = L.circleMarker([p.lat, p.lon], { radius: 7, color: "#000", weight: 2, fillColor: "#fff", fillOpacity: 1 }).addTo(hm.map);
-          $("hmOut").textContent = "Point set. Now tap where you want to measure to."; $("hmFrom").textContent = "Measure from me (GPS)"; hmClubs(); return; }
+      hm.map.on("click", ev => { const p = { lat: ev.latlng.lat, lon: ev.latlng.lng }, k = hm.pick; hm.pick = null;
+        if (k === "shot") { hm.shot = p; $("hmOut").textContent = "Lines from your ball to the front, middle and back of the green."; hmRender(); return; }
+        if (k === "tee" || k === "green") { const c = S.mapPts[S.cur.course] || (S.mapPts[S.cur.course] = {}); (c[S.cur.hole] = c[S.cur.hole] || {})[k] = p; save();
+          $("hmOut").textContent = k === "tee" ? "Tee saved for this hole." : "Green saved for this hole."; hmRender(); return; }
         hmMeasure(p); });
     }
     const g = hmDraw(), c = COURSE_PT[S.cur.course], here = fix && (!c || dist(fix, c) < 2500) ? fix : null;   // GPS only counts at the course
     hm.here = here;
-    const center = here && g && dist(here, g) < 700 ? [(here.lat + g.lat) / 2, (here.lon + g.lon) / 2] : here ? [here.lat, here.lon] : g ? [g.lat, g.lon] : c ? [c.lat, c.lon] : fix ? [fix.lat, fix.lon] : [33.9563, -118.4182];
-    hm.map.setView(center, here || g ? 17 : 15); setTimeout(() => hm.map.invalidateSize(), 50);
-    if (!(!g && mapNote())) $("hmOut").textContent = here ? "Tap the map: yards from you and to the green." : "Not at the course: tap “Measure from a point I tap” (say the tee), then tap a landing spot.";
+    hm.map.setView(here ? [here.lat, here.lon] : g ? [g.lat, g.lon] : c ? [c.lat, c.lon] : [33.9563, -118.4182], here || g ? 17 : 15);
+    setTimeout(() => hm.map.invalidateSize(), 50);
+    $("hmOut").textContent = "Tap the map to measure.";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     if (o && hm.map) {
       if (hm.osm) hm.map.removeLayer(hm.osm);
       hm.osm = L.layerGroup().addTo(hm.map);
-      if (o.outline.length > 2) L.polygon(o.outline.map(p => [p.lat, p.lon]), { color: "#fff", weight: 1.5, fill: false, dashArray: "4 4" }).addTo(hm.osm);
-      o.holes.forEach(h => { if (h.line.length < 2) return; const cur = h.n === S.cur.hole;
-        L.polyline(h.line.map(p => [p.lat, p.lon]), { color: cur ? "#ffd400" : "#ffffff", weight: cur ? 4 : 2, opacity: cur ? 1 : .7 }).addTo(hm.osm);
-        const t = h.line[0]; L.marker([t.lat, t.lon], { icon: L.divIcon({ className: "", html: `<span style="display:inline-block;min-width:22px;padding:1px 4px;border-radius:11px;background:${cur ? "#ffd400" : "#fff"};color:#000;font:700 13px sans-serif;text-align:center;border:1px solid #000">${h.n}</span>`, iconSize: [26, 20], iconAnchor: [13, 10] }) }).addTo(hm.osm); });
-      const mine = o.holes.find(h => h.n === S.cur.hole && h.line.length > 1);
-      if (!here && !g) {
-        if (mine) { hm.map.fitBounds(mine.line.map(p => [p.lat, p.lon]), { padding: [30, 30] }); if (!hm.from) { hm.from = mine.line[0]; $("hmFrom").textContent = "Measure from me (GPS)"; $("hmOut").textContent = `Hole ${S.cur.hole} from OpenStreetMap: tap a spot for yards from the tee.`; } }
-        else if (o.outline.length > 2) hm.map.fitBounds(o.outline.map(p => [p.lat, p.lon]));
-      }
-      if (!o.holes.length) toast("OpenStreetMap has no hole lines for this course. Try Satellite.");
-    } else if (!here) toast("Couldn't load hole lines. Try Satellite to see the holes.");
-    hmClubs();
+      o.holes.forEach(h => { if (h.line.length < 2 || h.n === S.cur.hole) return;   // other holes: thin lines and numbers
+        L.polyline(h.line.map(p => [p.lat, p.lon]), { interactive: false, color: "#ffffff", weight: 1.5, opacity: .5 }).addTo(hm.osm);
+        const t = h.line[0]; L.marker([t.lat, t.lon], { interactive: false, icon: L.divIcon({ className: "", html: `<span style="display:inline-block;min-width:20px;padding:0 3px;border-radius:10px;background:#fff;color:#000;font:700 12px sans-serif;text-align:center;border:1px solid #000">${h.n}</span>`, iconSize: [24, 18], iconAnchor: [12, 9] }) }).addTo(hm.osm); });
+      if (!o.holes.length) toast("OpenStreetMap has no hole lines here: use More… to set the tee and green.");
+    } else toast("Couldn't load hole lines. Use More… to set the tee and green.");
+    hmRender();
   }
   document.addEventListener("change", e => { if (e.target.id === "rlClub") { S.rlClub = e.target.value; save(); renderRl(); } });
   function renderClubs() {
