@@ -415,6 +415,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   <div class="row"><button id="hmHere">📍 Hitting from where I stand</button><button id="hmTapShot">👆 Tap where my ball is</button></div>
   <div class="row"><button id="hmTee">⛳ Tee shot lines</button><button id="hmMore">More…</button></div>
   <div class="row" id="hmMoreRow" hidden><button id="hmSetTee">Set the tee (tap)</button><button id="hmSetGreen">Set the green (tap)</button><button id="hmMe">Center on me</button></div>
+  <p class="q" id="hmPlan" style="margin:0;font-size:18px"></p>
   <p class="q" id="hmClubs" style="margin:0"></p>
   <p class="note" id="hmCredit" style="margin:0"></p>
 </div></div>
@@ -434,6 +435,27 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         Blue:  [108, 317, 176, 145, 267, 287, 286, 141, 336, 340, 160, 148, 148, 150, 515, 160, 355, 300],
         White: [100, 307, 166, 135, 255, 277, 276, 133, 314, 330, 149, 138, 135, 125, 485, 125, 335, 290]
       },
+      // Claude's plan for 74 from the Blue tees (practice/westchester-strategy-74.md, 2026-11-04); the golfer's own plan wins
+      plan: [
+        "9 iron, aim center right; small bunker short left. Target 3",
+        "3 wood, aim left center, staying short of the pond on the right from 215 to 265. Then 7 iron from about 127 to the center or left. Bogey is fine",
+        "Hardest hole. 4 utility to the front of the green, then chip. Short is safe, trees around the green. Bogey is fine",
+        "4 utility, smooth, aim center right. Bunker on the left. Target 3",
+        "Driver, then 54 degree from about 60. Bunker front left of the green. Target 4",
+        "Driver, then 50 degree or pitching wedge from about 80. Target 4",
+        "Dogleg left. 4 utility to the corner, not driver. Then 8 or 7 iron from about 120. Target 4",
+        "7 iron to the front, then chip. Bogey is fine",
+        "Driver, aim center right; fairway bunker on the left at about 190. Then 7 iron from about 130, aim right center. Target 4",
+        "Driver, then 7 iron or 4 utility from about 135, aim left center; bunker right of the green. Target 4",
+        "4 utility, aim center right; small bunker front left. Target 3",
+        "4 utility, smooth. No bunkers. Target 3",
+        "4 utility, smooth. No bunkers. Target 3",
+        "4 utility. No bunkers. Bogey is fine",
+        "Driver, then 4 utility to the left center, away from the bunker in the right rough. Then 4 utility or 7 iron to the front left; bunkers in front and front right. Target 5",
+        "4 utility, aim left center; bunkers front right and left, a right miss is the danger. Bogey is fine",
+        "Driver; the rough bunkers are past your drive. Then 4 utility from about 150 to the middle. Bogey is fine",
+        "Driver, aim right center, then pitching wedge from about 95; bunker left of the green. Target 4"
+      ], planTees: "Blue",
       // Read from the westchestergc.com course map (golfer's screenshot, 2026-11-01). Distances: each hole on the drawing scaled
       // to its Blue yardage (tee to green center), so they're rough (plus or minus 15-20 yd). Left/right as seen from the tee.
       map: [
@@ -466,6 +488,27 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         White:  [344, 403, 141, 469, 356, 360, 337, 168, 366, 354, 411, 170, 357, 335, 381, 157, 475, 452],
         Yellow: [338, 367, 123, 445, 335, 346, 308, 150, 328, 344, 371, 134, 352, 306, 374, 122, 461, 440]
       },
+      // Claude's plan for 80 from the White tees (practice/rancho-strategy-80.md, 2026-11-04); the golfer's own plan wins
+      plan: [
+        "3 wood, fences both sides. Then 4 utility from about 154, carried to the middle; bunkers short left and short right. Target 4",
+        "Driver, aim left center. 4 utility to about 35 yards, then pitch from the right; bunker left of the green. Bogey is fine",
+        "7 iron, aim center right; bunker left, short is safe. Target 3",
+        "Driver, then 4 utility, then pitching wedge or 9 iron from about 100 to the middle; bunker front right. Out of bounds beyond the road. Target 5",
+        "Driver, then 4 utility from about 150, aim right center; bunker left of the green. Target 4",
+        "Driver, then 4 utility to the left half; bunker short right. Target 4",
+        "Driver, aim right center, landing between the left rough bunkers. Then 7 iron from about 130; don't go long. Target 4",
+        "4 utility to the front, then chip. Trees: short is fine, long is not. Bogey is fine",
+        "Out of bounds left. Driver, aim right center, then 4 utility, aim right center; bunker short left. Target 4",
+        "Driver, then 4 utility from about 150, aim right center; bunker left of the green. Target 4",
+        "Driver, then 4 utility to about 40 yards, then pitch from the right; bunker left of the green. Bogey is fine",
+        "4 utility, aim left center; bunkers short right, right and back right. Bogey is fine",
+        "Driver, or 3 wood if the driver is wild today. Then 4 utility from about 150. Trees both sides. Target 4",
+        "Driver, aim left center; fence on the right. Then 7 iron from about 130. Target 4",
+        "4 utility off the tee, short of the fairway bunker on the right. 4 utility again, then wedge from about 50. Bogey is fine",
+        "4 utility, aim center right; it carries the bunker short left. Target 3",
+        "Ditch on the left is a penalty area. Driver, aim center right, then 4 utility, then 8 or 9 iron from about 105 to the middle. Target 5",
+        "Out of bounds right, left and behind the green. 4 utility off the tee, no driver. 4 utility again, then 7 or 8 iron to the front middle; never long. Target 5"
+      ], planTees: "White",
       // Read from the golf.lacity.gov aerial course map and local rules (golfer's screenshots, 2026-11-01). [g-N] = the
       // chosen tees' yardage minus N (N = yards short of the green center, measured on the map): rough, plus or minus 15-20 yd.
       map: [
@@ -1118,6 +1161,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   function hmRender() {
     if (!hm.map) return;
     hm.lines.clearLayers(); hm.pending = [];
+    const plan = planText(); $("hmPlan").innerHTML = plan ? `<b>Plan:</b> ${esc(plan)}.` : "";
     const geo = holeGeo(), c = CARDS[S.cur.course], par = c ? c.par[S.cur.hole - 1] : 4, out = $("hmClubs");
     const clubs = S.clubs.filter(x => x.carry > 0).sort((a, b) => b.carry - a.carry);
     if (!clubs.length) { out.textContent = "Add your clubs in the Clubs tab first."; return; }
@@ -1819,7 +1863,11 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const t = c && c.map && !(hole().hazards || []).length ? c.map[S.cur.hole - 1] || "" : "", y = cardYards();
     return t.replace(/\[g-(\d+)\]/g, (m, n) => y ? String(Math.round((y - n) / 5) * 5) : `${n} short of the green`);
   };
-  const planText = () => (S.plans[S.cur.course] || {})[S.cur.hole] || "";
+  const planText = () => {   // the golfer's own plan, else Claude's built-in plan for the course (with a note if the tees differ)
+    const own = (S.plans[S.cur.course] || {})[S.cur.hole]; if (own) return own;
+    const c = CARDS[S.cur.course]; if (!c || !c.plan) return "";
+    return c.plan[S.cur.hole - 1] + (c.planTees && S.tee !== c.planTees ? ` (planned from the ${c.planTees} tees)` : "");
+  };
   function applyDark() { if (S.dark) document.documentElement.dataset.theme = "dark"; else delete document.documentElement.dataset.theme; }
   function clubLines(name) {   // "It carries 147. One club less: 8i, 113. One club more: 4U, 154." for the club screen
     const clubs = S.clubs.filter(c => c.carry > 0).sort((a, b) => a.carry - b.carry), i = clubs.findIndex(c => c.name === name);
@@ -2085,7 +2133,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
           step("warm"); }, true],
        ["No, skip", () => { S.osmTried = S.osmTried || {}; S.osmTried[S.cur.course] = today(); save(); step("warm"); }]]);
     if (name === "plan") {   // write or change this hole's plan (from the Menu); read at the tee
-      const cur = (S.plans[S.cur.course] || {})[S.cur.hole] || "";
+      const cur = planText().replace(/ \(planned from the \w+ tees\)$/, "");
       return screen(holeInfo(), `<h3>Plan for this hole</h3>
         <textarea id="wizPlan" rows="4" style="font-size:20px" placeholder="e.g. aim at the center, short and left is safe">${esc(cur)}</textarea>
         <p class="live">Read aloud on the tee. Tip: tap the microphone on your keyboard to dictate.</p>`,

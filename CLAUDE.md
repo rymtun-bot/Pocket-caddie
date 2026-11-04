@@ -191,3 +191,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Tees there: Black 6,839 / Blue 6,419 / White 6,036 / Yellow 5,644. Ask which tees the golfer plays at Rancho.
   Rancho hazards from the golf.lacity.gov aerial map, local rules and City ratings (2026-11-01): CARDS.rancho.map and
   courses/rancho_park.md. Map notes use [g-N] = chosen tees' yardage minus N, so distances follow the tees in Setup.
+- Built-in hole plans (golfer's request 2026-11-04): CARDS.westchester.plan (Blue, for 74; practice/westchester-strategy-74.md)
+  and CARDS.rancho.plan (White, for 80; practice/rancho-strategy-80.md). planText() uses the golfer's own plan first,
+  else the built-in one (adds "planned from the X tees" if Setup tees differ). Read at each tee, shown on the yardage
+  screen and above the hole map; Menu → Plan for this hole opens with it so the golfer can edit. Update both the md file
+  and CARDS when clubs or bag change (e.g. if the 5U returns).
