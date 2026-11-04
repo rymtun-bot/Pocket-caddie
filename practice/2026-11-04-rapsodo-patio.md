@@ -51,3 +51,31 @@ Other averages are the mean of the 5 visible non-outlier shots (they give carry 
 ## PW ladder so far (patio, 11/04)
 Full 100 · gripped down 1 in 96 · hip to hip 66. Hole between 66 and 96: a chest-high (about 3/4) swing is the
 candidate to test for ~80.
+
+## 54° (tagged "Pw" in the Rapsodo app). Golfer sent two sets; which swing each was is assumed, to confirm
+
+### Set A, 2:04 screenshots (assumed full swing): Rapsodo 81
+
+| Shot | Smash | Club mph | Total | Carry | Launch dir | Launch | Apex ft | Type |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 1.38 | 49 | 86 | 79 | 1.6° L | 28.7° | 43 | ST |
+| 2 | 1.08 | 61 | 80 | 74 | 0.5° R | 30.8° | 44 | ST |
+| 3 | 1.22 | 56 | 85 | 79 | 1.7° L | 29.6° | 46 | ST |
+| 4 | 1.17 | 58 | 84 | 80 | 0.6° R | 35.2° | 57 | ST |
+| 5 | 1.20 | 63 | 93 | 92 | 7.4° L | 39.6° | 84 | L |
+| 6 | 1.36 | 52 | 89 | 84 | 1.5° L | 29.3° | 49 | ST |
+| **Average** | **1.24** | **57** | **86** | **81** | **1.9° L** | **32.2°** | **54** | |
+
+### Set B, 2:05-2:06 screenshots (assumed hip to hip): Rapsodo 57
+
+| Shot | Smash | Club mph | Total | Carry | Launch dir | Launch | Apex ft | Type |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 1.38 | 42 | 69 | 62 | 4.4° L | 32.9° | 38 | L |
+| 2 | 1.37 | 44 | 71 | 65 | 2.5° L | 33.4° | 41 | ST |
+| 3 (outlier) | 0.91 | 53 | 51 | 45 | 11.4° R | 37.0° | 30 | R |
+| 4 | 1.32 | 44 | 70 | 55 | 2.8° L | 23.7° | 22 | ST |
+| 5 | 1.16 | 48 | 64 | 56 | 0.6° L | 31.9° | 32 | ST |
+| 6 | 1.26 | 44 | 63 | 56 | 2.3° L | 34.0° | 34 | ST |
+| **Average** | **1.30** | **44** | **67** | **57** (Rapsodo's figure) | **2.5° L** | **31.2°** | **33** | |
+
+Non-carry averages leave out the outlier. No gripped-down 54° set was received.
