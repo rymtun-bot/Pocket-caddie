@@ -1,6 +1,6 @@
 # 2026-11-04 · Rapsodo MLM · patio net · PW
 
-Ball: not stated. Swing: not stated (planned session was the PW/54° ladder; assumed full swing until confirmed).
+Ball: Callaway Supersoft (golfer, 2026-11-04). Swing types as labelled below (54° labels assumed from distance).
 The screenshot ("Net - 6 Shots") had no average row, so the averages below are the mean of the 6 shot rows.
 
 | Shot | Smash | Carry | Total | Club mph | Launch | Launch dir | Apex ft | Type |
