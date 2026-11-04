@@ -1057,11 +1057,17 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const n = line.length; out.push(destPt(line[n - 1], bearing(line[n - 2], line[n - 1]), left)); return out;
   }
   function holeGeo() {
-    const o = (S.osmMap || {})[S.cur.course], line = o && (o.holes.find(x => x.n === S.cur.hole && x.line.length > 1) || {}).line;
+    const o = (S.osmMap || {})[S.cur.course], cand = o ? o.holes.filter(x => x.n === S.cur.hole && x.line.length > 1) : [];
+    const card = cardYards(), len = l => l.slice(1).reduce((t, p, k) => t + dist(l[k], p), 0);
+    // OpenStreetMap can hold an old layout or a mislabelled hole: only trust a line whose length is close to the scorecard
+    const ok = l => !card || Math.abs(len(l) - card) <= Math.max(60, card * 0.3);
+    const good = cand.map(x => x.line).filter(ok).sort((a, b) => Math.abs(len(a) - card) - Math.abs(len(b) - card))[0];
+    const bad = !good && cand.length ? Math.round(len(cand[0].line)) : null;
+    const line = good || null;
     const mp = (S.mapPts[S.cur.course] || {})[S.cur.hole] || {}, h = hole();
     const tee = mp.tee || (line && line[0]) || null;
     const green = h.center || mp.green || (line && line[line.length - 1]) || h.front || h.back || null;
-    return { line: line && !mp.tee ? line : null, tee, green, front: h.front, back: h.back, saved: !!h.center };
+    return { line: line && !mp.tee ? line : null, tee, green, front: h.front, back: h.back, saved: !!h.center, bad };
   }
   function label(p, text, col, row = 0) {   // row staggers labels that would otherwise sit on top of each other
     L.marker([p.lat, p.lon], { interactive: false, icon: L.divIcon({ className: "", iconSize: [0, 0], iconAnchor: [-8, 10 - row * 24],
@@ -1097,12 +1103,13 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       out.innerHTML = rows.map(r => `<span style="color:${HM_COL[r.k]};text-shadow:0 0 1px #000">●</span> ${r.n} ${r.d}: <b>${esc(r.cl.name)}</b> (${r.cl.carry})`).join("<br>") +
         (dC > longest.carry + 10 ? `<br>Out of reach: your ${esc(longest.name)} (${longest.carry}) leaves about ${Math.round(dC - longest.carry)}.` : "") +
         (est ? `<br><span class="note">Front and back are estimated at 12 yd either side of the middle. Save the green on the course for exact numbers.</span>` : "");
-      hm.map.fitBounds([[from.lat, from.lon], [geo.green.lat, geo.green.lon]], { padding: [60, 60], maxZoom: 18 });
+      if (dC < 800) hm.map.fitBounds([[from.lat, from.lon], [geo.green.lat, geo.green.lon]], { padding: [60, 60], maxZoom: 18 });
       return;
     }
     // tee shot on a par 4 or 5: the two longest clubs
     const known = (((S.osmMap || {})[S.cur.course] || {}).holes || []).map(x => x.n).sort((a, b) => a - b);
-    const missing = `Hole ${S.cur.hole} isn't on OpenStreetMap` + (known.length ? ` (it has holes ${known.join(", ")})` : "") + ".";
+    const missing = geo.bad ? `OpenStreetMap's hole ${S.cur.hole} doesn't match your scorecard (${geo.bad} yd on the map, ${cardYards()} on the card), so it's ignored.`
+      : `Hole ${S.cur.hole} isn't on OpenStreetMap` + (known.length ? ` (it has holes ${known.join(", ")})` : "") + ".";
     if (!geo.tee) { out.textContent = missing + " Find the hole on the picture, then tap Set the tee and Set the green below."; $("hmMoreRow").hidden = false; return; }
     if (!geo.line && !geo.green) { out.textContent = "Now tap Set the green, then the middle of the green, so the lines know which way to point."; $("hmMoreRow").hidden = false; return; }
     const two = clubs.slice(0, 2), txt = [], pts = [geo.tee];
@@ -1115,7 +1122,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       label(end, `${cl.name} ${cl.carry}` + (left != null ? ` · ${left} left` : ""), col, i ? -1 : 0);
       txt.push(`<span style="color:${col};text-shadow:0 0 1px #000">●</span> <b>${esc(cl.name)}</b> carries ${cl.carry}` + (left != null ? `, leaving about ${left}` : ""));
     });
-    if (geo.green) pts.push(geo.green);
+    if (geo.green && dist(geo.tee, geo.green) < 800) pts.push(geo.green);
     out.innerHTML = txt.join("<br>") + `<br><span class="note">Lines show carry; the ball rolls a little more. On the course tap 📍 or 👆 when you reach your ball.</span>`;
     hm.map.fitBounds(pts.map(p => [p.lat, p.lon]), { padding: [50, 50], maxZoom: 18 });
   }
@@ -1151,7 +1158,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (o && hm.map) {
       if (hm.osm) hm.map.removeLayer(hm.osm);
       hm.osm = L.layerGroup().addTo(hm.map);
+      const cd = CARDS[S.cur.course], yds = cd && cd.tees[S.tee] ? cd.tees[S.tee] : null;
       o.holes.forEach(h => { if (h.line.length < 2 || h.n === S.cur.hole) return;   // other holes: thin lines and numbers
+        const L0 = h.line.slice(1).reduce((t, p, k) => t + dist(h.line[k], p), 0), cy = yds && yds[h.n - 1];
+        if (cy && Math.abs(L0 - cy) > Math.max(60, cy * 0.3)) return;   // skip lines that don't match the scorecard
         L.polyline(h.line.map(p => [p.lat, p.lon]), { interactive: false, color: "#ffffff", weight: 1.5, opacity: .5 }).addTo(hm.osm);
         const t = h.line[0]; L.marker([t.lat, t.lon], { interactive: false, icon: L.divIcon({ className: "", html: `<span style="display:inline-block;min-width:20px;padding:0 3px;border-radius:10px;background:#fff;color:#000;font:700 12px sans-serif;text-align:center;border:1px solid #000">${h.n}</span>`, iconSize: [24, 18], iconAnchor: [12, 9] }) }).addTo(hm.osm); });
       if (!o.holes.length) toast("OpenStreetMap has no hole lines here: use More… to set the tee and green.");
