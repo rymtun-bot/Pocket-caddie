@@ -830,7 +830,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     { club: "PW", place: "Range", date: "2026-11-02", carry: 91, total: 94, mph: 68, smash: 1.14, launch: 30.4, dir: -3.8, note: "Average of 7 full swings (half swings left out)" },
     { club: "50°", place: "Range", date: "2026-11-02", carry: 69, total: 73, mph: 59, smash: 1.10, launch: 29.0, dir: -4.3, note: "Tagged GW; may include part swings" },
     { club: "54°", place: "Range", date: "2026-11-02", carry: 63, total: 66, mph: 60, smash: 1.04, launch: 32.5, dir: -6.4, note: "Tagged SW; may include part swings" },
-    { club: "PW", place: "Patio", date: "2026-11-04", carry: 100, total: 104, mph: 67, smash: 1.20, launch: 29.5, dir: 1.2, note: "Average of 6 shots (screenshot had no average row)" }
+    { club: "PW", place: "Patio", date: "2026-11-04", carry: 100, total: 104, mph: 67, smash: 1.20, launch: 29.5, dir: 1.2, note: "Average of 6 shots (screenshot had no average row)" },
+    { club: "PW choked 1 in", place: "Patio", date: "2026-11-04", carry: 96, total: 101, mph: 64, smash: 1.23, launch: 29.1, dir: 1.1, note: "Full swing, gripped down 1 inch; average of 6 shots (no average row)" }
   ];
   const clubKey = n => { const t = String(n).toLowerCase().replace(/[\s°-]/g, "").replace(/iron$/, "i");
     return ({ driver: "1w", dr: "1w", pitchingwedge: "pw", gw: "50", gapwedge: "50", "50": "50", sw: "54", sandwedge: "54", "54": "54" })[t] || t; };
