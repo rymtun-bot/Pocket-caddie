@@ -165,7 +165,10 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   card yardage are ignored (golfer saw zoom-outs on Westchester 5, 7, 9, 13 on 2026-11-04, likely mislabelled or old-layout lines).
   One hole per screen (golfer's request 2026-11-04): only the current hole is drawn; everything outside a 55-yd band
   along the hole (or ball → green) is dimmed; the map fills the screen and frames the hole; ◀ ▶ hole arrows in the
-  top bar; labels 16 px, placed on the side of each dot with room. Tap buttons scroll the map back into view. Decorations are non-interactive so taps reach the map.
+  top bar; labels 16 px, placed on the side of each dot with room. Tap buttons scroll the map back into view.
+  Rotation (golfer: holes 4, 11, 13, 15, 17 too small, 2026-11-04): leaflet-rotate 0.2.8 from jsdelivr turns the map so
+  tee/ball is at the bottom and the green at the top, and the zoom is computed so the hole fills the screen height
+  (falls back to north-up fitBounds if the plugin doesn't load). Labels go right, left or centered, whichever fits. Decorations are non-interactive so taps reach the map.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 

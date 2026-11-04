@@ -1010,7 +1010,12 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (window.L) return Promise.resolve();
     return new Promise((res, rej) => {
       const css = document.createElement("link"); css.rel = "stylesheet"; css.href = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"; document.head.appendChild(css);
-      const js = document.createElement("script"); js.src = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"; js.onload = res; js.onerror = rej; document.head.appendChild(js);
+      const js = document.createElement("script"); js.src = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"; js.onerror = rej;
+      js.onload = () => {   // rotation plugin (turns each hole so the green is at the top); the map still works without it
+        const r = document.createElement("script"); r.src = "https://cdn.jsdelivr.net/npm/leaflet-rotate@0.2.8/dist/leaflet-rotate.js";
+        r.onload = res; r.onerror = res; document.head.appendChild(r);
+      };
+      document.head.appendChild(js);
     });
   }
   const HM_LAYERS = {
@@ -1072,9 +1077,11 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   function flushLabels() {   // after the map is framed: put each label on the side of its dot that has room
     const W = hm.map.getSize().x;
     (hm.pending || []).forEach(({ p, text, col, row }) => {
-      const x = hm.map.latLngToContainerPoint([p.lat, p.lon]).x, left = x > W * 0.5;
-      L.marker([p.lat, p.lon], { interactive: false, icon: L.divIcon({ className: "", iconSize: [0, 0], iconAnchor: [left ? 10 : -10, 12 - row * 30],
-        html: `<span style="position:absolute;${left ? "right:0" : "left:0"};white-space:nowrap;padding:3px 8px;border-radius:9px;background:${col};color:#000;font:700 16px sans-serif;border:1px solid #000;box-shadow:0 1px 3px #0008">${esc(text)}</span>` }) }).addTo(hm.lines);
+      const x = hm.map.latLngToContainerPoint([p.lat, p.lon]).x, est = text.length * 8.6 + 18;   // rough label width in px
+      const side = W - x - 14 >= est ? "right" : x - 14 >= est ? "left" : "mid";
+      const pos = side === "right" ? "left:0" : side === "left" ? "right:0" : "left:0;transform:translateX(-50%)";
+      L.marker([p.lat, p.lon], { interactive: false, icon: L.divIcon({ className: "", iconSize: [0, 0], iconAnchor: [side === "right" ? -10 : side === "left" ? 10 : 0, side === "mid" ? 34 - row * 30 : 12 - row * 30],
+        html: `<span style="position:absolute;${pos};white-space:nowrap;padding:3px 8px;border-radius:9px;background:${col};color:#000;font:700 16px sans-serif;border:1px solid #000;box-shadow:0 1px 3px #0008">${esc(text)}</span>` }) }).addTo(hm.lines);
     });
     hm.pending = [];
   }
@@ -1090,7 +1097,20 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const world = [[-89, -179], [-89, 179], [89, 179], [89, -179]];
     L.polygon([world, corridor(path, 55).map(p => [p.lat, p.lon])], { interactive: false, stroke: false, fillColor: "#000", fillOpacity: .62 }).addTo(hm.lines);
   }
-  function hmFit(pts) {   // frame the hole as large as the screen allows
+  function hmFit(pts, a, b) {   // frame the hole as large as the screen allows; with rotation, a (tee/ball) at the bottom, b (green) at the top
+    if (a && b && typeof hm.map.setBearing === "function") {
+      const brg = bearing(a, b); hm.map.setBearing(-brg);
+      const along = pts.map(p => { const d = dist(a, p), t = (bearing(a, p) - brg) * Math.PI / 180; return { y: d * Math.cos(t), x: d * Math.sin(t) }; });
+      const y0 = Math.min(0, ...along.map(q => q.y)) - 15, y1 = Math.max(...along.map(q => q.y)) + 30;
+      const xs = Math.max(45, ...along.map(q => Math.abs(q.x) + 15));
+      const sz = hm.map.getSize(), lat = (a.lat + b.lat) / 2;
+      const mpp = Math.max((y1 - y0) / YD / (sz.y - 40), 2 * xs / YD / (sz.x - 30));   // meters per pixel needed
+      const z = Math.min(19, Math.log2(156543.03 * Math.cos(lat * Math.PI / 180) / mpp));
+      const mid = destPt(a, brg, (y0 + y1) / 2);
+      hm.map.setView([mid.lat, mid.lon], z, { animate: false });
+      return;
+    }
+    if (typeof hm.map.setBearing === "function") hm.map.setBearing(0);
     hm.map.fitBounds(pts.map(p => [p.lat, p.lon]), { padding: [36, 36], maxZoom: 19, animate: false });
   }
   function hmRender() {
@@ -1123,7 +1143,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       out.innerHTML = rows.map(r => `<span style="color:${HM_COL[r.k]};text-shadow:0 0 1px #000">●</span> ${r.n} ${r.d}: <b>${esc(r.cl.name)}</b> (${r.cl.carry})`).join("<br>") +
         (dC > longest.carry + 10 ? `<br>Out of reach: your ${esc(longest.name)} (${longest.carry}) leaves about ${Math.round(dC - longest.carry)}.` : "") +
         (est ? `<br><span class="note">Front and back are estimated at 12 yd either side of the middle. Save the green on the course for exact numbers.</span>` : "");
-      if (dC < 800) { hmMask([from, geo.green]); hmFit([from, geo.green, destPt(geo.green, brg, 25)]); }
+      if (dC < 800) { hmMask([from, geo.green]); hmFit([from, geo.green, destPt(geo.green, brg, 25)], from, geo.green); }
       flushLabels();
       return;
     }
@@ -1142,13 +1162,13 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       L.polyline(path.map(p => [p.lat, p.lon]), { interactive: false, color: col, weight: i ? 5 : 7, opacity: .95 }).addTo(hm.lines);
       dot(end, col); pts.push(end); hm._row = i;
       const left = geo.green ? Math.max(0, Math.round(geo.line ? geo.line.slice(1).reduce((t, p, k) => t + dist(geo.line[k], p), 0) - cl.carry : dist(end, geo.green))) : null;
-      label(end, `${cl.name} ${cl.carry}` + (left != null ? ` · ${left} left` : ""), col, i ? -1 : 0);
+      label(end, `${cl.name} ${cl.carry}` + (left != null ? ` · ${left} left` : ""), col, i ? 0.7 : -0.7);   // longer club's label above its dot, shorter below
       txt.push(`<span style="color:${col};text-shadow:0 0 1px #000">●</span> <b>${esc(cl.name)}</b> carries ${cl.carry}` + (left != null ? `, leaving about ${left}` : ""));
     });
     if (geo.green && dist(geo.tee, geo.green) < 800) pts.push(geo.green);
     hmMask(geo.line || (geo.green ? [geo.tee, geo.green] : null));
     out.innerHTML = txt.join("<br>") + `<br><span class="note">Lines show carry; the ball rolls a little more. On the course tap 📍 or 👆 when you reach your ball.</span>`;
-    hmFit(pts); flushLabels();
+    hmFit(geo.line ? [...geo.line, ...pts] : pts, geo.tee, geo.green || (geo.line && geo.line[geo.line.length - 1])); flushLabels();
   }
   function hmMeasure(p) {   // a tap that isn't setting a point: yards from the ball (or tee) to the tap, and on to the green
     const geo = holeGeo(), from = hm.shot || hm.here || geo.tee, parts = [];
@@ -1164,7 +1184,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     try { await loadLeaflet(); } catch { $("hmOut").textContent = "Couldn't load the map program (Leaflet from cdnjs.cloudflare.com). Check your signal and try again."; return; }
     if (!window.L) { $("hmOut").textContent = "The map program didn't start. Close Pocket Caddie fully and open it again."; return; }
     if (!hm.map) {
-      hm.map = L.map("hmMap", { zoomControl: true, attributionControl: false });
+      hm.map = L.map("hmMap", { zoomControl: true, attributionControl: false, rotate: true, bearing: 0, touchRotate: false, rotateControl: false, shiftKeyRotate: false });
       hm.marks = L.layerGroup().addTo(hm.map); hm.lines = L.layerGroup().addTo(hm.map); hmSetLayer();
       hm.map.on("click", ev => { const p = { lat: ev.latlng.lat, lon: ev.latlng.lng }, k = hm.pick; hm.pick = null;
         if (k === "shot") { hm.shot = p; $("hmOut").textContent = "Lines from your ball to the front, middle and back of the green."; hmRender(); return; }
