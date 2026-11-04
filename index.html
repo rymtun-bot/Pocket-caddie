@@ -1031,21 +1031,38 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     new Date(e.at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })].join(",")).join("\n");
   // ---- hole map: OpenStreetMap or satellite imagery (Leaflet, loaded only when opened); tap to measure ----
   const COURSE_PT = { westchester: { lat: 33.9563, lon: -118.4182 }, rancho: { lat: 34.0447, lon: -118.4145 } };   // approximate centers; OpenStreetMap refines them
+  function inRing(p, ring) {   // ray casting: is point p inside the polygon ring?
+    let inside = false;
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      const a = ring[i], b = ring[j];
+      if ((a.lat > p.lat) !== (b.lat > p.lat) && p.lon < (b.lon - a.lon) * (p.lat - a.lat) / (b.lat - a.lat) + a.lon) inside = !inside;
+    }
+    return inside;
+  }
+  const ringArea = r => Math.abs(r.reduce((t, p, i) => { const q = r[(i + 1) % r.length]; return t + p.lon * q.lat - q.lon * p.lat; }, 0));
   async function hmOsm(id) {   // course outline and numbered hole lines from OpenStreetMap, cached per course
     S.osmMap = S.osmMap || {};
-    if (S.osmMap[id] && Date.now() - S.osmMap[id].at < 30 * 864e5) return S.osmMap[id];
+    const cached = S.osmMap[id];
+    if (cached && cached.v === 2 && Date.now() - cached.at < 30 * 864e5) return cached;
     const c = COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
-    const q = `[out:json][timeout:25];(way["leisure"="golf_course"](around:2500,${c.lat},${c.lon});way["golf"="hole"](around:2500,${c.lat},${c.lon}););out geom tags;`;
+    // outlines can be ways or multipolygon relations; neighbouring courses (Hillcrest next to Rancho, Rancho's own par-3
+    // nine) also have holes numbered 1-18, so only holes inside this course's outline are kept
+    const q = `[out:json][timeout:25];(way["leisure"="golf_course"](around:2500,${c.lat},${c.lon});relation["leisure"="golf_course"](around:2500,${c.lat},${c.lon});way["golf"="hole"](around:2500,${c.lat},${c.lon}););out geom tags;`;
     try {
       const r = await fetch("https://overpass-api.de/api/interpreter", { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" } });
       if (!r.ok) return null;
-      const els = (await r.json()).elements || [], pts = e => (e.geometry || []).map(g => ({ lat: g.lat, lon: g.lon }));
-      const courses = els.filter(e => e.tags && e.tags.leisure === "golf_course").map(e => ({ name: e.tags.name || "", pts: pts(e) }))
-        .sort((a, b) => dist(c, a.pts[0] || c) - dist(c, b.pts[0] || c));
-      const want = id === "rancho" ? /rancho/i : id === "westchester" ? /westchester/i : /./;
-      const course = courses.find(x => want.test(x.name)) || courses[0];
-      const holes = els.filter(e => e.tags && e.tags.golf === "hole" && /^\d+$/.test(e.tags.ref || "")).map(e => ({ n: +e.tags.ref, line: pts(e) }));
-      S.osmMap[id] = { at: Date.now(), outline: course ? course.pts : [], holes }; save(); return S.osmMap[id];
+      const els = (await r.json()).elements || [], pts = g => (g || []).map(x => ({ lat: x.lat, lon: x.lon }));
+      const courses = els.filter(e => e.tags && e.tags.leisure === "golf_course").map(e => ({ name: e.tags.name || "",
+        rings: e.type === "relation" ? (e.members || []).filter(m => m.role !== "inner" && m.geometry).map(m => pts(m.geometry)) : [pts(e.geometry)] }))
+        .filter(x => x.rings.length && x.rings[0].length > 2);
+      const want = id === "rancho" ? /rancho/i : id === "westchester" ? /westchester/i : /./, notPar3 = x => !/par[ -]?3|nine|9[ -]hole|executive/i.test(x.name);
+      const area = x => x.rings.reduce((t, rg) => t + ringArea(rg), 0);
+      const named = courses.filter(x => want.test(x.name)).sort((a, b) => notPar3(b) - notPar3(a) || area(b) - area(a));
+      const course = named[0] || courses.filter(x => x.rings.some(rg => inRing(c, rg)))[0] || null;
+      const mid = l => l[Math.floor(l.length / 2)];
+      let holes = els.filter(e => e.tags && e.tags.golf === "hole" && /^\d+$/.test(e.tags.ref || "")).map(e => ({ n: +e.tags.ref, line: pts(e.geometry) })).filter(h => h.line.length > 1);
+      if (course) holes = holes.filter(h => course.rings.some(rg => inRing(mid(h.line), rg) || inRing(h.line[0], rg)));
+      S.osmMap[id] = { v: 2, at: Date.now(), name: course ? course.name : "", outline: course ? course.rings[0] : [], holes }; save(); return S.osmMap[id];
     } catch { return null; }
   }
   let hm = { map: null, layer: S.hmLayer || "sat", from: null, pickFrom: false, marks: null, tapM: null, fromM: null, lines: null };

@@ -151,7 +151,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   World Imagery (satellite) with attribution. Shows you, saved green points and hazards; tap to measure from you (GPS)
   or from a tapped point, and to the green. Satellite is the default (S.hmLayer remembers the choice). GPS counts only
   within ~2,500 yd of the course; otherwise the map centers on the course (COURSE_PT, approximate) and loads the course
-  outline and numbered golf=hole lines from OpenStreetMap (Overpass, cached 30 days in S.osmMap; coverage unverified),
+  outline (way or multipolygon relation; named match, largest, not a par-3 course) and numbered golf=hole lines from
+  OpenStreetMap, keeping only holes inside that outline (Hillcrest CC and Rancho's par-3 nine sit next to Rancho; golfer saw
+  no Rancho lines 2026-11-04). Cached 30 days in S.osmMap (v: 2); coverage unverified,
   framing the current hole and measuring from its tee end when OSM has it (golfer reported 2026-11-04 that the map
   didn't show Westchester: it had centered on the phone's home position); also Leaflet broke under the text-size CSS zoom, so the
   zoom is switched off while the map is open). Confirmed working on the golfer's phone 2026-11-04.
