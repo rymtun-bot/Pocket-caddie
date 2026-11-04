@@ -166,6 +166,11 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   under the map, plus a floating copy on the map when the hole has no tee; a yellow prompt on the map says what to tap. Walks hole 1 → 18,
   tap tee, tap green, auto-advance (north-up, zoom 16.5 to find the next tee); warns if tee-to-green differs from the
   card by more than max(40 yd, 20%). OSM hole numbers come from ref, or the name ("Hole 7") when ref is missing.
+  Rancho quick setup (golfer's request 2026-11-04): CARDS.rancho.img holds each green and a point toward the tee, read
+  off the City aerial picture (pixels). The golfer taps the 3rd and 18th greens once (S.georef); a similarity transform
+  places every green, and each tee is put at the chosen tees' card yardage back toward the tee point. Order of use:
+  saved green / tapped points (S.mapPts) > OSM line > picture. Accuracy depends on the picture (rough, ±15-25 yd);
+  warns if the two tapped greens are >25% off the picture's spacing. More… → Line up the course map again.
   ◀ Hole / Hole ▶ step through holes; a hole with no OSM line or saved points keeps the current view (no zoom-out),
   says which holes OSM has, and opens Set the tee / Set the green. OSM hole lines more than max(60 yd, 30%) off the
   card yardage are ignored (golfer saw zoom-outs on Westchester 5, 7, 9, 13 on 2026-11-04, likely mislabelled or old-layout lines).

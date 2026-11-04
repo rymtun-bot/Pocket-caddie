@@ -419,7 +419,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   <p class="q" id="hmOut" style="margin:0;font-size:19px">Tap the map to measure.</p>
   <div class="row"><button id="hmHere">📍 Hitting from where I stand</button><button id="hmTapShot">👆 Tap where my ball is</button></div>
   <div class="row"><button id="hmTee">⛳ Tee shot lines</button><button id="hmMore">More…</button></div>
-  <div class="row" id="hmMoreRow" hidden><button id="hmSetTee">Set the tee (tap)</button><button id="hmSetGreen">Set the green (tap)</button><button id="hmMe">Center on me</button></div>
+  <div class="row" id="hmMoreRow" hidden><button id="hmSetTee">Set the tee (tap)</button><button id="hmSetGreen">Set the green (tap)</button><button id="hmMe">Center on me</button><button id="hmGeo">Line up the course map again (2 greens)</button></div>
   <p class="q" id="hmPlan" style="margin:0;font-size:18px"></p>
   <p class="q" id="hmClubs" style="margin:0"></p>
   <p class="note" id="hmCredit" style="margin:0"></p>
@@ -494,6 +494,11 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         Yellow: [338, 367, 123, 445, 335, 346, 308, 150, 328, 344, 371, 134, 352, 306, 374, 122, 461, 440]
       },
       // Claude's plan for 80 from the White tees (practice/rancho-strategy-80.md, 2026-11-04); the golfer's own plan wins
+      // Greens and tee directions read off the golf.lacity.gov aerial course map (pixel x, y; golfer's screenshot 2026-11-01).
+      // The golfer taps the 3rd and 18th greens on the satellite map once; every hole is placed from those two points
+      // and each tee is set at the scorecard yardage of the chosen tees, back along the tee direction.
+      img: { greens: [[450,1242],[800,1060],[735,1197],[340,1340],[480,1655],[850,1455],[575,1590],[480,1712],[225,1462],[440,1670],[790,1595],[1025,1605],[787,1805],[451,2008],[755,1765],[894,1633],[432,1808],[157,1590]],
+        toward: [[225,1345],[555,1205],[845,1077],[665,1205],[390,1420],[640,1510],[790,1530],[615,1635],[385,1670],[345,1470],[540,1725],[875,1571],[1010,1670],[719,1872],[520,1880],[794,1740],[740,1700],[385,1810]], ctrl: [2, 17] },
       plan: [
         "3 wood, fences both sides. Then 4 utility from about 154, carried to the middle; bunkers short left and short right. Target 4",
         "Driver, aim left center. 4 utility to about 35 yards, then pitch from the right; bunker left of the green. Bogey is fine",
@@ -906,7 +911,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   const openRc = () => { renderRc(); $("rcNow").innerHTML = ""; $("rc").hidden = false; $("rc").scrollTop = 0; };
   document.addEventListener("click", e => {
     const g0 = e.target.closest("#hmSetupFloat"); if (g0) { $("hmSetup").click(); return; }
-    const g = e.target.closest("#hmSetup, #hmHere, #hmTapShot, #hmTee, #hmMore, #hmSetTee, #hmSetGreen, #hmPrev, #hmNext, #gapOpen, #gapClose, #rlOpen, #rlClose, #rlMic, #rlSave, #rlUndo, #rlCopy, #rlClear, #rlEar, [data-rl], #hmOpen, #hmClose, #hmLayer, #hmFrom, #hmMe");
+    const g = e.target.closest("#hmGeo, #hmSetup, #hmHere, #hmTapShot, #hmTee, #hmMore, #hmSetTee, #hmSetGreen, #hmPrev, #hmNext, #gapOpen, #gapClose, #rlOpen, #rlClose, #rlMic, #rlSave, #rlUndo, #rlCopy, #rlClear, #rlEar, [data-rl], #hmOpen, #hmClose, #hmLayer, #hmFrom, #hmMe");
     if (g) {
       const id = g.id;
       if (id === "gapOpen") { renderGap(); $("gap").hidden = false; $("gap").scrollTop = 0; }
@@ -937,6 +942,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else if (id === "hmTapShot") { hm.pick = "shot"; $("hmOut").textContent = "Tap where your ball is."; $("hm").scrollTo({ top: 0, behavior: "smooth" }); toast($("hmOut").textContent); }
       else if (id === "hmTee") { hm.shot = null; hmRender(); $("hm").scrollTo({ top: 0, behavior: "smooth" }); }
       else if (id === "hmMore") $("hmMoreRow").hidden = !$("hmMoreRow").hidden;
+      else if (id === "hmGeo" || (id === "hmSetup" && !hm.setup && CARDS[S.cur.course] && CARDS[S.cur.course].img && !(S.georef[S.cur.course] || []).length)) { hm.geo = 0; hm.pick = "geo"; if (hm.map.setBearing) hm.map.setBearing(0); const cp = COURSE_PT[S.cur.course]; if (cp) hm.map.setView([cp.lat, cp.lon], 16, { animate: false });
+          $("hm").scrollTo({ top: 0, behavior: "smooth" }); const cg = CARDS[S.cur.course].img.ctrl, t = `Tap the middle of the ${ord(cg[0] + 1)} green`; $("hmOut").textContent = t + ". Use the course map from the scorecard to find it."; toast(t); }
       else if (id === "hmSetup") { hm.setup = !hm.setup; g.textContent = hm.setup ? "Stop setting up" : "🧭 Set up this course: tee and green for every hole";
         if (hm.setup) { hm.pick = "tee"; $("hm").scrollTo({ top: 0, behavior: "smooth" }); const t = `Hole ${S.cur.hole}: tap the tee box.`; $("hmOut").textContent = t; toast(t); } else hm.pick = null; }
       else if (id === "hmSetTee") { hm.pick = "tee"; $("hmOut").textContent = "Tap the tee box for this hole."; $("hm").scrollTo({ top: 0, behavior: "smooth" }); toast($("hmOut").textContent); }
@@ -1132,6 +1139,23 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       out.push(line[i]); left -= seg; }
     const n = line.length; out.push(destPt(line[n - 1], bearing(line[n - 2], line[n - 1]), left)); return out;
   }
+  S.georef = S.georef || {};   // { course: [pt for ctrl[0] green, pt for ctrl[1] green] } tapped on the satellite map
+  function imgToGround(id, xy) {   // similarity transform from the course-map picture to the ground, fixed by two tapped greens
+    const c = CARDS[id], g = S.georef[id]; if (!c || !c.img || !g || g.length < 2) return null;
+    const [i0, i1] = c.img.ctrl, P0 = c.img.greens[i0], P1 = c.img.greens[i1];
+    const lat0 = g[0].lat, k = Math.cos(lat0 * Math.PI / 180) * 111320, toXY = q => ({ x: (q.lon - g[0].lon) * k, y: (q.lat - lat0) * 111320 });
+    const Q1 = toXY(g[1]);   // ground metres of the second green, relative to the first
+    const u = { x: P1[0] - P0[0], y: -(P1[1] - P0[1]) }, w = { x: xy[0] - P0[0], y: -(xy[1] - P0[1]) };   // picture y points down
+    const d = u.x * u.x + u.y * u.y, a = (Q1.x * u.x + Q1.y * u.y) / d, b = (Q1.y * u.x - Q1.x * u.y) / d;   // complex ratio Q1 / u
+    const X = a * w.x - b * w.y, Y = a * w.y + b * w.x;
+    return { lat: lat0 + Y / 111320, lon: g[0].lon + X / k };
+  }
+  function imgHole(id, n) {   // tee and green for hole n from the picture, tee at the chosen tees' card yardage
+    const c = CARDS[id]; if (!c || !c.img) return null;
+    const green = imgToGround(id, c.img.greens[n - 1]), toward = imgToGround(id, c.img.toward[n - 1]); if (!green || !toward) return null;
+    const yds = c.tees[S.tee] ? c.tees[S.tee][n - 1] : c.tees[Object.keys(c.tees)[0]][n - 1];
+    return { green, tee: destPt(green, bearing(green, toward), yds) };
+  }
   function holeGeo() {
     const o = (S.osmMap || {})[S.cur.course], cand = o ? o.holes.filter(x => x.n === S.cur.hole && x.line.length > 1) : [];
     const card = cardYards(), len = l => l.slice(1).reduce((t, p, k) => t + dist(l[k], p), 0);
@@ -1141,8 +1165,9 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const bad = !good && cand.length ? Math.round(len(cand[0].line)) : null;
     const line = good || null;
     const mp = (S.mapPts[S.cur.course] || {})[S.cur.hole] || {}, h = hole();
-    const tee = mp.tee || (line && line[0]) || null;
-    const green = h.center || mp.green || (line && line[line.length - 1]) || h.front || h.back || null;
+    const ih = !line ? imgHole(S.cur.course, S.cur.hole) : null;   // from the course-map picture when OSM has nothing usable
+    const tee = mp.tee || (line && line[0]) || (ih && ih.tee) || null;
+    const green = h.center || mp.green || (line && line[line.length - 1]) || (ih && ih.green) || h.front || h.back || null;
     return { line: line && !mp.tee ? line : null, tee, green, front: h.front, back: h.back, saved: !!h.center, bad };
   }
   function label(p, text, col, row = 0) { (hm.pending = hm.pending || []).push({ p, text, col, row }); }
@@ -1186,10 +1211,13 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     else if (!hm.warnedRot) { hm.warnedRot = true; toast("Couldn't turn the map on this phone; holes stay north-up"); }
     hm.map.fitBounds(pts.map(p => [p.lat, p.lon]), { padding: [36, 36], maxZoom: 19, animate: false });
   }
+  const ord = n => n + (n % 10 === 1 && n !== 11 ? "st" : n % 10 === 2 && n !== 12 ? "nd" : n % 10 === 3 && n !== 13 ? "rd" : "th");
   function hmUi() {   // floating setup button when this hole has no tee; a big yellow prompt while a tap is expected
     if (!hm.map) return;
-    $("hmSetupFloat").hidden = !!hm.setup || !!holeGeo().tee;
-    const t = hm.pick === "shot" ? "Tap where your ball is" : hm.pick === "tee" ? `Hole ${S.cur.hole}: tap the tee box` : hm.pick === "green" ? `Hole ${S.cur.hole}: tap the middle of the green` : "";
+    $("hmSetupFloat").hidden = !!hm.setup || hm.pick === "geo" || !!holeGeo().tee;
+    $("hmSetupFloat").textContent = CARDS[S.cur.course] && CARDS[S.cur.course].img && !(S.georef[S.cur.course] || []).length ? "🧭 Quick setup: tap 2 greens" : "🧭 Set up this course";
+    const cg = CARDS[S.cur.course] && CARDS[S.cur.course].img ? CARDS[S.cur.course].img.ctrl : [0, 0];
+    const t = hm.pick === "geo" ? `Tap the middle of the ${ord(cg[hm.geo ? 1 : 0] + 1)} green` : hm.pick === "shot" ? "Tap where your ball is" : hm.pick === "tee" ? `Hole ${S.cur.hole}: tap the tee box` : hm.pick === "green" ? `Hole ${S.cur.hole}: tap the middle of the green` : "";
     $("hmPrompt").textContent = t; $("hmPrompt").hidden = !t;
   }
   function hmRender() {
@@ -1270,6 +1298,14 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       hm.map = L.map("hmMap", { zoomControl: true, attributionControl: false, zoomSnap: 0.1, zoomDelta: 0.5, rotate: true, bearing: 0, touchRotate: false, rotateControl: false, shiftKeyRotate: false });
       hm.marks = L.layerGroup().addTo(hm.map); hm.lines = L.layerGroup().addTo(hm.map); hmSetLayer();
       hm.map.on("click", ev => { setTimeout(hmUi, 0); const p = { lat: ev.latlng.lat, lon: ev.latlng.lng }, k = hm.pick; hm.pick = null;
+        if (k === "geo") {
+          const cg = CARDS[S.cur.course].img.ctrl;
+          if (hm.geo === 0) { hm.geoP = [p]; hm.geo = 1; hm.pick = "geo"; const t = `Now tap the middle of the ${ord(cg[1] + 1)} green`; $("hmOut").textContent = t + "."; toast(t); return; }
+          S.georef[S.cur.course] = [hm.geoP[0], p]; save(); hm.geo = null;
+          const span = dist(hm.geoP[0], p), c = CARDS[S.cur.course], P0 = c.img.greens[cg[0]], P1 = c.img.greens[cg[1]];
+          const expect = Math.hypot(P1[0] - P0[0], P1[1] - P0[1]) / 0.805;   // the picture is about 0.805 px per yard
+          $("hmOut").textContent = Math.abs(span - expect) > expect * 0.25 ? `Lined up, but the two greens are ${Math.round(span)} yd apart and the course map suggests about ${Math.round(expect)}. If holes look wrong, tap More… → Line up the course map again.` : "Course lined up. Every hole now has a tee and a green; use ◀ ▶ to check them.";
+          hmRender(); return; }
         if (k === "shot") { hm.shot = p; $("hmOut").textContent = "Lines from your ball to the front, middle and back of the green."; hmRender(); return; }
         if (k === "tee" || k === "green") { const c = S.mapPts[S.cur.course] || (S.mapPts[S.cur.course] = {}); (c[S.cur.hole] = c[S.cur.hole] || {})[k] = p; save();
           if (hm.setup && k === "tee") { hm.pick = "green"; const t = `Hole ${S.cur.hole}: now tap the middle of the green.`; $("hmOut").textContent = t; toast(t); return; }
