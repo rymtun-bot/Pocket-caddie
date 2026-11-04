@@ -153,7 +153,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   within ~2,500 yd of the course; otherwise the map centers on the course (COURSE_PT, approximate) and loads the course
   outline and numbered golf=hole lines from OpenStreetMap (Overpass, cached 30 days in S.osmMap; coverage unverified),
   framing the current hole and measuring from its tee end when OSM has it (golfer reported 2026-11-04 that the map
-  didn't show Westchester: it had centered on the phone's home position).
+  didn't show Westchester: it had centered on the phone's home position); also Leaflet broke under the text-size CSS zoom, so the
+  zoom is switched off while the map is open). Confirmed working on the golfer's phone 2026-11-04.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 
