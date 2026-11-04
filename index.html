@@ -415,6 +415,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   <div class="row"><button id="hmHere">📍 Hitting from where I stand</button><button id="hmTapShot">👆 Tap where my ball is</button></div>
   <div class="row"><button id="hmTee">⛳ Tee shot lines</button><button id="hmMore">More…</button></div>
   <div class="row" id="hmMoreRow" hidden><button id="hmSetTee">Set the tee (tap)</button><button id="hmSetGreen">Set the green (tap)</button><button id="hmMe">Center on me</button></div>
+  <div class="row"><button id="hmSetup">🧭 Set up this course: tee and green for every hole</button></div>
   <p class="q" id="hmPlan" style="margin:0;font-size:18px"></p>
   <p class="q" id="hmClubs" style="margin:0"></p>
   <p class="note" id="hmCredit" style="margin:0"></p>
@@ -900,7 +901,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   }
   const openRc = () => { renderRc(); $("rcNow").innerHTML = ""; $("rc").hidden = false; $("rc").scrollTop = 0; };
   document.addEventListener("click", e => {
-    const g = e.target.closest("#hmHere, #hmTapShot, #hmTee, #hmMore, #hmSetTee, #hmSetGreen, #hmPrev, #hmNext, #gapOpen, #gapClose, #rlOpen, #rlClose, #rlMic, #rlSave, #rlUndo, #rlCopy, #rlClear, #rlEar, [data-rl], #hmOpen, #hmClose, #hmLayer, #hmFrom, #hmMe");
+    const g = e.target.closest("#hmSetup, #hmHere, #hmTapShot, #hmTee, #hmMore, #hmSetTee, #hmSetGreen, #hmPrev, #hmNext, #gapOpen, #gapClose, #rlOpen, #rlClose, #rlMic, #rlSave, #rlUndo, #rlCopy, #rlClear, #rlEar, [data-rl], #hmOpen, #hmClose, #hmLayer, #hmFrom, #hmMe");
     if (g) {
       const id = g.id;
       if (id === "gapOpen") { renderGap(); $("gap").hidden = false; $("gap").scrollTop = 0; }
@@ -931,6 +932,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else if (id === "hmTapShot") { hm.pick = "shot"; $("hmOut").textContent = "Tap where your ball is."; $("hm").scrollTo({ top: 0, behavior: "smooth" }); toast($("hmOut").textContent); }
       else if (id === "hmTee") { hm.shot = null; hmRender(); $("hm").scrollTo({ top: 0, behavior: "smooth" }); }
       else if (id === "hmMore") $("hmMoreRow").hidden = !$("hmMoreRow").hidden;
+      else if (id === "hmSetup") { hm.setup = !hm.setup; g.textContent = hm.setup ? "Stop setting up" : "🧭 Set up this course: tee and green for every hole";
+        if (hm.setup) { hm.pick = "tee"; $("hm").scrollTo({ top: 0, behavior: "smooth" }); const t = `Hole ${S.cur.hole}: tap the tee box.`; $("hmOut").textContent = t; toast(t); } else hm.pick = null; }
       else if (id === "hmSetTee") { hm.pick = "tee"; $("hmOut").textContent = "Tap the tee box for this hole."; $("hm").scrollTo({ top: 0, behavior: "smooth" }); toast($("hmOut").textContent); }
       else if (id === "hmSetGreen") { hm.pick = "green"; $("hmOut").textContent = "Tap the middle of the green."; $("hm").scrollTo({ top: 0, behavior: "smooth" }); toast($("hmOut").textContent); }
       else if (id === "hmClose") { $("hm").hidden = true; applyTextSize(); }
@@ -1060,9 +1063,11 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       const named = courses.filter(x => want.test(x.name)).sort((a, b) => notPar3(b) - notPar3(a) || area(b) - area(a));
       const course = named[0] || courses.filter(x => x.rings.some(rg => inRing(c, rg)))[0] || null;
       const mid = l => l[Math.floor(l.length / 2)];
-      let holes = els.filter(e => e.tags && e.tags.golf === "hole" && /^\d+$/.test(e.tags.ref || "")).map(e => ({ n: +e.tags.ref, line: pts(e.geometry) })).filter(h => h.line.length > 1);
+      const num = t => /^\d+$/.test(t.ref || "") ? +t.ref : +((t.name || "").match(/\b(\d{1,2})\b/) || [])[1] || 0;
+      let holes = els.filter(e => e.tags && e.tags.golf === "hole").map(e => ({ n: num(e.tags), line: pts(e.geometry) })).filter(h => h.n >= 1 && h.n <= 18 && h.line.length > 1);
+      const nearby = holes.length;
       if (course) holes = holes.filter(h => course.rings.some(rg => inRing(mid(h.line), rg) || inRing(h.line[0], rg)));
-      S.osmMap[id] = { v: 2, at: Date.now(), name: course ? course.name : "", outline: course ? course.rings[0] : [], holes }; save(); return S.osmMap[id];
+      S.osmMap[id] = { v: 2, at: Date.now(), name: course ? course.name : "", outline: course ? course.rings[0] : [], holes, nearby }; save(); return S.osmMap[id];
     } catch { return null; }
   }
   let hm = { map: null, layer: S.hmLayer || "sat", from: null, pickFrom: false, marks: null, tapM: null, fromM: null, lines: null };
@@ -1216,7 +1221,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       return x.line.length > 1 && (!cy || Math.abs(L0 - cy) <= Math.max(60, cy * 0.3)); }).map(x => x.n))].sort((a, b) => a - b);
     const missing = geo.bad ? `OpenStreetMap's hole ${S.cur.hole} doesn't match your scorecard (${geo.bad} yd on the map, ${cardYards()} on the card), so it's ignored.`
       : `Hole ${S.cur.hole} isn't on OpenStreetMap` + (known.length ? ` (it has holes ${known.join(", ")})` : "") + ".";
-    if (!geo.tee) { out.textContent = missing + " Find the hole on the picture, then tap Set the tee and Set the green below."; $("hmMoreRow").hidden = false; return; }
+    if (!geo.tee) { out.textContent = missing + " Tap 🧭 Set up this course below (or Set the tee and Set the green for just this hole)."; $("hmMoreRow").hidden = false; return; }
     if (!geo.line && !geo.green) { out.textContent = "Now tap Set the green, then the middle of the green, so the lines know which way to point."; $("hmMoreRow").hidden = false; return; }
     const two = clubs.slice(0, 2), txt = [], pts = [geo.tee];
     two.forEach((cl, i) => {
@@ -1230,7 +1235,9 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     });
     if (geo.green && dist(geo.tee, geo.green) < 800) pts.push(geo.green);
     hmMask(geo.line || (geo.green ? [geo.tee, geo.green] : null));
-    out.innerHTML = txt.join("<br>") + `<br><span class="note">Lines show carry; the ball rolls a little more. On the course tap 📍 or 👆 when you reach your ball.</span>`;
+    const cy = cardYards(), mapLen = geo.green ? Math.round(geo.line ? geo.line.slice(1).reduce((t, p, k) => t + dist(geo.line[k], p), 0) : dist(geo.tee, geo.green)) : null;
+    const check = cy && mapLen && Math.abs(mapLen - cy) > Math.max(40, cy * 0.2) ? `<br><b>Check this hole:</b> tee to green is ${mapLen} yd on the map but ${cy} on the card. Set the tee or green again (More…).` : "";
+    out.innerHTML = txt.join("<br>") + check + `<br><span class="note">Lines show carry; the ball rolls a little more. On the course tap 📍 or 👆 when you reach your ball.</span>`;
     hmFit(geo.line ? [...geo.line, ...pts] : pts, geo.tee, geo.green || (geo.line && geo.line[geo.line.length - 1])); flushLabels();
   }
   function hmMeasure(p) {   // a tap that isn't setting a point: yards from the ball (or tee) to the tap, and on to the green
@@ -1252,6 +1259,12 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       hm.map.on("click", ev => { const p = { lat: ev.latlng.lat, lon: ev.latlng.lng }, k = hm.pick; hm.pick = null;
         if (k === "shot") { hm.shot = p; $("hmOut").textContent = "Lines from your ball to the front, middle and back of the green."; hmRender(); return; }
         if (k === "tee" || k === "green") { const c = S.mapPts[S.cur.course] || (S.mapPts[S.cur.course] = {}); (c[S.cur.hole] = c[S.cur.hole] || {})[k] = p; save();
+          if (hm.setup && k === "tee") { hm.pick = "green"; const t = `Hole ${S.cur.hole}: now tap the middle of the green.`; $("hmOut").textContent = t; toast(t); return; }
+          if (hm.setup && k === "green") {
+            if (S.cur.hole >= HOLES) { hm.setup = false; $("hmSetup").textContent = "🧭 Set up this course: tee and green for every hole"; $("hmOut").textContent = "All holes set. Use ◀ ▶ to check each one."; hmRender(); return; }
+            const done = S.cur.hole; S.cur.hole++; save(); renderAll(); hmDraw(); hmRender(); hm.pick = "tee";
+            if (!holeGeo().tee) { if (hm.map.setBearing) hm.map.setBearing(0); hm.map.setView([p.lat, p.lon], 16.5, { animate: false }); }   // north-up and wider, to find the next tee
+            const t = `Hole ${done} saved. Hole ${S.cur.hole}: tap the tee box.`; $("hmOut").textContent = t; toast(t); return; }
           $("hmOut").textContent = k === "tee" ? "Tee saved for this hole." : "Green saved for this hole."; hmRender(); return; }
         hmMeasure(p); });
     }
@@ -1264,7 +1277,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
-      if (!o.holes.length) toast("OpenStreetMap has no hole lines here: use More… to set the tee and green.");
+      if (!o.holes.length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
     } else toast("Couldn't load hole lines. Use More… to set the tee and green.");
     hmRender();
   }

@@ -162,6 +162,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   and on par 3 tees = lines to front (blue), hole high (yellow) and back (red), each with the nearest-carry club; driver
   and 3W excluded off the fairway; front/back from the saved green, else ±12 yd estimated; one line per club when a club
   covers two targets. More… → Set the tee / Set the green (tap; saved per hole in S.mapPts) for holes OSM lacks.
+  🧭 Set up this course (golfer: Rancho shows no lines, 2026-11-04; OSM likely lacks Rancho's holes): walks hole 1 → 18,
+  tap tee, tap green, auto-advance (north-up, zoom 16.5 to find the next tee); warns if tee-to-green differs from the
+  card by more than max(40 yd, 20%). OSM hole numbers come from ref, or the name ("Hole 7") when ref is missing.
   ◀ Hole / Hole ▶ step through holes; a hole with no OSM line or saved points keeps the current view (no zoom-out),
   says which holes OSM has, and opens Set the tee / Set the green. OSM hole lines more than max(60 yd, 30%) off the
   card yardage are ignored (golfer saw zoom-outs on Westchester 5, 7, 9, 13 on 2026-11-04, likely mislabelled or old-layout lines).
