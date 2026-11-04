@@ -410,12 +410,16 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
 </div></div>
 <div class="wiz" id="hm" hidden style="z-index:9"><div class="wrap" style="gap:10px">
   <div class="wizTop"><span style="display:flex;gap:6px;align-items:center"><button id="hmPrev" aria-label="Previous hole" style="padding:8px 12px">◀</button><span id="hmTitle" style="font-size:16px">Hole map</span><button id="hmNext" aria-label="Next hole" style="padding:8px 12px">▶</button></span><span style="display:flex;gap:6px"><button id="hmLayer">Map</button><button id="hmClose">Back</button></span></div>
-  <div id="hmMap" style="height:calc(100vh - 150px);min-height:360px;border-radius:12px;border:1px solid var(--line);background:#20302a"></div>
+  <div style="position:relative">
+    <div id="hmMap" style="height:calc(100vh - 150px);min-height:360px;border-radius:12px;border:1px solid var(--line);background:#20302a"></div>
+    <button id="hmSetupFloat" class="primary" hidden style="position:absolute;left:12px;right:12px;bottom:14px;z-index:1000;font-size:18px;padding:14px;box-shadow:0 2px 8px #0009">🧭 Set up this course</button>
+    <p id="hmPrompt" hidden style="position:absolute;left:12px;right:12px;top:12px;z-index:1000;margin:0;padding:10px 12px;border-radius:10px;background:#ffd400;color:#000;font:700 18px sans-serif;text-align:center;box-shadow:0 2px 8px #0009"></p>
+  </div>
+  <div class="row"><button id="hmSetup" class="primary">🧭 Set up this course: tee and green for every hole</button></div>
   <p class="q" id="hmOut" style="margin:0;font-size:19px">Tap the map to measure.</p>
   <div class="row"><button id="hmHere">📍 Hitting from where I stand</button><button id="hmTapShot">👆 Tap where my ball is</button></div>
   <div class="row"><button id="hmTee">⛳ Tee shot lines</button><button id="hmMore">More…</button></div>
   <div class="row" id="hmMoreRow" hidden><button id="hmSetTee">Set the tee (tap)</button><button id="hmSetGreen">Set the green (tap)</button><button id="hmMe">Center on me</button></div>
-  <div class="row"><button id="hmSetup">🧭 Set up this course: tee and green for every hole</button></div>
   <p class="q" id="hmPlan" style="margin:0;font-size:18px"></p>
   <p class="q" id="hmClubs" style="margin:0"></p>
   <p class="note" id="hmCredit" style="margin:0"></p>
@@ -901,6 +905,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   }
   const openRc = () => { renderRc(); $("rcNow").innerHTML = ""; $("rc").hidden = false; $("rc").scrollTop = 0; };
   document.addEventListener("click", e => {
+    const g0 = e.target.closest("#hmSetupFloat"); if (g0) { $("hmSetup").click(); return; }
     const g = e.target.closest("#hmSetup, #hmHere, #hmTapShot, #hmTee, #hmMore, #hmSetTee, #hmSetGreen, #hmPrev, #hmNext, #gapOpen, #gapClose, #rlOpen, #rlClose, #rlMic, #rlSave, #rlUndo, #rlCopy, #rlClear, #rlEar, [data-rl], #hmOpen, #hmClose, #hmLayer, #hmFrom, #hmMe");
     if (g) {
       const id = g.id;
@@ -939,6 +944,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else if (id === "hmClose") { $("hm").hidden = true; applyTextSize(); }
       else if (id === "hmLayer" && hm.map) { hm.layer = hm.layer === "osm" ? "sat" : "osm"; S.hmLayer = hm.layer; save(); hmSetLayer(); }
       else if (id === "hmMe" && hm.map) { if (fix) hm.map.setView([fix.lat, fix.lon], 18); else toast("No GPS position yet"); hmDraw(); if (fix && !hm.here) toast("You're away from the course: measuring from you won't mean much"); }
+      if (/^hm/.test(id || "")) setTimeout(hmUi, 0);
       return;
     }
     const t = e.target.closest("#rcOpen, #rcClose, #rcCheck, #rcCopy, #rcClear, #rcCompass"); if (!t) return;
@@ -1180,10 +1186,17 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     else if (!hm.warnedRot) { hm.warnedRot = true; toast("Couldn't turn the map on this phone; holes stay north-up"); }
     hm.map.fitBounds(pts.map(p => [p.lat, p.lon]), { padding: [36, 36], maxZoom: 19, animate: false });
   }
+  function hmUi() {   // floating setup button when this hole has no tee; a big yellow prompt while a tap is expected
+    if (!hm.map) return;
+    $("hmSetupFloat").hidden = !!hm.setup || !!holeGeo().tee;
+    const t = hm.pick === "shot" ? "Tap where your ball is" : hm.pick === "tee" ? `Hole ${S.cur.hole}: tap the tee box` : hm.pick === "green" ? `Hole ${S.cur.hole}: tap the middle of the green` : "";
+    $("hmPrompt").textContent = t; $("hmPrompt").hidden = !t;
+  }
   function hmRender() {
     if (!hm.map) return;
     hm.lines.clearLayers(); hm.pending = [];
     const plan = planText(); $("hmPlan").innerHTML = plan ? `<b>Plan:</b> ${esc(plan)}.` : "";
+    setTimeout(hmUi, 0);
     const geo = holeGeo(), c = CARDS[S.cur.course], par = c ? c.par[S.cur.hole - 1] : 4, out = $("hmClubs");
     const clubs = S.clubs.filter(x => x.carry > 0).sort((a, b) => b.carry - a.carry);
     if (!clubs.length) { out.textContent = "Add your clubs in the Clubs tab first."; return; }
@@ -1256,7 +1269,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (!hm.map) {
       hm.map = L.map("hmMap", { zoomControl: true, attributionControl: false, zoomSnap: 0.1, zoomDelta: 0.5, rotate: true, bearing: 0, touchRotate: false, rotateControl: false, shiftKeyRotate: false });
       hm.marks = L.layerGroup().addTo(hm.map); hm.lines = L.layerGroup().addTo(hm.map); hmSetLayer();
-      hm.map.on("click", ev => { const p = { lat: ev.latlng.lat, lon: ev.latlng.lng }, k = hm.pick; hm.pick = null;
+      hm.map.on("click", ev => { setTimeout(hmUi, 0); const p = { lat: ev.latlng.lat, lon: ev.latlng.lng }, k = hm.pick; hm.pick = null;
         if (k === "shot") { hm.shot = p; $("hmOut").textContent = "Lines from your ball to the front, middle and back of the green."; hmRender(); return; }
         if (k === "tee" || k === "green") { const c = S.mapPts[S.cur.course] || (S.mapPts[S.cur.course] = {}); (c[S.cur.hole] = c[S.cur.hole] || {})[k] = p; save();
           if (hm.setup && k === "tee") { hm.pick = "green"; const t = `Hole ${S.cur.hole}: now tap the middle of the green.`; $("hmOut").textContent = t; toast(t); return; }
