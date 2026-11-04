@@ -35,24 +35,25 @@ def rings(e):
     return [pts(e.get("geometry"))]
 
 
-def area(r):
-    return abs(sum(r[i][1] * r[(i + 1) % len(r)][0] - r[(i + 1) % len(r)][1] * r[i][0] for i in range(len(r))))
-
-
 ok = True
 for cid, (name, lat, lon) in COURSES.items():
     print("Course:", cid)
     try:
         b = f"{lat - 0.12},{lon - 0.15},{lat + 0.12},{lon + 0.15}"
         q1 = (f'[out:json][timeout:60];(way["leisure"="golf_course"]["name"~"{name}",i]({b});'
-              f'relation["leisure"="golf_course"]["name"~"{name}",i]({b}););out geom tags;')
+              f'relation["leisure"="golf_course"]["name"~"{name}",i]({b}););out geom;')
         found = ask(q1)
-        cands = [(e.get("tags", {}).get("name", ""), max(rings(e), key=len, default=[])) for e in found]
-        cands = [c for c in cands if len(c[1]) > 2]
-        main = [c for c in cands if not re.search(r"par[ -]?3|nine|9[ -]hole|executive", c[0], re.I)] or cands
+        def box(e):
+            pts = [p for r in rings(e) for p in r]
+            if not pts:
+                return None
+            return min(p[0] for p in pts), min(p[1] for p in pts), max(p[0] for p in pts), max(p[1] for p in pts)
+        cands = [(e.get("tags", {}).get("name", ""), box(e)) for e in found]
+        cands = [c for c in cands if c[1]]
+        main = [c for c in cands if not re.search(r"par[ -]?3|3[ -]?par|nine|9[ -]hole|executive|pitch", c[0], re.I)] or cands
         if main:
-            r0 = max(main, key=lambda c: area(c[1]))[1]
-            lat, lon = sum(p[0] for p in r0) / len(r0), sum(p[1] for p in r0) / len(r0)
+            bx = max(main, key=lambda c: (c[1][2] - c[1][0]) * (c[1][3] - c[1][1]))[1]
+            lat, lon = (bx[0] + bx[2]) / 2, (bx[1] + bx[3]) / 2
         R = 1300 if main else 2500
         q2 = (f'[out:json][timeout:60];(way["golf"="hole"](around:{R},{lat},{lon});'
               f'way["golf"="green"](around:{R},{lat},{lon}););out geom tags;')
