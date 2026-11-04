@@ -123,7 +123,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <span class="chip" id="gpsChip">GPS starting…</span>
     <span class="chip" id="parChip" hidden></span>
     <span class="chip warn" id="compChip" hidden>Competition mode</span>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 4 Nov (k) ⟳</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 4 Nov (l) ⟳</button>
   </div>
 </header>
 
@@ -278,7 +278,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><button id="darkBtn" aria-pressed="false">Dark screen (saves battery)</button></div>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 4 Nov (k). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 4 Nov (l). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -1061,7 +1061,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let last = "", k = 0;
     const order = OVERPASS.slice(ovGood).concat(OVERPASS.slice(0, ovGood));   // the server that answered last time goes first
     for (const u of order) {
-      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 4 Nov (k) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
+      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 4 Nov (l) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
       try {
         const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 25000);   // a busy server can hang: give up after 25 s
         const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: ctl.signal });
@@ -1084,8 +1084,16 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   async function hmOsm(id) {   // course outline (by name, small and quick), then hole lines and greens nearby
     S.osmMap = S.osmMap || {};
     const cached = S.osmMap[id];
-    if (cached && cached.v === 6 && Date.now() - cached.at < 30 * 864e5) return cached;
+    if (cached && cached.v === 7 && Date.now() - cached.at < 7 * 864e5) return cached;
     let c = (S.coursePt || {})[id] || COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
+    // the course data saved on the Pocket Caddie site (tools/fetch_osm.py) is quick; the live servers are the fallback
+    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 4 Nov (l) · Loading the course map data…";
+    let pre = null;
+    try { const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
+      const r = await fetch(`osm/${id}.json?d=${new Date().toISOString().slice(0, 10)}`, { signal: ctl.signal }); clearTimeout(tm);
+      if (r.ok) { pre = await r.json(); hm.osmSrc = `saved ${pre.at}`; } } catch (e) { pre = null; }
+    if (!pre) hm.osmSrc = "live";
+    const ask = (key, q, label) => pre && pre[key] ? Promise.resolve({ elements: pre[key] }) : overpass(q, label);
     const NAME = { rancho: "Rancho Park", westchester: "Westchester" }[id];
     const pts = g => (g || []).map(x => ({ lat: x.lat, lon: x.lon }));
     const ringsOf = e => e.type === "relation" ? (e.members || []).filter(m => m.role !== "inner" && m.geometry).map(m => pts(m.geometry)) : [pts(e.geometry)];
@@ -1094,7 +1102,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     // 1. the course itself, found by name in a wide box: one small answer with its outline
     if (NAME) try {
       const b = `${c.lat - 0.12},${c.lon - 0.15},${c.lat + 0.12},${c.lon + 0.15}`;
-      const f = ((await overpass(`[out:json][timeout:25];(way["leisure"="golf_course"]["name"~"${NAME}",i](${b});relation["leisure"="golf_course"]["name"~"${NAME}",i](${b}););out geom tags;`, "Finding the course")).elements || [])
+      const f = ((await ask("course", `[out:json][timeout:25];(way["leisure"="golf_course"]["name"~"${NAME}",i](${b});relation["leisure"="golf_course"]["name"~"${NAME}",i](${b}););out geom tags;`, "Finding the course")).elements || [])
         .map(e => ({ name: (e.tags || {}).name || "", rings: ringsOf(e) })).filter(x => x.rings.length && x.rings[0].length > 2);
       names = f.map(x => x.name);
       course = f.filter(x => !/par[ -]?3|nine|9[ -]hole|executive/i.test(x.name)).sort((u, v) => area(v.rings) - area(u.rings))[0] || f[0] || null;
@@ -1105,7 +1113,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let holes = [], greens = [], nearby = 0;
     try {
       const R = course ? 1300 : 2500;
-      const els = (await overpass(`[out:json][timeout:25];(way["golf"="hole"](around:${R},${c.lat},${c.lon});way["golf"="green"](around:${R},${c.lat},${c.lon}););out geom tags;`, "Loading holes and greens")).elements || [];
+      const els = (await ask("near", `[out:json][timeout:25];(way["golf"="hole"](around:${R},${c.lat},${c.lon});way["golf"="green"](around:${R},${c.lat},${c.lon}););out geom tags;`, "Loading holes and greens")).elements || [];
       const mid = l => l[Math.floor(l.length / 2)], cen = l => ({ lat: l.reduce((t, q) => t + q.lat, 0) / l.length, lon: l.reduce((t, q) => t + q.lon, 0) / l.length });
       const num = t => /^\d+$/.test(t.ref || "") ? +t.ref : +((t.name || "").match(/\b(\d{1,2})\b/) || [])[1] || 0;
       holes = els.filter(e => e.tags && e.tags.golf === "hole").map(e => ({ n: num(e.tags), line: pts(e.geometry) })).filter(h => h.n >= 1 && h.n <= 18 && h.line.length > 1);
@@ -1114,8 +1122,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       if (course) { const inC = q => course.rings.some(rg => inRing(q, rg));
         holes = holes.filter(h => inC(mid(h.line)) || inC(h.line[0])); greens = greens.filter(inC); }
     } catch (e) { if (!course) hm.osmErr = `OpenStreetMap is busy (${e.message}). Tap Back, wait a minute, and open the map again.`; }
-    if (!course && !holes.length && !greens.length) return hm.osmErr ? null : { v: 6, at: Date.now(), name: "", outline: [], holes: [], nearby, greens: [], courses: names, center: c };
-    const res = { v: 6, at: Date.now(), center: c, name: course ? course.name : "", outline: course ? course.rings.reduce((m, r) => r.length > m.length ? r : m, []) : [], holes, nearby, greens, courses: names };
+    if (!course && !holes.length && !greens.length) return hm.osmErr ? null : { v: 7, at: Date.now(), name: "", outline: [], holes: [], nearby, greens: [], courses: names, center: c };
+    const res = { v: 7, at: Date.now(), center: c, name: course ? course.name : "", outline: course ? course.rings.reduce((m, r) => r.length > m.length ? r : m, []) : [], holes, nearby, greens, courses: names };
     S.osmMap[id] = res; save(); return res;
   }
   let hm = { map: null, layer: S.hmLayer || "sat", from: null, pickFrom: false, marks: null, tapM: null, fromM: null, lines: null };
@@ -1414,9 +1422,9 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
-    $("hmStatus").textContent = "Pocket Caddie 4 Nov (k) · Looking up the course on OpenStreetMap…";
+    $("hmStatus").textContent = "Pocket Caddie 4 Nov (l) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
-    hm.osmInfo = o ? `OpenStreetMap: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
+    hm.osmInfo = o ? `OpenStreetMap${hm.osmSrc && hm.osmSrc !== "live" ? " (" + hm.osmSrc + ")" : ""}: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
     let auto = "";
     if (o && !(S.georef[S.cur.course] || []).length && CARDS[S.cur.course] && CARDS[S.cur.course].img) {
@@ -1424,7 +1432,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 4 Nov (k) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 4 Nov (l) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");

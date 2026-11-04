@@ -182,17 +182,21 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "4 Nov (k)" (also a "v 4 Nov (k) ⟳" chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "4 Nov (l)" (also a "v 4 Nov (l) ⟳" chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
   and searches around that (S.osmMap v: 5); after loading, a hole with no tee shows the whole course outline.
   Each Overpass request is aborted after 25 s and the next server tried (golfer's screenshot 2026-11-04: the name search
   found Rancho, then the status sat on "Looking up…" because a server hung). Radius 1300 m once the centre is known.
-  4 Nov (k) (golfer's screenshot: still "Looking up…" over the wrong area): the name query now returns the course outline
+  4 Nov (l) (golfer's screenshot: still "Looking up…" over the wrong area): the name query now returns the course outline
   itself (out geom), so the second query asks only for golf=hole and golf=green (no other courses' outlines); the
   status shows each step and server ("Finding the course (server 1 of 3)…"); the server that answered goes first for
   the next query. Cache S.osmMap v: 6. Simulated with the main server hanging: placed after ~25 s, 2 m error.
+  4 Nov (l) (golfer's screenshots: all three servers too slow from the phone): GitHub Actions (.github/workflows/osm.yml,
+  on push of tools/fetch_osm.py, manual, monthly) runs tools/fetch_osm.py, which saves the same two answers (course outline
+  by name; hole lines + greens around its centre) to osm/<course>.json on the site. hmOsm loads that file first (15 s
+  limit) and asks the live servers only if it's missing. Status shows "OpenStreetMap (saved DATE)". Cache v: 7, 7 days.
   ◀ Hole / Hole ▶ step through holes; a hole with no OSM line or saved points keeps the current view (no zoom-out),
   says which holes OSM has, and opens Set the tee / Set the green. OSM hole lines more than max(60 yd, 30%) off the
   card yardage are ignored (golfer saw zoom-outs on Westchester 5, 7, 9, 13 on 2026-11-04, likely mislabelled or old-layout lines).

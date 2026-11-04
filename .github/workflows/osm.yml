@@ -1,0 +1,22 @@
+name: Fetch course map data
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [tools/fetch_osm.py, .github/workflows/osm.yml]
+  schedule:
+    - cron: "17 9 3 * *"   # monthly refresh
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tools/fetch_osm.py
+      - name: Commit the map data if it changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898989+github-actions[bot]@users.noreply.github.com"
+          git add osm
+          git diff --cached --quiet || (git commit -m "Update course map data from OpenStreetMap" && git push)
