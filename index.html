@@ -499,6 +499,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       // and each tee is set at the scorecard yardage of the chosen tees, back along the tee direction.
       img: { greens: [[450,1242],[800,1060],[735,1197],[340,1340],[480,1655],[850,1455],[575,1590],[480,1712],[225,1462],[440,1670],[790,1595],[1025,1605],[787,1805],[451,2008],[755,1765],[894,1633],[432,1808],[157,1590]],
         toward: [[225,1345],[555,1205],[845,1077],[665,1205],[390,1420],[640,1510],[790,1530],[615,1635],[385,1670],[345,1470],[540,1725],[875,1571],[1010,1670],[719,1872],[520,1880],[794,1740],[740,1700],[385,1810]], ctrl: [1, 17],
+        outline: [98,1358,98,1386,98,1414,98,1638,98,1666,98,1694,126,1330,126,1358,126,1694,126,1722,154,1302,154,1330,154,1722,154,1750,154,1778,182,1274,182,1302,182,1778,182,1806,210,1274,210,1806,210,1834,210,1862,238,1246,238,1274,238,1862,238,1890,266,1246,266,1890,266,1918,266,1946,294,1218,294,1246,294,1946,294,1974,322,1218,322,1974,350,1190,350,1218,378,1162,378,1190,406,1162,434,1134,434,1162,462,1134,490,1106,490,1134,518,1078,518,1106,546,1050,546,1078,574,1050,574,1078,602,1022,602,1050,630,1022,658,1022,742,1302,742,1330,742,1358,770,1246,770,1274,770,1302,770,1358,770,1974,798,1218,798,1246,798,1358,798,1946,798,1974,826,1218,826,1358,826,1386,826,1918,826,1946,854,1190,854,1218,854,1386,854,1890,854,1918,882,1022,882,1190,882,1414,882,1862,882,1890,910,1022,910,1050,910,1134,910,1162,910,1190,910,1414,910,1442,910,1470,910,1862,938,1050,938,1078,938,1106,938,1134,938,1470,938,1834,938,1862,938,1946,938,1974,966,1470,966,1806,966,1834,966,1918,966,1946,966,1974,994,1470,994,1778,994,1806,994,1918,994,1946,994,1974,1022,1470,1022,1750,1022,1778,1022,1862,1022,1890,1022,1918,1022,1946,1050,1470,1050,1498,1050,1722,1050,1750,1050,1778,1050,1806,1050,1834,1050,1862,1050,1890,1078,1498,1078,1526,1078,1694,1078,1722,1078,1750,1078,1778,1078,1806,1106,1526,1106,1554,1106,1694,1106,1722,1106,1750,1106,1778],   // edge of the course on the picture (x, y pairs), for automatic lining up with OpenStreetMap's outline
         where: ["the green at the far north-east tip of the course, near the corner of Pico Blvd and Motor Ave", "the green at the far west edge, between the driving range and the street"] },
       plan: [
         "3 wood, fences both sides. Then 4 utility from about 154, carried to the middle; bunkers short left and short right. Target 4",
@@ -1155,31 +1156,57 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const X = a * w.x - b * w.y, Y = a * w.y + b * w.x;
     return { lat: lat0 + Y / 111320, lon: g[0].lon + X / k };
   }
-  function autoGeoref(id, o) {   // line the course-map picture up with OpenStreetMap's mapped greens, no taps needed
-    const c = CARDS[id]; if (!c || !c.img || !o || !o.greens || o.greens.length < 8) return false;
-    const c0 = COURSE_PT[id] || o.greens[0], k = Math.cos(c0.lat * Math.PI / 180) * 111320;
-    const Q = o.greens.map(q => ({ x: (q.lon - c0.lon) * k, y: (q.lat - c0.lat) * 111320 }));
-    const P = c.img.greens.map(([x, y]) => ({ x, y: -y }));   // picture y points down
-    const mean = A => ({ x: A.reduce((t, a) => t + a.x, 0) / A.length, y: A.reduce((t, a) => t + a.y, 0) / A.length });
-    let a = 0.9144 / 0.805, b = 0;   // start: north-up, about 0.805 picture px per yard
-    const pm = mean(P), qm = mean(Q); let tx = qm.x - (a * pm.x - b * pm.y), ty = qm.y - (a * pm.y + b * pm.x);
-    const T = p => ({ x: a * p.x - b * p.y + tx, y: a * p.y + b * p.x + ty });
+  function simFit(P, Q, a, b, tx, ty, rounds, lims, keepFrac) {   // trimmed ICP with a similarity transform (complex a + ib, shift tx, ty)
+    const T = p => ({ x: a * p.x - b * p.y + tx, y: a * p.y + b * p.x + ty }), mean = A => ({ x: A.reduce((t, v) => t + v.x, 0) / A.length, y: A.reduce((t, v) => t + v.y, 0) / A.length });
     let pairs = [];
-    for (let it = 0; it < 15; it++) {
-      const lim = it < 4 ? 90 : 40;   // metres: wide at first, then strict
-      pairs = P.map(p => { const t = T(p); let best = null, bd = 1e9; Q.forEach(q => { const d = Math.hypot(q.x - t.x, q.y - t.y); if (d < bd) { bd = d; best = q; } }); return bd < lim ? [p, best] : null; }).filter(Boolean);
-      if (pairs.length < 6) return false;
+    for (let it = 0; it < rounds; it++) {
+      const lim = lims[Math.min(it, lims.length - 1)];
+      pairs = P.map(p => { const t = T(p); let best = null, bd = 1e9; for (const q of Q) { const d = (q.x - t.x) ** 2 + (q.y - t.y) ** 2; if (d < bd) { bd = d; best = q; } } return [p, best, Math.sqrt(bd)]; })
+        .filter(x => x[2] < lim).sort((u, v) => u[2] - v[2]);
+      pairs = pairs.slice(0, Math.max(3, Math.round(pairs.length * keepFrac)));
+      if (pairs.length < 6) return null;
       const ps = mean(pairs.map(x => x[0])), qs = mean(pairs.map(x => x[1]));
-      let num_r = 0, num_i = 0, den = 0;
-      pairs.forEach(([p, q]) => { const px = p.x - ps.x, py = p.y - ps.y, qx = q.x - qs.x, qy = q.y - qs.y;
-        num_r += qx * px + qy * py; num_i += qy * px - qx * py; den += px * px + py * py; });
-      a = num_r / den; b = num_i / den; tx = qs.x - (a * ps.x - b * ps.y); ty = qs.y - (a * ps.y + b * ps.x);
+      let nr = 0, ni = 0, den = 0;
+      pairs.forEach(([p, q]) => { const px = p.x - ps.x, py = p.y - ps.y, qx = q.x - qs.x, qy = q.y - qs.y; nr += qx * px + qy * py; ni += qy * px - qx * py; den += px * px + py * py; });
+      a = nr / den; b = ni / den; tx = qs.x - (a * ps.x - b * ps.y); ty = qs.y - (a * ps.y + b * ps.x);
     }
-    const rms = Math.sqrt(pairs.reduce((t, [p, q]) => { const m = T(p); return t + (m.x - q.x) ** 2 + (m.y - q.y) ** 2; }, 0) / pairs.length);
-    const scaleYdPx = Math.hypot(a, b) / 0.9144;   // yards per picture pixel; the picture is about 1.24
-    if (pairs.length < 10 || rms > 25 || scaleYdPx < 0.9 || scaleYdPx > 1.6) return false;
-    const toLL = m => ({ lat: c0.lat + m.y / 111320, lon: c0.lon + m.x / k });
-    S.georef[id] = c.img.ctrl.map(i => toLL(T(P[i]))); (S.georefCtrl = S.georefCtrl || {})[id] = c.img.ctrl.join(); S.georefAuto = S.georefAuto || {}; S.georefAuto[id] = { n: pairs.length, rms: Math.round(rms) }; save();
+    const rms = Math.sqrt(pairs.reduce((t, x) => t + x[2] ** 2, 0) / pairs.length);
+    return { a, b, tx, ty, rms, n: pairs.length };
+  }
+  function autoGeoref(id, o) {   // line the course-map picture up with OpenStreetMap: the course outline, then the greens
+    const c = CARDS[id]; if (!c || !c.img || !o) return false;
+    const c0 = COURSE_PT[id] || (o.outline[0]) || (o.greens || [])[0]; if (!c0) return false;
+    const k = Math.cos(c0.lat * Math.PI / 180) * 111320, M = q => ({ x: (q.lon - c0.lon) * k, y: (q.lat - c0.lat) * 111320 });
+    const mean = A => ({ x: A.reduce((t, v) => t + v.x, 0) / A.length, y: A.reduce((t, v) => t + v.y, 0) / A.length });
+    const P = c.img.greens.map(([x, y]) => ({ x, y: -y }));   // picture y points down
+    let fit = null, how = "";
+    const ring = (o.outline || []).map(M);
+    if (ring.length > 3 && c.img.outline) {   // outline: densify OSM's ring every ~8 m and fit the picture's course edge to it
+      const Q = []; ring.forEach((q, i) => { const r = ring[(i + 1) % ring.length], n = Math.max(1, Math.ceil(Math.hypot(r.x - q.x, r.y - q.y) / 8));
+        for (let j = 0; j < n; j++) Q.push({ x: q.x + (r.x - q.x) * j / n, y: q.y + (r.y - q.y) * j / n }); });
+      const E = []; for (let i = 0; i < c.img.outline.length; i += 2) E.push({ x: c.img.outline[i], y: -c.img.outline[i + 1] });
+      const a0 = 0.9144 / 0.805, em = mean(E), qm = mean(Q);
+      let best = null;
+      for (const rot of [-8, 0, 8]) for (const sc of [0.9, 1, 1.1]) {   // a few starting guesses around north-up
+        const r = rot * Math.PI / 180, a = a0 * sc * Math.cos(r), b = a0 * sc * Math.sin(r);
+        const f = simFit(E, Q, a, b, qm.x - (a * em.x - b * em.y), qm.y - (a * em.y + b * em.x), 40, [250, 150, 100, 70, 50], 0.75);
+        if (f && (!best || f.rms < best.rms)) best = f;
+      }
+      const sYd = best ? Math.hypot(best.a, best.b) / 0.9144 : 0;
+      if (best && best.rms < 30 && sYd > 0.9 && sYd < 1.6) { fit = best; how = "the course outline"; }
+    }
+    const G = (o.greens || []).map(M);
+    if (G.length >= 6) {   // greens: refine from the outline fit, or start north-up from the middle
+      let a = fit ? fit.a : 0.9144 / 0.805, b = fit ? fit.b : 0, tx, ty;
+      if (fit) { tx = fit.tx; ty = fit.ty; } else { const pm = mean(P), gm = mean(G); tx = gm.x - (a * pm.x - b * pm.y); ty = gm.y - (a * pm.y + b * pm.x); }
+      const f = simFit(P, G, a, b, tx, ty, 15, fit ? [60, 40, 30] : [90, 90, 90, 90, 40], 1);
+      const sYd = f ? Math.hypot(f.a, f.b) / 0.9144 : 0;
+      if (f && f.n >= 8 && f.rms < 25 && sYd > 0.9 && sYd < 1.6) { fit = f; how = fit && how ? "the course outline and mapped greens" : "mapped greens"; }
+    }
+    if (!fit) return false;
+    const T = p => ({ x: fit.a * p.x - fit.b * p.y + fit.tx, y: fit.a * p.y + fit.b * p.x + fit.ty }), toLL = m => ({ lat: c0.lat + m.y / 111320, lon: c0.lon + m.x / k });
+    S.georef[id] = c.img.ctrl.map(i => toLL(T(P[i]))); (S.georefCtrl = S.georefCtrl || {})[id] = c.img.ctrl.join();
+    S.georefAuto = S.georefAuto || {}; S.georefAuto[id] = { how, rms: Math.round(fit.rms) }; save();
     return true;
   }
   function imgHole(id, n) {   // tee and green for hole n from the picture, tee at the chosen tees' card yardage
@@ -1361,7 +1388,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.osmInfo = o ? `OpenStreetMap: ${o.name ? "course outline found" : "no course outline"}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : "OpenStreetMap: couldn't load.";
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
     if (o && !(S.georef[S.cur.course] || []).length && autoGeoref(S.cur.course, o))
-      toast(`Course placed automatically from ${S.georefAuto[S.cur.course].n} mapped greens. If a hole looks off, use More… to fix it.`);
+      toast(`Course placed automatically from OpenStreetMap (${S.georefAuto[S.cur.course].how}). If a hole looks off, use More… to fix it.`);
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");

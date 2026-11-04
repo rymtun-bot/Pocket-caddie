@@ -177,7 +177,10 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   inside the course outline (S.osmMap v: 3); autoGeoref fits the picture's 18 greens to them (north-up start at
   ~0.805 px/yd, nearest-green matching + least-squares similarity, 15 rounds); accepted with 10+ matches, RMS ≤ 25 m and a
   sane scale, then stored as S.georef like the 2-tap setup (S.georefAuto records n and RMS). If OSM has too few greens,
-  the 2-green tap remains. Tested only on simulated data.
+  the 2-green tap remains. Tested only on simulated data. Outline fit added 2026-11-04 (golfer couldn't do the taps):
+  CARDS.rancho.img.outline = the picture's course edge (non-beige mask, ~144 points, image borders dropped); trimmed ICP
+  (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
+  then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   ◀ Hole / Hole ▶ step through holes; a hole with no OSM line or saved points keeps the current view (no zoom-out),
   says which holes OSM has, and opens Set the tee / Set the green. OSM hole lines more than max(60 yd, 30%) off the
   card yardage are ignored (golfer saw zoom-outs on Westchester 5, 7, 9, 13 on 2026-11-04, likely mislabelled or old-layout lines).
