@@ -63,7 +63,8 @@ check on video whether the 7-iron is getting extra loft at impact.
 ## Practice sessions
 Wedge preference (golfer, 2026-11-04): plays wedges with a full swing or a full swing gripped down 1 inch, not
 hip-to-hip or other part swings. "Full" is hands to shoulder height (that is the golfer's full swing). Plan wedge
-yardages, ladders and lay-ups around full and choked-1-in carries only.
+yardages, ladders and lay-ups around full and choked-1-in carries only. 11/04 patio: choking 1 in took off only 2-4 yd (PW 100/96,
+54° 81/79) with no tighter spread, so the golfer dropped the choke-down test; wedge gapping uses full swings.
 One file per session in `practice/` (date, monitor, place, ball), with raw shots and a summary.
 From Rapsodo screenshots, use only the top-line average row for each club; ignore the individual shot rows (golfer's
 instruction, 2026-10-31). The golfer sends each club's averages separately.
