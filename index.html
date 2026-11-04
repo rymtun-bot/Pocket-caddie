@@ -123,6 +123,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <span class="chip" id="gpsChip">GPS starting…</span>
     <span class="chip" id="parChip" hidden></span>
     <span class="chip warn" id="compChip" hidden>Competition mode</span>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 4 Nov (h) ⟳</button>
   </div>
 </header>
 
@@ -277,7 +278,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><button id="darkBtn" aria-pressed="false">Dark screen (saves battery)</button></div>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 4 Nov (g). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 4 Nov (h). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -1409,7 +1410,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 4 Nov (g) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 4 Nov (h) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
@@ -1532,6 +1533,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   $("thoughtIn").value = S.thought; $("thoughtIn").onchange = e => { S.thought = e.target.value.trim(); save(); };
   const renderDarkBtn = () => { $("darkBtn").setAttribute("aria-pressed", S.dark); $("darkBtn").textContent = S.dark ? "Normal screen" : "Dark screen (saves battery)"; };
   $("darkBtn").onclick = () => { S.dark = !S.dark; save(); applyDark(); renderDarkBtn(); };
+  $("verChip").onclick = () => location.replace(location.pathname + "?v=" + Date.now() + location.hash);
   $("updBtn").onclick = () => location.replace(location.pathname + "?v=" + Date.now() + location.hash);   // skips the phone's stored copy
   function applyTextSize() {   // whole-page zoom keeps every layout in proportion; 1 / 1.2 / 1.4
     const z = +S.textSize || 1; document.documentElement.style.zoom = z === 1 ? "" : z;
