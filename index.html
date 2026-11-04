@@ -1107,7 +1107,9 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       return;
     }
     // tee shot on a par 4 or 5: the two longest clubs
-    const known = (((S.osmMap || {})[S.cur.course] || {}).holes || []).map(x => x.n).sort((a, b) => a - b);
+    const cdk = CARDS[S.cur.course], ydk = cdk && cdk.tees[S.tee] ? cdk.tees[S.tee] : [];
+    const known = [...new Set((((S.osmMap || {})[S.cur.course] || {}).holes || []).filter(x => { const cy = ydk[x.n - 1], L0 = x.line.slice(1).reduce((t, p, k) => t + dist(x.line[k], p), 0);
+      return x.line.length > 1 && (!cy || Math.abs(L0 - cy) <= Math.max(60, cy * 0.3)); }).map(x => x.n))].sort((a, b) => a - b);
     const missing = geo.bad ? `OpenStreetMap's hole ${S.cur.hole} doesn't match your scorecard (${geo.bad} yd on the map, ${cardYards()} on the card), so it's ignored.`
       : `Hole ${S.cur.hole} isn't on OpenStreetMap` + (known.length ? ` (it has holes ${known.join(", ")})` : "") + ".";
     if (!geo.tee) { out.textContent = missing + " Find the hole on the picture, then tap Set the tee and Set the green below."; $("hmMoreRow").hidden = false; return; }
