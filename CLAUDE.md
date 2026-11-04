@@ -171,6 +171,11 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   places every green, and each tee is put at the chosen tees' card yardage back toward the tee point. Order of use:
   saved green / tapped points (S.mapPts) > OSM line > picture. Accuracy depends on the picture (rough, ±15-25 yd);
   warns if the two tapped greens are >25% off the picture's spacing. More… → Line up the course map again.
+  Automatic first (golfer found settings too complicated, 2026-11-04): the phone also loads OSM golf=green polygons
+  inside the course outline (S.osmMap v: 3); autoGeoref fits the picture's 18 greens to them (north-up start at
+  ~0.805 px/yd, nearest-green matching + least-squares similarity, 15 rounds); accepted with 10+ matches, RMS ≤ 25 m and a
+  sane scale, then stored as S.georef like the 2-tap setup (S.georefAuto records n and RMS). If OSM has too few greens,
+  the 2-green tap remains. Tested only on simulated data.
   ◀ Hole / Hole ▶ step through holes; a hole with no OSM line or saved points keeps the current view (no zoom-out),
   says which holes OSM has, and opens Set the tee / Set the green. OSM hole lines more than max(60 yd, 30%) off the
   card yardage are ignored (golfer saw zoom-outs on Westchester 5, 7, 9, 13 on 2026-11-04, likely mislabelled or old-layout lines).

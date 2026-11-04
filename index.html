@@ -1059,11 +1059,11 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   async function hmOsm(id) {   // course outline and numbered hole lines from OpenStreetMap, cached per course
     S.osmMap = S.osmMap || {};
     const cached = S.osmMap[id];
-    if (cached && cached.v === 2 && Date.now() - cached.at < 30 * 864e5) return cached;
+    if (cached && cached.v === 3 && Date.now() - cached.at < 30 * 864e5) return cached;
     const c = COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
     // outlines can be ways or multipolygon relations; neighbouring courses (Hillcrest next to Rancho, Rancho's own par-3
     // nine) also have holes numbered 1-18, so only holes inside this course's outline are kept
-    const q = `[out:json][timeout:25];(way["leisure"="golf_course"](around:2500,${c.lat},${c.lon});relation["leisure"="golf_course"](around:2500,${c.lat},${c.lon});way["golf"="hole"](around:2500,${c.lat},${c.lon}););out geom tags;`;
+    const q = `[out:json][timeout:25];(way["leisure"="golf_course"](around:2500,${c.lat},${c.lon});relation["leisure"="golf_course"](around:2500,${c.lat},${c.lon});way["golf"="hole"](around:2500,${c.lat},${c.lon});way["golf"="green"](around:2500,${c.lat},${c.lon}););out geom tags;`;
     try {
       const r = await fetch("https://overpass-api.de/api/interpreter", { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" } });
       if (!r.ok) return null;
@@ -1080,7 +1080,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       let holes = els.filter(e => e.tags && e.tags.golf === "hole").map(e => ({ n: num(e.tags), line: pts(e.geometry) })).filter(h => h.n >= 1 && h.n <= 18 && h.line.length > 1);
       const nearby = holes.length;
       if (course) holes = holes.filter(h => course.rings.some(rg => inRing(mid(h.line), rg) || inRing(h.line[0], rg)));
-      S.osmMap[id] = { v: 2, at: Date.now(), name: course ? course.name : "", outline: course ? course.rings[0] : [], holes, nearby }; save(); return S.osmMap[id];
+      const cen = l => ({ lat: l.reduce((t, q) => t + q.lat, 0) / l.length, lon: l.reduce((t, q) => t + q.lon, 0) / l.length });
+      let greens = els.filter(e => e.tags && e.tags.golf === "green" && e.geometry && e.geometry.length > 2).map(e => cen(pts(e.geometry)));
+      if (course) greens = greens.filter(gp => course.rings.some(rg => inRing(gp, rg)));
+      S.osmMap[id] = { v: 3, at: Date.now(), name: course ? course.name : "", outline: course ? course.rings[0] : [], holes, nearby, greens }; save(); return S.osmMap[id];
     } catch { return null; }
   }
   let hm = { map: null, layer: S.hmLayer || "sat", from: null, pickFrom: false, marks: null, tapM: null, fromM: null, lines: null };
@@ -1149,6 +1152,33 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const d = u.x * u.x + u.y * u.y, a = (Q1.x * u.x + Q1.y * u.y) / d, b = (Q1.y * u.x - Q1.x * u.y) / d;   // complex ratio Q1 / u
     const X = a * w.x - b * w.y, Y = a * w.y + b * w.x;
     return { lat: lat0 + Y / 111320, lon: g[0].lon + X / k };
+  }
+  function autoGeoref(id, o) {   // line the course-map picture up with OpenStreetMap's mapped greens, no taps needed
+    const c = CARDS[id]; if (!c || !c.img || !o || !o.greens || o.greens.length < 8) return false;
+    const c0 = COURSE_PT[id] || o.greens[0], k = Math.cos(c0.lat * Math.PI / 180) * 111320;
+    const Q = o.greens.map(q => ({ x: (q.lon - c0.lon) * k, y: (q.lat - c0.lat) * 111320 }));
+    const P = c.img.greens.map(([x, y]) => ({ x, y: -y }));   // picture y points down
+    const mean = A => ({ x: A.reduce((t, a) => t + a.x, 0) / A.length, y: A.reduce((t, a) => t + a.y, 0) / A.length });
+    let a = 0.9144 / 0.805, b = 0;   // start: north-up, about 0.805 picture px per yard
+    const pm = mean(P), qm = mean(Q); let tx = qm.x - (a * pm.x - b * pm.y), ty = qm.y - (a * pm.y + b * pm.x);
+    const T = p => ({ x: a * p.x - b * p.y + tx, y: a * p.y + b * p.x + ty });
+    let pairs = [];
+    for (let it = 0; it < 15; it++) {
+      const lim = it < 4 ? 90 : 40;   // metres: wide at first, then strict
+      pairs = P.map(p => { const t = T(p); let best = null, bd = 1e9; Q.forEach(q => { const d = Math.hypot(q.x - t.x, q.y - t.y); if (d < bd) { bd = d; best = q; } }); return bd < lim ? [p, best] : null; }).filter(Boolean);
+      if (pairs.length < 6) return false;
+      const ps = mean(pairs.map(x => x[0])), qs = mean(pairs.map(x => x[1]));
+      let num_r = 0, num_i = 0, den = 0;
+      pairs.forEach(([p, q]) => { const px = p.x - ps.x, py = p.y - ps.y, qx = q.x - qs.x, qy = q.y - qs.y;
+        num_r += qx * px + qy * py; num_i += qy * px - qx * py; den += px * px + py * py; });
+      a = num_r / den; b = num_i / den; tx = qs.x - (a * ps.x - b * ps.y); ty = qs.y - (a * ps.y + b * ps.x);
+    }
+    const rms = Math.sqrt(pairs.reduce((t, [p, q]) => { const m = T(p); return t + (m.x - q.x) ** 2 + (m.y - q.y) ** 2; }, 0) / pairs.length);
+    const scaleYdPx = Math.hypot(a, b) / 0.9144;   // yards per picture pixel; the picture is about 1.24
+    if (pairs.length < 10 || rms > 25 || scaleYdPx < 0.9 || scaleYdPx > 1.6) return false;
+    const toLL = m => ({ lat: c0.lat + m.y / 111320, lon: c0.lon + m.x / k });
+    S.georef[id] = c.img.ctrl.map(i => toLL(T(P[i]))); S.georefAuto = S.georefAuto || {}; S.georefAuto[id] = { n: pairs.length, rms: Math.round(rms) }; save();
+    return true;
   }
   function imgHole(id, n) {   // tee and green for hole n from the picture, tee at the chosen tees' card yardage
     const c = CARDS[id]; if (!c || !c.img) return null;
@@ -1324,9 +1354,11 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
+    if (o && !(S.georef[S.cur.course] || []).length && autoGeoref(S.cur.course, o))
+      toast(`Course placed automatically from ${S.georefAuto[S.cur.course].n} mapped greens. If a hole looks off, use More… to fix it.`);
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
-      if (!o.holes.length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
+      if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
     } else toast("Couldn't load hole lines. Use More… to set the tee and green.");
     hmRender();
   }
