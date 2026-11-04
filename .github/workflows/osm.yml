@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths: [tools/fetch_osm.py, .github/workflows/osm.yml]
   schedule:
-    - cron: "17 9 3 * *"   # monthly refresh
+    - cron: "17 9 * * 1"   # weekly refresh
 permissions:
   contents: write
 jobs:
@@ -15,6 +15,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: python3 tools/fetch_osm.py
       - name: Commit the map data if it changed
+        if: always()   # keep the courses that did load
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898989+github-actions[bot]@users.noreply.github.com"

@@ -1119,7 +1119,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       const f = ((await ask("course", `[out:json][timeout:25];(way["leisure"="golf_course"]["name"~"${NAME}",i](${b});relation["leisure"="golf_course"]["name"~"${NAME}",i](${b}););out geom;`, "Finding the course")).elements || [])
         .map(e => ({ name: (e.tags || {}).name || "", rings: ringsOf(e) })).filter(x => x.rings.length && x.rings[0].length > 2);
       names = f.map(x => x.name);
-      course = f.filter(x => !/par[ -]?3|3[ -]?par|nine|9[ -]hole|executive|pitch/i.test(x.name)).sort((u, v) => area(v.rings) - area(u.rings))[0] || f[0] || null;
+      course = f.filter(x => !/par[ -]?3|3[ -]?par|nine|9[ -]hole|executive|pitch/i.test(x.name)).sort((u, v) => area(v.rings) - area(u.rings))[0] || (f.length === 1 && !NAME ? f[0] : null);   // never fall back to the par-3 course
       if (course) { const r0 = course.rings.reduce((m, r) => r.length > m.length ? r : m, []);
         c = { lat: r0.reduce((t, q) => t + q.lat, 0) / r0.length, lon: r0.reduce((t, q) => t + q.lon, 0) / r0.length }; (S.coursePt = S.coursePt || {})[id] = c; save(); }
     } catch (e) { hm.osmErr = `OpenStreetMap is busy (${e.message}). Tap Back, wait a minute, and open the map again.`; }

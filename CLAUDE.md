@@ -194,7 +194,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   status shows each step and server ("Finding the course (server 1 of 3)…"); the server that answered goes first for
   the next query. Cache S.osmMap v: 6. Simulated with the main server hanging: placed after ~25 s, 2 m error.
   4 Nov (m) (golfer's screenshots: all three servers too slow from the phone): GitHub Actions (.github/workflows/osm.yml,
-  on push of tools/fetch_osm.py, manual, monthly) runs tools/fetch_osm.py, which saves the same two answers (course outline
+  on push of tools/fetch_osm.py, manual, weekly; ±0.03° name box, 5 patient rounds, saves the courses that loaded) runs tools/fetch_osm.py, which saves the same two answers (course outline
   by name; hole lines + greens around its centre) to osm/<course>.json on the site. hmOsm loads that file first (15 s
   limit) and asks the live servers only if it's missing. Status shows "OpenStreetMap (saved DATE)". Cache v: 8, 7 days. 4 Nov (m): the first saved data showed Rancho is an OSM multipolygon relation and that "out geom tags" drops its members, so the query is "out geom"; outline pieces are chained into rings (joinRings); "Rancho Park 3 Par Course" is now recognised as the par-3 course. OSM has Rancho hole lines (and the par-3 and Hillcrest ones nearby).
   ◀ Hole / Hole ▶ step through holes; a hole with no OSM line or saved points keeps the current view (no zoom-out),

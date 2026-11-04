@@ -14,17 +14,17 @@ COURSES = {"rancho": ("Rancho Park", 34.0447, -118.4145), "westchester": ("Westc
 
 def ask(q):
     last = ""
-    for _round in range(3):
+    for _round in range(5):
         for u in SERVERS:
             try:
                 req = urllib.request.Request(u, data=("data=" + urllib.parse.quote(q)).encode(),
                                              headers={"User-Agent": "pocket-caddie-map-fetch (github actions)"})
-                with urllib.request.urlopen(req, timeout=120) as r:
+                with urllib.request.urlopen(req, timeout=180) as r:
                     return json.load(r)["elements"]
             except Exception as e:  # busy server: try the next one
                 last = f"{u}: {e}"
                 print("  retry:", last, file=sys.stderr)
-        time.sleep(30)
+        time.sleep(60)
     raise RuntimeError(last)
 
 
@@ -39,7 +39,7 @@ ok = True
 for cid, (name, lat, lon) in COURSES.items():
     print("Course:", cid)
     try:
-        b = f"{lat - 0.12},{lon - 0.15},{lat + 0.12},{lon + 0.15}"
+        b = f"{lat - 0.03},{lon - 0.03},{lat + 0.03},{lon + 0.03}"   # small box: quicker for a busy server
         q1 = (f'[out:json][timeout:60];(way["leisure"="golf_course"]["name"~"{name}",i]({b});'
               f'relation["leisure"="golf_course"]["name"~"{name}",i]({b}););out geom;')
         found = ask(q1)
