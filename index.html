@@ -123,7 +123,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <span class="chip" id="gpsChip">GPS starting…</span>
     <span class="chip" id="parChip" hidden></span>
     <span class="chip warn" id="compChip" hidden>Competition mode</span>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 4 Nov (h) ⟳</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 4 Nov (i) ⟳</button>
   </div>
 </header>
 
@@ -278,7 +278,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><button id="darkBtn" aria-pressed="false">Dark screen (saves battery)</button></div>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 4 Nov (h). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 4 Nov (i). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -948,7 +948,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else if (id === "hmTapShot") { hm.pick = "shot"; $("hmOut").textContent = "Tap where your ball is."; $("hm").scrollTo({ top: 0, behavior: "smooth" }); toast($("hmOut").textContent); }
       else if (id === "hmTee") { hm.shot = null; hmRender(); $("hm").scrollTo({ top: 0, behavior: "smooth" }); }
       else if (id === "hmMore") $("hmMoreRow").hidden = !$("hmMoreRow").hidden;
-      else if (id === "hmGeo" || (id === "hmSetup" && !hm.setup && CARDS[S.cur.course] && CARDS[S.cur.course].img && !(S.georef[S.cur.course] || []).length)) { hm.geo = 0; hm.pick = "geo"; if (hm.map.setBearing) hm.map.setBearing(0); const cp = COURSE_PT[S.cur.course]; if (cp) hm.map.setView([cp.lat, cp.lon], 16, { animate: false });
+      else if (id === "hmGeo" || (id === "hmSetup" && !hm.setup && CARDS[S.cur.course] && CARDS[S.cur.course].img && !(S.georef[S.cur.course] || []).length)) { hm.geo = 0; hm.pick = "geo"; if (hm.map.setBearing) hm.map.setBearing(0); const cp = coursePt(S.cur.course); if (cp) hm.map.setView([cp.lat, cp.lon], 16, { animate: false });
           $("hm").scrollTo({ top: 0, behavior: "smooth" }); const ci = CARDS[S.cur.course].img, cg = ci.ctrl, t = `Tap the middle of the ${ord(cg[0] + 1)} green`; $("hmOut").textContent = `${t}: ${ci.where ? ci.where[0] : ""}.`; toast(t); }
       else if (id === "hmSetup") { hm.setup = !hm.setup; g.textContent = hm.setup ? "Stop setting up" : "🧭 Set up this course: tee and green for every hole";
         if (hm.setup) { hm.pick = "tee"; $("hm").scrollTo({ top: 0, behavior: "smooth" }); const t = `Hole ${S.cur.hole}: tap the tee box.`; $("hmOut").textContent = t; toast(t); } else hm.pick = null; }
@@ -1052,6 +1052,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   const rlCsv = () => "club,shot,start,curve,contact,time\n" + rlToday().map(e => [e.club, e.n, e.start || "", e.curve || "", e.contact || "",
     new Date(e.at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })].join(",")).join("\n");
   // ---- hole map: OpenStreetMap or satellite imagery (Leaflet, loaded only when opened); tap to measure ----
+  const coursePt = id => (S.coursePt || {})[id] || COURSE_PT[id];
   const COURSE_PT = { westchester: { lat: 33.9563, lon: -118.4182 }, rancho: { lat: 34.0447, lon: -118.4145 } };   // approximate centers; OpenStreetMap refines them
   // OpenStreetMap's Overpass servers: the main one is often busy (502/504/429), so try the others in turn
   const OVERPASS = ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter", "https://overpass.private.coffee/api/interpreter"];
@@ -1078,8 +1079,17 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   async function hmOsm(id) {   // course outline and numbered hole lines from OpenStreetMap, cached per course
     S.osmMap = S.osmMap || {};
     const cached = S.osmMap[id];
-    if (cached && cached.v === 4 && Date.now() - cached.at < 30 * 864e5) return cached;
-    const c = COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
+    if (cached && cached.v === 5 && Date.now() - cached.at < 30 * 864e5) return cached;
+    let c = (S.coursePt || {})[id] || COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
+    const NAME = { rancho: "Rancho Park", westchester: "Westchester" }[id];
+    if (NAME && !(S.coursePt || {})[id]) {   // find the course by name in a wide box first: the built-in point can be off
+      try {
+        const b = `${c.lat - 0.12},${c.lon - 0.15},${c.lat + 0.12},${c.lon + 0.15}`;
+        const f = (await overpass(`[out:json][timeout:25];(way["leisure"="golf_course"]["name"~"${NAME}",i](${b});relation["leisure"="golf_course"]["name"~"${NAME}",i](${b}););out center tags;`)).elements || [];
+        const hit = f.filter(e => e.center && !/par[ -]?3|nine|executive/i.test((e.tags || {}).name || ""))[0] || f.find(e => e.center);
+        if (hit) { c = { lat: hit.center.lat, lon: hit.center.lon }; (S.coursePt = S.coursePt || {})[id] = c; save(); }
+      } catch {}
+    }
     // outlines can be ways or multipolygon relations; neighbouring courses (Hillcrest next to Rancho, Rancho's own par-3
     // nine) also have holes numbered 1-18, so only holes inside this course's outline are kept
     const q = `[out:json][timeout:25];(way["leisure"="golf_course"](around:2500,${c.lat},${c.lon});relation["leisure"="golf_course"](around:2500,${c.lat},${c.lon});way["golf"="hole"](around:2500,${c.lat},${c.lon});way["golf"="green"](around:2500,${c.lat},${c.lon}););out geom tags;`;
@@ -1100,7 +1110,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       const cen = l => ({ lat: l.reduce((t, q) => t + q.lat, 0) / l.length, lon: l.reduce((t, q) => t + q.lon, 0) / l.length });
       let greens = els.filter(e => e.tags && e.tags.golf === "green" && e.geometry && e.geometry.length > 2).map(e => cen(pts(e.geometry)));
       if (course) greens = greens.filter(gp => course.rings.some(rg => inRing(gp, rg)));
-      const res = { v: 4, at: Date.now(), name: course ? course.name : "", outline: course ? course.rings.reduce((m, r) => r.length > m.length ? r : m, []) : [], holes, nearby, greens, courses: courses.map(x => x.name).slice(0, 5) };
+      const res = { v: 5, at: Date.now(), center: c, name: course ? course.name : "", outline: course ? course.rings.reduce((m, r) => r.length > m.length ? r : m, []) : [], holes, nearby, greens, courses: courses.map(x => x.name).slice(0, 5) };
       if (res.outline.length || holes.length || greens.length) { S.osmMap[id] = res; save(); }   // don't remember an empty answer
       return res;
     } catch (e) { hm.osmErr = `OpenStreetMap is busy on all its servers (${e.message}). Tap Back, wait a minute, and open the map again.`; return null; }
@@ -1192,7 +1202,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   }
   function autoGeoref(id, o) {   // line the course-map picture up with OpenStreetMap: the course outline, then the greens
     const c = CARDS[id]; if (!c || !c.img || !o) return false;
-    const c0 = COURSE_PT[id] || (o.outline[0]) || (o.greens || [])[0]; if (!c0) return false;
+    const c0 = coursePt(id) || (o.outline[0]) || (o.greens || [])[0]; if (!c0) return false;
     const k = Math.cos(c0.lat * Math.PI / 180) * 111320, M = q => ({ x: (q.lon - c0.lon) * k, y: (q.lat - c0.lat) * 111320 });
     const mean = A => ({ x: A.reduce((t, v) => t + v.x, 0) / A.length, y: A.reduce((t, v) => t + v.y, 0) / A.length });
     const P = c.img.greens.map(([x, y]) => ({ x, y: -y }));   // picture y points down
@@ -1395,12 +1405,13 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
           $("hmOut").textContent = k === "tee" ? "Tee saved for this hole." : "Green saved for this hole."; hmRender(); return; }
         hmMeasure(p); });
     }
-    const g = hmDraw(), c = COURSE_PT[S.cur.course], here = fix && (!c || dist(fix, c) < 2500) ? fix : null;   // GPS only counts at the course
+    const g = hmDraw(), c = coursePt(S.cur.course), here = fix && (!c || dist(fix, c) < 2500) ? fix : null;   // GPS only counts at the course
     hm.here = here;
     if (here || g || !hm.shown) hm.map.setView(here ? [here.lat, here.lon] : g ? [g.lat, g.lon] : c ? [c.lat, c.lon] : [33.9563, -118.4182], here || g ? 17 : 15);
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
+    $("hmStatus").textContent = "Pocket Caddie 4 Nov (i) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     hm.osmInfo = o ? `OpenStreetMap: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
@@ -1410,11 +1421,15 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 4 Nov (h) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 4 Nov (i) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
     } else toast("Couldn't load hole lines. Use More… to set the tee and green.");
+    if (o && !holeGeo().tee && !hm.here) {
+      if (o.outline && o.outline.length > 2) { if (hm.map.setBearing) hm.map.setBearing(0); hm.map.fitBounds(o.outline.map(p => [p.lat, p.lon]), { padding: [20, 20], animate: false }); }
+      else if (o.center) hm.map.setView([o.center.lat, o.center.lon], 16, { animate: false });
+    }
     hmRender();
   }
   document.addEventListener("change", e => { if (e.target.id === "rlClub") { S.rlClub = e.target.value; save(); renderRl(); } });
