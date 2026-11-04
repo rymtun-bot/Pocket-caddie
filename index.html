@@ -123,7 +123,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <span class="chip" id="gpsChip">GPS starting…</span>
     <span class="chip" id="parChip" hidden></span>
     <span class="chip warn" id="compChip" hidden>Competition mode</span>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 4 Nov (i) ⟳</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 4 Nov (j) ⟳</button>
   </div>
 </header>
 
@@ -278,7 +278,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><button id="darkBtn" aria-pressed="false">Dark screen (saves battery)</button></div>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 4 Nov (i). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 4 Nov (j). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -1060,10 +1060,12 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let last = "";
     for (const u of OVERPASS) {
       try {
-        const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" } });
-        if (r.ok) return await r.json();
+        const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 25000);   // a busy server can hang: give up after 25 s
+        const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: ctl.signal });
+        if (r.ok) { const j = await r.json(); clearTimeout(tm); return j; }
+        clearTimeout(tm);
         last = `error ${r.status}`;
-      } catch { last = "no answer"; }
+      } catch (e) { last = e.name === "AbortError" ? "too slow" : "no answer"; }
     }
     throw new Error(last);
   }
@@ -1090,9 +1092,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         if (hit) { c = { lat: hit.center.lat, lon: hit.center.lon }; (S.coursePt = S.coursePt || {})[id] = c; save(); }
       } catch {}
     }
+    const R = (S.coursePt || {})[id] ? 1300 : 2500;
     // outlines can be ways or multipolygon relations; neighbouring courses (Hillcrest next to Rancho, Rancho's own par-3
     // nine) also have holes numbered 1-18, so only holes inside this course's outline are kept
-    const q = `[out:json][timeout:25];(way["leisure"="golf_course"](around:2500,${c.lat},${c.lon});relation["leisure"="golf_course"](around:2500,${c.lat},${c.lon});way["golf"="hole"](around:2500,${c.lat},${c.lon});way["golf"="green"](around:2500,${c.lat},${c.lon}););out geom tags;`;
+    const q = `[out:json][timeout:25];(way["leisure"="golf_course"](around:${R},${c.lat},${c.lon});relation["leisure"="golf_course"](around:${R},${c.lat},${c.lon});way["golf"="hole"](around:${R},${c.lat},${c.lon});way["golf"="green"](around:${R},${c.lat},${c.lon}););out geom tags;`;
     try {
       const els = (await overpass(q)).elements || [], pts = g => (g || []).map(x => ({ lat: x.lat, lon: x.lon }));
       const courses = els.filter(e => e.tags && e.tags.leisure === "golf_course").map(e => ({ name: e.tags.name || "",
@@ -1411,7 +1414,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
-    $("hmStatus").textContent = "Pocket Caddie 4 Nov (i) · Looking up the course on OpenStreetMap…";
+    $("hmStatus").textContent = "Pocket Caddie 4 Nov (j) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     hm.osmInfo = o ? `OpenStreetMap: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
@@ -1421,7 +1424,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 4 Nov (i) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 4 Nov (j) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
