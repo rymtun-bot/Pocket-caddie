@@ -879,7 +879,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         r.start();
       }
       else if (id === "hmOpen") openHm();
-      else if (id === "hmClose") $("hm").hidden = true;
+      else if (id === "hmClose") { $("hm").hidden = true; applyTextSize(); }
       else if (id === "hmLayer" && hm.map) { hm.layer = hm.layer === "osm" ? "sat" : "osm"; S.hmLayer = hm.layer; save(); hmSetLayer(); }
       else if (id === "hmFrom") { if (hm.from) { hm.from = null; if (hm.fromM) hm.map.removeLayer(hm.fromM); hm.lines.clearLayers(); g.textContent = "Measure from a point I tap"; $("hmOut").textContent = "Measuring from you (GPS)."; } else { hm.pickFrom = true; $("hmOut").textContent = "Tap the point to measure from (for example the tee)."; } }
       else if (id === "hmMe" && hm.map) { if (fix) hm.map.setView([fix.lat, fix.lon], 18); else toast("No GPS position yet"); hmDraw(); if (fix && !hm.here) toast("You're away from the course: measuring from you won't mean much"); }
@@ -1009,6 +1009,13 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   function hmSetLayer() {
     if (hm.tiles) hm.map.removeLayer(hm.tiles);
     const [u, z, a] = HM_LAYERS[hm.layer]; hm.tiles = L.tileLayer(u, { maxZoom: z, attribution: a }).addTo(hm.map);
+    hm.tileOk = 0; hm.tileErr = 0;   // if the picture tiles fail, say so and fall back to the street map
+    hm.tiles.on("tileload", () => { hm.tileOk++; });
+    hm.tiles.on("tileerror", () => { hm.tileErr++;
+      if (hm.tileErr === 6 && !hm.tileOk) {
+        if (hm.layer === "sat") { hm.layer = "osm"; S.hmLayer = "osm"; save(); toast("Satellite pictures didn't load. Showing the street map."); setTimeout(hmSetLayer, 0); }
+        else $("hmOut").textContent = "Map pictures aren't loading. Check your signal (Wi-Fi or mobile data) and tap Back, then Hole map again.";
+      } });
     $("hmLayer").textContent = hm.layer === "osm" ? "Satellite" : "Map"; $("hmCredit").innerHTML = a;
   }
   function hmDraw() {
@@ -1035,8 +1042,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     $("hmOut").textContent = txt; if (parts.length && S.voice && canSpeak) rlSay(txt.replace(/ · /g, ". ").replace(/yd/g, "yards"));
   }
   async function openHm() {
+    document.documentElement.style.zoom = "";   // Leaflet misplaces tiles and taps under CSS zoom; text size returns on Back
     $("hm").hidden = false; $("hmOut").textContent = "Loading the map…";
-    try { await loadLeaflet(); } catch { $("hmOut").textContent = "Couldn't load the map. Check your signal and try again."; return; }
+    try { await loadLeaflet(); } catch { $("hmOut").textContent = "Couldn't load the map program (Leaflet from cdnjs.cloudflare.com). Check your signal and try again."; return; }
+    if (!window.L) { $("hmOut").textContent = "The map program didn't start. Close Pocket Caddie fully and open it again."; return; }
     if (!hm.map) {
       hm.map = L.map("hmMap", { zoomControl: true, attributionControl: false });
       hm.marks = L.layerGroup().addTo(hm.map); hm.lines = L.layerGroup().addTo(hm.map); hmSetLayer();
