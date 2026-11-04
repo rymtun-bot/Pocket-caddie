@@ -33,3 +33,21 @@ Summary
 
 - Only 4 yd shorter than the full PW (100), with a much wider spread (87–109 vs 93–103). Club speed varied 55–68 mph:
   the carry followed the speed, not the grip. All six started straight (ST).
+
+## PW hip to hip (7 shots; screenshot shows 6, shot 3 flagged Outlier by Rapsodo, shot 7 scrolled off)
+
+| Shot | Smash | Club mph | Total | Carry | Launch dir | Type | Apex ft | Launch |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 1.11 | 59 | 80 | 73 | 0.8° R | ST | 41 | 29.4° |
+| 2 | 1.11 | 56 | 75 | 66 | 1.7° R | ST | 33 | 27.4° |
+| 3 (outlier) | 1.35 | 41 | 64 | 56 | 12.8° R | R | 30 | 30.8° |
+| 4 | 1.27 | 50 | 77 | 70 | 0.3° R | ST | 42 | 31.5° |
+| 5 | 1.21 | 54 | 80 | 74 | 0.1° R | ST | 43 | 30.3° |
+| 6 | 1.18 | 48 | 69 | 56 | 1.3° R | ST | 24 | 25.2° |
+| **Average** | **1.18** | **53** | **76** | **66** (Rapsodo's figure) | **0.8° R** | | **37** | **28.8°** |
+
+Other averages are the mean of the 5 visible non-outlier shots (they give carry 68). Carry 56–74 (spread 18).
+
+## PW ladder so far (patio, 11/04)
+Full 100 · gripped down 1 in 96 · hip to hip 66. Hole between 66 and 96: a chest-high (about 3/4) swing is the
+candidate to test for ~80.
