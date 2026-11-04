@@ -438,7 +438,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       // Claude's plan for 74 from the Blue tees (practice/westchester-strategy-74.md, 2026-11-04); the golfer's own plan wins
       plan: [
         "9 iron, aim center right; small bunker short left. Target 3",
-        "3 wood, aim left center, staying short of the pond on the right from 215 to 265. Then 7 iron from about 127 to the center or left. Bogey is fine",
+        "3 wood, aim left center, staying short of the pond on the right from 215 to 265. Then 7 iron from about 127 to the middle or the left half of the green. Bogey is fine",
         "Hardest hole. 4 utility to the front of the green, then chip. Short is safe, trees around the green. Bogey is fine",
         "4 utility, smooth, aim center right. Bunker on the left. Target 3",
         "Driver, then 54 degree from about 60. Bunker front left of the green. Target 4",
@@ -1685,7 +1685,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         : `${HZ[z.type][0].toUpperCase() + HZ[z.type].slice(1)} from ${z.a0} to ${z.a1}: lay up short with the ${pick.name}.`); }
     }
     for (const z of zs.filter(z => z.side !== "center" && inZone(club, z)))
-      lines.push(`${hzName(z)} from ${z.a0} to ${z.a1}: aim a little ${z.side === "right" ? "left" : "right"}.`);
+      lines.push(`${hzName(z)} from ${z.a0} to ${z.a1}: aim at the ${z.side === "right" ? "left" : "right"} half of the fairway, away from it.`);
     const tend = tendency(club.name);   // a miss tendency toward a severe hazard: say so plainly
     for (const z of zs.filter(z => HZ_SEVERE[z.type] && z.side !== "center" && inZone(club, z)))
       if (tend.includes(`misses ${z.side}`)) lines.push(`Careful: your ${club.name} tends to miss ${z.side}, toward the ${HZ[z.type]}.`);
@@ -1854,8 +1854,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const m = S.misses.filter(x => x.club === name);
     if (m.length < 3) return "";
     const L = m.filter(x => x.side === "L").length, R = m.filter(x => x.side === "R").length;
-    if (R / m.length >= 0.6) return `Your ${name} misses right ${R} of ${m.length}. Aim a little left.`;
-    if (L / m.length >= 0.6) return `Your ${name} misses left ${L} of ${m.length}. Aim a little right.`;
+    if (R / m.length >= 0.6) return `Your ${name} misses right ${R} of ${m.length}. Aim about 5 yards left of your usual target.`;
+    if (L / m.length >= 0.6) return `Your ${name} misses left ${L} of ${m.length}. Aim about 5 yards right of your usual target.`;
     return "";
   }
   const mapNote = () => {   // course-map description of the hole, used when the golfer hasn't saved hazards of their own
