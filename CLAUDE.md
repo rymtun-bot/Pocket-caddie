@@ -142,6 +142,14 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (S.rangeLog). "Copy for Claude" sends the day's checks; use them when reading range Rapsodo carries.
 - Text size (Setup → Swing thought and screen; golfer's request 2026-11-03): Normal / Large / Extra large = page zoom
   1 / 1.2 / 1.4 (S.textSize); swing.html and home.html read the same setting.
+- Gapping chart (Clubs tab, guide Menu; 2026-11-04): bars = Clubs-tab carries, dots R/P = latest Rapsodo range/patio
+  averages from MLM; flags gaps under 6 or over 20 yd.
+- Range shot log (Clubs tab, guide Menu; 2026-11-04): per shot start (left/straight/right), curve (left/none/right),
+  contact (heavy/good/thin) by voice ("left, draw, thin", "seven iron") or taps; works with 👂 keep listening ("Caddie, ...").
+  S.rlog; "Copy for Claude" gives a CSV (club, shot, start, curve, contact, time) to match against Rapsodo rows.
+- Hole map (Play tab, guide Menu; 2026-11-04): Leaflet 1.9.4 from cdnjs, loaded on open; OpenStreetMap tiles or Esri
+  World Imagery (satellite) with attribution. Shows you, saved green points and hazards; tap to measure from you (GPS)
+  or from a tapped point, and to the green. Without GPS centers on the course (approximate points in COURSE_PT).
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 

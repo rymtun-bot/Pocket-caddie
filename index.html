@@ -100,7 +100,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
 .wiz.kl #wizMic, .wiz.kl .vaBtn { display: none }
 #wizListen[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
 #klBar.need { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; text-align: center; cursor: pointer }
-[data-mlmf][aria-pressed="true"], [data-rcd][aria-pressed="true"], [data-ts][aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
+[data-mlmf][aria-pressed="true"], [data-rcd][aria-pressed="true"], [data-ts][aria-pressed="true"], [data-rl][aria-pressed="true"], #rlEar[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
 .wiz .q { font-size: 19px; margin: 0 }
 .wiz .huge { font: 700 84px/1 var(--display); color: var(--accent); font-variant-numeric: tabular-nums }
 .wiz .opts { display: grid; gap: 12px }
@@ -141,6 +141,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         <div class="mid"><b id="yCenter">—</b><span>Center</span></div>
         <div><b id="yBack">—</b><span>Back</span></div>
       </div>
+      <div class="row"><button id="hmOpen">🗺 Hole map</button></div>
       <p class="note" id="greenHint">This hole's green isn't saved yet. When you're on the green, open Setup and tap Save for the front, center and back.</p>
       <div class="row">
         <label for="manualYds">Or type the yardage from your rangefinder (overrides GPS)</label>
@@ -236,6 +237,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <p class="note">Your launch-monitor averages for each club (patio and range), added by Claude from your screenshots.</p>
       <div class="row"><button class="primary" id="mlmOpen">Show my Rapsodo distances</button></div>
       <div class="row"><button id="rcOpen">Range conditions (wind, temperature)</button></div>
+      <div class="row"><button id="gapOpen">Gapping chart</button><button id="rlOpen">Range shot log (voice)</button></div>
     </section>
     <section class="panel">
       <h2>My clubs and carry yards</h2>
@@ -383,6 +385,35 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   <div class="row"><button id="rcCopy">Copy for Claude</button><button id="rcClear">Clear the list</button></div>
   <p class="note">Weather from Open-Meteo at your phone's position (needs GPS). Check at the start and whenever the wind
   changes; send the list with your Rapsodo averages so Claude can allow for wind and temperature.</p>
+</div></div>
+<div class="wiz" id="gap" hidden style="z-index:9"><div class="wrap">
+  <div class="wizTop"><span>Gapping chart</span><button id="gapClose">Back</button></div>
+  <p class="note" style="margin:0">Bars: the carry Pocket Caddie uses now (Clubs tab). R and P: your latest Rapsodo range and patio
+  averages. The number on the right is the gap to the next shorter club.</p>
+  <div id="gapBody"></div>
+</div></div>
+<div class="wiz" id="rl" hidden style="z-index:9"><div class="wrap">
+  <div class="wizTop"><span>Range shot log</span><span style="display:flex;gap:8px"><button id="rlEar" aria-pressed="false">👂 Off</button><button id="rlClose">Back</button></span></div>
+  <div class="row"><label for="rlClub">Club</label><select id="rlClub"></select></div>
+  <p class="q" id="rlNext" style="margin:0"></p>
+  <div class="row"><button id="rlMic" class="primary" style="font-size:20px;padding:14px">🎤 Say the shot</button></div>
+  <p class="note" style="margin:0">Say it in any order, e.g. “left, draw, thin”, “straight, no curve, good”, “seven iron” to change club.
+  With 👂 on, start with “Caddie”. Or tap:</p>
+  <div class="row" role="group" aria-label="Start"><button data-rl="start:left">Start left</button><button data-rl="start:straight">Start straight</button><button data-rl="start:right">Start right</button></div>
+  <div class="row" role="group" aria-label="Curve"><button data-rl="curve:left">Curves left</button><button data-rl="curve:none">No curve</button><button data-rl="curve:right">Curves right</button></div>
+  <div class="row" role="group" aria-label="Contact"><button data-rl="contact:heavy">Heavy</button><button data-rl="contact:good">Good</button><button data-rl="contact:thin">Thin</button></div>
+  <div class="row"><button class="primary" id="rlSave">Save shot</button><button id="rlUndo">Undo last</button></div>
+  <h2 style="margin:8px 0 0">Today</h2>
+  <div id="rlSum" style="display:grid;gap:4px"></div>
+  <div id="rlList" style="display:grid;gap:4px"></div>
+  <div class="row"><button id="rlCopy">Copy for Claude</button><button id="rlClear">Clear today</button></div>
+</div></div>
+<div class="wiz" id="hm" hidden style="z-index:9"><div class="wrap" style="gap:10px">
+  <div class="wizTop"><span id="hmTitle">Hole map</span><span style="display:flex;gap:8px"><button id="hmLayer">Map</button><button id="hmClose">Back</button></span></div>
+  <div id="hmMap" style="height:62vh;border-radius:12px;border:1px solid var(--line);background:var(--surface)"></div>
+  <p class="q" id="hmOut" style="margin:0;font-size:19px">Tap the map to measure.</p>
+  <div class="row"><button id="hmFrom">Measure from a point I tap</button><button id="hmMe">Center on me</button></div>
+  <p class="note" id="hmCredit" style="margin:0"></p>
 </div></div>
 <div class="toast" id="toast" hidden></div>
 
@@ -823,6 +854,37 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   }
   const openRc = () => { renderRc(); $("rcNow").innerHTML = ""; $("rc").hidden = false; $("rc").scrollTop = 0; };
   document.addEventListener("click", e => {
+    const g = e.target.closest("#gapOpen, #gapClose, #rlOpen, #rlClose, #rlMic, #rlSave, #rlUndo, #rlCopy, #rlClear, #rlEar, [data-rl], #hmOpen, #hmClose, #hmLayer, #hmFrom, #hmMe");
+    if (g) {
+      const id = g.id;
+      if (id === "gapOpen") { renderGap(); $("gap").hidden = false; $("gap").scrollTop = 0; }
+      else if (id === "gapClose") $("gap").hidden = true;
+      else if (id === "rlOpen") { renderRl(); $("rl").hidden = false; $("rl").scrollTop = 0; }
+      else if (id === "rlClose") $("rl").hidden = true;
+      else if (g.dataset.rl) { const [k, v] = g.dataset.rl.split(":"); rlCur[k] = rlCur[k] === v ? undefined : v; renderRl(); }
+      else if (id === "rlSave") rlSaveShot(false);
+      else if (id === "rlUndo") { const t = rlToday(); if (t.length) { S.rlog.splice(S.rlog.lastIndexOf(t[t.length - 1]), 1); save(); renderRl(); toast("Last shot removed"); } }
+      else if (id === "rlCopy") copy(`Range shot log ${new Date().toLocaleDateString()}:\n` + rlCsv());
+      else if (id === "rlClear") { if (g.dataset.armed) { S.rlog = S.rlog.filter(e => !rlToday().includes(e)); save(); renderRl(); g.textContent = "Clear today"; delete g.dataset.armed; } else { g.dataset.armed = 1; g.textContent = "Tap again to clear"; } }
+      else if (id === "rlEar") { if (kl.on) klStop(); else { klStart(); rlSay("Listening. Say Caddie, then the shot."); } renderRl(); }
+      else if (id === "rlMic") {
+        if (!Rec) { toast("Voice isn't available here. Tap the buttons."); return; }
+        if (kl.on) { toast("Listening is on: say \u201cCaddie\u201d, then the shot"); return; }
+        if (canSpeak) speechSynthesis.cancel();
+        const r = new Rec(); r.lang = "en-US"; r.interimResults = false; r.maxAlternatives = 3; g.textContent = "🎤 Listening…";
+        r.onresult = ev => { g.textContent = "🎤 Say the shot"; const alts = [...ev.results[0]].map(a => a.transcript);
+          rlApply(alts.find(a => { const m = rlParse(a); return m.start || m.curve || m.contact || m.club; }) || alts[0]); };
+        r.onerror = () => { g.textContent = "🎤 Say the shot"; toast("Didn't catch that. Try again or tap."); };
+        r.onend = () => { if (g.textContent.includes("Listening")) g.textContent = "🎤 Say the shot"; };
+        r.start();
+      }
+      else if (id === "hmOpen") openHm();
+      else if (id === "hmClose") $("hm").hidden = true;
+      else if (id === "hmLayer" && hm.map) { hm.layer = hm.layer === "osm" ? "sat" : "osm"; hmSetLayer(); }
+      else if (id === "hmFrom") { if (hm.from) { hm.from = null; if (hm.fromM) hm.map.removeLayer(hm.fromM); hm.lines.clearLayers(); g.textContent = "Measure from a point I tap"; $("hmOut").textContent = "Measuring from you (GPS)."; } else { hm.pickFrom = true; $("hmOut").textContent = "Tap the point to measure from (for example the tee)."; } }
+      else if (id === "hmMe" && hm.map) { if (fix) hm.map.setView([fix.lat, fix.lon], 18); else toast("No GPS position yet"); hmDraw(); }
+      return;
+    }
     const t = e.target.closest("#rcOpen, #rcClose, #rcCheck, #rcCopy, #rcClear, #rcCompass"); if (!t) return;
     if (t.id === "rcOpen") openRc();
     else if (t.id === "rcCompass") rcCompass();
@@ -833,6 +895,144 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     else if (t.id === "rcClear") { if (t.dataset.armed) { S.rangeLog = []; save(); renderRc(); t.textContent = "Clear the list"; delete t.dataset.armed; }
       else { t.dataset.armed = 1; t.textContent = "Tap again to clear"; } }
   });
+  // ---- gapping chart: carries Pocket Caddie uses, with the latest Rapsodo range (R) and patio (P) averages ----
+  function renderGap() {
+    const latest = (club, place) => MLM.filter(r => clubKey(r.club) === clubKey(club) && r.place === place).sort((a, b) => b.date.localeCompare(a.date))[0];
+    const names = [...S.clubs.filter(c => c.carry > 0).map(c => c.name)];
+    MLM.forEach(r => { if (!names.some(n => clubKey(n) === clubKey(r.club))) names.push(r.club); });
+    const rows = names.map(n => { const c = S.clubs.find(x => clubKey(x.name) === clubKey(n)), R = latest(n, "Range"), P = latest(n, "Patio");
+      return { n, use: c && c.carry > 0 ? c.carry : null, R: R && R.carry, P: P && P.carry, key: (c && c.carry) || (R && R.carry) || (P && P.carry) || 0 }; })
+      .filter(r => r.key).sort((a, b) => b.key - a.key);
+    if (!rows.length) { $("gapBody").innerHTML = `<p class="q">No clubs yet.</p>`; return; }
+    const max = Math.max(...rows.map(r => Math.max(r.use || 0, r.R || 0, r.P || 0))) * 1.05, W = 230, rowH = 46, x = v => 70 + v / max * W;
+    let svg = `<svg viewBox="0 0 360 ${rows.length * rowH + 30}" width="100%" role="img" aria-label="Gapping chart" style="font:15px var(--body, sans-serif)">`;
+    [50, 100, 150, 200, 250].filter(v => v < max).forEach(v => { svg += `<line x1="${x(v)}" x2="${x(v)}" y1="0" y2="${rows.length * rowH}" stroke="var(--line)"/><text x="${x(v)}" y="${rows.length * rowH + 20}" text-anchor="middle" fill="var(--muted)" font-size="12">${v}</text>`; });
+    const warns = [];
+    rows.forEach((r, i) => {
+      const y = i * rowH, next = rows[i + 1], gap = next ? r.key - next.key : null;
+      svg += `<text x="64" y="${y + 27}" text-anchor="end" fill="var(--ink)" font-weight="600">${esc(r.n)}</text>`;
+      if (r.use) svg += `<rect x="70" y="${y + 12}" width="${x(r.use) - 70}" height="20" rx="4" fill="var(--accent)" opacity=".85"/><text x="${x(r.use) - 4}" y="${y + 27}" text-anchor="end" fill="var(--accent-ink)" font-size="13" font-weight="700">${r.use}</text>`;
+      [["R", r.R], ["P", r.P]].forEach(([l, v], k) => { if (v) svg += `<circle cx="${x(v)}" cy="${y + (k ? 40 : 6)}" r="6" fill="${k ? "var(--muted)" : "var(--ink)"}"/><text x="${x(v)}" y="${y + (k ? 44 : 10)}" text-anchor="middle" fill="var(--bg)" font-size="9" font-weight="700">${l}</text>`; });
+      if (gap != null) { const bad = gap < 6 || gap > 20;
+        svg += `<text x="356" y="${y + rowH}" text-anchor="end" fill="${bad ? "var(--accent)" : "var(--muted)"}" font-size="13" font-weight="${bad ? 700 : 400}">${gap}</text>`;
+        if (gap < 6) warns.push(`${r.n} and ${next.n} are only ${gap} yd apart.`); else if (gap > 20) warns.push(`${gap} yd gap between ${r.n} and ${next.n}.`); }
+    });
+    svg += `</svg>`;
+    $("gapBody").innerHTML = svg + (warns.length ? `<p class="q" style="margin:8px 0 0">${warns.map(esc).join("<br>")}</p>` : `<p class="note">No gaps under 6 or over 20 yards.</p>`) +
+      `<p class="note">Clubs without a bar aren't in your Clubs tab yet. Gaps use the bar, or the Rapsodo number when there's no bar.</p>`;
+  }
+  // ---- range shot log: start, curve and contact for each shot, by voice or taps (S.rlog) ----
+  S.rlog = S.rlog || [];
+  let rlCur = {};
+  const rlToday = () => S.rlog.filter(e => new Date(e.at).toDateString() === new Date().toDateString());
+  const RL_WORDS = { start: { left: "starts left", straight: "starts straight", right: "starts right" },
+    curve: { left: "curves left", none: "no curve", right: "curves right" }, contact: { heavy: "heavy", good: "good contact", thin: "thin" } };
+  const rlText = e => [RL_WORDS.start[e.start], RL_WORDS.curve[e.curve], RL_WORDS.contact[e.contact]].filter(Boolean).join(", ");
+  function rlParse(said) {   // -> {start, curve, contact, club, save}
+    const t = norm(said).replace(/\bon line\b|\bonline\b|\bstraight start\b/g, "straight"), out = {};
+    if (/\b(draw|draws|drew|hook|hooks|hooked|curved? left|curves left|moved left)\b/.test(t)) out.curve = "left";
+    else if (/\b(fade|fades|faded|slice|slices|sliced|curved? right|curves right|moved right)\b/.test(t)) out.curve = "right";
+    else if (/\b(no curve|didn t curve|no bend|dead straight)\b/.test(t)) out.curve = "none";
+    const t2 = t.replace(/\b(curved?|curves|moved) (left|right)\b/g, "");
+    if (/\b(start(ed|s)? )?left\b|\bpull(ed)?\b/.test(t2)) out.start = "left";
+    else if (/\b(start(ed|s)? )?right\b|\bpush(ed)?\b|\bblock(ed)?\b/.test(t2)) out.start = "right";
+    else if (/\bstraight\b|\bon target\b/.test(t2.replace(/dead straight/, ""))) out.start = "straight";
+    if (/\b(heavy|fat|chunk(ed)?|duff(ed)?)\b/.test(t)) out.contact = "heavy";
+    else if (/\b(thin|thinned|top(ped)?|skull(ed)?)\b/.test(t)) out.contact = "thin";
+    else if (/\b(good|solid|pure|flush|sweet|nice)\b/.test(t)) out.contact = "good";
+    const opt = [...$("rlClub").options].find(o => { const sp = norm(sayable(o.value)); return o.value !== "Other" && (t === norm(o.value) || (" " + t + " ").includes(" " + sp + " ")); });
+    if (opt) out.club = opt.value;
+    if (/\b(save|next|done|log it)\b/.test(t)) out.save = true;
+    return out;
+  }
+  function rlSay(text) { if (canSpeak) { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(text)); } }
+  function rlApply(said) {
+    const m = rlParse(said);
+    if (m.club) { $("rlClub").value = m.club; S.rlClub = m.club; save(); }
+    ["start", "curve", "contact"].forEach(k => { if (m[k]) rlCur[k] = m[k]; });
+    const got = m.start || m.curve || m.contact;
+    if (got) { rlSaveShot(true); return; }
+    if (m.club) { renderRl(); rlSay(`Got it. ${sayable(m.club)}.`); return; }
+    rlSay(`I heard ${said}. Say the start, the curve and the contact, like left, draw, thin.`);
+  }
+  function rlSaveShot(spoken) {
+    if (!rlCur.start && !rlCur.curve && !rlCur.contact) { toast("Pick or say the start, curve or contact first"); return; }
+    const club = $("rlClub").value, n = rlToday().filter(e => e.club === club).length + 1;
+    const e = { at: Date.now(), club, n, ...rlCur }; S.rlog.push(e); S.rlog = S.rlog.slice(-500); save(); rlCur = {};
+    renderRl(); const txt = `${sayable(club)} shot ${n}: ${rlText(e)}.`;
+    if (spoken || S.voice) rlSay("Got it. " + txt); else toast(txt);
+  }
+  function renderRl() {
+    const sel = $("rlClub"), names = [...S.clubs.map(c => c.name), "Other"], cur = sel.value || S.rlClub || names[0];
+    sel.innerHTML = names.map(n => `<option>${esc(n)}</option>`).join(""); sel.value = names.includes(cur) ? cur : names[0];
+    document.querySelectorAll("[data-rl]").forEach(b => { const [k, v] = b.dataset.rl.split(":"); b.setAttribute("aria-pressed", rlCur[k] === v); });
+    const today = rlToday(), club = sel.value;
+    $("rlNext").textContent = `${club}: shot ${today.filter(e => e.club === club).length + 1} next` + (Object.keys(rlCur).length ? ` (${rlText(rlCur)})` : "");
+    const by = {}; today.forEach(e => (by[e.club] = by[e.club] || []).push(e));
+    const cnt = (a, k, v) => a.filter(e => e[k] === v).length;
+    $("rlSum").innerHTML = Object.entries(by).map(([c, a]) => `<p class="note" style="margin:0;color:var(--ink)"><b>${esc(c)}</b> (${a.length}): start L ${cnt(a, "start", "left")} · S ${cnt(a, "start", "straight")} · R ${cnt(a, "start", "right")}; curve L ${cnt(a, "curve", "left")} · none ${cnt(a, "curve", "none")} · R ${cnt(a, "curve", "right")}; heavy ${cnt(a, "contact", "heavy")} · good ${cnt(a, "contact", "good")} · thin ${cnt(a, "contact", "thin")}</p>`).join("") || `<p class="note" style="margin:0">No shots yet today.</p>`;
+    $("rlList").innerHTML = today.slice(-8).reverse().map(e => `<p class="note" style="margin:0">${esc(e.club)} #${e.n}: ${esc(rlText(e))}</p>`).join("");
+    const ear = $("rlEar"); ear.hidden = !Rec; ear.setAttribute("aria-pressed", kl.on); ear.textContent = kl.on ? (kl.need ? "👂 Tap" : "👂 On") : "👂 Off";
+  }
+  const rlCsv = () => "club,shot,start,curve,contact,time\n" + rlToday().map(e => [e.club, e.n, e.start || "", e.curve || "", e.contact || "",
+    new Date(e.at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })].join(",")).join("\n");
+  // ---- hole map: OpenStreetMap or satellite imagery (Leaflet, loaded only when opened); tap to measure ----
+  const COURSE_PT = { westchester: { lat: 33.9585, lon: -118.4205 }, rancho: { lat: 34.0445, lon: -118.4150 } };   // approximate centers, for viewing from home
+  let hm = { map: null, layer: "osm", from: null, pickFrom: false, marks: null, tapM: null, fromM: null, lines: null };
+  function loadLeaflet() {
+    if (window.L) return Promise.resolve();
+    return new Promise((res, rej) => {
+      const css = document.createElement("link"); css.rel = "stylesheet"; css.href = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"; document.head.appendChild(css);
+      const js = document.createElement("script"); js.src = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"; js.onload = res; js.onerror = rej; document.head.appendChild(js);
+    });
+  }
+  const HM_LAYERS = {
+    osm: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png", 19, 'Map © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'],
+    sat: ["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", 19, "Imagery © Esri, Maxar, Earthstar Geographics, and the GIS User Community"] };
+  function hmSetLayer() {
+    if (hm.tiles) hm.map.removeLayer(hm.tiles);
+    const [u, z, a] = HM_LAYERS[hm.layer]; hm.tiles = L.tileLayer(u, { maxZoom: z, attribution: a }).addTo(hm.map);
+    $("hmLayer").textContent = hm.layer === "osm" ? "Satellite" : "Map"; $("hmCredit").innerHTML = a;
+  }
+  function hmDraw() {
+    const h = hole(), g = h.center || h.front || h.back, ll = p => [p.lat, p.lon];
+    hm.marks.clearLayers();
+    if (fix) L.circleMarker(ll(fix), { radius: 8, color: "#fff", weight: 3, fillColor: "#1a73e8", fillOpacity: 1 }).addTo(hm.marks).bindTooltip("You");
+    [["front", h.front], ["center", h.center], ["back", h.back]].forEach(([n, p]) => { if (p) L.circleMarker(ll(p), { radius: n === "center" ? 8 : 5, color: "#fff", weight: 2, fillColor: "#c0392b", fillOpacity: 1 }).addTo(hm.marks).bindTooltip("Green " + n); });
+    (h.hazards || []).forEach(z => (z.pts || []).forEach(p => L.circleMarker(ll(p), { radius: 6, color: "#fff", weight: 2, fillColor: z.type === "water" ? "#2b7bd3" : z.type === "bunker" ? "#d9b26f" : "#555", fillOpacity: 1 }).addTo(hm.marks).bindTooltip(z.type)));
+    const c = CARDS[S.cur.course], mapNote2 = mapNote();
+    $("hmTitle").textContent = `Hole ${S.cur.hole}` + (c ? ` · Par ${c.par[S.cur.hole - 1]}` : "");
+    if (!g && mapNote2) $("hmOut").textContent = "Course map: " + mapNote2 + ". Tap the map to measure.";
+    return g;
+  }
+  function hmMeasure(p) {
+    const h = hole(), g = h.center || h.front || h.back, from = hm.from || fix;
+    hm.lines.clearLayers();
+    L.circleMarker([p.lat, p.lon], { radius: 6, color: "#000", weight: 2, fillColor: "#ffd400", fillOpacity: 1 }).addTo(hm.lines);
+    const parts = [];
+    if (from) { L.polyline([[from.lat, from.lon], [p.lat, p.lon]], { color: "#ffd400", weight: 3 }).addTo(hm.lines); parts.push(`${Math.round(dist(from, p))} yd ${hm.from ? "from your point" : "from you"}`); }
+    if (g) { L.polyline([[p.lat, p.lon], [g.lat, g.lon]], { color: "#fff", weight: 2, dashArray: "6 6" }).addTo(hm.lines); parts.push(`${Math.round(dist(p, g))} yd to the green`); }
+    const txt = parts.length ? parts.join(" · ") : "Tap “Measure from a point I tap” first, or turn on GPS.";
+    $("hmOut").textContent = txt; if (parts.length && S.voice && canSpeak) rlSay(txt.replace(/ · /g, ". ").replace(/yd/g, "yards"));
+  }
+  async function openHm() {
+    $("hm").hidden = false; $("hmOut").textContent = "Loading the map…";
+    try { await loadLeaflet(); } catch { $("hmOut").textContent = "Couldn't load the map. Check your signal and try again."; return; }
+    if (!hm.map) {
+      hm.map = L.map("hmMap", { zoomControl: true, attributionControl: false });
+      hm.marks = L.layerGroup().addTo(hm.map); hm.lines = L.layerGroup().addTo(hm.map); hmSetLayer();
+      hm.map.on("click", ev => { const p = { lat: ev.latlng.lat, lon: ev.latlng.lng };
+        if (hm.pickFrom) { hm.from = p; hm.pickFrom = false; hm.lines.clearLayers(); if (hm.fromM) hm.map.removeLayer(hm.fromM);
+          hm.fromM = L.circleMarker([p.lat, p.lon], { radius: 7, color: "#000", weight: 2, fillColor: "#fff", fillOpacity: 1 }).addTo(hm.map);
+          $("hmOut").textContent = "Point set. Now tap where you want to measure to."; $("hmFrom").textContent = "Measure from me (GPS)"; return; }
+        hmMeasure(p); });
+    }
+    const g = hmDraw(), c = COURSE_PT[S.cur.course] || fix;
+    const center = fix && g && dist(fix, g) < 700 ? [(fix.lat + g.lat) / 2, (fix.lon + g.lon) / 2] : fix ? [fix.lat, fix.lon] : g ? [g.lat, g.lon] : c ? [c.lat, c.lon] : [33.9585, -118.4205];
+    hm.map.setView(center, fix || g ? 17 : 16); setTimeout(() => hm.map.invalidateSize(), 50);
+    if (!(!g && mapNote())) $("hmOut").textContent = fix ? "Tap the map: yards from you and to the green." : "No GPS here: tap “Measure from a point I tap”, then tap a second point.";
+  }
+  document.addEventListener("change", e => { if (e.target.id === "rlClub") { S.rlClub = e.target.value; save(); renderRl(); } });
   function renderClubs() {
     const rows = S.clubs.map((c, i) => `<tr><td>${esc(c.name)}</td><td><input type="number" inputmode="numeric" id="carry-${i}" value="${c.carry || ""}" aria-label="${esc(c.name)} carry"></td><td><button data-rm="${i}">Remove</button></td></tr>`).join("");
     $("clubTable").innerHTML = rows ? `<tr><th>Club</th><th>Carry yd</th><th></th></tr>${rows}` : '<tr><td class="note">No clubs yet. Add them below, longest to shortest or any order.</td></tr>';
@@ -1144,11 +1344,13 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     b.setAttribute("aria-pressed", kl.on); b.textContent = kl.on ? "👂 On" : "👂 Off";
     $("wiz").classList.toggle("kl", kl.on && !kl.need);
     const bar = $("klBar"); bar.hidden = !kl.on; bar.classList.toggle("need", kl.need);
+    if (typeof renderRl === "function" && !$("rl").hidden) try { renderRl(); } catch {}
     bar.textContent = kl.need ? "👂 Tap here to keep listening" : "👂 Listening. Say \u201cCaddie\u201d, then your answer: \u201cCaddie, mark\u201d, \u201cCaddie, one forty five\u201d.";
   }
   function klCommand(cmd) {
     const body = $("wizBody"), t = norm(cmd);
-    if (/^(stop|stop listening|quiet)$/.test(t)) { klStop(); klSay("Stopped listening. Tap the ear to start again."); return; }
+    if (/^(stop|stop listening|quiet)$/.test(t)) { klStop(); klSay("Stopped listening. Tap the ear to start again."); if (!$("rl").hidden) renderRl(); return; }
+    if (!$("rl").hidden) { if (/^(undo|delete( that| last)?)$/.test(t)) { $("rlUndo").click(); klSay("Removed the last shot."); } else rlApply(cmd); return; }
     const yIn = document.getElementById("wizIn");
     if (yIn && document.getElementById("wizMic")) {   // yardage screen: "Caddie, one forty five"
       const n = spokenYards(cmd);
@@ -1521,7 +1723,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         ["Save a hazard on this hole", () => step("hzType")],
         [`Hazards on this hole (${(hole().hazards || []).length})`, () => step("hzList")],
         ["Skip to the next hole", () => step("next")],
-        ...(S.comp ? [] : [["Record or check a swing", () => { location.href = "swing.html"; }], ["My Rapsodo numbers", () => openMlm()], ["Range conditions (wind, temperature)", () => openRc()]]),
+        ...(S.comp ? [] : [["Record or check a swing", () => { location.href = "swing.html"; }], ["My Rapsodo numbers", () => openMlm()], ["Range conditions (wind, temperature)", () => openRc()], ["Range shot log", () => { renderRl(); $("rl").hidden = false; }], ["Gapping chart", () => { renderGap(); $("gap").hidden = false; }]]),
+        ["Hole map", () => openHm()],
         [S.dark ? "Normal screen" : "Dark screen (saves battery)", () => { S.dark = !S.dark; save(); applyDark(); step("menu"); }],
         ...(S.comp ? [] : [["Add or change this hole's green note", () => step("note")]]),
         ["Change course or tees", () => step("course")],
