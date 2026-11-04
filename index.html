@@ -1079,7 +1079,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const from = hm.shot || (par < 4 ? geo.tee : null);
     const fromTee = !hm.shot, approachClubs = fromTee ? clubs : clubs.filter(x => !/^(driver|dr|1w|3w|3 ?wood)\b/i.test(x.name.trim()));
     if (from) {   // three lines to the green: front, hole high, back
-      if (!geo.green) { out.textContent = "Tap More… → Set the green, then tap the middle of the green."; return; }
+      if (!geo.green) { out.textContent = `Hole ${S.cur.hole}: tap Set the green below, then the middle of the green.`; $("hmMoreRow").hidden = false; return; }
       dot(from, "#fff");
       const brg = bearing(from, geo.green), dC = dist(from, geo.green);
       const dF = geo.front ? dist(from, geo.front) : dC - 12, dB = geo.back ? dist(from, geo.back) : dC + 12, est = !geo.front || !geo.back;
@@ -1101,8 +1101,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       return;
     }
     // tee shot on a par 4 or 5: the two longest clubs
-    if (!geo.tee) { out.textContent = "OpenStreetMap doesn't have this hole. Tap More… → Set the tee, then Set the green."; return; }
-    if (!geo.line && !geo.green) { out.textContent = "Tap More… → Set the green so the lines know which way to point."; return; }
+    const known = (((S.osmMap || {})[S.cur.course] || {}).holes || []).map(x => x.n).sort((a, b) => a - b);
+    const missing = `Hole ${S.cur.hole} isn't on OpenStreetMap` + (known.length ? ` (it has holes ${known.join(", ")})` : "") + ".";
+    if (!geo.tee) { out.textContent = missing + " Find the hole on the picture, then tap Set the tee and Set the green below."; $("hmMoreRow").hidden = false; return; }
+    if (!geo.line && !geo.green) { out.textContent = "Now tap Set the green, then the middle of the green, so the lines know which way to point."; $("hmMoreRow").hidden = false; return; }
     const two = clubs.slice(0, 2), txt = [], pts = [geo.tee];
     two.forEach((cl, i) => {
       const path = geo.line ? pathAlong(geo.line, cl.carry) : [geo.tee, destPt(geo.tee, bearing(geo.tee, geo.green), cl.carry)];
@@ -1141,7 +1143,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     }
     const g = hmDraw(), c = COURSE_PT[S.cur.course], here = fix && (!c || dist(fix, c) < 2500) ? fix : null;   // GPS only counts at the course
     hm.here = here;
-    hm.map.setView(here ? [here.lat, here.lon] : g ? [g.lat, g.lon] : c ? [c.lat, c.lon] : [33.9563, -118.4182], here || g ? 17 : 15);
+    if (here || g || !hm.shown) hm.map.setView(here ? [here.lat, here.lon] : g ? [g.lat, g.lon] : c ? [c.lat, c.lon] : [33.9563, -118.4182], here || g ? 17 : 15);
+    hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them

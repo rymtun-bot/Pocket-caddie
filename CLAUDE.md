@@ -160,7 +160,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   and on par 3 tees = lines to front (blue), hole high (yellow) and back (red), each with the nearest-carry club; driver
   and 3W excluded off the fairway; front/back from the saved green, else ±12 yd estimated; one line per club when a club
   covers two targets. More… → Set the tee / Set the green (tap; saved per hole in S.mapPts) for holes OSM lacks.
-  ◀ Hole / Hole ▶ step through holes. Decorations are non-interactive so taps reach the map.
+  ◀ Hole / Hole ▶ step through holes; a hole with no OSM line or saved points keeps the current view (no zoom-out),
+  says which holes OSM has, and opens Set the tee / Set the green. Decorations are non-interactive so taps reach the map.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 
