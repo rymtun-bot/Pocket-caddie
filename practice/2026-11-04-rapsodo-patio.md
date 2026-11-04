@@ -78,4 +78,16 @@ candidate to test for ~80.
 | 6 | 1.26 | 44 | 63 | 56 | 2.3° L | 34.0° | 34 | ST |
 | **Average** | **1.30** | **44** | **67** | **57** (Rapsodo's figure) | **2.5° L** | **31.2°** | **33** | |
 
-Non-carry averages leave out the outlier. No gripped-down 54° set was received.
+Non-carry averages leave out the outlier.
+
+### Set C, 4 shots (assumed gripped down 1 inch): Rapsodo 79
+
+| Shot | Smash | Club mph | Total | Carry | Launch dir | Launch | Apex ft | Type |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 1.21 | 55 | 83 | 77 | 3.4° L | 29.8° | 44 | ST |
+| 2 | 1.36 | 52 | 89 | 83 | 0.5° L | 30.0° | 50 | ST |
+| 3 | 1.09 | 58 | 76 | 69 | 1.6° L | 29.2° | 37 | ST |
+| 4 | 1.18 | 61 | 90 | 86 | 3.0° L | 34.2° | 62 | ST |
+| **Average** | **1.21** | **57** | **85** | **79** | **2.1° L** | **30.8°** | **48** | |
+
+54° ladder (assumed labels): full 81 · gripped down 1 in 79 · hip to hip 57.
