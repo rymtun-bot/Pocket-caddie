@@ -1854,8 +1854,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const m = S.misses.filter(x => x.club === name);
     if (m.length < 3) return "";
     const L = m.filter(x => x.side === "L").length, R = m.filter(x => x.side === "R").length;
-    if (R / m.length >= 0.6) return `Your ${name} misses right ${R} of ${m.length}. Aim about 5 yards left of your usual target.`;
-    if (L / m.length >= 0.6) return `Your ${name} misses left ${L} of ${m.length}. Aim about 5 yards right of your usual target.`;
+    if (R / m.length >= 0.6) return `Your ${name} misses right ${R} of ${m.length}. Aim about 5 yards left of the center of the fairway or green.`;
+    if (L / m.length >= 0.6) return `Your ${name} misses left ${L} of ${m.length}. Aim about 5 yards right of the center of the fairway or green.`;
     return "";
   }
   const mapNote = () => {   // course-map description of the hole, used when the golfer hasn't saved hazards of their own
