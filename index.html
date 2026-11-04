@@ -1050,6 +1050,19 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     new Date(e.at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })].join(",")).join("\n");
   // ---- hole map: OpenStreetMap or satellite imagery (Leaflet, loaded only when opened); tap to measure ----
   const COURSE_PT = { westchester: { lat: 33.9563, lon: -118.4182 }, rancho: { lat: 34.0447, lon: -118.4145 } };   // approximate centers; OpenStreetMap refines them
+  // OpenStreetMap's Overpass servers: the main one is often busy (502/504/429), so try the others in turn
+  const OVERPASS = ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter", "https://overpass.private.coffee/api/interpreter"];
+  async function overpass(q) {
+    let last = "";
+    for (const u of OVERPASS) {
+      try {
+        const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" } });
+        if (r.ok) return await r.json();
+        last = `error ${r.status}`;
+      } catch { last = "no answer"; }
+    }
+    throw new Error(last);
+  }
   function inRing(p, ring) {   // ray casting: is point p inside the polygon ring?
     let inside = false;
     for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
@@ -1068,9 +1081,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     // nine) also have holes numbered 1-18, so only holes inside this course's outline are kept
     const q = `[out:json][timeout:25];(way["leisure"="golf_course"](around:2500,${c.lat},${c.lon});relation["leisure"="golf_course"](around:2500,${c.lat},${c.lon});way["golf"="hole"](around:2500,${c.lat},${c.lon});way["golf"="green"](around:2500,${c.lat},${c.lon}););out geom tags;`;
     try {
-      const r = await fetch("https://overpass-api.de/api/interpreter", { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" } });
-      if (!r.ok) { hm.osmErr = `OpenStreetMap busy (error ${r.status}); try again in a minute`; return null; }
-      const els = (await r.json()).elements || [], pts = g => (g || []).map(x => ({ lat: x.lat, lon: x.lon }));
+      const els = (await overpass(q)).elements || [], pts = g => (g || []).map(x => ({ lat: x.lat, lon: x.lon }));
       const courses = els.filter(e => e.tags && e.tags.leisure === "golf_course").map(e => ({ name: e.tags.name || "",
         rings: e.type === "relation" ? (e.members || []).filter(m => m.role !== "inner" && m.geometry).map(m => pts(m.geometry)) : [pts(e.geometry)] }))
         .filter(x => x.rings.length && x.rings[0].length > 2);
@@ -1089,7 +1100,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       const res = { v: 4, at: Date.now(), name: course ? course.name : "", outline: course ? course.rings.reduce((m, r) => r.length > m.length ? r : m, []) : [], holes, nearby, greens, courses: courses.map(x => x.name).slice(0, 5) };
       if (res.outline.length || holes.length || greens.length) { S.osmMap[id] = res; save(); }   // don't remember an empty answer
       return res;
-    } catch (e) { hm.osmErr = "OpenStreetMap didn't answer: check your signal"; return null; }
+    } catch (e) { hm.osmErr = `OpenStreetMap is busy on all its servers (${e.message}). Tap Back, wait a minute, and open the map again.`; return null; }
   }
   let hm = { map: null, layer: S.hmLayer || "sat", from: null, pickFrom: false, marks: null, tapM: null, fromM: null, lines: null };
   function loadLeaflet() {
@@ -1396,7 +1407,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 4 Nov (e) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 4 Nov (f) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
@@ -1855,10 +1866,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   async function loadOsm() {   // bunkers, water and hole lines near here from OpenStreetMap (ODbL), assigned to holes by the hole lines
     if (!fix) { toast("Waiting for GPS"); return null; }
     const q = `[out:json][timeout:25];(way["golf"="hole"](around:2500,${fix.lat},${fix.lon});way["golf"~"bunker|water_hazard|lateral_water_hazard|out_of_bounds"](around:2500,${fix.lat},${fix.lon});way["natural"="water"](around:2500,${fix.lat},${fix.lon});way["natural"="wood"](around:2500,${fix.lat},${fix.lon}););out geom tags;`;
-    const res = await fetch("https://overpass-api.de/api/interpreter", { method: "POST", body: "data=" + encodeURIComponent(q),
-      headers: { "Content-Type": "application/x-www-form-urlencoded" } });
-    if (!res.ok) throw new Error(res.status);
-    return importOsm((await res.json()).elements || []);
+    return importOsm((await overpass(q)).elements || []);
   }
   function importOsm(els) {   // returns how many hazards were added to which holes of the current course
     const pts = e => (e.geometry || []).map(g => ({ lat: g.lat, lon: g.lon }));
