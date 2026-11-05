@@ -45,6 +45,11 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   the club the golfer hits best, and without it nothing measured covers ~140-150 (7-iron 120-128, 6-iron untested,
   4U 154). Remind the golfer to reconsider if the range test shows the 4U and 5U clearly apart (10+ yd) or if a gap
   below the 4U remains after the 6-iron test.
+- Bag decision (golfer, 2026-11-05): 5-iron out (6i and 7i already carry the same, 124/122 on the patio 11/04, so a 5i
+  would likely duplicate them), 5U back in for 135-150, pending a Rapsodo test (6 shots each 5U and 4U, Supersoft).
+  Supersedes the 11/02 5U-out decision. Bag is still 16 (Driver, 3W, 1U, 2U, 3U, 4U, 5U, 6i-PW, 50°, 54°, 58°, putter):
+  2 more to drop, likely among the 1U, 2U, 3U and 58°. Both strategy plans (md + CARDS) updated 2026-11-05 for the 5U
+  and full-swing wedge lay-ups.
 - Laser rangefinder: Revasri. Its readings go in Pocket Caddie's "type the yardage" box.
 - Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (urethane cover).
 
