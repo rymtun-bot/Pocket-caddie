@@ -52,6 +52,11 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   and full-swing wedge lay-ups.
 - Laser rangefinder: Revasri. Its readings go in Pocket Caddie's "type the yardage" box.
 - Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (urethane cover).
+  Titleist RCT balls (radar-reflector Pro V1/V1x for indoor launch monitors) arriving 2026-11-05 (golfer; which model not
+  yet stated). A retailer's MLM1 listing says "spin rate available with Titleist RCT golf balls"
+  (playbetter.com/products/rapsodo-mlm1-mobile-launch-monitor, accessed 2026-11-05); Titleist lists "Rapsodo MLM" as
+  validated with the latest firmware (titleist.com Pro V1 RCT page, accessed 2026-11-05). Unconfirmed on this unit:
+  if a spin column appears with RCT balls, record spin; keep Supersoft and RCT sessions separate.
 
 ## First launch-monitor numbers (from the golfer, 2026-10-26; patio net, Callaway Supersoft)
 Hit from the golfer's usual setup (about 2-3 quarters under the toe at address), not the hip-hinge setup
