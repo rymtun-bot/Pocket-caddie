@@ -123,7 +123,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <span class="chip" id="gpsChip">GPS starting…</span>
     <span class="chip" id="parChip" hidden></span>
     <span class="chip warn" id="compChip" hidden>Competition mode</span>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 5 Nov (b) ⟳</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 5 Nov (c) ⟳</button>
   </div>
 </header>
 
@@ -277,6 +277,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         <input id="thoughtIn" type="text"></div>
       <div class="row"><label for="hybridIn">Hybrid reminder, read when you pick a hybrid (1U-5U; leave blank for none)</label>
         <input id="hybridIn" type="text"></div>
+      <div class="row"><label for="routineIn">Your pre-shot routine, read after the reminders (one step per line)</label>
+        <textarea id="routineIn" rows="6"></textarea></div>
       <div class="row"><label for="wedgeTipIn">Wedge reminder, read for the PW and shorter wedges (leave blank for none)</label>
         <input id="wedgeTipIn" type="text"></div>
       <div class="row"><label for="elbowTipIn">Reminder for every shot except chips under 30 yards (leave blank for none)</label>
@@ -284,7 +286,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><button id="darkBtn" aria-pressed="false">Dark screen (saves battery)</button></div>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 5 Nov (b). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 5 Nov (c). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -577,6 +579,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   S.misses = S.misses || [];                       // every full shot's start: { club, side: "L"|"R"|"C", ts }
   S.thought = S.thought ?? "Hands lead through impact";   // one swing cue read before each full shot
   S.hybridTip = S.hybridTip ?? "Hybrid: sole the club flat on the ground, and stand a little more upright";   // golfer's request 2026-11-05
+  S.routine = S.routine ?? ["Behind the ball", "Approach the ball", "Bend", "Grip pressure 4 out of 10", "Relax your arms and shoulders",
+    "Waggle up, down and sideways, and hit after 1, 2, 3"].join("\n");   // the golfer's own pre-shot routine (2026-11-05), one step per line
   S.wedgeTip = S.wedgeTip ?? "70 percent of your weight on your front foot";   // golfer's request 2026-11-05: PW and shorter
   S.elbowTip = S.elbowTip ?? "Right elbow points out";   // golfer's request 2026-11-05: every shot except chips
   const isWedge = n => /(^|\s)(pw|gw|aw|sw|lw|p)(\s|$)|wedge|^\s*(4[5-9]|5\d|6[0-4])\s*(°|deg)?\s*$/i.test(String(n || "").trim());
@@ -1085,7 +1089,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let last = "", k = 0;
     const order = OVERPASS.slice(ovGood).concat(OVERPASS.slice(0, ovGood));   // the server that answered last time goes first
     for (const u of order) {
-      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 5 Nov (b) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
+      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 5 Nov (c) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
       try {
         const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 25000);   // a busy server can hang: give up after 25 s
         const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: ctl.signal });
@@ -1125,7 +1129,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (cached && cached.v === 8 && Date.now() - cached.at < 7 * 864e5) return cached;
     let c = (S.coursePt || {})[id] || COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
     // the course data saved on the Pocket Caddie site (tools/fetch_osm.py) is quick; the live servers are the fallback
-    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 5 Nov (b) · Loading the course map data…";
+    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 5 Nov (c) · Loading the course map data…";
     let pre = null;
     try { const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
       const r = await fetch(`osm/${id}.json?d=${new Date().toISOString().slice(0, 10)}`, { signal: ctl.signal }); clearTimeout(tm);
@@ -1467,7 +1471,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
-    $("hmStatus").textContent = "Pocket Caddie 5 Nov (b) · Looking up the course on OpenStreetMap…";
+    $("hmStatus").textContent = "Pocket Caddie 5 Nov (c) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     hm.osmInfo = o ? `OpenStreetMap${hm.osmSrc && hm.osmSrc !== "live" ? " (" + hm.osmSrc + ")" : ""}: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
@@ -1477,7 +1481,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 5 Nov (b) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 5 Nov (c) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
@@ -1603,6 +1607,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   };
   $("thoughtIn").value = S.thought; $("thoughtIn").onchange = e => { S.thought = e.target.value.trim(); save(); };
   $("hybridIn").value = S.hybridTip; $("hybridIn").onchange = e => { S.hybridTip = e.target.value.trim(); save(); };
+  $("routineIn").value = S.routine; $("routineIn").onchange = e => { S.routine = e.target.value.trim(); save(); };
   $("wedgeTipIn").value = S.wedgeTip; $("wedgeTipIn").onchange = e => { S.wedgeTip = e.target.value.trim(); save(); };
   $("elbowTipIn").value = S.elbowTip; $("elbowTipIn").onchange = e => { S.elbowTip = e.target.value.trim(); save(); };
   const renderDarkBtn = () => { $("darkBtn").setAttribute("aria-pressed", S.dark); $("darkBtn").textContent = S.dark ? "Normal screen" : "Dark screen (saves battery)"; };
@@ -2260,8 +2265,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
           renderShotBox(); $("shotClub").value = S.wiz.club || "Other"; $("markStart").click(); step("routine"); }, true],
        ["No", () => step("routine")]]);
     if (name === "routine") {
-      const routine = ["Stand behind the ball, pick the target and see the shot", "Pick a spot 2 to 3 feet ahead on that line",
-        "One rehearsal swing, hands leading", "Clubface square to the spot, then feet, hips and shoulders", "One look at the target, one at the ball, swing"];
+      const routine = S.routine.split("\n").map(x => x.trim().replace(/[.]+$/, "")).filter(Boolean);
       const ty = targetYards(), chip = ty > 0 && ty < 30;   // chips: under 30 yards to the target
       const hyb = [S.hybridTip && isHybrid(S.wiz.club) ? S.hybridTip : "", S.wedgeTip && isWedge(S.wiz.club) ? S.wedgeTip : "",
         S.elbowTip && !chip ? S.elbowTip : ""].filter(Boolean).join(". ");
@@ -2271,7 +2275,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       if (canSpeak) {   // always spoken, like the yardage, club and putting routine (golfer's request)
         speechSynthesis.cancel();
         const club = S.wiz.club && S.wiz.club !== "Other" ? `, with the ${sayable(S.wiz.club)}` : "";
-        speechSynthesis.speak(new SpeechSynthesisUtterance(`Your routine${club}. ` + (hyb ? `${hyb}. ` : "") + routine.join(". ") + "." + (S.thought ? ` Swing thought: ${S.thought}.` : "")));
+        speechSynthesis.speak(new SpeechSynthesisUtterance((club ? `With the ${sayable(S.wiz.club)}. ` : "") + (hyb ? `${hyb}. ` : "") + (S.thought ? `Swing thought: ${S.thought}. ` : "") + "Your routine. " + routine.join(". ") + "."));   // reminders, swing thought, then the routine ending with the swing
       }
       return;
     }

@@ -116,7 +116,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   The putt screen shows and always speaks the hole's green note (not in competition mode) and then the putting routine;
   Menu → add or change the note.
   At the start of each hole it always says the hole number, par, yardage from the chosen tees and handicap.
-  The routine screen always speaks the 5-step pre-shot routine, naming the chosen club.
+  The routine screen always speaks: the chosen club, the reminders, the swing thought, then the golfer's own pre-shot
+  routine (2026-11-05; S.routine, editable in Setup, one step per line): behind the ball; approach the ball; bend; grip
+  pressure 4 out of 10; relax arms and shoulders; waggle up, down and sideways, and hit after 1, 2, 3.
   After "Mark my ball here" it always says the measured distance (total, carry + roll) and the club.
   After "Holed out" it asks the hole score (full shots tapped + 2 putts preselected), then always says e.g. "Bogey, 4 on a
   par 3. After 1 hole: 4, 1 over par." Scores are kept per guided round (S.round); the end screen copies scorecard + shot log.
@@ -141,7 +143,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   and always spoken first on the routine screen when the chosen club is a hybrid (isHybrid: "1U"-"5U", "4H", hybrid/utility/rescue). Also (golfer's request 2026-11-05, Setup-editable):
   wedge reminder S.wedgeTip "70 percent of your weight on your front foot" for PW and shorter (isWedge: PW/GW/SW/LW,
   45-64°, "wedge"); S.elbowTip "Right elbow points out" for every shot except chips (target under 30 yd). Order spoken:
-  hybrid, wedge, elbow, then the routine. Menu: add a penalty stroke, dark screen.
+  hybrid, wedge, elbow, swing thought, then the routine. Menu: add a penalty stroke, dark screen.
   End of round: says and copies fairways, GIR, putts, 3-putts, penalties, start-line counts and a "next week, practice ..."
   line chosen from those stats.
   Hazards (golfer's request 2026-11-01): hole().hazards = [{type bunker|water|ob|trees, side, pts, src me|osm}]. Saved in the
@@ -207,7 +209,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "5 Nov (b)" (also a "v 5 Nov (b) ⟳" chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "5 Nov (c)" (also a "v 5 Nov (c) ⟳" chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
