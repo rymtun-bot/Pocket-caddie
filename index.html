@@ -123,7 +123,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <span class="chip" id="gpsChip">GPS starting…</span>
     <span class="chip" id="parChip" hidden></span>
     <span class="chip warn" id="compChip" hidden>Competition mode</span>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 5 Nov (c) ⟳</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 5 Nov (d) ⟳</button>
   </div>
 </header>
 
@@ -286,7 +286,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><button id="darkBtn" aria-pressed="false">Dark screen (saves battery)</button></div>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 5 Nov (c). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 5 Nov (d). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -349,6 +349,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <h2>Home Course</h2>
       <p class="note">Play Westchester or Rancho Park hole by hole on the patio: type each Rapsodo shot and the page places the ball, then chip to your towel and putt on your rug.</p>
       <div class="row"><a href="home.html" class="chip" style="justify-content:center;padding:10px 14px;font-size:16px">Open Home Course</a></div>
+      <p class="note">Or the simpler pretend round: the caddie calls each shot and club, sometimes you miss the green and get a chip from a random distance. No putting.</p>
+      <div class="row"><button class="primary" id="pgOpen">⛳ Patio game (pretend round)</button></div>
     </section>
     <section class="panel">
       <h2>Backup</h2>
@@ -396,6 +398,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   <div class="row"><button id="rcCopy">Copy for Claude</button><button id="rcClear">Clear the list</button></div>
   <p class="note">Weather from Open-Meteo at your phone's position (needs GPS). Check at the start and whenever the wind
   changes; send the list with your Rapsodo averages so Claude can allow for wind and temperature.</p>
+</div></div>
+<div class="wiz" id="pg" hidden style="z-index:9"><div class="wrap">
+  <div class="wizTop"><span>Patio game</span><span style="display:flex;gap:6px"><button id="pgSay" aria-label="Say it again">🔊</button><button id="pgClose">Back</button></span></div>
+  <div id="pgBody"></div>
 </div></div>
 <div class="wiz" id="gap" hidden style="z-index:9"><div class="wrap">
   <div class="wizTop"><span>Gapping chart</span><button id="gapClose">Back</button></div>
@@ -1089,7 +1095,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let last = "", k = 0;
     const order = OVERPASS.slice(ovGood).concat(OVERPASS.slice(0, ovGood));   // the server that answered last time goes first
     for (const u of order) {
-      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 5 Nov (c) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
+      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 5 Nov (d) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
       try {
         const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 25000);   // a busy server can hang: give up after 25 s
         const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: ctl.signal });
@@ -1129,7 +1135,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (cached && cached.v === 8 && Date.now() - cached.at < 7 * 864e5) return cached;
     let c = (S.coursePt || {})[id] || COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
     // the course data saved on the Pocket Caddie site (tools/fetch_osm.py) is quick; the live servers are the fallback
-    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 5 Nov (c) · Loading the course map data…";
+    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 5 Nov (d) · Loading the course map data…";
     let pre = null;
     try { const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
       const r = await fetch(`osm/${id}.json?d=${new Date().toISOString().slice(0, 10)}`, { signal: ctl.signal }); clearTimeout(tm);
@@ -1471,7 +1477,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
-    $("hmStatus").textContent = "Pocket Caddie 5 Nov (c) · Looking up the course on OpenStreetMap…";
+    $("hmStatus").textContent = "Pocket Caddie 5 Nov (d) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     hm.osmInfo = o ? `OpenStreetMap${hm.osmSrc && hm.osmSrc !== "live" ? " (" + hm.osmSrc + ")" : ""}: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
@@ -1481,7 +1487,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 5 Nov (c) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 5 Nov (d) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
@@ -1890,6 +1896,116 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     return { tee, text: "Leaves " + (parts.join(", ") || "a short pitch") + "." };
   }
 
+  // ---- Patio game (golfer's request 2026-11-05): a pretend round of Westchester or Rancho into the net. The caddie calls
+  // each full shot and club from the scorecard, the built-in plan and the Clubs-tab carries; at random the approach misses
+  // the green and the golfer chips to the towel from a random distance. No putting. ----
+  const PG_LIES = ["on the fringe", "in light rough", "in thick rough", "on a tight lie", "on a downhill lie", "on an uphill lie"];
+  const pgRoll = c => /driver|^d$|^\d\s*w|wood/i.test(c.name) ? 10 : isHybrid(c.name) ? 5 : 3;   // assumed roll, as in the plans
+  const pgNear = (cs, y) => cs.reduce((b, x) => Math.abs(x.carry - y) < Math.abs(b.carry - y) ? x : b);
+  function pgClubFromPlan(text) {   // first club named in the built-in plan ("3 wood, aim left..."), if it is in the Clubs tab
+    const m = (text || "").match(/\b(driver|3 wood|\d utility|\d iron|pitching wedge)\b/i); if (!m) return null;
+    const w = m[1].toLowerCase(), cs = S.clubs.filter(c => c.carry > 0);
+    const re = w === "driver" ? /driver|^d$/i : w === "3 wood" ? /^3\s*w/i : /utility/.test(w) ? new RegExp("^" + w[0] + "\\s*[uh]\\b", "i")
+      : /iron/.test(w) ? new RegExp("^" + w[0] + "\\s*i", "i") : /^pw$|pitching/i;
+    return cs.find(c => re.test(c.name.trim())) || null;
+  }
+  function pgPlanHole() {
+    const g = S.pg, C = CARDS[g.course], i = g.hole - 1, par = C.par[i], yds = C.tees[g.tees][i];
+    const cs = S.clubs.filter(c => c.carry > 0).sort((a, b) => b.carry - a.carry);
+    const deck = cs.filter(c => !/driver|^d$|^3\s*w|3 ?wood/i.test(c.name));   // off the fairway: no driver or 3-wood
+    const shots = []; let left = yds;
+    const planned = pgClubFromPlan((C.plan || [])[i]);
+    if (par >= 4 && cs.length) { const t = planned || cs[0]; shots.push({ yds: left, club: t.name, carry: t.carry, tee: true }); left -= t.carry + pgRoll(t); }
+    else if (cs.length) { const t = planned && Math.abs(planned.carry - yds) <= 25 ? planned : pgNear(cs.filter(c => !/driver|^d$/i.test(c.name)), yds);
+      shots.push({ yds, club: t.name, carry: t.carry, tee: true, approach: true }); left = 0; }   // par 3: the plan's club
+    const full = y => Math.min(...deck.map(x => Math.abs(y - x.carry)));   // how far a distance is from a full swing
+    for (let k = 0; k < 4 && left > 30; k++) {
+      if (!deck.length) break;
+      const top = deck[0];
+      if (left <= top.carry + 15) { const c = pgNear(deck, left); shots.push({ yds: Math.round(left), club: c.name, carry: c.carry, approach: true }); left = 0; break; }
+      let c = top;   // lay-up: if two shots can reach, leave a full-swing distance (golfer plays wedges full, 2026-11-04)
+      if (left - top.carry - pgRoll(top) <= top.carry + 15) {
+        const ok0 = deck.filter(x => left - x.carry - pgRoll(x) >= deck[deck.length - 1].carry - 5);
+        const ok = ok0.filter(x => left - x.carry - pgRoll(x) <= 115).length ? ok0.filter(x => left - x.carry - pgRoll(x) <= 115) : ok0;   // leave a wedge or short iron in
+        if (ok.length) c = ok.reduce((b2, x) => full(left - x.carry - pgRoll(x)) < full(left - b2.carry - pgRoll(b2)) - 0.5 ? x : b2, ok[0]);
+      }
+      shots.push({ yds: Math.round(left), club: c.name, carry: c.carry }); left -= c.carry + pgRoll(c);
+    }
+    const r = Math.random(), miss = left > 0 || r < g.miss;   // a hole that leaves a short one, or the random miss
+    const chip = miss ? { short: left > 0, yds: left > 0 ? Math.round(left) : 5 + Math.floor(Math.random() * 26), lie: PG_LIES[Math.floor(Math.random() * PG_LIES.length)] } : null;
+    g.cur = { par, yds, shots, chip, k: 0, done: false }; save();
+  }
+  function pgTips(club, yds) {   // the same reminders and routine the guide reads
+    const ch = yds < 30, t = [S.hybridTip && isHybrid(club) ? S.hybridTip : "", S.wedgeTip && isWedge(club) ? S.wedgeTip : "", S.elbowTip && !ch ? S.elbowTip : ""].filter(Boolean);
+    return t.join(". ") + (t.length ? ". " : "") + (S.thought && !ch ? `Swing thought: ${S.thought}. ` : "")
+      + "Your routine. " + S.routine.split("\n").map(x => x.trim().replace(/[.]+$/, "")).filter(Boolean).join(". ") + ".";
+  }
+  function pgSpeak(text) { if (!canSpeak) return; speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(sayable(text))); }
+  function pgOpen() { $("pg").hidden = false; $("pg").scrollTop = 0; pgRender(true); }
+  function pgRender(speak) {
+    const g = S.pg, b = $("pgBody");
+    if (!g || g.over) {   // start screen
+      const last = g && g.over ? pgSummary() : "";
+      b.innerHTML = `${last ? `<p class="q">${last}</p>` : ""}
+        <p class="note">Play a pretend round into the net. The caddie calls each shot: yardage and club from your Clubs tab, using the hole plans.
+        Hit it with your routine, tap Hit it. Some approaches miss the green: then chip to your towel from the distance it gives you. No putting.</p>
+        <div class="row"><label for="pgCourse">Course</label><select id="pgCourse"><option value="westchester">Westchester (Blue)</option><option value="rancho">Rancho Park (White)</option></select></div>
+        <div class="row"><label for="pgMiss">Missed greens</label><select id="pgMiss"><option value="0.25">Some (1 in 4)</option><option value="0.4" selected>Often (2 in 5)</option><option value="0.6">Most (3 in 5)</option></select></div>
+        <div class="row"><label for="pgStart">Start at hole</label><select id="pgStart">${Array.from({ length: 18 }, (_, i) => `<option>${i + 1}</option>`).join("")}</select></div>
+        <div class="row"><label><input type="checkbox" id="pgRoutine" checked> Read my reminders and routine before each shot</label></div>
+        <div class="row"><button class="primary" id="pgGo">Start the round</button></div>`;
+      return;
+    }
+    const C = CARDS[g.course], c = g.cur, i = g.hole - 1, head = `<h3>${g.course === "rancho" ? "Rancho Park" : "Westchester"} · Hole ${g.hole} · Par ${c.par} · ${c.yds} yards</h3>`;
+    const plan = (C.plan || [])[i] ? `<p class="note"><b>Plan:</b> ${esc(C.plan[i])}</p>` : "";
+    let html = head + plan, say = "";
+    if (c.k < c.shots.length) {
+      const sh = c.shots[c.k], what = sh.tee ? "Tee shot" : sh.approach ? "Approach" : "Lay-up";
+      html += `<p class="q">Shot ${c.k + 1} · ${what}</p><div class="huge">${sh.yds}</div><p class="q"><b>${esc(sh.club)}</b> (carries ${sh.carry})</p>`
+        + `<div class="row"><button class="primary" id="pgHit">Hit it ▶</button></div>`;
+      say = (c.k === 0 ? `Hole ${g.hole}, par ${c.par}, ${c.yds} yards. ` : "") + `${what}, ${sh.yds} yards. ${sh.club}. ` + (g.routine ? pgTips(sh.club, sh.yds) : "");
+    } else if (c.chip && !c.done) {
+      html += `<p class="q">${c.chip.short ? "Short of the green" : "You missed the green"}, ${esc(c.chip.lie)}.</p><div class="huge">${c.chip.yds}</div><p class="q">yards: chip to your towel</p>
+        <div class="row"><button data-pgchip="T">On the towel</button><button data-pgchip="N">Near miss</button><button data-pgchip="M">Farther</button></div>`;
+      say = `${c.chip.short ? "Short of the green" : "You missed the green"}, ${c.chip.lie}. Chip from ${c.chip.yds} yards. ` + (g.routine ? pgTips("54°", c.chip.yds) : "");
+    } else {
+      const on = c.shots.length + (c.chip ? 1 : 0), gir = !c.chip && c.shots.length <= c.par - 2;
+      html += `<p class="q">${c.chip ? `Chipped on: on the green in ${on}.` : `On the green in ${on}.`} ${gir ? "Green in regulation ✔" : ""}</p>
+        <div class="row"><button class="primary" id="pgNext">${g.hole === g.last ? "Finish the round" : "Next hole ▶"}</button></div>`;
+      say = c.chip ? "" : `On the green in ${on}. ${gir ? "Green in regulation." : ""}`;
+    }
+    html += `<p class="note" style="margin-top:12px">${pgSummary(true)}</p><div class="row"><button id="pgQuit">End the round</button></div>`;
+    b.innerHTML = html;
+    if (speak && say) pgSpeak(say);
+  }
+  function pgSummary(short) {
+    const h = (S.pg && S.pg.log) || []; if (!h.length) return short ? "" : "";
+    const gir = h.filter(x => x.gir).length, ch = h.filter(x => x.chip), t = ch.filter(x => x.chip === "T").length, n = ch.filter(x => x.chip === "N").length;
+    return `${h.length} holes · greens in regulation ${gir} of ${h.length} · chips: ${t} on the towel, ${n} near, ${ch.length - t - n} farther`;
+  }
+  function pgClick(e) {
+    const t = e.target.closest("#pgOpen, #pgClose, #pgSay, #pgGo, #pgHit, #pgNext, #pgQuit, [data-pgchip]"); if (!t) return false;
+    const g = S.pg;
+    if (t.id === "pgOpen") pgOpen();
+    else if (t.id === "pgClose") { $("pg").hidden = true; if (canSpeak) speechSynthesis.cancel(); }
+    else if (t.id === "pgSay") pgRender(true);
+    else if (t.id === "pgGo") {
+      const course = $("pgCourse").value, C = CARDS[course], start = +$("pgStart").value;
+      if (!S.clubs.some(c => c.carry > 0)) { toast("Add your clubs and carries on the Clubs tab first"); return true; }
+      S.pg = { course, tees: C.planTees || Object.keys(C.tees)[0], miss: +$("pgMiss").value, routine: $("pgRoutine").checked, hole: start, last: start === 1 ? 18 : start - 1, log: [] };
+      pgPlanHole(); pgRender(true);
+    }
+    else if (t.id === "pgHit") { g.cur.k++; if (g.cur.k >= g.cur.shots.length && !g.cur.chip) g.cur.done = true; save(); pgRender(true); }
+    else if (t.dataset.pgchip) { g.cur.chipRes = t.dataset.pgchip; g.cur.done = true; save(); pgRender(true); }
+    else if (t.id === "pgNext" || t.id === "pgQuit") {
+      if (g && g.cur && g.cur.done) g.log.push({ hole: g.hole, gir: !g.cur.chip && g.cur.shots.length <= g.cur.par - 2, chip: g.cur.chipRes || null });
+      if (t.id === "pgQuit" || g.hole === g.last) { g.over = true; save(); pgRender(false); pgSpeak("Round over. " + pgSummary()); }
+      else { g.hole = g.hole % 18 + 1; pgPlanHole(); pgRender(true); }
+    }
+    return true;
+  }
+  document.addEventListener("click", e => { pgClick(e); });
+
   // ---- hazards: saved by the golfer (GPS) or loaded from OpenStreetMap; used to steer the club advice ----
   // hole().hazards = [{ type: bunker|water|ob|trees, side: left|right|center, pts: [{lat,lon}...], src: me|osm }]
   const HZ = { bunker: "bunker", water: "water", ob: "out of bounds", trees: "trees" };
@@ -2190,7 +2306,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         ["Save a hazard on this hole", () => step("hzType")],
         [`Hazards on this hole (${(hole().hazards || []).length})`, () => step("hzList")],
         ["Skip to the next hole", () => step("next")],
-        ...(S.comp ? [] : [["Record or check a swing", () => { location.href = "swing.html"; }], ["My Rapsodo numbers", () => openMlm()], ["Range conditions (wind, temperature)", () => openRc()], ["Range shot log", () => { renderRl(); $("rl").hidden = false; }], ["Gapping chart", () => { renderGap(); $("gap").hidden = false; }]]),
+        ...(S.comp ? [] : [["Record or check a swing", () => { location.href = "swing.html"; }], ["My Rapsodo numbers", () => openMlm()], ["Range conditions (wind, temperature)", () => openRc()], ["Range shot log", () => { renderRl(); $("rl").hidden = false; }], ["Gapping chart", () => { renderGap(); $("gap").hidden = false; }], ["Patio game (pretend round)", () => pgOpen()]]),
         ["Hole map", () => openHm()],
         [S.dark ? "Normal screen" : "Dark screen (saves battery)", () => { S.dark = !S.dark; save(); applyDark(); step("menu"); }],
         ...(S.comp ? [] : [["Add or change this hole's green note", () => step("note")]]),

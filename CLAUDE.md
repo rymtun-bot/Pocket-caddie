@@ -94,6 +94,13 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
 - Current two-week plan and pre-shot routine: `practice/plan-2026-11.md` (first real round planned Tuesday 2026-12-01).
 - Day-by-day session list to Dec 1: `practice/daily-sessions.md`.
 - Home course game (hole-by-hole Westchester/Rancho on the patio): `practice/home-course-game.md`.
+- Patio game (golfer's request 2026-11-05; Setup → Home Course → "Patio game (pretend round)", and guide Menu outside
+  competition mode): pretend round of Westchester (Blue) or Rancho (White) into the net, in index.html (#pg, S.pg).
+  Each shot is called and spoken: yardage, club (first club named in the built-in plan, else longest; par 3s use the
+  plan's club if within 25 yd, else nearest carry), then the reminders and routine (toggle). Lay-ups leave a full-swing
+  distance of 115 yd or less where possible; roll assumed 10 (woods), 5 (hybrids), 3 (irons). Approaches miss the green
+  at random (1 in 4 / 2 in 5 / 3 in 5) and give a chip from 5-30 yd with a random lie; the golfer taps towel / near /
+  farther. No putting. Summary: greens in regulation and chip results. Results are not yet exported for Claude.
 - `home.html` (Home Course page, linked from Setup) runs that game: Rapsodo carry/total/start direction place the ball;
   long first putts count as a lag; assumptions (green radius, fairway width, trouble, lag leaves) are editable on the page.
 - Club list loading: one-tap link `https://rymtun-bot.github.io/Pocket-caddie/#clubs=Driver:185,8i:113` or paste
@@ -209,7 +216,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "5 Nov (c)" (also a "v 5 Nov (c) ⟳" chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "5 Nov (d)" (also a "v 5 Nov (d) ⟳" chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
