@@ -62,6 +62,9 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   (playbetter.com/products/rapsodo-mlm1-mobile-launch-monitor, accessed 2026-11-05); Titleist lists "Rapsodo MLM" as
   validated with the latest firmware (titleist.com Pro V1 RCT page, accessed 2026-11-05). Unconfirmed on this unit:
   if a spin column appears with RCT balls, record spin; keep Supersoft and RCT sessions separate.
+  Per the Rapsodo MLM App Store listing (apps.apple.com/us/app/rapsodo-mlm/id1449443488, accessed 2026-11-05), measured
+  spin needs an MLM Premium Membership (paid, yearly) plus an RCT ball, and the MLM firmware must be up to date.
+  Whether the golfer has or wants the membership is not known.
 
 ## First launch-monitor numbers (from the golfer, 2026-10-26; patio net, Callaway Supersoft)
 Hit from the golfer's usual setup (about 2-3 quarters under the toe at address), not the hip-hinge setup
