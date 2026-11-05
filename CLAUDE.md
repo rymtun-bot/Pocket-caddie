@@ -53,6 +53,8 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   Patio Rapsodo 11/04 evening (Supersoft): 7i 124, 6i 135, 5U 131, 4U 135, 3U 144 at 70-74 mph; 5U and 4U only 4 yd
   apart, both level with the 6i. Hybrid speeds were far below the 11/02 range long clubs (80-87 mph), so the patio may
   understate them: range-test 6i, 5U, 4U, 3U before changing Clubs-tab carries or the plans (which still use 4U 154, 5U ~147).
+  5-iron test (golfer, 2026-11-05): add 6 shots of the 5i to that range test (the 6i now carries 11 yd past the 7i).
+  Golfer's rule: if the 5i is at best similar to the 5U, the 5i stays out. It goes in only if it clearly beats the 5U.
 - Laser rangefinder: Revasri. Its readings go in Pocket Caddie's "type the yardage" box.
 - Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (urethane cover).
   Titleist RCT balls (radar-reflector Pro V1/V1x for indoor launch monitors) arriving 2026-11-05 (golfer; which model not
