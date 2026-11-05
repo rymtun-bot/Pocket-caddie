@@ -134,7 +134,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (preselected = full shots + putts + penalties). GIR = score − putts ≤ par − 2. After every full shot: "Left, right or on
   line?" (S.misses; also in the shot log's start_line column). Club advice adds "Your X misses right N of M. Aim a little
   left." once a club has 3+ shots and 60% to one side (worded "Aim about 5 yards left of the center of the fairway or green"; the golfer aims at the center by default). Hole plans (Menu → Plan for this hole) are read at the tee. Swing
-  thought (Setup, default "Hands lead through impact") is read with the routine. Menu: add a penalty stroke, dark screen.
+  thought (Setup, default "Hands lead through impact") is read with the routine. Hybrid reminder (golfer's request 2026-11-05;
+  Setup, S.hybridTip, default "Hybrid: sole the club flat on the ground, and stand a little more upright"): shown in bold
+  and always spoken first on the routine screen when the chosen club is a hybrid (isHybrid: "1U"-"5U", "4H", hybrid/utility/rescue). Menu: add a penalty stroke, dark screen.
   End of round: says and copies fairways, GIR, putts, 3-putts, penalties, start-line counts and a "next week, practice ..."
   line chosen from those stats.
   Hazards (golfer's request 2026-11-01): hole().hazards = [{type bunker|water|ob|trees, side, pts, src me|osm}]. Saved in the
@@ -200,7 +202,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "4 Nov (n)" (also a "v 4 Nov (n) ⟳" chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "5 Nov (a)" (also a "v 5 Nov (a) ⟳" chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
