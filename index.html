@@ -123,7 +123,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <span class="chip" id="gpsChip">GPS starting…</span>
     <span class="chip" id="parChip" hidden></span>
     <span class="chip warn" id="compChip" hidden>Competition mode</span>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 5 Nov (d) ⟳</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 5 Nov (e) ⟳</button>
   </div>
 </header>
 
@@ -286,7 +286,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><button id="darkBtn" aria-pressed="false">Dark screen (saves battery)</button></div>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 5 Nov (d). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 5 Nov (e). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -590,6 +590,14 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   S.wedgeTip = S.wedgeTip ?? "70 percent of your weight on your front foot";   // golfer's request 2026-11-05: PW and shorter
   S.elbowTip = S.elbowTip ?? "Right elbow points out";   // golfer's request 2026-11-05: every shot except chips
   const isWedge = n => /(^|\s)(pw|gw|aw|sw|lw|p)(\s|$)|wedge|^\s*(4[5-9]|5\d|6[0-4])\s*(°|deg)?\s*$/i.test(String(n || "").trim());
+  const LIES = {   // the one tip for each lie (standard coaching cues for a right-handed golfer; golfer's request 2026-11-05)
+    up: ["Uphill lie", "Tilt your shoulders to match the slope, and take one more club"],
+    down: ["Downhill lie", "Tilt your shoulders down the slope, ball back in your stance, and take one less club"],
+    above: ["Ball above my feet", "Grip down an inch and aim a little right. It will go left"],
+    below: ["Ball below my feet", "Bend your knees more, stay down through the shot, and aim a little left. It will go right"],
+    hardsand: ["Hard sand", "Keep the face square and hit just behind the ball. Less sand"],
+    softsand: ["Fluffy sand", "Open the face, hit 2 inches behind the ball, and swing through to a full finish"]
+  };
   const isHybrid = n => /(^|\s)\d\s*[uh](\s|$)|hybrid|utility|rescue/i.test(String(n || "").trim());
   S.dark = !!S.dark;                               // dark screen: saves battery on OLED iPhones
   S.slope = S.slope || { up: 5, steepUp: 10, down: -5, steepDown: -10 };   // guide's uphill/downhill yards: starting values, editable in Setup
@@ -1095,7 +1103,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let last = "", k = 0;
     const order = OVERPASS.slice(ovGood).concat(OVERPASS.slice(0, ovGood));   // the server that answered last time goes first
     for (const u of order) {
-      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 5 Nov (d) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
+      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 5 Nov (e) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
       try {
         const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 25000);   // a busy server can hang: give up after 25 s
         const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: ctl.signal });
@@ -1135,7 +1143,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (cached && cached.v === 8 && Date.now() - cached.at < 7 * 864e5) return cached;
     let c = (S.coursePt || {})[id] || COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
     // the course data saved on the Pocket Caddie site (tools/fetch_osm.py) is quick; the live servers are the fallback
-    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 5 Nov (d) · Loading the course map data…";
+    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 5 Nov (e) · Loading the course map data…";
     let pre = null;
     try { const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
       const r = await fetch(`osm/${id}.json?d=${new Date().toISOString().slice(0, 10)}`, { signal: ctl.signal }); clearTimeout(tm);
@@ -1477,7 +1485,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
-    $("hmStatus").textContent = "Pocket Caddie 5 Nov (d) · Looking up the course on OpenStreetMap…";
+    $("hmStatus").textContent = "Pocket Caddie 5 Nov (e) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     hm.osmInfo = o ? `OpenStreetMap${hm.osmSrc && hm.osmSrc !== "live" ? " (" + hm.osmSrc + ")" : ""}: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
@@ -1487,7 +1495,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 5 Nov (d) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 5 Nov (e) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
@@ -1967,7 +1975,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     } else if (c.chip && !c.done) {
       html += `<p class="q">${c.chip.short ? "Short of the green" : "You missed the green"}, ${esc(c.chip.lie)}.</p><div class="huge">${c.chip.yds}</div><p class="q">yards: chip to your towel</p>
         <div class="row"><button data-pgchip="T">On the towel</button><button data-pgchip="N">Near miss</button><button data-pgchip="M">Farther</button></div>`;
-      say = `${c.chip.short ? "Short of the green" : "You missed the green"}, ${c.chip.lie}. Chip from ${c.chip.yds} yards. ` + (g.routine ? pgTips("54°", c.chip.yds) : "");
+      say = `${c.chip.short ? "Short of the green" : "You missed the green"}, ${c.chip.lie}. Chip from ${c.chip.yds} yards. ` + ({ "on a downhill lie": "down", "on an uphill lie": "up" }[c.chip.lie] ? LIES[{ "on a downhill lie": "down", "on an uphill lie": "up" }[c.chip.lie]][1] + ". " : "") + (g.routine ? pgTips("54°", c.chip.yds) : "");
     } else {
       const on = c.shots.length + (c.chip ? 1 : 0), gir = !c.chip && c.shots.length <= c.par - 2;
       html += `<p class="q">${c.chip ? `Chipped on: on the green in ${on}.` : `On the green in ${on}.`} ${gir ? "Green in regulation ✔" : ""}</p>
@@ -2367,13 +2375,18 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         ${!S.comp && !plan ? clubLines(sug) : ""}
         ${plan ? `<p class="q">${esc(plan.text)}</p>${measured(plan.tee.name) ? `<p class="live">${measuredText(plan.tee.name)}</p>` : ""}` : ""}
         <select id="wizClub" aria-label="Club">${S.clubs.map(c => `<option ${c.name === sug ? "selected" : ""}>${esc(c.name)}</option>`).join("")}<option>Other</option></select>`,
-        [["Next", () => { S.wiz.club = $("wizClub").value; save(); step("measure"); }, true]]);
+        [["Next", () => { S.wiz.club = $("wizClub").value; S.wiz.lie = ""; save(); step(!S.comp && S.wiz.strokes ? "lie" : "measure"); }, true]]);
       const hzSaid = hz.lines.join(" ");
       if (plan && canSpeak) { const tc = all.find(c => c.name === sug) || plan.tee;
         speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(sayable(`Plays like ${pl}. Tee shot: ${tc.name}, carries ${tc.carry}. ${hzSaid} ${measuredText(tc.name)} ${tendency(tc.name)} ${plan.text}`))); }
       else if (S.comp && hzSaid && canSpeak) { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(sayable(hzSaid))); }
       else if (!S.comp) sayClub();   // always spoken, like the yardage echo (golfer's request)
       return;
+    }
+    if (name === "lie") {   // golfer's request 2026-11-05: say how the ball lies, hear the one tip for it (not in competition mode)
+      const pick = k => { S.wiz.lie = k; save(); if (k && canSpeak) { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(LIES[k][0] + ". " + LIES[k][1])); } step("measure"); };
+      return screen(holeInfo(), `<h3>How does the ball lie?</h3>`,
+        [["Normal", () => pick(""), true], ...Object.entries(LIES).map(([k, [label]]) => [label, () => pick(k)])]);
     }
     if (name === "measure") return screen(holeInfo(), `<h3>Measure this shot?</h3><p class="q">Stand at your ball, then answer.</p>`,
       [["Yes", () => {
@@ -2385,13 +2398,15 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       const ty = targetYards(), chip = ty > 0 && ty < 30;   // chips: under 30 yards to the target
       const hyb = [S.hybridTip && isHybrid(S.wiz.club) ? S.hybridTip : "", S.wedgeTip && isWedge(S.wiz.club) ? S.wedgeTip : "",
         S.elbowTip && !chip ? S.elbowTip : ""].filter(Boolean).join(". ");
-      screen(holeInfo(), `<h3>Your routine</h3>${hyb ? `<p class="q" style="font-weight:700">${esc(hyb)}</p>` : ""}${S.thought ? `<p class="q"><b>Swing thought:</b> ${esc(S.thought)}</p>` : ""}
+      const lie = !S.comp && S.wiz.lie && LIES[S.wiz.lie] ? LIES[S.wiz.lie][0] + ": " + LIES[S.wiz.lie][1] : "";
+      const tipsAll = [lie, hyb].filter(Boolean).join(". ");
+      screen(holeInfo(), `<h3>Your routine</h3>${tipsAll ? `<p class="q" style="font-weight:700">${esc(tipsAll)}</p>` : ""}${S.thought ? `<p class="q"><b>Swing thought:</b> ${esc(S.thought)}</p>` : ""}
         <p class="q">${routine.map((r, i) => `${i + 1}. ${r}`).join("<br>")}</p>`,
         [["I've hit it", () => { S.wiz.strokes = (S.wiz.strokes || 0) + 1; step(S.pending ? "walk" : "miss"); }, true]]);
       if (canSpeak) {   // always spoken, like the yardage, club and putting routine (golfer's request)
         speechSynthesis.cancel();
         const club = S.wiz.club && S.wiz.club !== "Other" ? `, with the ${sayable(S.wiz.club)}` : "";
-        speechSynthesis.speak(new SpeechSynthesisUtterance((club ? `With the ${sayable(S.wiz.club)}. ` : "") + (hyb ? `${hyb}. ` : "") + (S.thought ? `Swing thought: ${S.thought}. ` : "") + "Your routine. " + routine.join(". ") + "."));   // reminders, swing thought, then the routine ending with the swing
+        speechSynthesis.speak(new SpeechSynthesisUtterance((club ? `With the ${sayable(S.wiz.club)}. ` : "") + (tipsAll ? `${tipsAll}. ` : "") + (S.thought ? `Swing thought: ${S.thought}. ` : "") + "Your routine. " + routine.join(". ") + "."));   // reminders, swing thought, then the routine ending with the swing
       }
       return;
     }

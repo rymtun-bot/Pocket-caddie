@@ -126,6 +126,10 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   The routine screen always speaks: the chosen club, the reminders, the swing thought, then the golfer's own pre-shot
   routine (2026-11-05; S.routine, editable in Setup, one step per line): behind the ball; approach the ball; bend; grip
   pressure 4 out of 10; relax arms and shoulders; waggle up, down and sideways, and hit after 1, 2, 3.
+  Lie question (golfer's request 2026-11-05; not on tee shots, not in competition mode): after the club, "How does the
+  ball lie?" Normal / Uphill / Downhill / Ball above my feet / Ball below my feet / Hard sand / Fluffy sand (LIES in
+  index.html: one standard coaching cue each, right-handed). The tip is spoken at once and again first on the routine
+  screen. Patio game chips on up/downhill lies also say the tip.
   After "Mark my ball here" it always says the measured distance (total, carry + roll) and the club.
   After "Holed out" it asks the hole score (full shots tapped + 2 putts preselected), then always says e.g. "Bogey, 4 on a
   par 3. After 1 hole: 4, 1 over par." Scores are kept per guided round (S.round); the end screen copies scorecard + shot log.
@@ -216,7 +220,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "5 Nov (d)" (also a "v 5 Nov (d) ⟳" chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "5 Nov (e)" (also a "v 5 Nov (e) ⟳" chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
