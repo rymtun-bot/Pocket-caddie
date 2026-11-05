@@ -115,3 +115,21 @@ Non-carry averages leave out the outlier.
 
 - 6-iron 124 and 7-iron 122 today: no gap. Both launched low (6i 20°, 7i 18°; the 7-iron launched 23.5° on 10/26) and
   started ~5° right. Check on video: ball position / shaft lean (delofting) and the monitor's alignment to the target line.
+
+## Evening session (~5 pm, one "Net - 39 Shots" session, Supersoft). Rapsodo average rows
+
+Clubs tagged in the app: 7i, 6i, "5i" = 5U (Baffler 26°), "4i" = 4U (Lazarus 21°), "5w" = 3U (Baffler 20°) (golfer: "7i, 6i, 5u, 4u and 3u").
+
+| Club | Carry | Total | Club mph | Side carry | Smash | Launch dir | Launch | Apex ft |
+|---|---|---|---|---|---|---|---|---|
+| 7i | 124 | 135 | 71 | 2 R | 1.36 | 1.0° R | 15.6° | 45 |
+| 6i | 135 | 144 | 74 | 1 L | 1.36 | 0.6° L | 18.5° | 61 |
+| 5U | 131 | 142 | 70 | 1 R | 1.41 | 0.8° R | 17.4° | 54 |
+| 4U | 135 | 148 | 71 | 3 R | 1.45 | 1.5° R | 14.0° | 45 |
+| 3U | 144 | 156 | 72 | 6 R | 1.45 | 2.4° R | 15.3° | 53 |
+
+- Start lines much straighter than earlier today (within ±2.4° on average vs ~5° right).
+- 6i now 11 yd past the 7i (higher launch, 18.5°, and 74 mph).
+- 6i, 5U and 4U all carry 131-135: the hybrids are swung no faster than the irons (70-72 mph) and launch low (14-17°).
+- At the range on 11/02 the long clubs were swung much faster (1U 80, 3W 83, driver 87 mph), so these patio hybrid
+  carries probably understate course distance. Range test (6i, 5U, 4U, 3U) needed before changing carries or plans.

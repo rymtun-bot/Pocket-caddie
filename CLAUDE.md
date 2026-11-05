@@ -50,6 +50,9 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   Supersedes the 11/02 5U-out decision. Bag is still 16 (Driver, 3W, 1U, 2U, 3U, 4U, 5U, 6i-PW, 50°, 54°, 58°, putter):
   2 more to drop, likely among the 1U, 2U, 3U and 58°. Both strategy plans (md + CARDS) updated 2026-11-05 for the 5U
   and full-swing wedge lay-ups.
+  Patio Rapsodo 11/04 evening (Supersoft): 7i 124, 6i 135, 5U 131, 4U 135, 3U 144 at 70-74 mph; 5U and 4U only 4 yd
+  apart, both level with the 6i. Hybrid speeds were far below the 11/02 range long clubs (80-87 mph), so the patio may
+  understate them: range-test 6i, 5U, 4U, 3U before changing Clubs-tab carries or the plans (which still use 4U 154, 5U ~147).
 - Laser rangefinder: Revasri. Its readings go in Pocket Caddie's "type the yardage" box.
 - Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (urethane cover).
   Titleist RCT balls (radar-reflector Pro V1/V1x for indoor launch monitors) arriving 2026-11-05 (golfer; which model not
@@ -83,7 +86,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
 - 2026-10-28: PRGR, patio, Supersoft, PW through 3W (`practice/2026-10-28-prgr-patio.md`).
 - 2026-10-30: Rapsodo, patio, 9-iron averages (`practice/2026-10-30-rapsodo-patio.md`).
 - 2026-10-31: Rapsodo + PRGR, patio, Supersoft, PW (`practice/2026-10-31-rapsodo-patio.md`).
-- 2026-11-04: Rapsodo, patio, PW full, PW choked 1 in, PW hip to hip, 54° full, choked 1 in and hip to hip (assumed labels; tagged PW in the app) (MLM clubs "PW choked 1 in", "PW hip to hip", "54° choked 1 in", "54° hip to hip"); 6-iron 3 shots 124 and 7-iron 2 shots 122 (no gap; both low launch, ~5° right), no average row on the screenshot, so mean of the rows (Supersoft; `practice/2026-11-04-rapsodo-patio.md`).
+- 2026-11-04: Rapsodo, patio, PW full, PW choked 1 in, PW hip to hip, 54° full, choked 1 in and hip to hip (assumed labels; tagged PW in the app) (MLM clubs "PW choked 1 in", "PW hip to hip", "54° choked 1 in", "54° hip to hip"); 6-iron 3 shots 124 and 7-iron 2 shots 122 (no gap; both low launch, ~5° right); evening set 7i 124, 6i 135, 5U 131, 4U 135, 3U 144 (app tags 5i/4i/5w), no average row on the screenshot, so mean of the rows (Supersoft; `practice/2026-11-04-rapsodo-patio.md`).
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
 - Current two-week plan and pre-shot routine: `practice/plan-2026-11.md` (first real round planned Tuesday 2026-12-01).
