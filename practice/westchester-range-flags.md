@@ -69,3 +69,8 @@ white 1, 136; orange 90, 158; yellow 47, 210 (refit). Pocket Caddie 6 Nov (e) ha
 - 12:41-12:44 (GPS about 47 yd farther along, consistent with mat 27): five readings all saved as "27 yards".
   "Mat" was not recognised, so 27 was taken as the yards and the real yardages were lost. Fixed in 6 Nov (f): a
   number of 35 or less is read as a mat, and range-flag yards must be 40 or more.
+
+## Check, 2026-11-06
+
+Golfer tested from mat 11: the app's white-flag distance matched the laser ("good"). The model is confirmed for
+use; the earlier "mat 12, white 155" reading was most likely taken from a different mat.
