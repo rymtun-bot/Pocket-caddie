@@ -123,7 +123,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <span class="chip" id="gpsChip">GPS starting…</span>
     <span class="chip" id="parChip" hidden></span>
     <span class="chip warn" id="compChip" hidden>Competition mode</span>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 6 Nov (g) ⟳</button>
+    <button class="chip" id="rfChip" style="cursor:pointer;font-weight:700">🚩 Range flags</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 6 Nov (h) ⟳</button>
   </div>
 </header>
 
@@ -287,7 +288,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><button id="darkBtn" aria-pressed="false">Dark screen (saves battery)</button></div>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 6 Nov (g). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 6 Nov (h). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -1122,7 +1123,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let last = "", k = 0;
     const order = OVERPASS.slice(ovGood).concat(OVERPASS.slice(0, ovGood));   // the server that answered last time goes first
     for (const u of order) {
-      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 6 Nov (g) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
+      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 6 Nov (h) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
       try {
         const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 25000);   // a busy server can hang: give up after 25 s
         const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: ctl.signal });
@@ -1162,7 +1163,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (cached && cached.v === 8 && Date.now() - cached.at < 7 * 864e5) return cached;
     let c = (S.coursePt || {})[id] || COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
     // the course data saved on the Pocket Caddie site (tools/fetch_osm.py) is quick; the live servers are the fallback
-    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 6 Nov (g) · Loading the course map data…";
+    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 6 Nov (h) · Loading the course map data…";
     let pre = null;
     try { const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
       const r = await fetch(`osm/${id}.json?d=${new Date().toISOString().slice(0, 10)}`, { signal: ctl.signal }); clearTimeout(tm);
@@ -1504,7 +1505,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
-    $("hmStatus").textContent = "Pocket Caddie 6 Nov (g) · Looking up the course on OpenStreetMap…";
+    $("hmStatus").textContent = "Pocket Caddie 6 Nov (h) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     hm.osmInfo = o ? `OpenStreetMap${hm.osmSrc && hm.osmSrc !== "live" ? " (" + hm.osmSrc + ")" : ""}: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
@@ -1514,7 +1515,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 6 Nov (g) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 6 Nov (h) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
@@ -2513,18 +2514,19 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       const back = S.wiz.back || "yds";
       return screen("Menu", `<h3>Menu</h3>`, [
         ["Back to the guide", () => step(back), true],
+        ...(S.comp ? [] : [["🚩 Range flags (yards to the range flags)", () => rfOpen()]]),
         ...(S.pending ? [["Cancel the shot being measured", () => { $("cancelShot").click(); step("after"); }]] : []),
         ["Add a penalty stroke", () => { S.wiz.pen = (S.wiz.pen || 0) + 1; save(); toast(`Penalty added (${S.wiz.pen} on this hole)`); step(back); }],
         ["Plan for this hole", () => step("plan")],
         ["Save a hazard on this hole", () => step("hzType")],
         [`Hazards on this hole (${(hole().hazards || []).length})`, () => step("hzList")],
         ["Skip to the next hole", () => step("next")],
-        ...(S.comp ? [] : [["Record or check a swing", () => { location.href = "swing.html"; }], ["My Rapsodo numbers", () => openMlm()], ["Range conditions (wind, temperature)", () => openRc()], ["Range shot log", () => { renderRl(); $("rl").hidden = false; }], ["Gapping chart", () => { renderGap(); $("gap").hidden = false; }], ["Patio game (pretend round)", () => pgOpen()], ["Range flags (laser yardages by mat)", () => rfOpen()]]),
+        ...(S.comp ? [] : [["Record or check a swing", () => { location.href = "swing.html"; }], ["My Rapsodo numbers", () => openMlm()], ["Range conditions (wind, temperature)", () => openRc()], ["Range shot log", () => { renderRl(); $("rl").hidden = false; }], ["Gapping chart", () => { renderGap(); $("gap").hidden = false; }], ["Patio game (pretend round)", () => pgOpen()]]),
         ["Hole map", () => openHm()],
         [S.dark ? "Normal screen" : "Dark screen (saves battery)", () => { S.dark = !S.dark; save(); applyDark(); step("menu"); }],
         ...(S.comp ? [] : [["Add or change this hole's green note", () => step("note")]]),
         ["Change course or tees", () => step("course")],
-        ["⟳ Get the latest version (you have 6 Nov (g))", () => location.replace(location.pathname + "?v=" + Date.now())],
+        ["⟳ Get the latest version (you have 6 Nov (h))", () => location.replace(location.pathname + "?v=" + Date.now())],
         ["Show the full app", () => { $("wiz").hidden = true; renderAll(); }]]);
     }
     if (name === "yds") {   // one thing: the yardage
@@ -2758,6 +2760,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     $("compBtn").textContent = S.comp ? "Turn off competition mode" : "Turn on competition mode";
   }
   $("compBtn").onclick = () => { S.comp = !S.comp; save(); renderAll(); toast(S.comp ? "Competition mode on: distance only" : "Competition mode off"); };
+  document.addEventListener("click", e => { if (e.target.closest("#rfChip")) rfOpen(); });
+  if (/^#flags$/i.test(location.hash)) setTimeout(() => rfOpen(), 300);   // direct link: …/Pocket-caddie/#flags
   function clubsFromLink() {
     const m = location.hash.match(/^#clubs=(.+)$/);
     if (!m) return;

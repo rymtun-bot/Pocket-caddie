@@ -210,6 +210,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   6 Nov (g): the screen loads today's wind (Open-Meteo at the phone) and shows it against the range (south); every answer
   adds "plays like" (rmPlays: flag bearing from the mat, x = east along the row, y = south; wind along that line,
   temperature, pressure, with the Setup factors). Tested: 10 mph straight in, red from mat 15 77 → plays 84.
+  6 Nov (h) (golfer couldn't find it): "🚩 Range flags" chip in the top bar of the full app, second item in the guide
+  Menu, and a direct link https://rymtun-bot.github.io/Pocket-caddie/#flags.
 - Hole map (Play tab, guide Menu; 2026-11-04): Leaflet 1.9.4 from cdnjs, loaded on open; OpenStreetMap tiles or Esri
   World Imagery (satellite) with attribution. Shows you, saved green points and hazards; tap to measure from you (GPS)
   or from a tapped point, and to the green. Satellite is the default (S.hmLayer remembers the choice). GPS counts only
@@ -245,7 +247,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "6 Nov (g)" (also a "v 6 Nov (g) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "6 Nov (h)" (also a "v 6 Nov (h) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
