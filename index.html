@@ -123,7 +123,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <span class="chip" id="gpsChip">GPS starting…</span>
     <span class="chip" id="parChip" hidden></span>
     <span class="chip warn" id="compChip" hidden>Competition mode</span>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 6 Nov (a) ⟳</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 6 Nov (b) ⟳</button>
   </div>
 </header>
 
@@ -287,7 +287,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><button id="darkBtn" aria-pressed="false">Dark screen (saves battery)</button></div>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 6 Nov (a). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 6 Nov (b). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -416,6 +416,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   Add “left”, “middle” or “right” when two flags share a colour. Each reading saves the phone's GPS spot too. With 👂 on, start with “Caddie”.</p>
   <div class="row"><label for="rfMat">Mat (counted from the clubhouse end)</label><button id="rfMinus" aria-label="Previous mat">−</button><input id="rfMat" type="number" inputmode="numeric" min="1" style="width:5em"><button id="rfPlus" aria-label="Next mat">+</button></div>
   <p class="q" id="rfGps" style="margin:0"></p>
+  <p class="q" id="rfHeard" style="margin:0;font-weight:700"></p>
   <div class="row"><button id="rfMic" class="primary" style="font-size:20px;padding:14px">🎤 Say the flag and yards</button></div>
   <div class="row" role="group" aria-label="Flag colour" id="rfColors"></div>
   <div class="row"><label for="rfYds">Yards</label><input id="rfYds" type="number" inputmode="numeric" style="width:6em"><button class="primary" id="rfSave">Save reading</button><button id="rfUndo">Undo last</button></div>
@@ -1117,7 +1118,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let last = "", k = 0;
     const order = OVERPASS.slice(ovGood).concat(OVERPASS.slice(0, ovGood));   // the server that answered last time goes first
     for (const u of order) {
-      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 6 Nov (a) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
+      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 6 Nov (b) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
       try {
         const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 25000);   // a busy server can hang: give up after 25 s
         const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: ctl.signal });
@@ -1157,7 +1158,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (cached && cached.v === 8 && Date.now() - cached.at < 7 * 864e5) return cached;
     let c = (S.coursePt || {})[id] || COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
     // the course data saved on the Pocket Caddie site (tools/fetch_osm.py) is quick; the live servers are the fallback
-    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 6 Nov (a) · Loading the course map data…";
+    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 6 Nov (b) · Loading the course map data…";
     let pre = null;
     try { const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
       const r = await fetch(`osm/${id}.json?d=${new Date().toISOString().slice(0, 10)}`, { signal: ctl.signal }); clearTimeout(tm);
@@ -1499,7 +1500,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
-    $("hmStatus").textContent = "Pocket Caddie 6 Nov (a) · Looking up the course on OpenStreetMap…";
+    $("hmStatus").textContent = "Pocket Caddie 6 Nov (b) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     hm.osmInfo = o ? `OpenStreetMap${hm.osmSrc && hm.osmSrc !== "live" ? " (" + hm.osmSrc + ")" : ""}: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
@@ -1509,7 +1510,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 6 Nov (a) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 6 Nov (b) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
@@ -1844,7 +1845,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   function klCommand(cmd) {
     const body = $("wizBody"), t = norm(cmd);
     if (/^(stop|stop listening|quiet)$/.test(t)) { klStop(); klSay("Stopped listening. Tap the ear to start again."); if (!$("rl").hidden) renderRl(); return; }
-    if (!$("rf").hidden) { if (/^(undo|delete( that| last)?)$/.test(t)) { $("rfUndo").click(); klSay("Removed the last reading."); } else rfApply(cmd); return; }
+    if (!$("rf").hidden) { $("rfHeard").textContent = "Heard: “Caddie, " + cmd + "”"; if (/^(undo|delete( that| last)?)$/.test(t)) { $("rfUndo").click(); klSay("Removed the last reading."); } else rfApply(cmd); return; }
     if (!$("rl").hidden) { if (/^(undo|delete( that| last)?)$/.test(t)) { $("rlUndo").click(); klSay("Removed the last shot."); } else rlApply(cmd); return; }
     const yIn = document.getElementById("wizIn");
     if (yIn && document.getElementById("wizMic")) {   // yardage screen: "Caddie, one forty five"
@@ -1866,6 +1867,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       const alts = [...res].map(a => a.transcript), hit = alts.map(a => a.match(WAKE)).find(Boolean);
       if (hit && Date.now() < kl.muteUntil + 3000 && kl.lastText.includes(norm(hit[0]))) return;
       if (hit) klCommand(hit[2].trim());
+      else if (!$("rf").hidden) $("rfHeard").textContent = "Heard \u201c" + alts[0] + "\u201d but no \u201cCaddie\u201d first. Start with Caddie, or turn 👂 off and tap the mic.";
     };
     r.onerror = ev => { if (ev.error === "not-allowed" || ev.error === "service-not-allowed") { kl.need = true; klRender(); } };
     r.onend = () => {
@@ -1986,9 +1988,16 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       if (canSpeak) speechSynthesis.cancel();
       const r = new Rec(); r.lang = "en-US"; r.interimResults = false; r.maxAlternatives = 3; g.textContent = "🎤 Listening…";
       r.onresult = ev => { g.textContent = "🎤 Say the flag and yards"; const alts = [...ev.results[0]].map(a => a.transcript);
+        $("rfHeard").textContent = "Heard: “" + alts[0] + "”";
         rfApply(alts.find(a => { const m = rfParse(a); return m.color && m.yds; }) || alts.find(a => { const m = rfParse(a); return m.color || m.yds || m.mat; }) || alts[0]); };
-      r.onerror = () => { g.textContent = "🎤 Say the flag and yards"; toast("Didn't catch that. Try again or tap."); };
-      r.onend = () => { if (g.textContent.includes("Listening")) g.textContent = "🎤 Say the flag and yards"; };
+      r.onerror = ev => { g.textContent = "🎤 Say the flag and yards";
+        const why = { "not-allowed": "The microphone is blocked for Pocket Caddie. Allow it when the phone asks, or in Settings, Safari, Microphone.",
+          "service-not-allowed": "Speech recognition is off on this phone. Turn on Settings, General, Keyboard, Enable Dictation, then try again.",
+          "no-speech": "I didn't hear anything. Tap the mic and speak right away.", "audio-capture": "No microphone found.",
+          "network": "Speech recognition needs internet. Check the signal." }[ev.error] || `Voice error: ${ev.error || "unknown"}. Tap the colour and type the yards instead.`;
+        $("rfHeard").textContent = why; rfSay(why); };
+      r.onend = () => { if (g.textContent.includes("Listening")) { g.textContent = "🎤 Say the flag and yards"; if (!$("rfHeard").textContent) $("rfHeard").textContent = "Heard nothing. Tap the mic and speak right away."; } };
+      $("rfHeard").textContent = "";
       r.start();
     }
   });
@@ -2408,7 +2417,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         [S.dark ? "Normal screen" : "Dark screen (saves battery)", () => { S.dark = !S.dark; save(); applyDark(); step("menu"); }],
         ...(S.comp ? [] : [["Add or change this hole's green note", () => step("note")]]),
         ["Change course or tees", () => step("course")],
-        ["⟳ Get the latest version (you have 6 Nov (a))", () => location.replace(location.pathname + "?v=" + Date.now())],
+        ["⟳ Get the latest version (you have 6 Nov (b))", () => location.replace(location.pathname + "?v=" + Date.now())],
         ["Show the full app", () => { $("wiz").hidden = true; renderAll(); }]]);
     }
     if (name === "yds") {   // one thing: the yardage
