@@ -123,7 +123,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <span class="chip" id="gpsChip">GPS starting…</span>
     <span class="chip" id="parChip" hidden></span>
     <span class="chip warn" id="compChip" hidden>Competition mode</span>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 6 Nov (c) ⟳</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 6 Nov (d) ⟳</button>
   </div>
 </header>
 
@@ -287,7 +287,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><button id="darkBtn" aria-pressed="false">Dark screen (saves battery)</button></div>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 6 Nov (c). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 6 Nov (d). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -1121,7 +1121,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let last = "", k = 0;
     const order = OVERPASS.slice(ovGood).concat(OVERPASS.slice(0, ovGood));   // the server that answered last time goes first
     for (const u of order) {
-      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 6 Nov (c) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
+      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 6 Nov (d) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
       try {
         const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 25000);   // a busy server can hang: give up after 25 s
         const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: ctl.signal });
@@ -1161,7 +1161,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (cached && cached.v === 8 && Date.now() - cached.at < 7 * 864e5) return cached;
     let c = (S.coursePt || {})[id] || COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
     // the course data saved on the Pocket Caddie site (tools/fetch_osm.py) is quick; the live servers are the fallback
-    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 6 Nov (c) · Loading the course map data…";
+    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 6 Nov (d) · Loading the course map data…";
     let pre = null;
     try { const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
       const r = await fetch(`osm/${id}.json?d=${new Date().toISOString().slice(0, 10)}`, { signal: ctl.signal }); clearTimeout(tm);
@@ -1503,7 +1503,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
-    $("hmStatus").textContent = "Pocket Caddie 6 Nov (c) · Looking up the course on OpenStreetMap…";
+    $("hmStatus").textContent = "Pocket Caddie 6 Nov (d) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     hm.osmInfo = o ? `OpenStreetMap${hm.osmSrc && hm.osmSrc !== "live" ? " (" + hm.osmSrc + ")" : ""}: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
@@ -1513,7 +1513,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 6 Nov (c) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 6 Nov (d) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
@@ -1949,10 +1949,24 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (!r.color) { rfSay("Which flag colour?"); toast("Pick the flag colour"); return false; }
     if (!r.yds) { rfSay("How many yards?"); toast("Type or say the yards"); return false; }
     S.rfMat = mat; $("rfMat").value = mat;
-    S.rflags.push({ mat, color: r.color, pos: r.pos || "", yds: r.yds, lat: fix ? +fix.lat.toFixed(6) : null, lon: fix ? +fix.lon.toFixed(6) : null, acc: fix ? Math.round(fix.acc) : null, at: Date.now() });
-    save(); rfCur.color = ""; rfCur.pos = ""; $("rfYds").value = "";
-    rfSay(`Mat ${mat}, ${r.pos ? r.pos + " " : ""}${r.color} flag, ${r.yds} yards. Saved.` + (fix ? "" : " No GPS fix, the mat number is kept."));
-    renderRf(); return true;
+    const rec = { mat, color: r.color, pos: r.pos || "", yds: r.yds, lat: null, lon: null, acc: null, at: Date.now() };
+    S.rflags.push(rec); save(); rfCur.color = ""; rfCur.pos = ""; $("rfYds").value = ""; renderRf();
+    const done = f => {   // a fresh GPS reading for every saved reading (the 6 Nov readings all kept one stale position)
+      if (f) { rec.lat = +f.lat.toFixed(6); rec.lon = +f.lon.toFixed(6); rec.acc = Math.round(f.acc); }
+      const prev = rfToday().filter(e => e !== rec && e.lat != null), last = prev[prev.length - 1];
+      const d = (a, b) => Math.hypot((a.lon - b.lon) * Math.cos(a.lat * Math.PI / 180) * 111320, (a.lat - b.lat) * 110540) * YD;
+      let note = "";
+      if (rec.lat != null && last && last.mat !== mat && d(rec, last) < 3) note = ` Careful: the GPS hasn't moved since mat ${last.mat}. Wait a few seconds on a new mat before the first reading.`;
+      const same = prev.filter(e => e.mat === mat);
+      if (rec.lat != null && same.length && d(rec, same[0]) > 12) note = ` You've moved about ${Math.round(d(rec, same[0]))} yards since your first mat ${mat} reading. If you're on a new mat, say mat, then its number, and I'll fix this one.`;
+      save(); renderRf();
+      rfSay(`Mat ${mat}, ${r.pos ? r.pos + " " : ""}${r.color} flag, ${r.yds} yards. Saved.` + (rec.lat == null ? " No GPS fix, the mat number is kept." : "") + note);
+    };
+    let once = false; const fin = f => { if (!once) { once = true; done(f); } };
+    if ("geolocation" in navigator) navigator.geolocation.getCurrentPosition(p2 => fin({ lat: p2.coords.latitude, lon: p2.coords.longitude, acc: p2.coords.accuracy }),
+      () => fin(fix), { enableHighAccuracy: true, maximumAge: 0, timeout: 4000 });
+    setTimeout(() => fin(fix), 2500);   // never leave a reading waiting: fall back to the live GPS after 2.5 s
+    return true;
   }
   // where is each flag? Least-squares fit of the laser distances from every spot it was measured (GPS), several starts,
   // and with readings from only one or two spots the answer is taken down the range (south at Westchester, 180°).
@@ -2001,7 +2015,13 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   function rfApply(said) {
     if (/\b(distance|how far|yardage|yards to|how many yards)\b/i.test(said)) { const a = rfAsk(said); $("rfHeard").textContent = a; rfSay(a); return; }
     const r = rfParse(said);
-    if (r.mat && !r.color && !r.yds) { S.rfMat = r.mat; $("rfMat").value = r.mat; save(); rfSay(`Mat ${r.mat}.`); renderRf(); return; }
+    if (r.mat && !r.color && !r.yds) {
+      const t2 = rfToday(), last = t2[t2.length - 1], first = last && t2.find(e => e.mat === last.mat && e !== last && e.lat != null);
+      const moved = last && first && last.lat != null && Math.hypot((last.lon - first.lon) * Math.cos(last.lat * Math.PI / 180) * 111320, (last.lat - first.lat) * 110540) * YD > 12;
+      if (moved && last.mat !== r.mat && Date.now() - last.at < 120000) { last.mat = r.mat; rfSay(`Mat ${r.mat}. I moved your last reading to mat ${r.mat}.`); }
+      else rfSay(`Mat ${r.mat}.`);
+      S.rfMat = r.mat; $("rfMat").value = r.mat; save(); renderRf(); return;
+    }
     if (!r.color && !r.yds) { rfSay(`I heard ${said}. Say the flag colour and the yards.`); return; }
     if (r.mat) { S.rfMat = r.mat; $("rfMat").value = r.mat; }
     if (r.color && !r.yds && !+$("rfYds").value) { rfCur.color = r.color; rfCur.pos = r.pos; save(); renderRf(); rfSay(`${r.pos ? r.pos + " " : ""}${r.color} flag. How many yards?`); return; }
@@ -2472,7 +2492,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         [S.dark ? "Normal screen" : "Dark screen (saves battery)", () => { S.dark = !S.dark; save(); applyDark(); step("menu"); }],
         ...(S.comp ? [] : [["Add or change this hole's green note", () => step("note")]]),
         ["Change course or tees", () => step("course")],
-        ["⟳ Get the latest version (you have 6 Nov (c))", () => location.replace(location.pathname + "?v=" + Date.now())],
+        ["⟳ Get the latest version (you have 6 Nov (d))", () => location.replace(location.pathname + "?v=" + Date.now())],
         ["Show the full app", () => { $("wiz").hidden = true; renderAll(); }]]);
     }
     if (name === "yds") {   // one thing: the yardage

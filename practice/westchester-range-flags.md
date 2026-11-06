@@ -1,21 +1,22 @@
 # Westchester range flags: laser readings (Revasri)
 
-Golfer's own laser readings, logged in Pocket Caddie's Range flags screen. Mats are counted from the clubhouse end
-(mat 1 = nearest the clubhouse). "Middle" = no position given. GPS accuracy ±4 m at each mat.
+Golfer's own laser readings, logged in Pocket Caddie's Range flags screen. Mats counted from the clubhouse end.
 
-## 2026-11-06, mat 1 (GPS 33.959247, -118.412718)
+## 2026-11-06
 
-| Flag | Left | Middle | Right |
+The readings came from three mats (golfer), but all were saved as "mat 1" with one stale GPS position
+(33.959247, -118.412718 for every reading), so they are grouped here by time. The words "right" / "left" saved with
+some readings most likely described the mat, not the flag (to confirm).
+
+| Flag | Right-side mat (12:00-12:04) | Centre-right mat (12:06-12:10) | Left mat, 3 from the end, by the clubhouse (12:12-12:15) |
 |---|---|---|---|
-| Red | | 100 | 75 (lasered twice, 75 both times) |
-| Blue | 120 | 110 | 114 |
-| White | 164 | 142 | 135 |
-| Orange | 158 | | 180 and 166 (two different readings: to confirm) |
-| Yellow | | 196 and 215 (two readings, no side given: to confirm) | 213 |
+| Red | 75 | 75 | 100 |
+| Blue | 114 | 110 | 120 |
+| White | 135 | 142 | 164 |
+| Orange | 180 | 166 | 158 |
+| Yellow | 213 | 196 | 215 |
 
-Open questions for the golfer:
-- Orange right: 180 or 166? (14 yd apart, so possibly two different flags or one misread.)
-- Yellow: are there two yellow flags in the middle, or was one of 196/215 a left or right flag?
-
-Still needed: the same flags from a middle mat and from the last mat of the left section, so every flag can be placed
-and its distance given from any mat (Range flags → "Yards to every flag from here", or "distance to red flag").
+Open: the mat numbers of these three mats (counted from the clubhouse) and their GPS spots. Without the spots the
+flags cannot be placed; next visit, stand on each of the three mats and take one reading (or more) so each saves its
+own GPS. Pocket Caddie 6 Nov (d) now takes a fresh GPS fix for every reading and warns when the mat number was not
+changed after moving.
