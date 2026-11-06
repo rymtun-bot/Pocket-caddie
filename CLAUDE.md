@@ -194,7 +194,10 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   clubhouse end (golfer, 2026-11-06; practice/westchester-range-targets.md numbered from the far east end instead).
   Each reading stores mat, colour, position, yards and the phone's GPS (lat, lon, accuracy) in S.rflags; works with
   👂 keep listening. "Copy for Claude" gives a CSV. Plan: readings from 3 spread mats (clubhouse end, middle, far end)
-  let Claude locate each flag (trilateration, GPS ±3-5 m) and give yardages from any mat. 6 Nov (b): golfer reported no response on the range; the screen now shows "Heard: ..." and explains voice errors (mic blocked, dictation off, no speech, no wake word).
+  let Claude locate each flag (trilateration, GPS ±3-5 m) and give yardages from any mat. 6 Nov (b): golfer reported no response on the range; the screen now shows "Heard: ..." and explains voice errors (mic blocked, dictation off, no speech, no wake word). 6 Nov (c): ask "distance to red flag" / "mat 5, how far is white" (exact reading if lasered from
+  that mat, else estimated), and "📍 Yards to every flag from here". rfFlags() fits each flag's position from all its
+  readings (GPS + laser yards, weighted least squares, starts spread around south, solutions kept south of the mats).
+  Simulated with 3 mats: estimates from a 4th mat within 1 yd.
 - Hole map (Play tab, guide Menu; 2026-11-04): Leaflet 1.9.4 from cdnjs, loaded on open; OpenStreetMap tiles or Esri
   World Imagery (satellite) with attribution. Shows you, saved green points and hazards; tap to measure from you (GPS)
   or from a tapped point, and to the green. Satellite is the default (S.hmLayer remembers the choice). GPS counts only
@@ -230,7 +233,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "6 Nov (b)" (also a "v 6 Nov (b) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "6 Nov (c)" (also a "v 6 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
