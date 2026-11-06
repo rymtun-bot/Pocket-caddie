@@ -198,6 +198,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   that mat, else estimated), and "📍 Yards to every flag from here". rfFlags() fits each flag's position from all its
   readings (GPS + laser yards, weighted least squares, starts spread around south, solutions kept south of the mats).
   Simulated with 3 mats: estimates from a 4th mat within 1 yd.
+  First real readings 2026-11-06 (mat 1 only): practice/westchester-range-flags.md.
 - Hole map (Play tab, guide Menu; 2026-11-04): Leaflet 1.9.4 from cdnjs, loaded on open; OpenStreetMap tiles or Esri
   World Imagery (satellite) with attribution. Shows you, saved green points and hazards; tap to measure from you (GPS)
   or from a tapped point, and to the green. Satellite is the default (S.hmLayer remembers the choice). GPS counts only
