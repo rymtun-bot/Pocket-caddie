@@ -123,7 +123,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <span class="chip" id="gpsChip">GPS starting…</span>
     <span class="chip" id="parChip" hidden></span>
     <span class="chip warn" id="compChip" hidden>Competition mode</span>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 5 Nov (f) ⟳</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 6 Nov (a) ⟳</button>
   </div>
 </header>
 
@@ -239,6 +239,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><button class="primary" id="mlmOpen">Show my Rapsodo distances</button></div>
       <div class="row"><button id="rcOpen">Range conditions (wind, temperature)</button></div>
       <div class="row"><button id="gapOpen">Gapping chart</button><button id="rlOpen">Range shot log (voice)</button></div>
+      <div class="row"><button id="rfOpen">Range flags: laser yardages by mat (voice)</button></div>
     </section>
     <section class="panel">
       <h2>My clubs and carry yards</h2>
@@ -286,7 +287,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><button id="darkBtn" aria-pressed="false">Dark screen (saves battery)</button></div>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 5 Nov (f). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 6 Nov (a). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -408,6 +409,19 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   <p class="note" style="margin:0">Bars: the carry Pocket Caddie uses now (Clubs tab). R and P: your latest Rapsodo range and patio
   averages. The number on the right is the gap to the next shorter club.</p>
   <div id="gapBody"></div>
+</div></div>
+<div class="wiz" id="rf" hidden style="z-index:9"><div class="wrap">
+  <div class="wizTop"><span>Range flags</span><span style="display:flex;gap:8px"><button id="rfEar" aria-pressed="false">👂 Off</button><button id="rfClose">Back</button></span></div>
+  <p class="note" style="margin:0">Stand on a mat, laser a flag, then say it, e.g. “mat 3, red flag, 112” or just “red, 112” for the same mat.
+  Add “left”, “middle” or “right” when two flags share a colour. Each reading saves the phone's GPS spot too. With 👂 on, start with “Caddie”.</p>
+  <div class="row"><label for="rfMat">Mat (counted from the clubhouse end)</label><button id="rfMinus" aria-label="Previous mat">−</button><input id="rfMat" type="number" inputmode="numeric" min="1" style="width:5em"><button id="rfPlus" aria-label="Next mat">+</button></div>
+  <p class="q" id="rfGps" style="margin:0"></p>
+  <div class="row"><button id="rfMic" class="primary" style="font-size:20px;padding:14px">🎤 Say the flag and yards</button></div>
+  <div class="row" role="group" aria-label="Flag colour" id="rfColors"></div>
+  <div class="row"><label for="rfYds">Yards</label><input id="rfYds" type="number" inputmode="numeric" style="width:6em"><button class="primary" id="rfSave">Save reading</button><button id="rfUndo">Undo last</button></div>
+  <h2 style="margin:8px 0 0">Today</h2>
+  <div id="rfList" style="display:grid;gap:4px"></div>
+  <div class="row"><button id="rfCopy" class="primary">Copy for Claude</button><button id="rfClear">Clear today</button></div>
 </div></div>
 <div class="wiz" id="rl" hidden style="z-index:9"><div class="wrap">
   <div class="wizTop"><span>Range shot log</span><span style="display:flex;gap:8px"><button id="rlEar" aria-pressed="false">👂 Off</button><button id="rlClose">Back</button></span></div>
@@ -1103,7 +1117,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let last = "", k = 0;
     const order = OVERPASS.slice(ovGood).concat(OVERPASS.slice(0, ovGood));   // the server that answered last time goes first
     for (const u of order) {
-      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 5 Nov (f) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
+      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 6 Nov (a) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
       try {
         const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 25000);   // a busy server can hang: give up after 25 s
         const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: ctl.signal });
@@ -1143,7 +1157,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (cached && cached.v === 8 && Date.now() - cached.at < 7 * 864e5) return cached;
     let c = (S.coursePt || {})[id] || COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
     // the course data saved on the Pocket Caddie site (tools/fetch_osm.py) is quick; the live servers are the fallback
-    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 5 Nov (f) · Loading the course map data…";
+    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 6 Nov (a) · Loading the course map data…";
     let pre = null;
     try { const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
       const r = await fetch(`osm/${id}.json?d=${new Date().toISOString().slice(0, 10)}`, { signal: ctl.signal }); clearTimeout(tm);
@@ -1485,7 +1499,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
-    $("hmStatus").textContent = "Pocket Caddie 5 Nov (f) · Looking up the course on OpenStreetMap…";
+    $("hmStatus").textContent = "Pocket Caddie 6 Nov (a) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     hm.osmInfo = o ? `OpenStreetMap${hm.osmSrc && hm.osmSrc !== "live" ? " (" + hm.osmSrc + ")" : ""}: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
@@ -1495,7 +1509,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 5 Nov (f) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 6 Nov (a) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
@@ -1830,6 +1844,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   function klCommand(cmd) {
     const body = $("wizBody"), t = norm(cmd);
     if (/^(stop|stop listening|quiet)$/.test(t)) { klStop(); klSay("Stopped listening. Tap the ear to start again."); if (!$("rl").hidden) renderRl(); return; }
+    if (!$("rf").hidden) { if (/^(undo|delete( that| last)?)$/.test(t)) { $("rfUndo").click(); klSay("Removed the last reading."); } else rfApply(cmd); return; }
     if (!$("rl").hidden) { if (/^(undo|delete( that| last)?)$/.test(t)) { $("rlUndo").click(); klSay("Removed the last shot."); } else rlApply(cmd); return; }
     const yIn = document.getElementById("wizIn");
     if (yIn && document.getElementById("wizMic")) {   // yardage screen: "Caddie, one forty five"
@@ -1903,6 +1918,80 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     }
     return { tee, text: "Leaves " + (parts.join(", ") || "a short pitch") + "." };
   }
+
+  // ---- Range flags (golfer's request 2026-11-06): laser readings to the range flags, by mat and flag colour, by voice or taps.
+  // Each reading stores the phone's GPS spot so Claude can place the flags and work out yardages from any mat. ----
+  const RF_COLORS = ["red", "white", "blue", "yellow", "green", "orange", "black", "pink", "purple"];
+  const rfCur = { color: "", pos: "" };
+  const rfToday = () => (S.rflags = S.rflags || []).filter(e => new Date(e.at).toDateString() === new Date().toDateString());
+  function rfParse(said) {   // "mat 3 red flag left 112" -> {mat, color, pos, yds}
+    let t = said.toLowerCase().replace(/-/g, " "), mat = null;
+    const W = { one: 1, won: 1, two: 2, to: 2, too: 2, three: 3, four: 4, for: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12,
+      thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16, seventeen: 17, eighteen: 18, nineteen: 19, twenty: 20 };
+    const m = t.match(/\b(?:mat|matt|mats|map|mad)\s*(?:number\s*)?(\d{1,2}|[a-z]+)\b/);
+    if (m && (/^\d+$/.test(m[1]) || m[1] in W)) { mat = /^\d+$/.test(m[1]) ? +m[1] : W[m[1]]; t = t.replace(m[0], " "); }
+    const color = RF_COLORS.find(c => new RegExp(`\\b${c}\\b`).test(t)) || (/\b(read|rid)\b/.test(t) ? "red" : /\b(blew)\b/.test(t) ? "blue" : "");
+    const pos = /\b(left)\b/.test(t) ? "left" : /\b(right)\b/.test(t) ? "right" : /\b(middle|center|centre)\b/.test(t) ? "middle"
+      : /\b(front|near|short)\b/.test(t) ? "front" : /\b(back|far|long)\b/.test(t) ? "back" : "";
+    const rest = t.replace(new RegExp(`\\b(${RF_COLORS.join("|")}|read|rid|blew|flag|flags|pin|left|right|middle|center|centre|front|near|short|back|far|long|yards?)\\b`, "g"), " ");
+    const y = spokenYards(rest);
+    return { mat, color, pos, yds: y >= 20 && y < 400 ? y : null };
+  }
+  function rfSay(text) { if (canSpeak) { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(text)); } }
+  function rfSave(r) {   // r = {mat, color, pos, yds}
+    const mat = r.mat || +$("rfMat").value || 0;
+    if (!mat) { rfSay("Which mat? Say mat, then the number."); toast("Set the mat number first"); return false; }
+    if (!r.color) { rfSay("Which flag colour?"); toast("Pick the flag colour"); return false; }
+    if (!r.yds) { rfSay("How many yards?"); toast("Type or say the yards"); return false; }
+    S.rfMat = mat; $("rfMat").value = mat;
+    S.rflags.push({ mat, color: r.color, pos: r.pos || "", yds: r.yds, lat: fix ? +fix.lat.toFixed(6) : null, lon: fix ? +fix.lon.toFixed(6) : null, acc: fix ? Math.round(fix.acc) : null, at: Date.now() });
+    save(); rfCur.color = ""; rfCur.pos = ""; $("rfYds").value = "";
+    rfSay(`Mat ${mat}, ${r.pos ? r.pos + " " : ""}${r.color} flag, ${r.yds} yards. Saved.` + (fix ? "" : " No GPS fix, the mat number is kept."));
+    renderRf(); return true;
+  }
+  function rfApply(said) {
+    const r = rfParse(said);
+    if (r.mat && !r.color && !r.yds) { S.rfMat = r.mat; $("rfMat").value = r.mat; save(); rfSay(`Mat ${r.mat}.`); renderRf(); return; }
+    if (!r.color && !r.yds) { rfSay(`I heard ${said}. Say the flag colour and the yards.`); return; }
+    if (r.mat) { S.rfMat = r.mat; $("rfMat").value = r.mat; }
+    if (r.color && !r.yds && !+$("rfYds").value) { rfCur.color = r.color; rfCur.pos = r.pos; save(); renderRf(); rfSay(`${r.pos ? r.pos + " " : ""}${r.color} flag. How many yards?`); return; }
+    rfSave({ ...r, color: r.color || rfCur.color, pos: r.pos || (r.color ? "" : rfCur.pos), yds: r.yds || +$("rfYds").value || null });
+  }
+  function renderRf() {
+    $("rfMat").value = S.rfMat || "";
+    $("rfEar").textContent = kl.on ? "👂 On" : "👂 Off"; $("rfEar").setAttribute("aria-pressed", kl.on);
+    $("rfGps").textContent = fix ? `GPS ±${accYd(fix)} yd: saved with each reading${accYd(fix) > 8 ? " (wait a moment for a better fix)" : ""}.` : "Waiting for GPS. Readings still save with the mat number.";
+    $("rfColors").innerHTML = RF_COLORS.map(c => `<button data-rfc="${c}" aria-pressed="${rfCur.color === c}">${c[0].toUpperCase() + c.slice(1)}</button>`).join("");
+    const t = rfToday(), mats = [...new Set(t.map(e => e.mat))].sort((a, b) => a - b);
+    $("rfList").innerHTML = t.length ? mats.map(m => `<p class="live" style="margin:0"><b>Mat ${m}:</b> ${t.filter(e => e.mat === m).map(e => `${e.pos ? e.pos + " " : ""}${e.color} ${e.yds}`).join(" · ")}</p>`).join("")
+      + `<p class="note" style="margin:0">${t.length} readings from ${mats.length} mat${mats.length === 1 ? "" : "s"}.</p>` : `<p class="note" style="margin:0">No readings yet today.</p>`;
+  }
+  function rfCsv() { return "mat,flag,position,yards,lat,lon,gps_acc_m,time\n" + rfToday().map(e => [e.mat, e.color, e.pos, e.yds, e.lat ?? "", e.lon ?? "", e.acc ?? "", new Date(e.at).toLocaleTimeString()].join(",")).join("\n"); }
+  function rfOpen() { S.rflags = S.rflags || []; renderRf(); $("rf").hidden = false; $("rf").scrollTop = 0; }
+  document.addEventListener("click", e => {
+    const g = e.target.closest("#rfOpen, #rfClose, #rfEar, #rfMinus, #rfPlus, #rfMic, #rfSave, #rfUndo, #rfCopy, #rfClear, [data-rfc]"); if (!g) return;
+    const id = g.id;
+    if (id === "rfOpen") rfOpen();
+    else if (id === "rfClose") $("rf").hidden = true;
+    else if (id === "rfMinus" || id === "rfPlus") { S.rfMat = Math.max(1, (+$("rfMat").value || 1) + (id === "rfPlus" ? 1 : -1)); save(); renderRf(); }
+    else if (g.dataset.rfc) { rfCur.color = rfCur.color === g.dataset.rfc ? "" : g.dataset.rfc; renderRf(); }
+    else if (id === "rfSave") rfSave({ mat: +$("rfMat").value, color: rfCur.color, pos: "", yds: +$("rfYds").value || null });
+    else if (id === "rfUndo") { const t = rfToday(); if (t.length) { S.rflags.splice(S.rflags.lastIndexOf(t[t.length - 1]), 1); save(); renderRf(); toast("Last reading removed"); } }
+    else if (id === "rfCopy") copy(`Westchester range flags ${new Date().toLocaleDateString()} (laser yards; mats counted from the clubhouse end):\n` + rfCsv());
+    else if (id === "rfClear") { if (g.dataset.armed) { S.rflags = S.rflags.filter(e => !rfToday().includes(e)); save(); renderRf(); g.textContent = "Clear today"; delete g.dataset.armed; } else { g.dataset.armed = 1; g.textContent = "Tap again to clear"; } }
+    else if (id === "rfEar") { if (kl.on) klStop(); else { klStart(); rfSay("Listening. Say Caddie, then the mat, flag and yards."); } renderRf(); }
+    else if (id === "rfMic") {
+      if (!Rec) { toast("Voice isn't available here. Tap the colour and type the yards."); return; }
+      if (kl.on) { toast("Listening is on: say “Caddie”, then the flag"); return; }
+      if (canSpeak) speechSynthesis.cancel();
+      const r = new Rec(); r.lang = "en-US"; r.interimResults = false; r.maxAlternatives = 3; g.textContent = "🎤 Listening…";
+      r.onresult = ev => { g.textContent = "🎤 Say the flag and yards"; const alts = [...ev.results[0]].map(a => a.transcript);
+        rfApply(alts.find(a => { const m = rfParse(a); return m.color && m.yds; }) || alts.find(a => { const m = rfParse(a); return m.color || m.yds || m.mat; }) || alts[0]); };
+      r.onerror = () => { g.textContent = "🎤 Say the flag and yards"; toast("Didn't catch that. Try again or tap."); };
+      r.onend = () => { if (g.textContent.includes("Listening")) g.textContent = "🎤 Say the flag and yards"; };
+      r.start();
+    }
+  });
 
   // ---- Patio game (golfer's request 2026-11-05): a pretend round of Westchester or Rancho into the net. The caddie calls
   // each full shot and club from the scorecard, the built-in plan and the Clubs-tab carries; at random the approach misses
@@ -2314,12 +2403,12 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         ["Save a hazard on this hole", () => step("hzType")],
         [`Hazards on this hole (${(hole().hazards || []).length})`, () => step("hzList")],
         ["Skip to the next hole", () => step("next")],
-        ...(S.comp ? [] : [["Record or check a swing", () => { location.href = "swing.html"; }], ["My Rapsodo numbers", () => openMlm()], ["Range conditions (wind, temperature)", () => openRc()], ["Range shot log", () => { renderRl(); $("rl").hidden = false; }], ["Gapping chart", () => { renderGap(); $("gap").hidden = false; }], ["Patio game (pretend round)", () => pgOpen()]]),
+        ...(S.comp ? [] : [["Record or check a swing", () => { location.href = "swing.html"; }], ["My Rapsodo numbers", () => openMlm()], ["Range conditions (wind, temperature)", () => openRc()], ["Range shot log", () => { renderRl(); $("rl").hidden = false; }], ["Gapping chart", () => { renderGap(); $("gap").hidden = false; }], ["Patio game (pretend round)", () => pgOpen()], ["Range flags (laser yardages by mat)", () => rfOpen()]]),
         ["Hole map", () => openHm()],
         [S.dark ? "Normal screen" : "Dark screen (saves battery)", () => { S.dark = !S.dark; save(); applyDark(); step("menu"); }],
         ...(S.comp ? [] : [["Add or change this hole's green note", () => step("note")]]),
         ["Change course or tees", () => step("course")],
-        ["⟳ Get the latest version (you have 5 Nov (f))", () => location.replace(location.pathname + "?v=" + Date.now())],
+        ["⟳ Get the latest version (you have 6 Nov (a))", () => location.replace(location.pathname + "?v=" + Date.now())],
         ["Show the full app", () => { $("wiz").hidden = true; renderAll(); }]]);
     }
     if (name === "yds") {   // one thing: the yardage
