@@ -203,8 +203,10 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   live fix) for every reading, warns when the GPS has not moved after a mat change, and when the golfer has moved 12+ yd
   without changing the mat number; saying "mat N" within 2 min then moves that last reading to mat N.
   Readings were from mats 2, 11, 27. RANGE_MODEL (index.html) = fit of those 15 readings: spacing 3.6 yd, flag spots
-  red/blue/white/orange within ~1 yd, yellow ~6 yd (rough). Questions with a mat number ("mat 15, distance to red")
+  red/blue/white/orange within ~1 yd; yellow refit from the second set to (46.8, 209.8), within ~1 yd. Questions with a mat number ("mat 15, distance to red")
   answer from the model without GPS; table of all 29 mats in practice/westchester-range-flags.md.
+  6 Nov (f): rfParse reads a first number of 35 or less as the mat ("mat" was misheard and 27 was saved as yards);
+  range-flag yards must be 40-399.
 - Hole map (Play tab, guide Menu; 2026-11-04): Leaflet 1.9.4 from cdnjs, loaded on open; OpenStreetMap tiles or Esri
   World Imagery (satellite) with attribution. Shows you, saved green points and hazards; tap to measure from you (GPS)
   or from a tapped point, and to the green. Satellite is the default (S.hmLayer remembers the choice). GPS counts only
@@ -240,7 +242,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "6 Nov (e)" (also a "v 6 Nov (e) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "6 Nov (f)" (also a "v 6 Nov (f) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
