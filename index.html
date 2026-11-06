@@ -123,7 +123,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <span class="chip" id="gpsChip">GPS starting…</span>
     <span class="chip" id="parChip" hidden></span>
     <span class="chip warn" id="compChip" hidden>Competition mode</span>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 6 Nov (f) ⟳</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 6 Nov (g) ⟳</button>
   </div>
 </header>
 
@@ -287,7 +287,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><button id="darkBtn" aria-pressed="false">Dark screen (saves battery)</button></div>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 6 Nov (f). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 6 Nov (g). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -415,7 +415,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   <p class="note" style="margin:0">Ask any time: “distance to red flag” (or “mat 5, how far is white”). Readings you made from that mat are said exactly; others are worked out from your readings and GPS.</p>
   <p class="note" style="margin:0">Stand on a mat, laser a flag, then say it, e.g. “mat 3, red flag, 112” or just “red, 112” for the same mat.
   Add “left”, “middle” or “right” when two flags share a colour. Each reading saves the phone's GPS spot too. With 👂 on, start with “Caddie”.</p>
-  <div class="row"><label for="rfMat">Mat (1 = far right facing the range, 29 = by the clubhouse)</label><button id="rfMinus" aria-label="Previous mat">−</button><input id="rfMat" type="number" inputmode="numeric" min="1" style="width:5em"><button id="rfPlus" aria-label="Next mat">+</button></div>
+  <div class="row"><label for="rfMat">Mat (1 = far right facing the range, 27 = last one, by the clubhouse)</label><button id="rfMinus" aria-label="Previous mat">−</button><input id="rfMat" type="number" inputmode="numeric" min="1" style="width:5em"><button id="rfPlus" aria-label="Next mat">+</button></div>
+  <p class="q" id="rfWind" style="margin:0"></p>
   <p class="q" id="rfGps" style="margin:0"></p>
   <p class="q" id="rfHeard" style="margin:0;font-weight:700"></p>
   <div class="row"><button id="rfMic" class="primary" style="font-size:20px;padding:14px">🎤 Say the flag and yards</button></div>
@@ -1121,7 +1122,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let last = "", k = 0;
     const order = OVERPASS.slice(ovGood).concat(OVERPASS.slice(0, ovGood));   // the server that answered last time goes first
     for (const u of order) {
-      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 6 Nov (f) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
+      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 6 Nov (g) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
       try {
         const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 25000);   // a busy server can hang: give up after 25 s
         const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: ctl.signal });
@@ -1161,7 +1162,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (cached && cached.v === 8 && Date.now() - cached.at < 7 * 864e5) return cached;
     let c = (S.coursePt || {})[id] || COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
     // the course data saved on the Pocket Caddie site (tools/fetch_osm.py) is quick; the live servers are the fallback
-    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 6 Nov (f) · Loading the course map data…";
+    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 6 Nov (g) · Loading the course map data…";
     let pre = null;
     try { const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
       const r = await fetch(`osm/${id}.json?d=${new Date().toISOString().slice(0, 10)}`, { signal: ctl.signal }); clearTimeout(tm);
@@ -1503,7 +1504,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
-    $("hmStatus").textContent = "Pocket Caddie 6 Nov (f) · Looking up the course on OpenStreetMap…";
+    $("hmStatus").textContent = "Pocket Caddie 6 Nov (g) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     hm.osmInfo = o ? `OpenStreetMap${hm.osmSrc && hm.osmSrc !== "live" ? " (" + hm.osmSrc + ")" : ""}: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
@@ -1513,7 +1514,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 6 Nov (f) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 6 Nov (g) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
@@ -2005,16 +2006,26 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   // Westchester range model from the golfer's 6 Nov laser readings (mats 2, 11, 27): mats in one row about 3.6 yd apart,
   // mat 1 at the far right facing the range; flag spots in yards (x along the row toward mat 29, y down the range).
   // Fit within about 1 yd for red, blue, white and orange; yellow about 6 yd (one reading likely another flag).
-  const RANGE_MODEL = { spacing: 3.6, mats: 29, flags: { red: [24.3, 72.9], blue: [41.2, 108.6], white: [0.7, 135.9], orange: [89.5, 157.8], yellow: [46.8, 209.8] }, rough: {} };   // yellow refit 6 Nov with 215 x3 from mat 1 (196 from mat 11 was another flag)
+  const RANGE_MODEL = { spacing: 3.6, mats: 27, flags: { red: [24.3, 72.9], blue: [41.2, 108.6], white: [0.7, 135.9], orange: [89.5, 157.8], yellow: [46.8, 209.8] }, rough: {} };   // yellow refit 6 Nov with 215 x3 from mat 1 (196 from mat 11 was another flag)
+  // plays-like at the range: the flag's compass bearing from the mat (mats run west to east, mat 1 at the west end,
+  // flags to the south), today's wind along that line, temperature and air pressure, with the Setup factors
+  function rmPlays(mat, color, yds) {
+    const f = RANGE_MODEL.flags[color]; if (!wx || !f || yds == null) return null;
+    const dx = f[0] - (mat - 1) * RANGE_MODEL.spacing, brg = (Math.atan2(dx, -f[1]) * 180 / Math.PI + 360) % 360;   // east = +x, south = +y
+    const head = wx.speed * Math.cos((wx.dir - brg) * Math.PI / 180), F = S.factors;
+    const pl = yds + (head >= 0 ? yds * F.head / 100 * head : yds * F.tail / 100 * head) + F.temp * (75 - wx.temp) / 10 + yds * F.press / 100 * (wx.press - 1013.25) / 33.86;
+    return Math.round(pl);
+  }
   const rmYards = (mat, color) => { const f = RANGE_MODEL.flags[color]; return f && mat >= 1 && mat <= RANGE_MODEL.mats ? Math.round(Math.hypot(f[0] - (mat - 1) * RANGE_MODEL.spacing, f[1])) : null; };
   function rfAsk(t) {   // "distance to red", "how far is the blue flag", "mat 5 white"
     const r = rfParse(t.replace(/\b(how far( away)?( is)?|distance( to)?|yardage( to)?|how many yards( to)?|yards to)\b/gi, " ")), mat = r.mat || +$("rfMat").value || 0;
     const key = r.color ? (r.pos ? r.pos + " " : "") + r.color : "";
     const exact = mat && key ? [...(S.rflags || [])].reverse().find(e => e.mat === mat && (e.pos ? e.pos + " " : "") + e.color === key) : null;
-    if (exact) return `From mat ${mat}, the ${key} flag is ${exact.yds} yards. You lasered it.`;
+    if (exact) { const q = rmPlays(mat, r.color, exact.yds); return `From mat ${mat}, the ${key} flag is ${exact.yds} yards. You lasered it.${q != null && q !== exact.yds ? ` Plays like ${q} today.` : ""}`; }
     if (mat >= 1 && mat <= RANGE_MODEL.mats) {   // the built-in range model needs no GPS
-      if (r.color && rmYards(mat, r.color)) return `From mat ${mat}, the ${r.color} flag is about ${rmYards(mat, r.color)} yards${RANGE_MODEL.rough[r.color] ? ", give or take 6" : ""}.`;
-      if (!r.color) return `From mat ${mat}: ` + Object.keys(RANGE_MODEL.flags).map(c => `${c} ${rmYards(mat, c)}`).join(", ") + ".";
+      const pls = c => { const y = rmYards(mat, c), q = rmPlays(mat, c, y); return q != null && q !== y ? `, plays like ${q}` : ""; };
+      if (r.color && rmYards(mat, r.color)) return `From mat ${mat}, the ${r.color} flag is about ${rmYards(mat, r.color)} yards${pls(r.color)}${RANGE_MODEL.rough[r.color] ? ", give or take 6" : ""}.`;
+      if (!r.color) return `From mat ${mat}: ` + Object.keys(RANGE_MODEL.flags).map(c => `${c} ${rmYards(mat, c)}${pls(c).replace(", plays like", " playing")}`).join(", ") + ".";
     }
     const atMat = mat ? (S.rflags || []).filter(e => e.mat === mat && e.lat != null) : [];
     const pt = atMat.length ? { lat: atMat.reduce((s2, e) => s2 + e.lat, 0) / atMat.length, lon: atMat.reduce((s2, e) => s2 + e.lon, 0) / atMat.length } : fix;
@@ -2049,7 +2060,16 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       + `<p class="note" style="margin:0">${t.length} readings from ${mats.length} mat${mats.length === 1 ? "" : "s"}.</p>` : `<p class="note" style="margin:0">No readings yet today.</p>`;
   }
   function rfCsv() { return "mat,flag,position,yards,lat,lon,gps_acc_m,time\n" + rfToday().map(e => [e.mat, e.color, e.pos, e.yds, e.lat ?? "", e.lon ?? "", e.acc ?? "", new Date(e.at).toLocaleTimeString()].join(",")).join("\n"); }
-  function rfOpen() { S.rflags = S.rflags || []; renderRf(); $("rf").hidden = false; $("rf").scrollTop = 0; }
+  async function rfWind() {
+    const el = $("rfWind"); el.textContent = "Checking today's wind…";
+    try { await loadWx(true); } catch {}
+    if (!wx || wxFailed) { el.textContent = "Couldn't load today's wind (no signal?). Yardages are shown without it."; return; }
+    const head = wx.speed * Math.cos((wx.dir - 180) * Math.PI / 180), cross = wx.speed * Math.sin((wx.dir - 180) * Math.PI / 180);
+    el.textContent = `Wind now ${Math.round(wx.speed)} mph from the ${dirWords(wx.dir)}${wx.gust ? `, gusts ${Math.round(wx.gust)}` : ""}: `
+      + `${Math.abs(head) < 1 ? "no head or tail wind" : head > 0 ? `${Math.round(head)} into you` : `${Math.round(-head)} helping`}, `
+      + `${Math.abs(cross) < 1 ? "none across" : `${Math.round(Math.abs(cross))} from the ${cross > 0 ? "right" : "left"}`}. ${Math.round(wx.temp)}°F. Answers include "plays like".`;
+  }
+  function rfOpen() { S.rflags = S.rflags || []; renderRf(); $("rf").hidden = false; $("rf").scrollTop = 0; rfWind(); }
   document.addEventListener("click", e => {
     const g = e.target.closest("#rfHere, #rfOpen, #rfClose, #rfEar, #rfMinus, #rfPlus, #rfMic, #rfSave, #rfUndo, #rfCopy, #rfClear, [data-rfc]"); if (!g) return;
     const id = g.id;
@@ -2504,7 +2524,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         [S.dark ? "Normal screen" : "Dark screen (saves battery)", () => { S.dark = !S.dark; save(); applyDark(); step("menu"); }],
         ...(S.comp ? [] : [["Add or change this hole's green note", () => step("note")]]),
         ["Change course or tees", () => step("course")],
-        ["⟳ Get the latest version (you have 6 Nov (f))", () => location.replace(location.pathname + "?v=" + Date.now())],
+        ["⟳ Get the latest version (you have 6 Nov (g))", () => location.replace(location.pathname + "?v=" + Date.now())],
         ["Show the full app", () => { $("wiz").hidden = true; renderAll(); }]]);
     }
     if (name === "yds") {   // one thing: the yardage

@@ -8,8 +8,8 @@ The readings came from three mats (golfer), but all were saved as "mat 1" with o
 (33.959247, -118.412718 for every reading), so they are grouped here by time. The words "right" / "left" saved with
 some readings most likely described the mat, not the flag (to confirm).
 
-Mat numbers (golfer, 2026-11-06): 29 mats, numbered from the far right facing the range (mat 29 is by the
-clubhouse). The three sets were from mats 2, 11 and 27.
+Mat numbers (golfer, 2026-11-06): numbered from the far right facing the range; mat 27 is the last mat on the left,
+next to the clubhouse, so this section has 27 mats (an earlier message said 29). The three sets were from mats 2, 11 and 27.
 
 | Flag | Mat 2 (12:00-12:04) | Mat 11 (12:06-12:10) | Mat 27 (12:12-12:15) |
 |---|---|---|---|
@@ -22,7 +22,7 @@ clubhouse). The three sets were from mats 2, 11 and 27.
 ## Flag positions and yardage from every mat (fitted 2026-11-06)
 
 Fit: mats in one straight row, equally spaced; each flag placed so its three laser distances match best. Best mat
-spacing 3.6 yd (row about 101 yd). Red, blue, white and orange fit all three readings within about 1 yd; yellow only
+spacing 3.6 yd (mats 1 to 27 about 94 yd). Red, blue, white and orange fit all three readings within about 1 yd; yellow only
 within about 6 yd at first; refit later the same day (below).
 Flag spots (yd; x along the row from mat 1 toward mat 29, y down the range): red 24, 73; blue 41, 109;
 white 1, 136; orange 90, 158; yellow 47, 210 (refit). Pocket Caddie 6 Nov (e) has this built in (RANGE_MODEL).
@@ -56,8 +56,6 @@ white 1, 136; orange 90, 158; yellow 47, 210 (refit). Pocket Caddie 6 Nov (e) ha
 | 25 | 96 | 118 | 161 | 158 | 214 |
 | 26 | 98 | 119 | 163 | 158 | 214 |
 | 27 | 101 | 121 | 165 | 158 | 215 |
-| 28 | 103 | 122 | 167 | 158 | 216 |
-| 29 | 106 | 124 | 169 | 158 | 217 |
 
 
 ## Second set, 2026-11-06 (12:33-12:44)
