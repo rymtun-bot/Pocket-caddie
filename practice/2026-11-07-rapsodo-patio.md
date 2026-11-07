@@ -1,6 +1,6 @@
 # 2026-11-07 · Rapsodo MLM · patio net · Callaway Supersoft
 
-Hitting only, no video. Towel test planned (5 in behind the ball for the 50°); towel count not yet sent.
+Hitting only, no video. Towel test planned (5 in behind the ball for the 50°); towel hit on 2 of the 12 shots (golfer).
 
 ## 50° (Lazarus gap wedge), full swing: 12 shots, tagged GW
 
@@ -13,3 +13,6 @@ Rapsodo average row (golfer's rule: top-line averages only):
 Note: the dispersion chart shows two groups, about 8 shots near 80 yd on line and about 4 short (~50 yd) and left.
 The average is pulled down by the short group. Ask the golfer what those shots were (first swings, mis-hits, towel hits).
 Compare: PW 100, 54° 81 (patio 11/04, full).
+
+Towel (5 in behind the ball): hit 2 of 12. Low point is mostly ahead of the ball; the 2 towel hits may account for part of
+the short group. Not steep: a steep swing rarely touches a towel 5 in back.
