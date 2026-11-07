@@ -2521,7 +2521,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         ["Save a hazard on this hole", () => step("hzType")],
         [`Hazards on this hole (${(hole().hazards || []).length})`, () => step("hzList")],
         ["Skip to the next hole", () => step("next")],
-        ...(S.comp ? [] : [["Record or check a swing", () => { location.href = "swing.html"; }], ["My Rapsodo numbers", () => openMlm()], ["Range conditions (wind, temperature)", () => openRc()], ["Range shot log", () => { renderRl(); $("rl").hidden = false; }], ["Gapping chart", () => { renderGap(); $("gap").hidden = false; }], ["Patio game (pretend round)", () => pgOpen()]]),
+        ...(S.comp ? [] : [["Record or check a swing", () => { location.href = "swing.html"; }], ["Tempo trainer (beeps)", () => { location.href = "swing.html#tempo"; }], ["My Rapsodo numbers", () => openMlm()], ["Range conditions (wind, temperature)", () => openRc()], ["Range shot log", () => { renderRl(); $("rl").hidden = false; }], ["Gapping chart", () => { renderGap(); $("gap").hidden = false; }], ["Patio game (pretend round)", () => pgOpen()]]),
         ["Hole map", () => openHm()],
         [S.dark ? "Normal screen" : "Dark screen (saves battery)", () => { S.dark = !S.dark; save(); applyDark(); step("menu"); }],
         ...(S.comp ? [] : [["Add or change this hole's green note", () => step("note")]]),

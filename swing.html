@@ -155,6 +155,33 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
     </div>
     <img id="sheetPreview" alt="Preview of the picture to share" style="width:100%;border-radius:8px;border:1px solid var(--line)" hidden>
   </section>
+  <section class="panel" id="tempoPanel">
+    <h2>Tempo trainer (beeps)</h2>
+    <p class="note">Three beeps: <b>low</b> = start the takeaway, <b>middle</b> = top, <b>high</b> = impact. Swing so the club reaches each spot on its beep. A soft tick comes first so you can get set.</p>
+    <div class="row">
+      <label for="tpPreset">Rhythm</label>
+      <select id="tpPreset">
+        <option value="0.78,0.26">Hyejin Choi driver · down 0.26 s, 3 to 1</option>
+        <option value="1.05,0.35">Same 3 to 1, a bit slower · down 0.35 s</option>
+        <option value="1.20,0.40">Same 3 to 1, practice speed · down 0.40 s</option>
+        <option value="mine" disabled>My saved frames (save Address, Top, Impact first)</option>
+        <option value="custom">Set my own</option>
+      </select>
+    </div>
+    <div id="tpCustom" class="row" hidden>
+      <label for="tpDown">Downswing <span id="tpDownV"></span> s</label>
+      <input id="tpDown" type="range" min="0.20" max="0.50" step="0.01" value="0.30">
+      <label for="tpRatio">Backswing ÷ downswing <span id="tpRatioV"></span> to 1</label>
+      <input id="tpRatio" type="range" min="2" max="4" step="0.1" value="3">
+    </div>
+    <p id="tpSummary" class="time" style="font-size:18px;margin:0"></p>
+    <div class="row">
+      <label for="tpGap">Repeat every</label>
+      <select id="tpGap"><option value="0">Play once</option><option value="5">5 s</option><option value="8" selected>8 s (time to rehearse)</option><option value="15">15 s (time to hit a ball)</option></select>
+    </div>
+    <div class="row"><button class="primary" id="tpGo">Start beeps</button></div>
+    <p class="note">Her downswing (top to impact) is from the video frames: 0.264 s. Her backswing wasn't timed (the Address frame was before her takeaway), so 3 to 1, the usual tour ratio, is assumed. No sound? Turn up the volume and flip the iPhone's silent switch off.</p>
+  </section>
 </main>
 <div class="toast" id="toast" hidden></div>
 
@@ -165,7 +192,7 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
   const MOMENTS = ["Address", "Top", "Impact", "Finish"];
   const vid = $("vid"), ink = $("ink"), ictx = ink.getContext("2d");
   let url = null, lines = [], pending = null, drawing = false, sheetBlob = null;
-  const frames = {};   // moment -> { t, dataURL, w, h }
+  const frames = window.pcFrames = {};   // moment -> { t, dataURL, w, h }; tempo trainer reads it
   let toastT;
   const toast = msg => { const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2200); };
 
@@ -248,6 +275,7 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
       <div class="row"><button data-grab="${m}">Save ${m.toLowerCase()}</button>${frames[m] ? `<button data-go="${m}" style="flex:0 0 auto">Go</button>` : ""}</div>
     </div>`).join("");
     const A = frames.Address, T = frames.Top, I = frames.Impact;   // tempo: save Address at the first move of the club
+    window.tpMine && window.tpMine(A && T && I && A.t < T.t && T.t < I.t ? [T.t - A.t, I.t - T.t] : null);
     $("tempo").innerHTML = A && T && I && A.t < T.t && T.t < I.t
       ? `<b>Tempo ${((T.t - A.t) / (I.t - T.t)).toFixed(1)} to 1</b> · backswing ${(T.t - A.t).toFixed(2)} s, downswing ${(I.t - T.t).toFixed(2)} s` +
         `<br>(Save "address" at the first frame the club moves. Use a normal-speed video: Slo-mo speeds up and slows down inside the clip.)`
@@ -390,6 +418,57 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
       toast("Saved. Press and hold the preview to save it to Photos.");
     }
   };
+})();
+</script>
+<script>
+// Tempo trainer: Web Audio beeps at takeaway, top and impact (golfer's request 2026-11-06, modelled on Hyejin Choi's 0.264 s downswing).
+(() => {
+  const $ = id => document.getElementById(id);
+  let ctx = null, timer = null, mine = null;
+  const times = () => {
+    const v = $("tpPreset").value;
+    if (v === "custom") { const d = +$("tpDown").value; return [d * +$("tpRatio").value, d]; }
+    if (v === "mine" && mine) return mine;
+    return v.split(",").map(Number);
+  };
+  const show = () => {
+    $("tpCustom").hidden = $("tpPreset").value !== "custom";
+    $("tpDownV").textContent = (+$("tpDown").value).toFixed(2); $("tpRatioV").textContent = (+$("tpRatio").value).toFixed(1);
+    const [b, d] = times();
+    $("tpSummary").textContent = `Back ${b.toFixed(2)} s · down ${d.toFixed(2)} s · ${(b / d).toFixed(1)} to 1`;
+  };
+  window.tpMine = t => {
+    mine = t; const o = $("tpPreset").querySelector('[value="mine"]');
+    o.disabled = !t; o.textContent = t ? `My saved frames · down ${t[1].toFixed(2)} s, ${(t[0] / t[1]).toFixed(1)} to 1` : "My saved frames (save Address, Top, Impact first)";
+    if (!t && $("tpPreset").value === "mine") $("tpPreset").value = "0.78,0.26";
+    show();
+  };
+  ["tpPreset", "tpDown", "tpRatio"].forEach(id => $(id).oninput = show);
+  $("tpPreset").onchange = show;
+  const beep = (at, f, len, vol) => {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = "sine"; o.frequency.value = f; o.connect(g); g.connect(ctx.destination);
+    g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(vol, at + 0.005); g.gain.exponentialRampToValueAtTime(0.001, at + len);
+    o.start(at); o.stop(at + len + 0.02);
+  };
+  const once = () => {
+    const [b, d] = times(), t0 = ctx.currentTime + 1.2;
+    beep(t0 - 1.0, 440, 0.05, 0.25);      // soft tick: get set
+    beep(t0, 523, 0.12, 0.7);             // takeaway
+    beep(t0 + b, 784, 0.10, 0.7);         // top
+    beep(t0 + b + d, 1047, 0.18, 0.9);    // impact
+  };
+  const stop = () => { clearInterval(timer); timer = null; $("tpGo").textContent = "Start beeps"; };
+  $("tpGo").onclick = () => {
+    if (timer) return stop();
+    try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch {}   // let iPhone play with the silent switch on, where supported
+    ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+    ctx.resume(); once();
+    const gap = +$("tpGap").value;
+    if (gap) { timer = setInterval(once, gap * 1000); $("tpGo").textContent = "Stop beeps"; }
+  };
+  show();
+  if (location.hash === "#tempo") setTimeout(() => $("tempoPanel").scrollIntoView(), 50);
 })();
 </script>
 </body>
