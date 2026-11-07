@@ -31,5 +31,5 @@ ball farther past the low point, which fits the early towel hits.
 
 ## Golfer's note, later the same day: more shoulder turn + pause at the top (RSi 2 7-iron)
 "A tad more shoulder turn at the top and a pause": club speed about 72-73 mph, carry about 130, total about 140
-and smash 1.37-1.40 (golfer's report; number of shots and Rapsodo average row not yet sent). Same speed as the 12-shot set (73 mph,
-121/127), so the ~9 yd gain would come from better strike (smash) and launch, not speed. To confirm: 10 shots, average row.
+and smash 1.37-1.40 (golfer's report; number of shots and Rapsodo average row not yet sent). Golfer saw club speed go up too, versus the
+shots before the change; the 12-shot set's average was 73 mph (121/127), so most of the ~9 yd gain is from smash. To confirm: 10 shots, average row.
