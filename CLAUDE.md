@@ -176,8 +176,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Tempo (2026-11-07): with Address (saved at the club's first move), Top and Impact saved, shows backswing ÷ downswing
   time ("Tempo 3.0 to 1"). Works on any normal-speed video, e.g. a screen recording of a pro swing; not Slo-mo clips.
   Tempo trainer (golfer's request 2026-11-06; bottom of swing.html, swing.html#tempo, guide Menu → Tempo trainer): soft
-  tick, then beeps at takeaway (low), top (middle), impact (high). Presets: Hyejin Choi driver 0.78/0.26 s (downswing
-  0.264 s from a screen recording of her face-on driver; backswing not timed, 3:1 assumed), 1.05/0.35, 1.20/0.40,
+  tick, then beeps at takeaway (low), top (middle), impact (high). Presets: Hyejin Choi driver 0.76/0.23 s (face-on
+  driver frames 2026-11-06: Address 11.866, Top 12.625, Impact 12.857 s → 3.3:1; replaced the earlier 0.78/0.26 s preset), 1.05/0.35, 1.20/0.40,
   "My saved frames", or custom downswing + ratio. Play once or repeat every 5/8/15 s.
 - My Rapsodo numbers (Clubs tab → Show my Rapsodo distances; guide Menu outside competition mode): the MLM array in
   index.html holds each club's Rapsodo top-line averages (patio and range, date, carry, total, mph, smash, launch,

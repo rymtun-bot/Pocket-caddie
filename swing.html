@@ -161,7 +161,7 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
     <div class="row">
       <label for="tpPreset">Rhythm</label>
       <select id="tpPreset">
-        <option value="0.78,0.26">Hyejin Choi driver · down 0.26 s, 3 to 1</option>
+        <option value="0.76,0.23">Hyejin Choi driver · back 0.76 s, down 0.23 s, 3.3 to 1</option>
         <option value="1.05,0.35">Same 3 to 1, a bit slower · down 0.35 s</option>
         <option value="1.20,0.40">Same 3 to 1, practice speed · down 0.40 s</option>
         <option value="mine" disabled>My saved frames (save Address, Top, Impact first)</option>
@@ -180,7 +180,7 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
       <select id="tpGap"><option value="0">Play once</option><option value="5">5 s</option><option value="8" selected>8 s (time to rehearse)</option><option value="15">15 s (time to hit a ball)</option></select>
     </div>
     <div class="row"><button class="primary" id="tpGo">Start beeps</button></div>
-    <p class="note">Her downswing (top to impact) is from the video frames: 0.264 s. Her backswing wasn't timed (the Address frame was before her takeaway), so 3 to 1, the usual tour ratio, is assumed. No sound? Turn up the volume and flip the iPhone's silent switch off.</p>
+    <p class="note">Her timing is from face-on video frames (2026-11-06): Address 11.866 s, Top 12.625 s, Impact 12.857 s, so backswing 0.76 s and downswing 0.23 s, about 3.3 to 1. If the Address frame was a touch before her first move, her real backswing is slightly shorter. No sound? Turn up the volume and flip the iPhone's silent switch off.</p>
   </section>
 </main>
 <div class="toast" id="toast" hidden></div>
@@ -421,7 +421,7 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
 })();
 </script>
 <script>
-// Tempo trainer: Web Audio beeps at takeaway, top and impact (golfer's request 2026-11-06, modelled on Hyejin Choi's 0.264 s downswing).
+// Tempo trainer: Web Audio beeps at takeaway, top and impact (golfer's request 2026-11-06, modelled on Hyejin Choi's face-on driver frames of 2026-11-06: back 0.759 s, down 0.232 s).
 (() => {
   const $ = id => document.getElementById(id);
   let ctx = null, timer = null, mine = null;
@@ -440,7 +440,7 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
   window.tpMine = t => {
     mine = t; const o = $("tpPreset").querySelector('[value="mine"]');
     o.disabled = !t; o.textContent = t ? `My saved frames · down ${t[1].toFixed(2)} s, ${(t[0] / t[1]).toFixed(1)} to 1` : "My saved frames (save Address, Top, Impact first)";
-    if (!t && $("tpPreset").value === "mine") $("tpPreset").value = "0.78,0.26";
+    if (!t && $("tpPreset").value === "mine") $("tpPreset").value = "0.76,0.23";
     show();
   };
   ["tpPreset", "tpDown", "tpRatio"].forEach(id => $(id).oninput = show);
