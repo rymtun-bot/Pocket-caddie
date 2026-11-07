@@ -34,8 +34,10 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   4U = Lazarus 21° (golfer, 2026-11-01). All below untested on the Rapsodo (golfer's photos, 2026-11-01):
   1U King Cobra Baffler Pro 16°, Fujikura Speeder Baffler Pro S-flex (stiff); 2U King Cobra Baffler DWS 18°;
   3U King Cobra Baffler 20°; an Aldila NV-HL 65 regular (Cobra) shaft on one Baffler; Adams Tight Lies 19°.
-  Also an old Titleist CB 7-iron (golfer, 2026-11-07; model year, loft and shaft not yet given), compared on the patio
-  2026-11-07 against the RSi 2 7-iron.
+  Also an old Titleist 690.CB Forged 7-iron, True Temper Dynamic Gold R300 steel shaft (regular) (golfer's photos,
+  2026-11-07); compared on the patio 2026-11-07 against the RSi 2 7-iron. 7-iron loft 35° per Titleist's 690CB page
+  (titleist.com/golf-clubs/irons/2002-690cb-forged-irons) and 36° per 2nd Swing's chart
+  (2ndswing.com/titleist/single-irons/690cb-forged/), both accessed 2026-11-07: about the RSi 2 8-iron's loft (35°).
   Also: Lazarus 58° forged milled wedge; the TaylorMade RSi 2 sand wedge "S" 55° (golfer, 2026-11-01); two putters, a Scotty
   Cameron (Newport-style, coloured dots) and a Titleist Scotty Cameron. One shaft reads "Regular flex, mid kick,
   65 g, 4.5°" (club not identified). About 20 clubs in total: 14 max (Rule 4.1b).
