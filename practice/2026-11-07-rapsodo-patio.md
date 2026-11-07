@@ -33,3 +33,14 @@ ball farther past the low point, which fits the early towel hits.
 "A tad more shoulder turn at the top and a pause": club speed about 72-73 mph, carry about 130, total about 140
 and smash 1.37-1.40 (golfer's report; number of shots and Rapsodo average row not yet sent). Golfer saw club speed go up too, versus the
 shots before the change; the 12-shot set's average was 73 mph (121/127), so most of the ~9 yd gain is from smash. To confirm: 10 shots, average row.
+
+## Titleist 690.CB 7-iron (35-36° loft, Dynamic Gold R300 steel): 11 shots, tagged 7i in the app
+
+| Club mph | Smash | Carry | Total | Apex ft | Launch dir | Launch angle | Shot type |
+|---|---|---|---|---|---|---|---|
+| 70 | 1.30 | 119 | 125 | 65 | 2.1° | 23.5° | ST |
+
+vs RSi 2 7-iron (31°) this morning: 73 mph, 1.26, 121/127, launch 23.1°. The CB carried within 2 yd at 3 mph less,
+with better smash and the same launch despite 4-5° more loft, so it was delivered with less added loft.
+RSi 2 8-iron (35°, same loft as the CB) carried 111 on the patio 10/31. Not yet known whether these CB swings used the
+turn + pause. Different times of day; patio carry is an estimate.
