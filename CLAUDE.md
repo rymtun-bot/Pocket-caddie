@@ -177,7 +177,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   time ("Tempo 3.0 to 1"). Works on any normal-speed video, e.g. a screen recording of a pro swing; not Slo-mo clips.
   Tempo trainer (golfer's request 2026-11-06; bottom of swing.html, swing.html#tempo, guide Menu → Tempo trainer): soft
   tick, then beeps at takeaway (low), top (middle), impact (high). Presets: Hyejin Choi driver 0.76/0.23 s (face-on
-  driver frames 2026-11-06: Address 11.866, Top 12.625, Impact 12.857 s → 3.3:1; replaced the earlier 0.78/0.26 s preset), 1.05/0.35, 1.20/0.40,
+  driver frames 2026-11-06: Address 11.866, Top 12.625, Impact 12.857 s → 3.3:1; replaced the earlier 0.78/0.26 s preset), 1.05/0.35, 1.20/0.40, short game 2:1 (golfer's request 2026-11-06; Tour Tempo
+  16/8, 18/9, 22/11 frames at 30 fps per theleftrough.com, accessed 2026-11-06): chips 0.53/0.27, chips slower 0.73/0.37,
+  putts 0.60/0.30, putts slower 0.73/0.37,
   "My saved frames", or custom downswing + ratio. Play once or repeat every 5/8/15 s.
 - My Rapsodo numbers (Clubs tab → Show my Rapsodo distances; guide Menu outside competition mode): the MLM array in
   index.html holds each club's Rapsodo top-line averages (patio and range, date, carry, total, mph, smash, launch,

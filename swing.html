@@ -164,6 +164,10 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
         <option value="0.76,0.23">Hyejin Choi driver · back 0.76 s, down 0.23 s, 3.3 to 1</option>
         <option value="1.05,0.35">Same 3 to 1, a bit slower · down 0.35 s</option>
         <option value="1.20,0.40">Same 3 to 1, practice speed · down 0.40 s</option>
+        <option value="0.53,0.27">Chips and pitches · 2 to 1, down 0.27 s</option>
+        <option value="0.73,0.37">Chips, slower · 2 to 1, down 0.37 s</option>
+        <option value="0.60,0.30">Putts · 2 to 1, down 0.30 s</option>
+        <option value="0.73,0.37">Putts, slower (long putts) · 2 to 1, down 0.37 s</option>
         <option value="mine" disabled>My saved frames (save Address, Top, Impact first)</option>
         <option value="custom">Set my own</option>
       </select>
@@ -180,7 +184,7 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
       <select id="tpGap"><option value="0">Play once</option><option value="5">5 s</option><option value="8" selected>8 s (time to rehearse)</option><option value="15">15 s (time to hit a ball)</option></select>
     </div>
     <div class="row"><button class="primary" id="tpGo">Start beeps</button></div>
-    <p class="note">Her timing is from face-on video frames (2026-11-06): Address 11.866 s, Top 12.625 s, Impact 12.857 s, so backswing 0.76 s and downswing 0.23 s, about 3.3 to 1. If the Address frame was a touch before her first move, her real backswing is slightly shorter. No sound? Turn up the volume and flip the iPhone's silent switch off.</p>
+    <p class="note">Her timing is from face-on video frames (2026-11-06): Address 11.866 s, Top 12.625 s, Impact 12.857 s, so backswing 0.76 s and downswing 0.23 s, about 3.3 to 1. If the Address frame was a touch before her first move, her real backswing is slightly shorter. Chips and putts use 2 to 1: back twice as long as through, from Tour Tempo's short-game settings (16/8, 18/9, 22/11 video frames at 30 per second; theleftrough.com/golf-short-game-tempo and /putting-tempo, accessed 2026-11-06). For those, low beep = start back, middle = end of the backstroke, high = contact. No sound? Turn up the volume and flip the iPhone's silent switch off.</p>
   </section>
 </main>
 <div class="toast" id="toast" hidden></div>
