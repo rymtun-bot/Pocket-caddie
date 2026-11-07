@@ -173,6 +173,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   behind >3° = adding loft). Behind: head rise (>5%) or dip, toward/away from the ball (early extension). Thresholds are
   rough guides, not published standards. Compares with Rapsodo numbers typed in (selector: this shot or club average) (launch/loft > 0.75 = high,
   start right with a slide, smash < 1.25 with standing up). Findings are spoken, copyable, and printed on the shared picture.
+  Tempo (2026-11-07): with Address (saved at the club's first move), Top and Impact saved, shows backswing ÷ downswing
+  time ("Tempo 3.0 to 1"). Works on any normal-speed video, e.g. a screen recording of a pro swing; not Slo-mo clips.
 - My Rapsodo numbers (Clubs tab → Show my Rapsodo distances; guide Menu outside competition mode): the MLM array in
   index.html holds each club's Rapsodo top-line averages (patio and range, date, carry, total, mph, smash, launch,
   start). Add every new session's averages there. Each card shows the carry Pocket Caddie uses now; "Switch Pocket Caddie to N" sets it.

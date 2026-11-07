@@ -133,6 +133,7 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
   <section class="panel" id="framesPanel" hidden>
     <h2>3 · Save the four key frames</h2>
     <div class="marks" id="marks"></div>
+    <p id="tempo" class="note" style="font-size:1.1em"></p>
   </section>
 
   <section class="panel" id="checkPanel" hidden>
@@ -246,6 +247,11 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
       ${frames[m] ? `<img src="${frames[m].dataURL}" alt="${m} frame">` : `<img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">`}
       <div class="row"><button data-grab="${m}">Save ${m.toLowerCase()}</button>${frames[m] ? `<button data-go="${m}" style="flex:0 0 auto">Go</button>` : ""}</div>
     </div>`).join("");
+    const A = frames.Address, T = frames.Top, I = frames.Impact;   // tempo: save Address at the first move of the club
+    $("tempo").innerHTML = A && T && I && A.t < T.t && T.t < I.t
+      ? `<b>Tempo ${((T.t - A.t) / (I.t - T.t)).toFixed(1)} to 1</b> · backswing ${(T.t - A.t).toFixed(2)} s, downswing ${(I.t - T.t).toFixed(2)} s` +
+        `<br>(Save "address" at the first frame the club moves. Use a normal-speed video: Slo-mo speeds up and slows down inside the clip.)`
+      : (A || T || I ? "Tempo: save Address (first move of the club), Top and Impact to see backswing ÷ downswing." : "");
     $("marks").querySelectorAll("[data-grab]").forEach(b => b.onclick = () => grab(b.dataset.grab));
     $("marks").querySelectorAll("[data-go]").forEach(b => b.onclick = () => { vid.pause(); seek(frames[b.dataset.go].t); });
     $("sharePanel").hidden = !MOMENTS.some(m => frames[m]);
