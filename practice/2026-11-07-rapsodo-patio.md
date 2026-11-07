@@ -42,5 +42,5 @@ shots before the change; the 12-shot set's average was 73 mph (121/127), so most
 
 vs RSi 2 7-iron (31°) this morning: 73 mph, 1.26, 121/127, launch 23.1°. The CB carried within 2 yd at 3 mph less,
 with better smash and the same launch despite 4-5° more loft, so it was delivered with less added loft.
-RSi 2 8-iron (35°, same loft as the CB) carried 111 on the patio 10/31. Not yet known whether these CB swings used the
-turn + pause. Different times of day; patio carry is an estimate.
+RSi 2 8-iron (35°, same loft as the CB) carried 111 on the patio 10/31. The CB swings used the turn + pause (golfer);
+the RSi 7-iron 12-shot set did not. Different times of day; patio carry is an estimate.
