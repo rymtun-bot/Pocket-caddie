@@ -24,6 +24,9 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   Stock lofts per 2nd Swing's spec table (https://www.2ndswing.com/golf-clubs/iron-sets/taylormade-rsi-2-iron-set,
   accessed 2026-10-26; not a TaylorMade sheet): 7-iron 31°, 8-iron 35°, 9-iron 40°, PW 45°. The golfer's own lofts
   may differ if the clubs were ever bent; have them checked if gapping looks off.
+  RSi 2 stock steel option: KBS Tour 105 (about 105 g; Plugged In Golf RSi2 review, pluggedingolf.com/taylormade-rsi2-irons-review,
+  and 2nd Swing listings incl. regular flex, accessed 2026-11-08). Reshaft idea (golfer, 2026-11-08): steel in 7i, 9i, PW,
+  7i first as a test; no fitter. Candidates: N.S. Pro 950GH R (as in the 5U), KBS Tour 105 R, Dynamic Gold R300 (as in the CB).
 - Wedges (from the golfer, 2026-10-31): gap wedge 50°, Lazarus; sand wedge 54°, Lazarus (Rapsodo labels it SW).
   Steel shafts (golfer, 2026-11-08). Lazrus sells its wedges with an unbranded stepped steel shaft, "wedge" or regular flex,
   about 35.25 in (Golf Monthly Lazrus wedge review, golfmonthly.com/reviews/wedges/lazrus-wedge-review, accessed 2026-11-08);
