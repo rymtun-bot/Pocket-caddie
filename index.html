@@ -895,7 +895,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     { club: "54° hip to hip", place: "Patio", date: "2026-11-04", carry: 57, total: 67, mph: 44, smash: 1.30, launch: 31.2, dir: -2.5, note: "Assumed hip to hip (to confirm); carry = Rapsodo's figure, rest = mean of 5 non-outlier shots; tagged PW" },
     { club: "50°", place: "Patio", date: "2026-11-07", carry: 73, total: 80, mph: 55, smash: 1.19, launch: 28.8, dir: 4.2, note: "Full swing, 12 shots, Rapsodo average row; chart shows about 8 shots near 80 and 4 short near 50" },
     { club: "7i", place: "Patio", date: "2026-11-07", carry: 121, total: 127, mph: 73, smash: 1.26, launch: 23.1, dir: 1.4, note: "12 shots, Rapsodo average row; towel 4 in behind, hit on shots 3 and 4 (maybe a few later); ball a little forward" },
-    { club: "690.CB 7i", place: "Patio", date: "2026-11-07", carry: 119, total: 125, mph: 70, smash: 1.30, launch: 23.5, dir: 2.1, note: "Titleist 690.CB 7-iron (35-36° loft), Dynamic Gold R300 steel; 11 shots, Rapsodo average row (tagged 7i in the app)" }
+    { club: "690.CB 7i", place: "Patio", date: "2026-11-07", carry: 119, total: 125, mph: 70, smash: 1.30, launch: 23.5, dir: 2.1, note: "Titleist 690.CB 7-iron (35-36° loft), Dynamic Gold R300 steel; 11 shots, Rapsodo average row (tagged 7i in the app)" },
+    { club: "690.CB 6i", place: "Patio", date: "2026-11-08", carry: 122, total: 130, mph: 72, smash: 1.30, launch: 19.7, dir: 5.4, note: "Titleist 690.CB 6-iron (31°, same loft as RSi 2 7i); 12 shots, Rapsodo average row (tagged 7i); golfer: not a good session" }
   ];
   const clubKey = n => { const t = String(n).toLowerCase().replace(/[\s°-]/g, "").replace(/iron$/, "i");
     return ({ driver: "1w", dr: "1w", pitchingwedge: "pw", gw: "50", gapwedge: "50", "50": "50", sw: "54", sandwedge: "54", "54": "54" })[t] || t; };
