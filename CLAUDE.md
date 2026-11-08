@@ -25,6 +25,9 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   accessed 2026-10-26; not a TaylorMade sheet): 7-iron 31°, 8-iron 35°, 9-iron 40°, PW 45°. The golfer's own lofts
   may differ if the clubs were ever bent; have them checked if gapping looks off.
 - Wedges (from the golfer, 2026-10-31): gap wedge 50°, Lazarus; sand wedge 54°, Lazarus (Rapsodo labels it SW).
+  Steel shafts (golfer, 2026-11-08). Lazrus sells its wedges with an unbranded stepped steel shaft, "wedge" or regular flex,
+  about 35.25 in (Golf Monthly Lazrus wedge review, golfmonthly.com/reviews/wedges/lazrus-wedge-review, accessed 2026-11-08);
+  no weight published.
   Long clubs also in the bag: 1U, 2U, 3U (20°), 4U, 5U (26°, older King Cobra Baffler), 5W, 3W, driver.
 - Driver (golfer's photos, 2026-11-01): TaylorMade SIM Max 10.5°, sleeve at STD LOFT, Fujikura Ventus 6-R shaft.
   SIM Max sleeve adjusts loft about ±2°, and adding loft opens the face (retailer and tuning-guide pages, accessed 2026-11-01).
