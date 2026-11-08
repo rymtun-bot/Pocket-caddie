@@ -45,7 +45,8 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   (titleist.com/golf-clubs/irons/2002-690cb-forged-irons) and 36° per 2nd Swing's chart
   (2ndswing.com/titleist/single-irons/690cb-forged/), both accessed 2026-11-07: about the RSi 2 8-iron's loft (35°).
   Titleist's loft row for the set (same page): 3i 21°, 4i 24°, 5i 27°, 6i 31°, 7i 35°, 8i 39°, 9i 43°, PW 47° (about 4° weaker
-  than the RSi 2 at each number). Switch decision pending: patio RSi 7 / RSi 8 / CB 7 test (turn + pause), then range.
+  than the RSi 2 at each number). CB grips are thicker than the RSi grips (golfer, 2026-11-08): a second difference besides
+  head and shaft; may explain both the better smash/lower launch and the right start (5.4° on 11/08). Switch decision pending: patio RSi 7 / RSi 8 / CB 7 test (turn + pause), then range.
   Also: Lazarus 58° forged milled wedge; the TaylorMade RSi 2 sand wedge "S" 55° (golfer, 2026-11-01); two putters, a Scotty
   Cameron (Newport-style, coloured dots) and a Titleist Scotty Cameron. One shaft reads "Regular flex, mid kick,
   65 g, 4.5°" (club not identified). About 20 clubs in total: 14 max (Rule 4.1b).
