@@ -34,6 +34,8 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   Long clubs also in the bag: 1U, 2U, 3U (20°), 4U, 5U (26°, older King Cobra Baffler), 5W, 3W, driver.
 - Driver (golfer's photos, 2026-11-01): TaylorMade SIM Max 10.5°, sleeve at STD LOFT, Fujikura Ventus 6-R shaft.
   SIM Max sleeve adjusts loft about ±2°, and adding loft opens the face (retailer and tuning-guide pages, accessed 2026-11-01).
+  A coach measured the golfer and said the driver is about 1.5 in too long (golfer, 2026-11-09). Test choking down 1-1.5 in
+  on the Rapsodo before cutting it down; ask whether the irons were also checked.
 - Fairway woods (golfer's photos, 2026-11-01): Cleveland Launcher XL Halo 3-wood 15° (Cleveland shaft, flex not shown);
   TaylorMade Burner 3-wood (sole appears to read 15°) and Burner 5-wood 18°, both TaylorMade REAX 49 R shafts.
   The "3W" in Rapsodo sessions so far is the Burner (golfer, 2026-11-01); the Cleveland 3W is untested.
