@@ -107,6 +107,10 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
 - 2026-11-04: Rapsodo, patio, PW full, PW choked 1 in, PW hip to hip, 54° full, choked 1 in and hip to hip (assumed labels; tagged PW in the app) (MLM clubs "PW choked 1 in", "PW hip to hip", "54° choked 1 in", "54° hip to hip"); 6-iron 3 shots 124 and 7-iron 2 shots 122 (no gap; both low launch, ~5° right); evening set 7i 124, 6i 135, 5U 131, 4U 135, 3U 144 (app tags 5i/4i/5w), no average row on the screenshot, so mean of the rows (Supersoft; `practice/2026-11-04-rapsodo-patio.md`).
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
+- Rhythm first (golfer's decision 2026-11-09): settle one swing rhythm before re-measuring distances or deciding RSi vs CB.
+  Week of 11/09: rhythm sessions with the 7-iron (5 balls all-out for max mph; 10 counting "1 - 2 (pause) - 3"; 10 to Tempo
+  beeps 1.05/0.35), keep the one with the best smash and start line. Week of 11/16: with that rhythm, RSi 7 vs CB 6 and
+  re-measure every club (patio + range); then update Clubs-tab carries and both plans. Week of 11/23: course prep.
 - Current two-week plan and pre-shot routine: `practice/plan-2026-11.md` (first real round planned Tuesday 2026-12-01).
 - Day-by-day session list to Dec 1: `practice/daily-sessions.md`.
 - Home course game (hole-by-hole Westchester/Rancho on the patio): `practice/home-course-game.md`.
