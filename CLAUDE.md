@@ -108,7 +108,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
 - Rhythm first (golfer's decision 2026-11-09): settle one swing rhythm before re-measuring distances or deciding RSi vs CB.
-  Week of 11/09: rhythm sessions with the 7-iron (5 balls all-out for max mph; 10 counting "1 - 2 (pause) - 3"; 10 to Tempo
+  Week of 11/09: rhythm sessions with the 7-iron, no all-out swings (golfer, 11/09) (10 counting "1 - 2 (pause) - 3"; 10 to Tempo
   beeps 1.05/0.35), keep the one with the best smash and start line. Week of 11/16: with that rhythm, RSi 7 vs CB 6 and
   re-measure every club (patio + range); then update Clubs-tab carries and both plans. Week of 11/23: course prep.
 - Current two-week plan and pre-shot routine: `practice/plan-2026-11.md` (first real round planned Tuesday 2026-12-01).
