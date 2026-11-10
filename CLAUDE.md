@@ -40,6 +40,8 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   wrist-to-floor (kept out of this repo) the irons look about standard length, not 1.5 in long; height still needed to confirm.
   Toe sits up about 4 quarters' thickness at address with the hip-bend setup (golfer, 2026-11-10); 1 coin is the usual
   target. Check at impact (marker line on the ball) before bending lofts/lies: shots start right, which points the other way.
+  Golfer hits woods and hybrids better with the sole flat; plans to try irons with the sole flat too (2026-11-10). Test:
+  7-iron 10 balls usual setup vs 10 sole flat (hands a little higher), same rhythm; compare smash, start, launch, face marks.
 - Fairway woods (golfer's photos, 2026-11-01): Cleveland Launcher XL Halo 3-wood 15° (Cleveland shaft, flex not shown);
   TaylorMade Burner 3-wood (sole appears to read 15°) and Burner 5-wood 18°, both TaylorMade REAX 49 R shafts.
   The "3W" in Rapsodo sessions so far is the Burner (golfer, 2026-11-01); the Cleveland 3W is untested.
