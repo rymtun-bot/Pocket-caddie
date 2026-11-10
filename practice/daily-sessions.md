@@ -6,7 +6,7 @@ and **5 min visualization**. Thursdays: putting and visualization only.
 ## Session types (what to do, step by step)
 
 **M · Measure (35 min)**
-1. Warm-up, 5 min (arm circles, torso turns, hip hinges, leg swings, lunges, 10 hold-off half swings with PW).
+1. Warm-up, 5 min (arm circles, torso turns, hip hinges, leg swings, lunges, 10 release half swings with PW: toe points up at waist height on the way through).
 2. Setup: alignment stick ball → net, Rapsodo 7 ft back on the stick, ball on the tape mark, net 8 ft.
 3. Club 1: 10 balls. Wait for the ready signal. Note any missed read.
 4. Club 2: 10 balls, same way.
