@@ -117,6 +117,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
 - 2026-11-04: Rapsodo, patio, PW full, PW choked 1 in, PW hip to hip, 54° full, choked 1 in and hip to hip (assumed labels; tagged PW in the app) (MLM clubs "PW choked 1 in", "PW hip to hip", "54° choked 1 in", "54° hip to hip"); 6-iron 3 shots 124 and 7-iron 2 shots 122 (no gap; both low launch, ~5° right); evening set 7i 124, 6i 135, 5U 131, 4U 135, 3U 144 (app tags 5i/4i/5w), no average row on the screenshot, so mean of the rows (Supersoft; `practice/2026-11-04-rapsodo-patio.md`).
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
+- Warm-up drills (2026-11-10; WARM_DRILLS in index.html, also in practice/plan-2026-11.md): setup check, toe up toe up,
+  one-two-pause-three, halfway-back check, full routine. Shown on the guide's warm-up screen (read aloud with it, plus
+  "🔊 Read the drills again") and spoken any time from guide Menu → "🔊 Read my warm-up drills" (golfer's request).
 - Release (golfer, 2026-11-10): thinks they hold off the release to avoid hooks, leaving the face open (start right ~5°).
   Warm-up "hold-off half swings" replaced with release half swings (toe up at waist height through). Watch start direction:
   aim for 0-2°; back off if shots start more than 3° left or the app shows L/hook.
@@ -211,7 +214,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   16/8, 18/9, 22/11 frames at 30 fps per theleftrough.com, accessed 2026-11-06): chips 0.53/0.27, chips slower 0.73/0.37,
   putts 0.60/0.30, putts slower 0.73/0.37,
   "My saved frames", or custom downswing + ratio. Play once or repeat every 5/8/15 s.
-  7 Nov (a) (golfer couldn't find the Rhythm list): "🎵 Tempo beeps" chip in the full app's top bar and a
+  10 Nov (a) (golfer couldn't find the Rhythm list): "🎵 Tempo beeps" chip in the full app's top bar and a
   "🎵 Tempo beeps ↓" link at the top of swing.html; both links use swing.html?v=7a#tempo to skip a cached copy.
 - My Rapsodo numbers (Clubs tab → Show my Rapsodo distances; guide Menu outside competition mode): the MLM array in
   index.html holds each club's Rapsodo top-line averages (patio and range, date, carry, total, mph, smash, launch,
@@ -250,7 +253,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   6 Nov (g): the screen loads today's wind (Open-Meteo at the phone) and shows it against the range (south); every answer
   adds "plays like" (rmPlays: flag bearing from the mat, x = east along the row, y = south; wind along that line,
   temperature, pressure, with the Setup factors). Tested: 10 mph straight in, red from mat 15 77 → plays 84.
-  7 Nov (a) (golfer couldn't find it): "🚩 Range flags" chip in the top bar of the full app, second item in the guide
+  10 Nov (a) (golfer couldn't find it): "🚩 Range flags" chip in the top bar of the full app, second item in the guide
   Menu, and a direct link https://rymtun-bot.github.io/Pocket-caddie/#flags.
 - Hole map (Play tab, guide Menu; 2026-11-04): Leaflet 1.9.4 from cdnjs, loaded on open; OpenStreetMap tiles or Esri
   World Imagery (satellite) with attribution. Shows you, saved green points and hazards; tap to measure from you (GPS)
@@ -287,7 +290,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "7 Nov (a)" (also a "v 7 Nov (a) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "10 Nov (a)" (also a "v 10 Nov (a) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
