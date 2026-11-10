@@ -119,8 +119,10 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
 - Warm-up (2026-11-10; WARM_BODY + WARM_DRILLS in index.html, also in practice/plan-2026-11.md): 5 body exercises
   in 5 minutes (arm circles, torso turns, hip hinges, leg swings, lunge with a turn), then 5 drills: setup check, toe up
-  toe up, one-two-pause-three, halfway-back check, full routine. Shown on the guide's warm-up screen (read aloud with it, plus
-  "🔊 Read the drills again") and spoken any time from guide Menu → "🔊 Read my warm-up drills" (golfer's request).
+  toe up, one-two-pause-three, halfway-back check, full routine. Shown on the guide's warm-up screen. Guided warm-up
+  (golfer's request; warmGo): guide Menu → "▶ Guided warm-up (spoken, timed)" or the warm-up screen's button speaks each
+  item, counts down (WARM_SECS: body 45-60 s, drills 60-120 s, "Ten seconds" warning), then moves on; Next / Pause / Stop.
+  "🔊 Read the list once" reads all ten without timing.
 - Release (golfer, 2026-11-10): thinks they hold off the release to avoid hooks, leaving the face open (start right ~5°).
   Warm-up "hold-off half swings" replaced with release half swings (toe up at waist height through). Watch start direction:
   aim for 0-2°; back off if shots start more than 3° left or the app shows L/hook.
@@ -291,7 +293,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "10 Nov (a)" (also a "v 10 Nov (a) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "10 Nov (b)" (also a "v 10 Nov (b) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
