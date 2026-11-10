@@ -42,6 +42,8 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   target. Check at impact (marker line on the ball) before bending lofts/lies: shots start right, which points the other way.
   Golfer hits woods and hybrids better with the sole flat; plans to try irons with the sole flat too (2026-11-10). Test:
   7-iron 10 balls usual setup vs 10 sole flat (hands a little higher), same rhythm; compare smash, start, launch, face marks.
+  At address the RSi 7 toe sits up much more than the CB's (golfer, 2026-11-10): RSi is 0.5 in longer and/or more upright.
+  Fits the start lines: RSi 7 started 1.4° right (11/07), CB 6 5.4° right (11/08); toe-up tilts the face left.
 - Fairway woods (golfer's photos, 2026-11-01): Cleveland Launcher XL Halo 3-wood 15° (Cleveland shaft, flex not shown);
   TaylorMade Burner 3-wood (sole appears to read 15°) and Burner 5-wood 18°, both TaylorMade REAX 49 R shafts.
   The "3W" in Rapsodo sessions so far is the Burner (golfer, 2026-11-01); the Cleveland 3W is untested.
