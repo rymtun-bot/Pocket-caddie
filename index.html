@@ -2511,7 +2511,12 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (name === "gps") return screen(before, `<h3>Location</h3><p class="q">Allow location if your phone asks.</p>
       <p class="q"><b id="wizGps"></b></p><p class="live">Make sure your phone is charged.</p>`,
       [["Continue", () => step(S.osmTried && S.osmTried[S.cur.course] ? "warm" : "osm"), true]]), wizLive();
-    if (name === "warm") return screen(before, `<h3>Warm up</h3><p class="q">10 minutes of warm-up, then 15 minutes on the practice green.</p>`,
+    if (name === "warm") return screen(before, `<h3>Warm up</h3><p class="q">Body warm-up first (5 min), then these 5 drills, then 15 minutes on the practice green.</p>
+      <ol style="text-align:left;line-height:1.5"><li><b>Setup check</b>: stick or club on the target line; sole flat; one fist gap; ball position for the club.</li>
+      <li><b>Toe up, toe up</b>: 10 half swings with the PW; toe up at waist height going back and coming through (release).</li>
+      <li><b>One, two, pause, three</b>: 5 swings at three-quarter speed, saying the count, pause at the top.</li>
+      <li><b>Halfway-back check</b>: 3 slow swings stopping with the lead arm level; grip end points at the ball line.</li>
+      <li><b>Full routine</b>: 5 balls with different clubs, your whole pre-shot routine each time.</li></ol>`,
       [["Start round on hole " + S.cur.hole, () => { S.guide.day = today(); S.wiz.newHole = true; S.wiz.strokes = 0;
         S.round = { date: today(), course: S.cur.course, tees: S.tee, scores: {} }; save(); step("yds"); }, true]]);
 
