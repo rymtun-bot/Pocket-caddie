@@ -1905,16 +1905,24 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       .replace(/\b(\d{1,2})i\b/g, "$1 iron").replace(/\b(\d)U\b/g, "$1 utility").replace(/\b(\d)W\b/g, "$1 wood")
       .replace(/\bPar\b/g, "par");
   }
+  const WARM_BODY = [
+    ["Arm circles", "10 forward and 10 backward, small to big. About 45 seconds."],
+    ["Torso turns", "club across your shoulders, turn back and through 10 times, slowly. About 1 minute."],
+    ["Hip hinges", "club along your back touching head and tailbone, bend from the hips 10 times keeping it touching. About 1 minute."],
+    ["Leg swings", "hold the club for balance, swing each leg forward and back 10 times. About 1 minute."],
+    ["Lunge with a turn", "step forward into a gentle lunge and turn your chest over the front leg, 5 each side. About 1 minute. Stop if anything hurts."]];
   const WARM_DRILLS = [
     ["Setup check", "stick or club on the target line; sole flat; one fist gap; ball position for the club."],
     ["Toe up, toe up", "10 half swings with the pitching wedge; toe up at waist height going back and coming through. Let it release."],
     ["One, two, pause, three", "5 swings at three-quarter speed, saying the count, with a pause at the top."],
     ["Halfway-back check", "3 slow swings, stopping when your lead arm is level; the grip end points at the ball line."],
     ["Full routine", "5 balls with different clubs, your whole pre-shot routine each time."]];
-  const warmList = () => `<ol class="say" style="text-align:left;line-height:1.5">${WARM_DRILLS.map(([a, b]) => `<li><b>${a}</b>: ${b}</li>`).join("")}</ol>`;
+  const olSay = list => `<ol class="say" style="text-align:left;line-height:1.5">${list.map(([a, b]) => `<li><b>${a}</b>: ${b}</li>`).join("")}</ol>`;
+  const warmList = () => `<p class="q">Body, 5 minutes:</p>${olSay(WARM_BODY)}<p class="q">Then the swing drills:</p>${olSay(WARM_DRILLS)}`;
   function sayWarmDrills() {   // read the 5 warm-up drills aloud on request, even with read-aloud off
     if (!canSpeak) { toast("This browser can't read aloud"); return; }
-    const u = new SpeechSynthesisUtterance("Warm-up drills. " + WARM_DRILLS.map(([a, b], i) => `${i + 1}. ${a}. ${b}`).join(" "));
+    const say = l => l.map(([a, b], i) => `${i + 1}. ${a}. ${b}`).join(" ");
+    const u = new SpeechSynthesisUtterance("Warm-up. Body, 5 minutes. " + say(WARM_BODY) + " Then the swing drills. " + say(WARM_DRILLS));
     u.rate = 0.9; speechSynthesis.cancel(); speechSynthesis.speak(u);
   }
   function speakScreen(title) {
@@ -2523,7 +2531,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (name === "gps") return screen(before, `<h3>Location</h3><p class="q">Allow location if your phone asks.</p>
       <p class="q"><b id="wizGps"></b></p><p class="live">Make sure your phone is charged.</p>`,
       [["Continue", () => step(S.osmTried && S.osmTried[S.cur.course] ? "warm" : "osm"), true]]), wizLive();
-    if (name === "warm") return screen(before, `<h3>Warm up</h3><p class="q">Body warm-up first (5 min), then these 5 drills, then 15 minutes on the practice green.</p>
+    if (name === "warm") return screen(before, `<h3>Warm up</h3><p class="q">5 body exercises (5 minutes), then 5 swing drills, then 15 minutes on the practice green.</p>
       ${warmList()}`,
       [["Start round on hole " + S.cur.hole, () => { S.guide.day = today(); S.wiz.newHole = true; S.wiz.strokes = 0;
         S.round = { date: today(), course: S.cur.course, tees: S.tee, scores: {} }; save(); step("yds"); }, true],
@@ -2534,7 +2542,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       return screen("Menu", `<h3>Menu</h3>`, [
         ["Back to the guide", () => step(back), true],
         ...(S.comp ? [] : [["🚩 Range flags (yards to the range flags)", () => rfOpen()]]),
-        ["🔊 Read my warm-up drills", () => sayWarmDrills()],
+        ["🔊 Read my warm-up (body + drills)", () => sayWarmDrills()],
         ...(S.pending ? [["Cancel the shot being measured", () => { $("cancelShot").click(); step("after"); }]] : []),
         ["Add a penalty stroke", () => { S.wiz.pen = (S.wiz.pen || 0) + 1; save(); toast(`Penalty added (${S.wiz.pen} on this hole)`); step(back); }],
         ["Plan for this hole", () => step("plan")],
