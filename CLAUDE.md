@@ -220,11 +220,12 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Sound (golfer's request 2026-11-11): Beeps, Spoken count (default: "one" takeaway, "and" 1/3 back, "two" 2/3 back,
   "and" top, "go" impact; speechSynthesis rate 1.5, each word started 0.12 s early for phone lag), or count + beep on "go".
   At 1.05/0.35 the five words fall evenly 0.35 s apart (tested in a desktop browser, not yet on the iPhone).
-  11 Nov (c): golfer heard no count on the iPhone; Start now speaks "Ready" inside the tap (Safari unlocks speech only
+  11 Nov (b): golfer heard no count on the iPhone; Start now speaks "Ready" inside the tap (Safari unlocks speech only
   from a user gesture), then the timed words.
   11 Nov (c): golfer heard no beeps either, so sound is now rendered into one WAV (22.05 kHz) and played by an <audio>
   element (loops for "Repeat every"): words from audio/{ready,one,and,two,go}.wav (espeak-ng en-us, trimmed), beeps
-  synthesised; no Web Audio or speechSynthesis. Timing checked by decoding the file; not yet heard on the iPhone.
+  synthesised; no Web Audio or speechSynthesis. Timing checked by decoding the file. Golfer confirmed the count plays on
+  the iPhone (2026-11-11).
   7 Nov (a) (golfer couldn't find the Rhythm list): "🎵 Tempo beeps" (11 Nov: "🎵 Tempo count", links swing.html?v=11c#tempo) chip in the full app's top bar and a
   "🎵 Tempo beeps ↓" link at the top of swing.html; both links use swing.html?v=7a#tempo to skip a cached copy.
 - My Rapsodo numbers (Clubs tab → Show my Rapsodo distances; guide Menu outside competition mode): the MLM array in
