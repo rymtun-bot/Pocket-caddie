@@ -66,7 +66,7 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
 <header><div class="wrap">
   <h1>Swing Frames</h1>
   <a href="./">Back to Pocket Caddie</a>
-  <a href="#tempoPanel" style="margin-left:14px;font-weight:700">🎵 Tempo beeps ↓</a>
+  <a href="#tempoPanel" style="margin-left:14px;font-weight:700">🎵 Tempo count ↓</a>
 </div></header>
 
 <main class="wrap">
@@ -173,6 +173,10 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
         <option value="custom">Set my own</option>
       </select>
     </div>
+    <div class="row">
+      <label for="tpSound">Sound</label>
+      <select id="tpSound"><option value="beep">Beeps</option><option value="count" selected>Spoken count: "one, and, two, and, go"</option><option value="both">Spoken count + beep on "go"</option></select>
+    </div>
     <div id="tpCustom" class="row" hidden>
       <label for="tpDown">Downswing <span id="tpDownV"></span> s</label>
       <input id="tpDown" type="range" min="0.20" max="0.50" step="0.01" value="0.30">
@@ -183,10 +187,6 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
     <div class="row">
       <label for="tpGap">Repeat every</label>
       <select id="tpGap"><option value="0">Play once</option><option value="5">5 s</option><option value="8" selected>8 s (time to rehearse)</option><option value="15">15 s (time to hit a ball)</option></select>
-    </div>
-    <div class="row">
-      <label for="tpSound">Sound</label>
-      <select id="tpSound"><option value="beep">Beeps</option><option value="count" selected>Spoken count: "one, and, two, and, go"</option><option value="both">Spoken count + beep on "go"</option></select>
     </div>
     <p class="note">Spoken count: "one" = start back, "and, two" = keep going back, "and" = top, "go" = impact. The phone's voice can lag a little; if "go" feels late, use "Spoken count + beep" and hit on the beep.</p>
     <div class="row"><button class="primary" id="tpGo">Start</button></div>
