@@ -220,9 +220,12 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Sound (golfer's request 2026-11-11): Beeps, Spoken count (default: "one" takeaway, "and" 1/3 back, "two" 2/3 back,
   "and" top, "go" impact; speechSynthesis rate 1.5, each word started 0.12 s early for phone lag), or count + beep on "go".
   At 1.05/0.35 the five words fall evenly 0.35 s apart (tested in a desktop browser, not yet on the iPhone).
-  11 Nov (b): golfer heard no count on the iPhone; Start now speaks "Ready" inside the tap (Safari unlocks speech only
+  11 Nov (c): golfer heard no count on the iPhone; Start now speaks "Ready" inside the tap (Safari unlocks speech only
   from a user gesture), then the timed words.
-  7 Nov (a) (golfer couldn't find the Rhythm list): "🎵 Tempo beeps" (11 Nov: "🎵 Tempo count", links swing.html?v=11b#tempo) chip in the full app's top bar and a
+  11 Nov (c): golfer heard no beeps either, so sound is now rendered into one WAV (22.05 kHz) and played by an <audio>
+  element (loops for "Repeat every"): words from audio/{ready,one,and,two,go}.wav (espeak-ng en-us, trimmed), beeps
+  synthesised; no Web Audio or speechSynthesis. Timing checked by decoding the file; not yet heard on the iPhone.
+  7 Nov (a) (golfer couldn't find the Rhythm list): "🎵 Tempo beeps" (11 Nov: "🎵 Tempo count", links swing.html?v=11c#tempo) chip in the full app's top bar and a
   "🎵 Tempo beeps ↓" link at the top of swing.html; both links use swing.html?v=7a#tempo to skip a cached copy.
 - My Rapsodo numbers (Clubs tab → Show my Rapsodo distances; guide Menu outside competition mode): the MLM array in
   index.html holds each club's Rapsodo top-line averages (patio and range, date, carry, total, mph, smash, launch,
@@ -298,7 +301,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "11 Nov (b)" (also a "v 11 Nov (b) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "11 Nov (c)" (also a "v 11 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
