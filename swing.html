@@ -157,7 +157,7 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
     <img id="sheetPreview" alt="Preview of the picture to share" style="width:100%;border-radius:8px;border:1px solid var(--line)" hidden>
   </section>
   <section class="panel" id="tempoPanel">
-    <h2>Tempo trainer (beeps)</h2>
+    <h2>Tempo trainer (count or beeps)</h2>
     <p class="note">Three beeps: <b>low</b> = start the takeaway, <b>middle</b> = top, <b>high</b> = impact. Swing so the club reaches each spot on its beep. A soft tick comes first so you can get set.</p>
     <div class="row">
       <label for="tpPreset">Rhythm</label>
@@ -184,7 +184,12 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
       <label for="tpGap">Repeat every</label>
       <select id="tpGap"><option value="0">Play once</option><option value="5">5 s</option><option value="8" selected>8 s (time to rehearse)</option><option value="15">15 s (time to hit a ball)</option></select>
     </div>
-    <div class="row"><button class="primary" id="tpGo">Start beeps</button></div>
+    <div class="row">
+      <label for="tpSound">Sound</label>
+      <select id="tpSound"><option value="beep">Beeps</option><option value="count" selected>Spoken count: "one, and, two, and, go"</option><option value="both">Spoken count + beep on "go"</option></select>
+    </div>
+    <p class="note">Spoken count: "one" = start back, "and, two" = keep going back, "and" = top, "go" = impact. The phone's voice can lag a little; if "go" feels late, use "Spoken count + beep" and hit on the beep.</p>
+    <div class="row"><button class="primary" id="tpGo">Start</button></div>
     <p class="note">Her timing is from face-on video frames (2026-11-06): Address 11.866 s, Top 12.625 s, Impact 12.857 s, so backswing 0.76 s and downswing 0.23 s, about 3.3 to 1. If the Address frame was a touch before her first move, her real backswing is slightly shorter. Chips and putts use 2 to 1: back twice as long as through, from Tour Tempo's short-game settings (16/8, 18/9, 22/11 video frames at 30 per second; theleftrough.com/golf-short-game-tempo and /putting-tempo, accessed 2026-11-06). For those, low beep = start back, middle = end of the backstroke, high = contact. No sound? Turn up the volume and flip the iPhone's silent switch off.</p>
   </section>
 </main>
@@ -456,21 +461,39 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
     g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(vol, at + 0.005); g.gain.exponentialRampToValueAtTime(0.001, at + len);
     o.start(at); o.stop(at + len + 0.02);
   };
-  const once = () => {
-    const [b, d] = times(), t0 = ctx.currentTime + 1.2;
-    beep(t0 - 1.0, 440, 0.05, 0.25);      // soft tick: get set
-    beep(t0, 523, 0.12, 0.7);             // takeaway
-    beep(t0 + b, 784, 0.10, 0.7);         // top
-    beep(t0 + b + d, 1047, 0.18, 0.9);    // impact
+  // Spoken count (golfer's request 2026-11-11): "one" takeaway, "and" a third back, "two" two thirds back, "and" top, "go" impact.
+  let sayT = [];
+  const LEAD = 0.12;   // speech starts a little late on phones; start each word slightly early
+  const say = (at, w) => {
+    if (!("speechSynthesis" in window)) return;
+    sayT.push(setTimeout(() => { const u = new SpeechSynthesisUtterance(w); u.rate = 1.5; u.volume = 1; speechSynthesis.speak(u); },
+      Math.max(0, (at - LEAD - ctx.currentTime) * 1000)));
   };
-  const stop = () => { clearInterval(timer); timer = null; $("tpGo").textContent = "Start beeps"; };
+  const once = () => {
+    const [b, d] = times(), t0 = ctx.currentTime + 1.2, mode = $("tpSound").value;
+    if (mode === "beep") {
+      beep(t0 - 1.0, 440, 0.05, 0.25);      // soft tick: get set
+      beep(t0, 523, 0.12, 0.7);             // takeaway
+      beep(t0 + b, 784, 0.10, 0.7);         // top
+      beep(t0 + b + d, 1047, 0.18, 0.9);    // impact
+      return;
+    }
+    beep(t0 - 1.0, 440, 0.05, 0.25);
+    say(t0, "one"); say(t0 + b / 3, "and"); say(t0 + 2 * b / 3, "two"); say(t0 + b, "and"); say(t0 + b + d, "go");
+    if (mode === "both") beep(t0 + b + d, 1047, 0.18, 0.9);
+  };
+  const stop = () => {
+    clearInterval(timer); timer = null; sayT.forEach(clearTimeout); sayT = [];
+    if ("speechSynthesis" in window) speechSynthesis.cancel();
+    $("tpGo").textContent = "Start";
+  };
   $("tpGo").onclick = () => {
     if (timer) return stop();
     try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch {}   // let iPhone play with the silent switch on, where supported
     ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
     ctx.resume(); once();
     const gap = +$("tpGap").value;
-    if (gap) { timer = setInterval(once, gap * 1000); $("tpGo").textContent = "Stop beeps"; }
+    if (gap) { timer = setInterval(() => { sayT = []; once(); }, gap * 1000); $("tpGo").textContent = "Stop"; }
   };
   show();
   if (location.hash === "#tempo") setTimeout(() => $("tempoPanel").scrollIntoView(), 50);
