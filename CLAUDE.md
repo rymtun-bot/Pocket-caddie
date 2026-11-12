@@ -81,6 +81,10 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   understate them: range-test 6i, 5U, 4U, 3U before changing Clubs-tab carries or the plans (which still use 4U 154, 5U ~147).
   5-iron test (golfer, 2026-11-05): add 6 shots of the 5i to that range test (the 6i now carries 11 yd past the 7i).
   Golfer's rule: if the 5i is at best similar to the 5U, the 5i stays out. It goes in only if it clearly beats the 5U.
+- Bag decision (golfer, 2026-11-12): keep the 5U rather than the RSi 6-iron. With the 1U and 2U also out (recommended after
+  the 11/11 range), the bag is 13: Driver, 3W, 3U, 4U, 5U, 7i, 8i, 9i, PW, 50°, 54°, 58°, putter; one slot free (golfer to
+  choose). Range 11/11 carries: 7i 133, 5U 135, 4U 151, 3U 170, driver ~190 (STD, gripped down 1 in). The 5U sat with
+  the 7i that day (patio: 10 yd apart), so watch the 140-150 gap.
 - Laser rangefinder: Revasri. Its readings go in Pocket Caddie's "type the yardage" box.
 - Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (urethane cover).
   Titleist RCT balls (radar-reflector Pro V1/V1x for indoor launch monitors) arriving 2026-11-05 (golfer; which model not
