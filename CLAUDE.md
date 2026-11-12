@@ -129,6 +129,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
 - Release (golfer, 2026-11-10): thinks they hold off the release to avoid hooks, leaving the face open (start right ~5°).
   Warm-up "hold-off half swings" replaced with release half swings (toe up at waist height through). Watch start direction:
   aim for 0-2°; back off if shots start more than 3° left or the app shows L/hook.
+  Range 11/11: Rapsodo read 15-25° right on every club; golfer says the balls went right "but not that much", so the
+  miss is real but smaller and partly monitor aim. Summary doc: claude.ai/artifact/7RfUANKof51z9afiHjPq67.
 - Rhythm first (golfer's decision 2026-11-09): settle one swing rhythm before re-measuring distances or deciding RSi vs CB.
   Week of 11/09: rhythm sessions with the 7-iron, no all-out swings (golfer, 11/09) (10 counting "1 - 2 (pause) - 3"; 10 to Tempo
   beeps 1.05/0.35), keep the one with the best smash and start line. Week of 11/16: with that rhythm, RSi 7 vs CB 6 and

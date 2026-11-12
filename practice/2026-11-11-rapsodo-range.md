@@ -66,3 +66,8 @@ left out. The app's chip shows D 181 (it may include a shot not on the photo).
 - Grip position for these shots not stated. Start direction no better (22° R; SIM Max adds loft by opening the face).
 - Driver for the Clubs tab when it is updated: about 185-190 carry (STD, gripped down 1 in), pending the golfer's view of
   where the drives actually went.
+
+## Golfer's view of ball flight (2026-11-12)
+"Balls did go right but not that much." The right miss is real but smaller than the 15-25° readings; part of it was the
+Rapsodo's aim on the mat. Patio readings (1-5° right) are likely nearer the truth. Next range: align the unit with a club
+laid toward the target flag.
