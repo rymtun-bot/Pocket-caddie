@@ -125,7 +125,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <span class="chip warn" id="compChip" hidden>Competition mode</span>
     <button class="chip" id="rfChip" style="cursor:pointer;font-weight:700">🚩 Range flags</button>
     <a class="chip" href="swing.html?v=11c#tempo" style="font-weight:700">🎵 Tempo count</a>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 12 Nov (b) ⟳</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 12 Nov (c) ⟳</button>
   </div>
 </header>
 
@@ -291,7 +291,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><button id="darkBtn" aria-pressed="false">Dark screen (saves battery)</button></div>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 12 Nov (b). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 12 Nov (c). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -1138,7 +1138,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let last = "", k = 0;
     const order = OVERPASS.slice(ovGood).concat(OVERPASS.slice(0, ovGood));   // the server that answered last time goes first
     for (const u of order) {
-      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 12 Nov (b) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
+      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 12 Nov (c) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
       try {
         const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 25000);   // a busy server can hang: give up after 25 s
         const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: ctl.signal });
@@ -1178,7 +1178,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (cached && cached.v === 8 && Date.now() - cached.at < 7 * 864e5) return cached;
     let c = (S.coursePt || {})[id] || COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
     // the course data saved on the Pocket Caddie site (tools/fetch_osm.py) is quick; the live servers are the fallback
-    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 12 Nov (b) · Loading the course map data…";
+    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 12 Nov (c) · Loading the course map data…";
     let pre = null;
     try { const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
       const r = await fetch(`osm/${id}.json?d=${new Date().toISOString().slice(0, 10)}`, { signal: ctl.signal }); clearTimeout(tm);
@@ -1520,7 +1520,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
-    $("hmStatus").textContent = "Pocket Caddie 12 Nov (b) · Looking up the course on OpenStreetMap…";
+    $("hmStatus").textContent = "Pocket Caddie 12 Nov (c) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     hm.osmInfo = o ? `OpenStreetMap${hm.osmSrc && hm.osmSrc !== "live" ? " (" + hm.osmSrc + ")" : ""}: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
@@ -1530,7 +1530,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 12 Nov (b) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 12 Nov (c) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
@@ -1932,27 +1932,42 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   const warmList = () => `<p class="q">Body, 5 minutes:</p>${olSay(WARM_BODY)}<p class="q">Then the swing drills:</p>${olSay(WARM_DRILLS)}`;
   // Guided warm-up (golfer's request 2026-11-10): speaks each body exercise, waits its time, then each swing drill.
   const WARM_SECS = [45, 60, 60, 60, 60, 60, 90, 60, 60, 120];
+  // Cool-down after any practice or round (golfer's request 2026-11-12): gentle static holds, about 5 minutes.
+  const COOL = [
+    ["Forearms and wrists", "arm straight in front, palm up; with the other hand ease the fingers down and back. 20 seconds, then palm down and ease the hand toward you, 20 seconds. Then the other arm.", 60],
+    ["Chest and shoulders", "hold a club behind you with both hands, arms straight, and lift it gently away from your back until you feel the chest stretch. Hold 30 seconds, relax, then 30 more.", 60],
+    ["Shoulder across the body", "bring one arm across your chest and hold it above the elbow with the other hand. 30 seconds each arm.", 60],
+    ["Hamstrings", "put one heel on a step, bench or cart, leg straight, and hinge forward from the hips with your back flat. 30 seconds each leg.", 60],
+    ["Hips and thighs", "hold a club or rail for balance, step back into a gentle lunge and tuck your hips under until the front of the back hip stretches. 30 seconds each side. Breathe slowly. Stop if anything hurts.", 60]];
   let warmT = null;
-  function warmGo(i, back) {
+  function routineGo(title, all, i, back, doneText, prefix) {   // speaks each item, counts it down, then the next (warm-up and cool-down)
     clearInterval(warmT); warmT = null;
-    const all = [...WARM_BODY.map(x => ["Body", ...x]), ...WARM_DRILLS.map(x => ["Swing drill", ...x])];
     if (i >= all.length) {
-      screen("Warm-up", `<h3>Warm-up done</h3>`, [["Back", () => step(back), true]]);
-      speakNow("Warm-up done. Good luck."); return;
+      screen(title, `<h3>${doneText}</h3>`, [["Back", () => step(back), true]]);
+      speakNow(doneText); return;
     }
-    const [kind, name, how] = all[i], n = i < WARM_BODY.length ? i + 1 : i - WARM_BODY.length + 1;
-    let left = WARM_SECS[i] || 60;
-    screen("Warm-up", `<h3>${kind} ${n} of 5: ${name}</h3><p style="font-size:18px">${how}</p>
+    const [kind, n, of, name, how, secs] = all[i];
+    let left = secs || 60;
+    screen(title, `<h3>${kind} ${n} of ${of}: ${name}</h3><p style="font-size:18px">${how}</p>
       <p class="huge" id="warmLeft" aria-live="polite">${left}</p><p>seconds, then the next one starts by itself</p>`,
-      [["Next ▶", () => warmGo(i + 1, back), true], ["Pause", () => { clearInterval(warmT); warmT = null; toast("Paused. Tap Next to go on."); }],
+      [["Next ▶", () => routineGo(title, all, i + 1, back, doneText, prefix), true], ["Pause", () => { clearInterval(warmT); warmT = null; toast("Paused. Tap Next to go on."); }],
        ["Stop", () => { clearInterval(warmT); warmT = null; speechSynthesis.cancel(); step(back); }]]);
-    speakNow((i === WARM_BODY.length ? "Now the swing drills. " : "") + `${kind} ${n}. ${name}. ${how}`);
+    speakNow((prefix(i) || "") + `${kind} ${n}. ${name}. ${how}`);
     warmT = setInterval(() => {
       const el = $("warmLeft"); if (!el) { clearInterval(warmT); warmT = null; return; }
       left -= 1; el.textContent = left;
       if (left === 10) speakNow("Ten seconds.");
-      if (left <= 0) warmGo(i + 1, back);
+      if (left <= 0) routineGo(title, all, i + 1, back, doneText, prefix);
     }, 1000);
+  }
+  function warmGo(i, back) {
+    const all = [...WARM_BODY.map(([a, b], k) => ["Body", k + 1, 5, a, b, WARM_SECS[k]]),
+                 ...WARM_DRILLS.map(([a, b], k) => ["Swing drill", k + 1, 5, a, b, WARM_SECS[5 + k]])];
+    routineGo("Warm-up", all, i, back, "Warm-up done. Good luck.", k => k === WARM_BODY.length ? "Now the swing drills. " : "");
+  }
+  function coolGo(back) {
+    const all = COOL.map(([a, b, t], k) => ["Stretch", k + 1, COOL.length, a, b, t]);
+    routineGo("Cool-down", all, 0, back, "Cool-down done. Drink some water.", k => k === 0 ? "Cool-down. Hold each stretch gently, no bouncing. " : "");
   }
   function speakNow(t) { if (!canSpeak) return; const u = new SpeechSynthesisUtterance(t); u.rate = 0.9; speechSynthesis.cancel(); speechSynthesis.speak(u); }
   function sayWarmDrills() {   // read the 5 warm-up drills aloud on request, even with read-aloud off
@@ -2606,6 +2621,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         ["Back to the guide", () => step(back), true],
         ...(S.comp ? [] : [["🚩 Range flags (yards to the range flags)", () => rfOpen()]]),
         ["▶ Guided warm-up (spoken, timed)", () => warmGo(0, back)],
+        ["🧘 Guided cool-down (spoken, 5 min)", () => coolGo(back)],
         ...(S.pending ? [["Cancel the shot being measured", () => { $("cancelShot").click(); step("after"); }]] : []),
         ["Add a penalty stroke", () => { S.wiz.pen = (S.wiz.pen || 0) + 1; save(); toast(`Penalty added (${S.wiz.pen} on this hole)`); step(back); }],
         ["Plan for this hole (then step through the holes)", () => { if (!S.wiz.planHome) S.wiz.planHome = S.cur.hole; step("plan"); }],
@@ -2617,7 +2633,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         [S.dark ? "Normal screen" : "Dark screen (saves battery)", () => { S.dark = !S.dark; save(); applyDark(); step("menu"); }],
         ...(S.comp ? [] : [["Add or change this hole's green note", () => step("note")]]),
         ["Change course or tees", () => step("course")],
-        ["⟳ Get the latest version (you have 12 Nov (b))", () => location.replace(location.pathname + "?v=" + Date.now())],
+        ["⟳ Get the latest version (you have 12 Nov (c))", () => location.replace(location.pathname + "?v=" + Date.now())],
         ["Show the full app", () => { $("wiz").hidden = true; renderAll(); }]]);
     }
     if (name === "yds") {   // one thing: the yardage
@@ -2845,8 +2861,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
           + ` ${statsText()} ${nextPractice()}`)); }
       return;
     }
-    if (name === "done") return screen("Round over", `<h3>Nice round</h3>`,
-      [["Close the guide", () => { S.guide.day = ""; S.wiz.step = null; save(); $("wiz").hidden = true; renderAll(); }, true]]);
+    if (name === "done") return screen("Round over", `<h3>Nice round</h3><p class="q">5 minutes of stretching now helps you feel better tomorrow.</p>`,
+      [["🧘 Guided cool-down (5 min)", () => coolGo("done"), true], ["Close the guide", () => { S.guide.day = ""; S.wiz.step = null; save(); $("wiz").hidden = true; renderAll(); }]]);
   }
 
   function renderComp() {
