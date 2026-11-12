@@ -36,6 +36,8 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   SIM Max sleeve adjusts loft about ±2°, and adding loft opens the face (retailer and tuning-guide pages, accessed 2026-11-01).
   A coach measured the golfer and said the driver is about 1.5 in too long (golfer, 2026-11-09). Test choking down 1-1.5 in
   on the Rapsodo before cutting it down; ask whether the irons were also checked.
+  Range 11/11: gripped down 1 in, same 86 mph, smash 1.43 → 1.47; Rapsodo carry 183 → 203 (launch misread; by ball speed
+  about +5 yd). Golfer to keep gripping down 1 in; next test 1.5 in vs 1 in.
   Measured 7-iron lengths (golfer, 2026-11-10): RSi 2 7i 37.25 in (graphite), CB 7i 36.75 in (steel). From the golfer's
   wrist-to-floor (kept out of this repo) the irons look about standard length, not 1.5 in long; height still needed to confirm.
   Toe sits up about 4 quarters' thickness at address with the hip-bend setup (golfer, 2026-11-10); 1 coin is the usual

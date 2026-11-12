@@ -40,5 +40,16 @@ left out. The app's chip shows D 181 (it may include a shot not on the photo).
 - Launch 30-36° again (as on 11/02): not credible for a 10.5° driver at 1.43 smash. Ball speed 123 → about 185-188 carry
   on the 11/02 scale (122 mph → 185), so ~185 is a fair driver carry for now.
 - Side carry 44-70 yd right on every drive: if real the golfer would see big slices; needs the golfer's view.
-- A "3W" chip shows 203 on the same screen: which club/setting is not yet stated (driver at HIGHER loft?).
-- Choke-down test (coach: driver ~1.5 in too long) not reported.
+
+## Driver gripped down 1 inch (sleeve STD), tagged "3W" (golfer): shots 8-13, mean of the 6 rows
+
+| Club mph | Ball mph (est.) | Smash | Carry | Total | Launch | Launch dir | Side carry |
+|---|---|---|---|---|---|---|---|
+| 86 | ~126 | 1.47 | 203 | 204 | 33.5° | 22.2° R | 72 R |
+
+- Same club speed as the normal grip (86), smash 1.43 → 1.47 (four of six at 1.48-1.50).
+- The Rapsodo shows +20 yd carry, but its carry rests on the misread launch; from ball speed (123 → ~126 mph) the real
+  gain is about 5 yd: normal grip ~185-188, choked 1 in ~190. Better strike at no cost in speed: keep gripping down.
+- Choked shots came after the normal-grip ones (warmed up), so part of the gain may be order. Next: 1.5 in (coach's
+  figure) vs 1 in, alternating.
+- Side carry 56-91 yd right again on every drive; needs the golfer's view of the real ball flight.
