@@ -316,7 +316,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "13 Nov (j)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "13 Nov (k)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
@@ -417,6 +417,11 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
 - 13 Nov (j) (golfer's request 2026-11-12): "Right elbow points out" and the swing thought "Hands lead through impact" are no
   longer said before the shot: defaults now blank, and a one-time migration (S.mig1112) clears those two exact values on the phone.
   Still said when they apply: lie tip, hybrid setup, wedge weight. Both Setup boxes stay for anything the golfer types later.
+- Mishit encouragement (golfer's request 2026-11-12; build 13 Nov (k); S.mishitText, Setup field): "Caddie, I mishit it" (also
+  bad shot, chunked, fat, thin, topped, shanked, skulled, sliced, hooked, whiffed, terrible, messed up…; MISHIT regex) on any guide
+  screen says "It's OK. Be confident. Visualize good shots. And take deep breaths." (golfer's words) and stays on the same step,
+  so "Caddie, right" etc. still follows. The longer "Reset after a bad shot" now starts with the same line. Range shot log keeps
+  its own meaning for fat/thin (handled before this).
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 
