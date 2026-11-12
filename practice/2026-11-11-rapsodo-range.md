@@ -53,3 +53,16 @@ left out. The app's chip shows D 181 (it may include a shot not on the photo).
 - Choked shots came after the normal-grip ones (warmed up), so part of the gain may be order. Next: 1.5 in (coach's
   figure) vs 1 in, alternating.
 - Side carry 56-91 yd right again on every drive; needs the golfer's view of the real ball flight.
+
+## Driver, sleeve at HIGHER loft: shots 31-39 (last of the session), mean of the 9 rows (photos upside down)
+
+| Club mph | Ball mph | Smash | Carry | Total | Launch | Launch dir | Side carry |
+|---|---|---|---|---|---|---|---|
+| 82.6 | 118.4 | 1.43 | 172 | 172 | 35.3° | 22.2° R | 60 R |
+
+- vs STD normal grip (86 / 123 / 1.43 / 183) and STD gripped down 1 in (86 / ~126 / 1.47 / 203 Rapsodo, ~190 by ball speed):
+  HIGHER loft lost ~5 mph ball speed and ~11 yd carry at the same smash. Club speed was 3 mph lower too (last shots of
+  the day, likely tiredness), so not all of it is the loft. No sign the extra loft helps: keep the sleeve at STD.
+- Grip position for these shots not stated. Start direction no better (22° R; SIM Max adds loft by opening the face).
+- Driver for the Clubs tab when it is updated: about 185-190 carry (STD, gripped down 1 in), pending the golfer's view of
+  where the drives actually went.

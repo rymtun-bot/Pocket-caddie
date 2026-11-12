@@ -38,6 +38,7 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   on the Rapsodo before cutting it down; ask whether the irons were also checked.
   Range 11/11: gripped down 1 in, same 86 mph, smash 1.43 → 1.47; Rapsodo carry 183 → 203 (launch misread; by ball speed
   about +5 yd). Golfer to keep gripping down 1 in; next test 1.5 in vs 1 in.
+  HIGHER loft (11/11, last 9 shots): 83 mph, ball 118, carry 172, smash 1.43: no gain, so sleeve stays at STD.
   Measured 7-iron lengths (golfer, 2026-11-10): RSi 2 7i 37.25 in (graphite), CB 7i 36.75 in (steel). From the golfer's
   wrist-to-floor (kept out of this repo) the irons look about standard length, not 1.5 in long; height still needed to confirm.
   Toe sits up about 4 quarters' thickness at address with the hip-bend setup (golfer, 2026-11-10); 1 coin is the usual
