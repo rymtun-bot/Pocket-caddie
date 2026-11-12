@@ -2512,7 +2512,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     }
     return out;
   }
-  function planSay() {   // "RT's plan: …. Caddie's plan: …. The difference: …" for the tee, the yardage screen and the map
+  function planSay() {   // "<name>'s plan: …. Caddie's plan: …. The difference: …" for the tee, the yardage screen and the map
     const own = (S.plans[S.cur.course] || {})[S.cur.hole] || "";
     const c = CARDS[S.cur.course], built = c && c.plan ? c.plan[S.cur.hole - 1] + (c.planTees && S.tee !== c.planTees ? ` (planned from the ${c.planTees} tees)` : "") : "";
     if (!own && !built) return "";
@@ -2859,7 +2859,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   document.addEventListener("click", e => { if (e.target.closest("#rfChip")) rfOpen(); });
   if (/^#flags$/i.test(location.hash)) setTimeout(() => rfOpen(), 300);   // direct link: …/Pocket-caddie/#flags
   function clubsFromLink() {
-    const nm = location.hash.match(/^#name=(.{1,20})$/);   // one-tap link: …/Pocket-caddie/#name=RT
+    const nm = location.hash.match(/^#name=(.{1,20})$/);   // one-tap link: …/Pocket-caddie/#name=XX
     if (nm) { try { S.myName = decodeURIComponent(nm[1]).trim(); save(); toast(`Plans will say "${S.myName}'s plan"`); } catch {}
       history.replaceState(null, "", location.pathname + location.search); return; }
     const m = location.hash.match(/^#clubs=(.+)$/);
