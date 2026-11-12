@@ -898,7 +898,9 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     { club: "690.CB 7i", place: "Patio", date: "2026-11-07", carry: 119, total: 125, mph: 70, smash: 1.30, launch: 23.5, dir: 2.1, note: "Titleist 690.CB 7-iron (35-36° loft), Dynamic Gold R300 steel; 11 shots, Rapsodo average row (tagged 7i in the app)" },
     { club: "690.CB 6i", place: "Patio", date: "2026-11-08", carry: 122, total: 130, mph: 72, smash: 1.30, launch: 19.7, dir: 5.4, note: "Titleist 690.CB 6-iron (31°, same loft as RSi 2 7i); 12 shots, Rapsodo average row (tagged 7i); golfer: not a good session" },
     { club: "7i", place: "Range", date: "2026-11-11", carry: 133, total: 136, mph: 75, smash: 1.30, launch: 25.5, dir: 17.7, note: "Westchester mat, range balls; start direction likely monitor aim (every shot ~15-20° right)" },
-    { club: "690.CB 6i", place: "Range", date: "2026-11-11", carry: 138, total: 141, mph: 76, smash: 1.31, launch: 25.6, dir: 16.4, note: "Westchester mat, range balls, tagged 6i; start direction likely monitor aim" }
+    { club: "690.CB 6i", place: "Range", date: "2026-11-11", carry: 138, total: 141, mph: 76, smash: 1.31, launch: 25.6, dir: 16.4, note: "Westchester mat, range balls, tagged 6i; start direction likely monitor aim" },
+    { club: "4U", place: "Range", date: "2026-11-11", carry: 151, total: 152, mph: 76, smash: 1.36, launch: 33.3, dir: 23.1, note: "Westchester mat, range balls, tagged 4i; ball speed 104 (club speed from ball speed / smash); launch 33° not credible for 21°" },
+    { club: "3U", place: "Range", date: "2026-11-11", carry: 170, total: 172, mph: 81, smash: 1.41, launch: 29.0, dir: 24.3, note: "Westchester mat, range balls, tagged 5w; ball speed 114; launch 29° not credible for 20°" }
   ];
   const clubKey = n => { const t = String(n).toLowerCase().replace(/[\s°-]/g, "").replace(/iron$/, "i");
     return ({ driver: "1w", dr: "1w", pitchingwedge: "pw", gw: "50", gapwedge: "50", "50": "50", sw: "54", sandwedge: "54", "54": "54" })[t] || t; };
