@@ -316,7 +316,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "13 Nov (f)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "13 Nov (g)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
@@ -393,6 +393,15 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   → fairway/putts/score questions → next hole (phase tee, pin cleared). Simulated in Playwright with moved GPS and a fake
   recogniser: tee → ball → green → off the green worked; not yet tried on the course. Limits told to the golfer: screen must stay
   on (battery), GPS ±5 yd, any stop (partner's ball, cart) triggers a call, no real pin position, putt read comes from their answers.
+- Laser corrections (golfer's request 2026-11-12; build 13 Nov (g)): on aShot / slope / plays / club, any spoken number 20-699
+  ("Caddie, one forty five", "laser says 145") is the laser yards to the flag: it replaces the GPS number at once (laserSet; "to the
+  pin (your laser)") and is stored with the GPS spot in S.lasers (also yardages typed/said on the yardage screen, not the card
+  number; only at the course, GPS ±25 m or better, not in a mock round). pinToday(): one reading puts today's pin that many yards
+  from the spot toward the green; readings from 2+ spots 15+ yd apart → least-squares fit (dropped if 60+ yd from the green).
+  aimPoint uses today's pin first ("from your laser readings, about"), so later shots on the hole get pin yardages without
+  asking front/middle/back. Days with a fitted pin go to S.pinDays; with 2+ days, their average is the learned green centre
+  (baseGreen: saved centre > learned > course map), which also sharpens on-green detection. Simulated: laser 120 at the ball,
+  then 30 yd closer the caddie said 90 (truth 90).
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 
