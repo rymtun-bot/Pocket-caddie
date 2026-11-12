@@ -227,7 +227,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   At 1.05/0.35 the five words fall evenly 0.35 s apart (tested in a desktop browser, not yet on the iPhone).
   11 Nov (b): golfer heard no count on the iPhone; Start now speaks "Ready" inside the tap (Safari unlocks speech only
   from a user gesture), then the timed words.
-  11 Nov (c): golfer heard no beeps either, so sound is now rendered into one WAV (22.05 kHz) and played by an <audio>
+  12 Nov (a): golfer heard no beeps either, so sound is now rendered into one WAV (22.05 kHz) and played by an <audio>
   element (loops for "Repeat every"): words from audio/{ready,one,and,two,go}.wav (espeak-ng en-us, trimmed), beeps
   synthesised; no Web Audio or speechSynthesis. Timing checked by decoding the file. Golfer confirmed the count plays on
   the iPhone (2026-11-11).
@@ -307,7 +307,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "11 Nov (c)" (also a "v 11 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "12 Nov (a)" (also a "v 12 Nov (a) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
@@ -358,5 +358,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
 - Built-in hole plans (golfer's request 2026-11-04): CARDS.westchester.plan (Blue, for 74; practice/westchester-strategy-74.md)
   and CARDS.rancho.plan (White, for 80; practice/rancho-strategy-80.md). planText() uses the golfer's own plan first,
   else the built-in one (adds "planned from the X tees" if Setup tees differ). Read at each tee, shown on the yardage
-  screen and above the hole map; Menu → Plan for this hole opens with it so the golfer can edit. Update both the md file
+  screen and above the hole map; Menu → Plan for this hole opens with it so the golfer can edit.
+  12 Nov (a) (golfer's request): the plan screen has "Save, then next hole ▶", "◀ Save, then previous hole" and "Save and go
+  back to the guide" (returns to the hole being played, S.wiz.planHome); text equal to the built-in plan isn't stored.
+  Plans are reminders only: read at the tee, shown on the yardage screen and map; club suggestions still come from
+  plays-like yards and carries (the patio game alone takes its club from the plan). Update both the md file
   and CARDS when clubs or bag change (e.g. if the 5U returns).
