@@ -316,7 +316,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "13 Nov (e)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "13 Nov (f)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
@@ -380,6 +380,19 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   "from the course map, about"), only within 700 yd of the phone and not in a mock round (greenPoint, gpsGreenYds). With no green
   known it asks for laser yards; "Caddie, one forty five" now fills the box and moves on by itself. Voice-test with a fake
   recogniser in Playwright: whole hole by "Caddie, ..." commands, no taps after 👂. Not yet tried on the iPhone.
+- Auto caddie (golfer's request 2026-11-12: "act like a real live caddie"; build 13 Nov (f); S.autoCad): started by a tap (warm-up
+  screen "🤖 Start round with the auto caddie", or guide Menu), which also starts 👂, the wake lock and full GPS (battery saver off).
+  autoTick every 2 s: standing within 7 yd for 12 s, 20+ yd from the last spot → autoArrive. Off the green → aShot screen, spoken in
+  one go: "Shot N. 127 to the middle of the green (course map, about). Plays like … Wind … 7 iron, carries 133. <tendency> <tee plan>",
+  plus "Where's the pin: front, middle or back?" under 230 yd until answered. Pin front/back = saved front/back point, else the
+  middle ±8 yd along the line from the player (an estimate). Buttons/voice: Hitting the X (→ lie → routine; no measure question),
+  Pin front/middle/back, Uphill, Downhill, Different club, On the green. After the start line → aWalk ("I'll speak when you stop").
+  Strokes: "I've hit it" counts (S.wiz.hit), else each new arrival counts the shot from the last spot. On the green (within the
+  saved front-back half-length + 3 yd, else 15 yd of greenPoint) → aG1 putt length (short/medium/long), aG2 up/down/flat, aG3
+  break → putt screen speaks a read (PUTT tips, standard coaching cues) + green note + routine. Walking 25+ yd off the green
+  → fairway/putts/score questions → next hole (phase tee, pin cleared). Simulated in Playwright with moved GPS and a fake
+  recogniser: tee → ball → green → off the green worked; not yet tried on the course. Limits told to the golfer: screen must stay
+  on (battery), GPS ±5 yd, any stop (partner's ball, cart) triggers a call, no real pin position, putt read comes from their answers.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 
