@@ -316,7 +316,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "13 Nov (g)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "13 Nov (h)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
@@ -402,6 +402,13 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   asking front/middle/back. Days with a fitted pin go to S.pinDays; with 2+ days, their average is the learned green centre
   (baseGreen: saved centre > learned > course map), which also sharpens on-green detection. Simulated: laser 120 at the ball,
   then 30 yd closer the caddie said 90 (truth 90).
+- Tempo count before each shot (golfer's request 2026-11-12; build 13 Nov (h); S.tempo {on, full, sound, reps 5, gap 5}, Setup →
+  "Tempo count before each shot", on by default): on the routine screen (after the club is accepted, normal or auto caddie flow)
+  it speaks the club, reminders and swing thought, then "Your tempo." and plays one WAV: "ready", then 5 x "one, and, two, and,
+  go" 5 s apart (≈29 s at 1.05/0.35), same clips and method as swing.html. Chips (under 30 yd) use 0.53/0.27. With tempo on, the
+  spoken step-by-step routine is replaced by the count (still shown on screen). "🎵 Tempo count again" button; any step change
+  (e.g. "Caddie, hit it") stops it. The first tap anywhere plays a silent clip so later voice-started playback is allowed
+  (iPhone media rule; not yet confirmed on the phone). Off in competition mode (Rule 4.3: no audio to help swing tempo).
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 
