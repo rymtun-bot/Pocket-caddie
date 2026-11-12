@@ -28,3 +28,17 @@ Notes:
   a separate slot. The 7i-to-4U gap (18 yd) is where a ~143 club is needed: RSi 6-iron (patio: 11 yd past the 7i) or
   the 5U if it carries more on another day. Next range test: RSi 6-iron vs 5U head to head; RSi 5-iron per the
   golfer's rule.
+
+## Driver, sleeve at STD loft (photo of the iPad screen; no average row visible)
+Golfer: "take their average hits". Mean of the 6 rows not marked outlier (shots 2-7); the outlier (150 carry, smash 1.32)
+left out. The app's chip shows D 181 (it may include a shot not on the photo).
+
+| Club mph | Ball mph | Smash | Carry | Total | Launch | Launch dir | Side carry | Apex ft |
+|---|---|---|---|---|---|---|---|---|
+| 85.8 | 122.8 | 1.43 | 183 | 183 | 33.1° | 20.0° R | 59 R | 185 |
+
+- Launch 30-36° again (as on 11/02): not credible for a 10.5° driver at 1.43 smash. Ball speed 123 → about 185-188 carry
+  on the 11/02 scale (122 mph → 185), so ~185 is a fair driver carry for now.
+- Side carry 44-70 yd right on every drive: if real the golfer would see big slices; needs the golfer's view.
+- A "3W" chip shows 203 on the same screen: which club/setting is not yet stated (driver at HIGHER loft?).
+- Choke-down test (coach: driver ~1.5 in too long) not reported.
