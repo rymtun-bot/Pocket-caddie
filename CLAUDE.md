@@ -316,7 +316,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "13 Nov (d)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "13 Nov (e)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
@@ -372,6 +372,14 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   "Change course or tees first", which returns to the mock start screen). Nothing saved: no S.rounds/handicap, no S.misses, no
   greens, hazards or GPS-measured shots; yds ignores the saved-green GPS distance; "Measure? Yes" pretends the ball went the
   club's carry and speaks it. Menu → "🧪 End the mock round" (or Close the guide at the end) restores any real S.round (S.mockKeep).
+- Hands-free "I'm here" (golfer's request 2026-11-12: no typing in a real round; build 13 Nov (e)): "Not on the green yet" now goes
+  to a "Walk to your ball" screen (step goBall); "Caddie, I'm here" (also "here", "at my ball", "found it") takes a fresh GPS fix
+  (maximumAge 0, 4 s) and goes straight to Uphill/downhill/flat, which now starts with "N yards to the center of the green".
+  After a measured shot ("Mark my ball here", which "I'm here" also triggers) the walk screen is skipped (S.wiz.atBall).
+  Green for GPS yards: saved centre, else holeGeo().green (tapped map point, OSM hole-line end, or the course picture; said as
+  "from the course map, about"), only within 700 yd of the phone and not in a mock round (greenPoint, gpsGreenYds). With no green
+  known it asks for laser yards; "Caddie, one forty five" now fills the box and moves on by itself. Voice-test with a fake
+  recogniser in Playwright: whole hole by "Caddie, ..." commands, no taps after 👂. Not yet tried on the iPhone.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 

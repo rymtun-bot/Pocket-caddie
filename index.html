@@ -127,7 +127,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <a class="chip" href="swing.html?v=11c#tempo" style="font-weight:700">🎵 Tempo count</a>
     <button class="chip" id="prOpen" style="cursor:pointer;font-weight:700">📈 Progress</button>
     <button class="chip" id="ptOpen" style="cursor:pointer;font-weight:700">⛳ Putting</button>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 13 Nov (d) ⟳</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 13 Nov (e) ⟳</button>
   </div>
 </header>
 
@@ -301,7 +301,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       except on the yardage, walk-and-mark and save-the-green screens and the hole map. "👂 Keep listening" needs the screen on.</p>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 13 Nov (d). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 13 Nov (e). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -754,11 +754,19 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   function changedHole() { S.adj = 0; $("manualYds").value = ""; save(); renderAll(); }
 
   // ---- play ----
+  function greenPoint() {   // saved green centre first, else the hole map's green (OSM line end, tapped point or course picture)
+    const h = hole(); if (h.center) return h.center;
+    try { return holeGeo().green || null; } catch { return null; }
+  }
+  const greenFromMap = () => !hole().center && !!greenPoint();
+  function gpsGreenYds() {   // yards from the phone to the green, only at the course (not in a mock round)
+    const g = greenPoint(); if (!fix || !g || S.mock) return null;
+    const d = dist(fix, g); return d < 700 ? d : null;
+  }
   function targetYards() {
     const m = parseFloat($("manualYds").value);
     if (m > 0) return m;
-    const h = hole();
-    return fix && h.center ? dist(fix, h.center) : null;
+    return gpsGreenYds();
   }
   function renderPlay() {
     const h = hole();
@@ -768,7 +776,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     }
     $("greenHint").hidden = !!(h.front || h.center || h.back);
     $("adjOut").textContent = (S.adj > 0 ? "+" : "") + S.adj;
-    const greenPt = h.center || h.front || h.back;
+    const greenPt = h.center || h.front || h.back || greenPoint();
     const brg = fix && greenPt ? bearing(fix, greenPt) : null;
     const w = windAlong(brg);
     renderWx(w, brg);
@@ -1154,7 +1162,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let last = "", k = 0;
     const order = OVERPASS.slice(ovGood).concat(OVERPASS.slice(0, ovGood));   // the server that answered last time goes first
     for (const u of order) {
-      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 13 Nov (d) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
+      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 13 Nov (e) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
       try {
         const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 25000);   // a busy server can hang: give up after 25 s
         const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: ctl.signal });
@@ -1194,7 +1202,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (cached && cached.v === 8 && Date.now() - cached.at < 7 * 864e5) return cached;
     let c = (S.coursePt || {})[id] || COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
     // the course data saved on the Pocket Caddie site (tools/fetch_osm.py) is quick; the live servers are the fallback
-    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 13 Nov (d) · Loading the course map data…";
+    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 13 Nov (e) · Loading the course map data…";
     let pre = null;
     try { const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
       const r = await fetch(`osm/${id}.json?d=${new Date().toISOString().slice(0, 10)}`, { signal: ctl.signal }); clearTimeout(tm);
@@ -1536,7 +1544,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
-    $("hmStatus").textContent = "Pocket Caddie 13 Nov (d) · Looking up the course on OpenStreetMap…";
+    $("hmStatus").textContent = "Pocket Caddie 13 Nov (e) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     hm.osmInfo = o ? `OpenStreetMap${hm.osmSrc && hm.osmSrc !== "live" ? " (" + hm.osmSrc + ")" : ""}: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
@@ -1546,7 +1554,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 13 Nov (d) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 13 Nov (e) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
@@ -1788,10 +1796,13 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   const DIGITS = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10 };
   const norm = t => t.toLowerCase().replace(/[✓·.,!?'’]/g, " ").replace(/\b(one|two|three|four|five|six|seven|eight|nine|ten)\b/g, w => DIGITS[w])
     .replace(/\s+/g, " ").trim();
+  const HERE = /^(i m here|im here|i am here|here|i m at (my|the) ball|at (my|the) ball|i m at it|found it)$/;
   const ALIASES = [   // spoken shortcuts -> start of a button label
     [/^(next|continue|ok(ay)?|go|done|ready|save( it)?)$/, null],   // null = the main (highlighted) button
     [/^(yes|yeah|yep|sure)$/, "yes"], [/^(no|nope|not now|skip( it)?)$/, "no"],
-    [/^(i ?ve hit it|hit it|hit|done hitting)$/, "i ve hit it"], [/^(mark|mark it|mark (my )?ball( here)?)$/, "mark my ball here"],
+    [/^(i ?ve hit it|hit it|hit|done hitting)$/, "i ve hit it"],
+    [/^(i m here|im here|i am here|here|i m at (my|the) ball|at (my|the) ball|i m at it|found it)$/, "i m here"],
+    [/^(i m here|im here|i am here|here|i m at (my|the) ball|at (my|the) ball|i m at it|found it)$/, "mark my ball here"], [/^(mark|mark it|mark (my )?ball( here)?)$/, "mark my ball here"],
     [/^(not on( the)? green|not yet|another shot|still going)$/, "not on the green"], [/^(on( the)? green|green)$/, "on the green"],
     [/^(holed( out)?|in the hole|it s in|made it)$/, "holed out"], [/^(casual|no competition)$/, "no casual round"],
     [/^(competition|yes competition)$/, "yes competition"],
@@ -1812,6 +1823,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const labels = buttons.map(b => norm(b.textContent));
     const n = spokenYards(said);   // score screen: "four", "4"
     if (n && n < 20) { const i = labels.findIndex(l => l.split(" ")[0] === String(n)); if (i >= 0) return { label: buttons[i].textContent, act: () => buttons[i].click() }; }
+    if (HERE.test(t) && !labels.some(l => l.startsWith("i m here") || l.startsWith("mark my ball here")) && ["after", "yds"].includes(S.wiz.step))
+      return { label: "I'm here", act: () => { $("manualYds").value = ""; imHere(); } };   // at the ball: GPS yards and the next club
     for (const [re, start] of ALIASES) if (re.test(t)) {
       const i = start === null ? buttons.findIndex(b => b.classList.contains("primary")) : labels.findIndex(l => l.startsWith(start));
       if (i >= 0) return { label: buttons[i].textContent, act: () => buttons[i].click() };
@@ -1877,7 +1890,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     $("wiz").classList.toggle("kl", kl.on && !kl.need);
     const bar = $("klBar"); bar.hidden = !kl.on; bar.classList.toggle("need", kl.need);
     if (typeof renderRl === "function" && !$("rl").hidden) try { renderRl(); } catch {}
-    bar.textContent = kl.need ? "👂 Tap here to keep listening" : "👂 Listening. Say \u201cCaddie\u201d, then your answer: \u201cCaddie, mark\u201d, \u201cCaddie, one forty five\u201d.";
+    bar.textContent = kl.need ? "👂 Tap here to keep listening" : "👂 Listening. Say \u201cCaddie\u201d, then your answer: \u201cCaddie, I'm here\u201d, \u201cCaddie, one forty five\u201d.";
   }
   function klCommand(cmd) {
     const body = $("wizBody"), t = norm(cmd);
@@ -1887,7 +1900,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const yIn = document.getElementById("wizIn");
     if (yIn && document.getElementById("wizMic")) {   // yardage screen: "Caddie, one forty five"
       const n = spokenYards(cmd);
-      if (n >= 20 && n < 700) { yIn.value = n; klSay(`Got it. ${n} yards.`); return; }
+      if (n >= 20 && n < 700) { yIn.value = n; const nx = body.querySelector(".opts button.primary"); klSay(`Got it. ${n} yards.`, () => nx && nx.click()); return; }
     }
     const buttons = [...body.querySelectorAll(".opts button")], select = body.querySelector("select");
     const m = buttons.length ? matchAnswer(cmd, buttons, select) : null;
@@ -2615,7 +2628,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const w = document.getElementById("wizWalk");
     if (w && S.pending) w.textContent = fix ? Math.round(dist(S.pending.from, fix)) + " yd" : "—";
     const g = document.getElementById("wizYds");
-    if (g) { const h = hole(), pt = h.center || h.front || h.back; g.textContent = fix && pt ? Math.round(dist(fix, pt)) : "—"; }
+    if (g) { const d = gpsGreenYds(); g.textContent = d ? Math.round(d) : "—"; }
   }
   function step(name) {
     S.wiz.step = name; save();
@@ -2681,11 +2694,11 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         ...(S.comp ? [] : [["Add or change this hole's green note", () => step("note")]]),
         S.mock ? ["🧪 End the mock round", () => mockEnd()] : ["🧪 Mock round at home (test run, nothing saved)", () => step("mockStart")],
         ["Change course or tees", () => step("course")],
-        ["⟳ Get the latest version (you have 13 Nov (d))", () => location.replace(location.pathname + "?v=" + Date.now())],
+        ["⟳ Get the latest version (you have 13 Nov (e))", () => location.replace(location.pathname + "?v=" + Date.now())],
         ["Show the full app", () => { $("wiz").hidden = true; renderAll(); }]]);
     }
     if (name === "yds") {   // one thing: the yardage
-      const saved = greenSaved() && fix && !S.mock, cardYds = teeShot() ? cardYards() : null;
+      const saved = !!gpsGreenYds(), cardYds = teeShot() ? cardYards() : null;
       const planHtml = S.wiz.strokes ? "" : (teeHazards() ? `<p class="q"><b>${esc(teeHazards())}</b></p>` : "")
         + (mapNote() ? `<p class="q"><b>Course map:</b> ${esc(mapNote())}.</p>` : "")
         + (planSay() ? `<p class="q">${esc(planSay())}</p>` : "");
@@ -2693,7 +2706,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         ? `<h3>Tee shot. Hole length ${cardYds} yards</h3>
            <input id="wizIn" type="number" inputmode="numeric" placeholder="${cardYds} (or your own number)" aria-label="Yards">${micBtn()}`
         : saved
-        ? `<h3>Yards to the green center</h3><div class="huge" id="wizYds"></div>
+        ? `<h3>Yards to the green ${greenFromMap() ? "(from the course map, about)" : "center"}</h3><div class="huge" id="wizYds"></div>
            <input id="wizIn" type="number" inputmode="numeric" placeholder="or type laser yards" aria-label="Yards">${micBtn()}`
         : `<h3>Laser the flag. How many yards?</h3>
            <input id="wizIn" type="number" inputmode="numeric" placeholder="Yards" aria-label="Yards to the flag">${micBtn()}`),
@@ -2702,12 +2715,15 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
           if (!(v > 0) && !saved) { toast("Type the yards first"); return; }
           $("manualYds").value = v > 0 ? v : ""; S.adj = 0; renderPlay(); step(S.comp ? "club" : "slope"); }, true]]);
       wireMic();
+      if (S.wiz.auto && saved && !S.wiz.newHole) { S.wiz.auto = false; save(); $("manualYds").value = ""; S.adj = 0; renderPlay(); return step(S.comp ? "club" : "slope"); }   // "I'm here": GPS gives the yards
+      S.wiz.auto = false;
       if (S.wiz.newHole) { S.wiz.newHole = false; save(); sayHole(); }   // always spoken at the start of each hole
       return wizLive();
     }
     if (name === "slope") {   // one question: elevation to the target; sets the golfer's own adjustment for this shot
       const sl = S.slope;
-      return screen(holeInfo(), `<h3>Uphill, downhill or flat?</h3>`, [
+      const ty = targetYards(), yLine = ty ? `<p class="q">${Math.round(ty)} yards to the ${parseFloat($("manualYds").value) > 0 ? "target" : greenFromMap() ? "green, from the course map" : "center of the green"}</p>` : "";
+      return screen(holeInfo(), `${yLine}<h3>Uphill, downhill or flat?</h3>`, [
         ["Flat", () => { S.adj = 0; save(); step("plays"); }, true],
         [`Uphill (${fmtAdj(sl.up)} yd)`, () => { S.adj = sl.up; save(); step("plays"); }],
         [`Steep uphill (${fmtAdj(sl.steepUp)} yd)`, () => { S.adj = sl.steepUp; save(); step("plays"); }],
@@ -2777,14 +2793,14 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       if (S.mock && S.wiz.mockMeasure) {   // mock: pretend the ball went the club's carry; nothing is logged
         const c = S.clubs.find(x => x.name === S.wiz.club), yd = c && c.carry > 0 ? c.carry : 150;
         return screen(holeInfo(), `<h3>Walk to your ball</h3><p class="q">Mock round: pretend you walked to it.</p>`,
-          [["Mark my ball here", () => { S.wiz.mockMeasure = false; save(); step("miss");
+          [["Mark my ball here", () => { S.wiz.mockMeasure = false; S.wiz.atBall = true; save(); step("miss");
             if (canSpeak) { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(`That shot went ${yd} yards with the ${sayable(S.wiz.club || "club")}. Mock round, not saved. Left, right or on line?`)); } }, true]]);
       }
       if (!S.pending) return step("after");
       screen(holeInfo(), `<h3>Walk to your ball</h3><div class="huge" id="wizWalk">—</div>`,
         [["Mark my ball here", () => {
           if (!fix) { toast("Waiting for GPS"); return; }
-          $("markEnd").click(); step("miss");
+          $("markEnd").click(); S.wiz.atBall = true; save(); step("miss");
           const shot = S.shots[S.shots.length - 1];   // always spoken: the measured distance (golfer's request)
           if (shot && canSpeak) {
             const club = shot.club && shot.club !== "Other" ? ` with the ${sayable(shot.club)}` : "";
@@ -2793,8 +2809,15 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
           } }, true]]);
       return wizLive();
     }
+    if (name === "goBall") {   // hands-free: walk to the ball, say "Caddie, I'm here", GPS gives the yards to the green
+      const gps = greenPoint() && !S.mock;
+      return screen(holeInfo(), `<h3>Walk to your ball</h3><p class="q">Then say “Caddie, I'm here”${gps ? "" : ", and I'll ask for your laser yards"}.</p>`,
+        [["I'm here", () => imHere(), true]]);
+    }
     if (name === "after") return screen(holeInfo(), `<h3>Where's your ball?</h3>`,
-      [["Not on the green yet", () => { $("manualYds").value = ""; renderPlay(); step("yds"); }, true],
+      [["Not on the green yet", () => { $("manualYds").value = ""; renderPlay();
+          if (S.wiz.atBall) { S.wiz.atBall = false; S.wiz.auto = true; save(); return step("yds"); }   // already at the ball (just marked it)
+          step("goBall"); }, true],
        ["On the green", () => step(greenSaved() ? "putt" : "askSave")],
        ["Holed out", () => step("fairway")]]);
     if (name === "askSave") return screen(holeInfo(), `<h3>Save this green now?</h3><p class="q">Once per hole. Then GPS gives exact yards next time.</p>`,
@@ -3127,7 +3150,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   }
   // battery saver: dark screen, screen may sleep, low-power GPS between measurements
   let gpsWatch = null, gpsHi = null, wakeSent = null;
-  const GPS_HI = new Set(["gps", "yds", "walk", "green", "saveFront", "saveCenter", "saveBack", "hzNear", "hzFar", "measure", "after"]);
+  const GPS_HI = new Set(["gps", "yds", "goBall", "walk", "green", "saveFront", "saveCenter", "saveBack", "hzNear", "hzFar", "measure", "after"]);
   function gpsTune() {
     if (!("geolocation" in navigator)) return;
     const hi = !S.batt || $("wiz").hidden || GPS_HI.has((S.wiz || {}).step) || !!S.pending || !$("hm").hidden || !$("rf").hidden;
@@ -3188,6 +3211,13 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   });
   gpsTune(); wakeTune(); renderBatt();
 
+  function imHere() {   // fresh GPS at the ball, then the yards and the next club
+    const go = () => { S.wiz.auto = true; save(); step("yds"); };
+    if (!("geolocation" in navigator) || S.mock) return go();
+    let done = false; const fin = () => { if (!done) { done = true; go(); } };
+    navigator.geolocation.getCurrentPosition(p => { gpsOk(p); fin(); }, fin, { enableHighAccuracy: true, maximumAge: 0, timeout: 4000 });
+    setTimeout(fin, 4500);
+  }
   function mockEnd() {   // leave the mock round: put back whatever real round was there before
     const k = S.mockKeep || {};
     S.mock = false; S.round = k.round || null; S.cur.hole = k.hole || 1; S.guide.day = k.day || ""; S.mockKeep = null;
