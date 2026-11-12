@@ -125,7 +125,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <span class="chip warn" id="compChip" hidden>Competition mode</span>
     <button class="chip" id="rfChip" style="cursor:pointer;font-weight:700">🚩 Range flags</button>
     <a class="chip" href="swing.html?v=11c#tempo" style="font-weight:700">🎵 Tempo count</a>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 12 Nov (c) ⟳</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 13 Nov (a) ⟳</button>
   </div>
 </header>
 
@@ -244,6 +244,12 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><button id="rfOpen">Range flags: laser yardages by mat (voice)</button></div>
     </section>
     <section class="panel">
+      <h2>Practice and records</h2>
+      <div class="row"><button id="prOpen">📈 Progress chart</button><button id="ptOpen">⛳ Putting practice log</button></div>
+      <div class="row"><button id="rhOpen">📋 Round history</button><button id="bagOpen">🎒 Bag check</button></div>
+      <div class="row"><button id="rulesOpen">📘 Rules help</button></div>
+    </section>
+    <section class="panel">
       <h2>My clubs and carry yards</h2>
       <p class="note">Use your carry numbers from the launch monitor or the range. These are what the club suggestion uses.</p>
       <div class="scroll"><table id="clubTable"></table></div>
@@ -289,9 +295,12 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       <div class="row"><label for="elbowTipIn">Reminder for every shot except chips under 30 yards (leave blank for none)</label>
         <input id="elbowTipIn" type="text"></div>
       <div class="row"><button id="darkBtn" aria-pressed="false">Dark screen (saves battery)</button></div>
+      <div class="row"><button id="battBtn" aria-pressed="false">Battery saver: off (tap to turn on)</button></div>
+      <p class="note" style="margin:0">Battery saver: dark screen, the screen may lock between shots, and GPS runs in low-power mode
+      except on the yardage, walk-and-mark and save-the-green screens and the hole map. "👂 Keep listening" needs the screen on.</p>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 12 Nov (c). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 13 Nov (a). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -407,6 +416,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
 <div class="wiz" id="pg" hidden style="z-index:9"><div class="wrap">
   <div class="wizTop"><span>Patio game</span><span style="display:flex;gap:6px"><button id="pgSay" aria-label="Say it again">🔊</button><button id="pgClose">Back</button></span></div>
   <div id="pgBody"></div>
+</div></div>
+<div class="wiz" id="xt" hidden style="z-index:10"><div class="wrap">
+  <div class="wizTop"><span id="xtTitle"></span><span style="display:flex;gap:6px"><button id="xtSpeak" aria-label="Read aloud">🔊</button><button id="xtClose">Back</button></span></div>
+  <div id="xtBody" style="display:grid;gap:12px"></div>
 </div></div>
 <div class="wiz" id="gap" hidden style="z-index:9"><div class="wrap">
   <div class="wizTop"><span>Gapping chart</span><button id="gapClose">Back</button></div>
@@ -706,20 +719,20 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
 
   // ---- GPS ----
   function gpsStatus(text, cls) { const c = $("gpsChip"); c.textContent = text; c.className = "chip " + (cls || ""); }
-  if ("geolocation" in navigator) {
-    navigator.geolocation.watchPosition(p => {
-      fix = { lat: p.coords.latitude, lon: p.coords.longitude, acc: p.coords.accuracy };
-      const a = accYd(fix);
-      gpsStatus("GPS ±" + a + " yd", a <= 6 ? "ok" : "warn");
-      loadWx(false);
-      renderPlay();
-    }, e => {
-      fix = null;
-      gpsStatus(e.code === 1 ? "Location blocked: type yardage" : "No GPS signal", "warn");
-      renderPlay();
-    }, { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 });
-  } else gpsStatus("No GPS on this device", "warn");
-  try { navigator.wakeLock && navigator.wakeLock.request("screen").catch(() => {}); } catch {}
+  function gpsOk(p) {
+    fix = { lat: p.coords.latitude, lon: p.coords.longitude, acc: p.coords.accuracy };
+    const a = accYd(fix);
+    gpsStatus("GPS ±" + a + " yd", a <= 6 ? "ok" : "warn");
+    loadWx(false);
+    renderPlay();
+  }
+  function gpsErr(e) {
+    if (e.code === 3 && fix) return;   // a slow low-power fix keeps the last position
+    fix = null;
+    gpsStatus(e.code === 1 ? "Location blocked: type yardage" : "No GPS signal", "warn");
+    renderPlay();
+  }
+  if (!("geolocation" in navigator)) gpsStatus("No GPS on this device", "warn");   // the watch itself is started by gpsTune() (battery saver)
 
   // ---- header ----
   function renderHeader() {
@@ -1138,7 +1151,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let last = "", k = 0;
     const order = OVERPASS.slice(ovGood).concat(OVERPASS.slice(0, ovGood));   // the server that answered last time goes first
     for (const u of order) {
-      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 12 Nov (c) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
+      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 13 Nov (a) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
       try {
         const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 25000);   // a busy server can hang: give up after 25 s
         const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: ctl.signal });
@@ -1178,7 +1191,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (cached && cached.v === 8 && Date.now() - cached.at < 7 * 864e5) return cached;
     let c = (S.coursePt || {})[id] || COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
     // the course data saved on the Pocket Caddie site (tools/fetch_osm.py) is quick; the live servers are the fallback
-    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 12 Nov (c) · Loading the course map data…";
+    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 13 Nov (a) · Loading the course map data…";
     let pre = null;
     try { const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
       const r = await fetch(`osm/${id}.json?d=${new Date().toISOString().slice(0, 10)}`, { signal: ctl.signal }); clearTimeout(tm);
@@ -1520,7 +1533,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
-    $("hmStatus").textContent = "Pocket Caddie 12 Nov (c) · Looking up the course on OpenStreetMap…";
+    $("hmStatus").textContent = "Pocket Caddie 13 Nov (a) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     hm.osmInfo = o ? `OpenStreetMap${hm.osmSrc && hm.osmSrc !== "live" ? " (" + hm.osmSrc + ")" : ""}: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
@@ -1530,7 +1543,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 12 Nov (c) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 13 Nov (a) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
@@ -2236,7 +2249,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const g = S.pg, b = $("pgBody");
     if (!g || g.over) {   // start screen
       const last = g && g.over ? pgSummary() : "";
-      b.innerHTML = `${last ? `<p class="q">${last}</p>` : ""}
+      b.innerHTML = `${last ? `<p class="q">${last}</p><div class="row"><button id="pgCopy">Copy results for Claude</button></div>` : ""}
         <p class="note">Play a pretend round into the net. The caddie calls each shot: yardage and club from your Clubs tab, using the hole plans.
         Hit it with your routine, tap Hit it. Some approaches miss the green: then chip to your towel from the distance it gives you. No putting.</p>
         <div class="row"><label for="pgCourse">Course</label><select id="pgCourse"><option value="westchester">Westchester (Blue)</option><option value="rancho">Rancho Park (White)</option></select></div>
@@ -2264,7 +2277,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         <div class="row"><button class="primary" id="pgNext">${g.hole === g.last ? "Finish the round" : "Next hole ▶"}</button></div>`;
       say = c.chip ? "" : `On the green in ${on}. ${gir ? "Green in regulation." : ""}`;
     }
-    html += `<p class="note" style="margin-top:12px">${pgSummary(true)}</p><div class="row"><button id="pgQuit">End the round</button></div>`;
+    html += `<p class="note" style="margin-top:12px">${pgSummary(true)}</p><div class="row"><button id="pgQuit">End the round</button>${g.log.length ? `<button id="pgCopy">Copy for Claude</button>` : ""}</div>`;
     b.innerHTML = html;
     if (speak && say) pgSpeak(say);
   }
@@ -2272,6 +2285,13 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const h = (S.pg && S.pg.log) || []; if (!h.length) return short ? "" : "";
     const gir = h.filter(x => x.gir).length, ch = h.filter(x => x.chip), t = ch.filter(x => x.chip === "T").length, n = ch.filter(x => x.chip === "N").length;
     return `${h.length} holes · greens in regulation ${gir} of ${h.length} · chips: ${t} on the towel, ${n} near, ${ch.length - t - n} farther`;
+  }
+  function pgReport() {   // "Copy for Claude": one line per hole
+    const g = S.pg; if (!g || !g.log || !g.log.length) return "No patio game holes yet.";
+    const R = { T: "towel", N: "near", M: "farther" };
+    return `Patio game ${g.date || ""}, ${g.course === "rancho" ? "Rancho Park" : "Westchester"} (${g.tees} tees), missed greens setting ${g.miss}\n${pgSummary()}\n`
+      + "hole,par,yards,shots (club and yards to go),gir,chip_yds,chip_lie,chip_result\n"
+      + g.log.map(x => [x.hole, x.par ?? "", x.yds ?? "", (x.clubs || []).join(" / "), x.gir ? "yes" : "no", x.chipYds ?? "", x.lie || "", x.chip ? R[x.chip] : ""].join(",")).join("\n");
   }
   function pgClick(e) {
     const t = e.target.closest("#pgOpen, #pgClose, #pgSay, #pgGo, #pgHit, #pgNext, #pgQuit, [data-pgchip]"); if (!t) return false;
@@ -2282,13 +2302,14 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     else if (t.id === "pgGo") {
       const course = $("pgCourse").value, C = CARDS[course], start = +$("pgStart").value;
       if (!S.clubs.some(c => c.carry > 0)) { toast("Add your clubs and carries on the Clubs tab first"); return true; }
-      S.pg = { course, tees: C.planTees || Object.keys(C.tees)[0], miss: +$("pgMiss").value, routine: $("pgRoutine").checked, hole: start, last: start === 1 ? 18 : start - 1, log: [] };
+      S.pg = { date: today(), course, tees: C.planTees || Object.keys(C.tees)[0], miss: +$("pgMiss").value, routine: $("pgRoutine").checked, hole: start, last: start === 1 ? 18 : start - 1, log: [] };
       pgPlanHole(); pgRender(true);
     }
     else if (t.id === "pgHit") { g.cur.k++; if (g.cur.k >= g.cur.shots.length && !g.cur.chip) g.cur.done = true; save(); pgRender(true); }
     else if (t.dataset.pgchip) { g.cur.chipRes = t.dataset.pgchip; g.cur.done = true; save(); pgRender(true); }
     else if (t.id === "pgNext" || t.id === "pgQuit") {
-      if (g && g.cur && g.cur.done) g.log.push({ hole: g.hole, gir: !g.cur.chip && g.cur.shots.length <= g.cur.par - 2, chip: g.cur.chipRes || null });
+      if (g && g.cur && g.cur.done) g.log.push({ hole: g.hole, par: g.cur.par, yds: g.cur.yds, clubs: g.cur.shots.map(x => x.club + " " + x.yds),
+        gir: !g.cur.chip && g.cur.shots.length <= g.cur.par - 2, chip: g.cur.chipRes || null, chipYds: g.cur.chip ? g.cur.chip.yds : null, lie: g.cur.chip ? g.cur.chip.lie : null });
       if (t.id === "pgQuit" || g.hole === g.last) { g.over = true; save(); pgRender(false); pgSpeak("Round over. " + pgSummary()); }
       else { g.hole = g.hole % 18 + 1; pgPlanHole(); pgRender(true); }
     }
@@ -2612,6 +2633,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       ${warmList()}`,
       [["Start round on hole " + S.cur.hole, () => { S.guide.day = today(); S.wiz.newHole = true; S.wiz.strokes = 0;
         S.round = { date: today(), course: S.cur.course, tees: S.tee, scores: {} }; save(); step("yds"); }, true],
+       ["🎒 Bag check (spoken)", () => bagCheck()],
        ["▶ Start guided warm-up (spoken, timed)", () => warmGo(0, "warm")],
        ["🔊 Read the list once", () => sayWarmDrills()]]);
 
@@ -2623,17 +2645,22 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         ["▶ Guided warm-up (spoken, timed)", () => warmGo(0, back)],
         ["🧘 Guided cool-down (spoken, 5 min)", () => coolGo(back)],
         ...(S.pending ? [["Cancel the shot being measured", () => { $("cancelShot").click(); step("after"); }]] : []),
+        ["😌 Reset after a bad shot", () => badReset()],
+        ["📘 Rules help", () => rulesHelp()],
         ["Add a penalty stroke", () => { S.wiz.pen = (S.wiz.pen || 0) + 1; save(); toast(`Penalty added (${S.wiz.pen} on this hole)`); step(back); }],
         ["Plan for this hole (then step through the holes)", () => { if (!S.wiz.planHome) S.wiz.planHome = S.cur.hole; step("plan"); }],
         ["Save a hazard on this hole", () => step("hzType")],
         [`Hazards on this hole (${(hole().hazards || []).length})`, () => step("hzList")],
         ["Skip to the next hole", () => step("next")],
-        ...(S.comp ? [] : [["Record or check a swing", () => { location.href = "swing.html"; }], ["🎵 Tempo trainer (spoken count or beeps)", () => { location.href = "swing.html?v=11c#tempo"; }], ["My Rapsodo numbers", () => openMlm()], ["Range conditions (wind, temperature)", () => openRc()], ["Range shot log", () => { renderRl(); $("rl").hidden = false; }], ["Gapping chart", () => { renderGap(); $("gap").hidden = false; }], ["Patio game (pretend round)", () => pgOpen()]]),
+        ...(S.comp ? [] : [["Record or check a swing", () => { location.href = "swing.html"; }], ["🎵 Tempo trainer (spoken count or beeps)", () => { location.href = "swing.html?v=11c#tempo"; }], ["My Rapsodo numbers", () => openMlm()], ["Range conditions (wind, temperature)", () => openRc()], ["Range shot log", () => { renderRl(); $("rl").hidden = false; }], ["Gapping chart", () => { renderGap(); $("gap").hidden = false; }], ["Patio game (pretend round)", () => pgOpen()], ["⛳ Putting practice log", () => puttLog()], ["📈 Progress chart", () => progress()]]),
+        ["🎒 Bag check", () => bagCheck()],
+        ["📋 Round history", () => roundHistory()],
+        [S.batt ? "Battery saver: on (turn off)" : "🔋 Battery saver (turn on)", () => { setBatt(!S.batt); step("menu"); }],
         ["Hole map", () => openHm()],
         [S.dark ? "Normal screen" : "Dark screen (saves battery)", () => { S.dark = !S.dark; save(); applyDark(); step("menu"); }],
         ...(S.comp ? [] : [["Add or change this hole's green note", () => step("note")]]),
         ["Change course or tees", () => step("course")],
-        ["⟳ Get the latest version (you have 12 Nov (c))", () => location.replace(location.pathname + "?v=" + Date.now())],
+        ["⟳ Get the latest version (you have 13 Nov (a))", () => location.replace(location.pathname + "?v=" + Date.now())],
         ["Show the full app", () => { $("wiz").hidden = true; renderAll(); }]]);
     }
     if (name === "yds") {   // one thing: the yardage
@@ -2789,7 +2816,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         const shot = S.shots[S.shots.length - 1]; if (shot && Date.now() - shot.id < 600000 && !shot.miss) shot.miss = side;
         save(); step("after"); };
       return screen(holeInfo(), `<h3>Left, right or on line?</h3>`,
-        [["On line", log("C"), true], ["Left", log("L")], ["Right", log("R")]]);
+        [["On line", log("C"), true], ["Left", log("L")], ["Right", log("R")], ["😌 Bad one: reset me", () => badReset()]]);
     }
     if (name === "hzType") return screen(holeInfo(), `<h3>What kind of hazard?</h3>`,
       [["Bunker", () => { S.wiz.hzNew = { type: "bunker" }; step("hzSide"); }, true], ["Water", () => { S.wiz.hzNew = { type: "water" }; step("hzSide"); }],
@@ -2850,7 +2877,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       return step("end");
     }
     if (name === "end") {
-      const t = roundTotals();
+      const t = roundTotals(); saveRoundSummary();
       screen("Round over", `<h3>You shot ${t.strokes}${card() ? ` (${t.toPar >= 0 ? "+" : ""}${t.toPar})` : ""}</h3>
         ${statsText() ? `<p class="q">${esc(statsText())}</p>` : ""}<p class="q"><b>${esc(nextPractice())}</b></p>
         <p class="q">Copy your scorecard and shot log, then paste them in your chat with Claude.</p>`,
@@ -2862,8 +2889,218 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       return;
     }
     if (name === "done") return screen("Round over", `<h3>Nice round</h3><p class="q">5 minutes of stretching now helps you feel better tomorrow.</p>`,
-      [["🧘 Guided cool-down (5 min)", () => coolGo("done"), true], ["Close the guide", () => { S.guide.day = ""; S.wiz.step = null; save(); $("wiz").hidden = true; renderAll(); }]]);
+      [["🧘 Guided cool-down (5 min)", () => coolGo("done"), true], ["📋 Round history", () => roundHistory()], ["Close the guide", () => { S.guide.day = ""; S.wiz.step = null; save(); $("wiz").hidden = true; renderAll(); }]]);
   }
+
+  // ---- extras (13 Nov): bag check, progress chart, putting log, bad-shot reset, rules help, round history, battery saver ----
+  S.puttLog = S.puttLog || [];    // putting practice: { date, ft, made, of }
+  S.rounds = S.rounds || [];      // round history: one summary per guided round
+  S.bag = S.bag || { day: "", done: [] };
+  let xtSay = "";
+  function xtShow(title, html, say) {
+    $("xtTitle").textContent = title; $("xtBody").innerHTML = html; $("xt").hidden = false; $("xt").scrollTop = 0;
+    xtSay = say || ""; if (say) speakNow(sayable(say));
+  }
+  const BAG_ITEMS = ["14 clubs or fewer in the bag (count them)", "6 or more balls, marked with your own mark", "Tees", "Ball marker and pitch-mark tool",
+    "Glove", "Towel", "Water and a snack", "Rangefinder (check the battery)", "Phone charged", "Hat and sunscreen"];
+  function bagCheck() {
+    if (S.bag.day !== today()) S.bag = { day: today(), done: [] };
+    const named = S.clubs.map(c => (c.name || "").trim()).filter(Boolean), putter = named.some(n => /putt/i.test(n)) ? 0 : 1, n = named.length + putter;
+    const html = !named.length ? `<p class="q">Add your clubs on the Clubs tab, then count the bag: <b>14</b> at most, putter included (Rule 4.1b).</p>` + bagList() : `<p class="q">Your Clubs tab: ${esc(named.join(", "))}${putter ? ", plus a putter" : ""} = <b>${n}</b> club${n === 1 ? "" : "s"}.
+      The limit is <b>14</b> (Rule 4.1b). ${n > 14 ? `<b>Take out ${n - 14}.</b>` : ""} Count the clubs actually in the bag.</p>` + bagList();
+    xtShow("Bag check", html, `Bag check. ` + (named.length ? `Your Clubs tab lists ${n} club${n === 1 ? "" : "s"}. ` : "") + `The limit is 14. ${n > 14 ? `Take out ${n - 14}. ` : ""}`
+      + BAG_ITEMS.map(t => t.replace(/ ?\(.*?\)/g, "")).join(". ") + ".");
+  }
+  function bagList() {
+    return `<div style="display:grid;gap:8px">${BAG_ITEMS.map((t, i) => `<label class="q" style="display:flex;gap:10px;align-items:center;margin:0">
+        <input type="checkbox" data-bag="${i}" ${S.bag.done.includes(i) ? "checked" : ""} style="width:26px;height:26px">${esc(t)}</label>`).join("")}</div>
+      <p class="note">Ticks are kept for today only.</p>`;
+  }
+  // progress over sessions, from the MLM array (Rapsodo top-line averages)
+  let prClub = "7i", prMetric = "carry";
+  const PR_METRICS = { carry: ["Carry", "yd"], mph: ["Club speed", "mph"], smash: ["Smash", ""] };
+  function progress() {
+    const counts = {}; MLM.forEach(r => counts[r.club] = (counts[r.club] || 0) + 1);
+    const clubs = Object.keys(counts).filter(c => counts[c] >= 2);
+    if (!clubs.includes(prClub)) prClub = clubs[0];
+    const rows = MLM.filter(r => r.club === prClub && r[prMetric] != null).sort((a, b) => a.date.localeCompare(b.date));
+    const [mName, unit] = PR_METRICS[prMetric];
+    let chart = `<p class="q">Fewer than 2 sessions with ${esc(mName.toLowerCase())} for ${esc(prClub)}.</p>`;
+    if (rows.length >= 2) {
+      const t0 = new Date(rows[0].date).getTime(), t1 = new Date(rows[rows.length - 1].date).getTime() || t0 + 1;
+      const vals = rows.map(r => r[prMetric]), lo = Math.min(...vals), hi = Math.max(...vals), pad = (hi - lo) * 0.15 || (prMetric === "smash" ? 0.05 : 5);
+      const y0 = lo - pad, y1 = hi + pad, W = 360, H = 220, L = 44, R = 12, T = 14, B = 34;
+      const X = d => L + (t1 === t0 ? 0.5 : (new Date(d).getTime() - t0) / (t1 - t0)) * (W - L - R), Y = v => T + (1 - (v - y0) / (y1 - y0)) * (H - T - B);
+      const fmt = v => prMetric === "smash" ? v.toFixed(2) : Math.round(v);
+      let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="${esc(prClub)} ${esc(mName)} by session" style="font:13px var(--body, sans-serif)">`;
+      for (let k = 0; k <= 3; k++) { const v = y0 + (y1 - y0) * k / 3;
+        svg += `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${L - 6}" y="${Y(v) + 4}" text-anchor="end" fill="var(--muted)">${fmt(v)}</text>`; }
+      const dl = d => new Date(d + "T12:00").toLocaleDateString(undefined, { month: "short", day: "numeric" });
+      svg += `<text x="${L}" y="${H - 10}" fill="var(--muted)">${dl(rows[0].date)}</text><text x="${W - R}" y="${H - 10}" text-anchor="end" fill="var(--muted)">${dl(rows[rows.length - 1].date)}</text>`;
+      ["Range", "Patio"].forEach(pl => { const p = rows.filter(r => r.place === pl); if (p.length < 2) return;
+        svg += `<polyline fill="none" stroke="${pl === "Range" ? "var(--accent)" : "var(--ink)"}" stroke-width="2" ${pl === "Patio" ? 'stroke-dasharray="5 4"' : ""} points="${p.map(r => X(r.date) + "," + Y(r[prMetric])).join(" ")}"/>`; });
+      rows.forEach(r => { const rg = r.place === "Range";
+        svg += `<circle cx="${X(r.date)}" cy="${Y(r[prMetric])}" r="6" fill="${rg ? "var(--accent)" : "var(--bg)"}" stroke="${rg ? "var(--bg)" : "var(--ink)"}" stroke-width="2"><title>${r.place} ${r.date}: ${fmt(r[prMetric])} ${unit}</title></circle>`; });
+      const last = rows[rows.length - 1];
+      svg += `<text x="${Math.min(X(last.date), W - R - 30)}" y="${Y(last[prMetric]) - 10}" text-anchor="middle" fill="var(--ink)" font-weight="700">${fmt(last[prMetric])}</text></svg>`;
+      chart = svg + `<p class="note" style="margin:0"><b style="color:var(--accent)">●</b> Range (solid line) &nbsp; <b>○</b> Patio (dashed). Patio and range numbers aren't directly comparable (net, Supersoft vs mat, range balls).</p>`;
+    }
+    const table = `<div class="scroll"><table><tr><th>Date</th><th>Where</th><th>Carry</th><th>mph</th><th>Smash</th></tr>${rows.map(r =>
+      `<tr><td>${r.date.slice(5)}</td><td>${r.place}</td><td>${r.carry ?? ""}</td><td>${r.mph ?? ""}</td><td>${r.smash != null ? r.smash.toFixed(2) : ""}</td></tr>`).join("")}</table></div>`;
+    const html = `<div class="row" role="group" aria-label="Club">${clubs.map(c => `<button data-prc="${esc(c)}" aria-pressed="${c === prClub}">${esc(c)}</button>`).join("")}</div>
+      <div class="row" role="group" aria-label="Measure">${Object.entries(PR_METRICS).map(([k, [n]]) => `<button data-prm="${k}" aria-pressed="${k === prMetric}">${n}</button>`).join("")}</div>
+      <h3 style="margin:0">${esc(prClub)} · ${mName}${unit ? " (" + unit + ")" : ""}</h3>${chart}${table}
+      <p class="note">From your Rapsodo averages (Clubs tab → My Rapsodo numbers). Speed progress: 10 real shots every 2 weeks.</p>`;
+    xtShow("Progress", html);
+  }
+  // putting practice log
+  let ptFt = 3;
+  function puttLog() {
+    const h = S.puttLog, by = ft => h.filter(x => x.ft === ft), pct = a => a.length ? Math.round(100 * a.reduce((s, x) => s + x.made, 0) / a.reduce((s, x) => s + x.of, 0)) : null;
+    const sum = [3, 5, 8].map(ft => { const a = by(ft), last = a.slice(-5); return a.length ? `${ft} ft: ${pct(a)}% overall, last ${last.length}: ${pct(last)}%` : ""; }).filter(Boolean);
+    const html = `<p class="q">Putt 10 balls on the rug, then tap how many went in.</p>
+      <div class="row" role="group" aria-label="Distance">${[3, 5, 8].map(ft => `<button data-ptft="${ft}" aria-pressed="${ft === ptFt}">${ft} feet</button>`).join("")}</div>
+      <p class="q" style="margin:0">Made, out of 10, from ${ptFt} feet:</p>
+      <div class="row" style="flex-wrap:wrap">${Array.from({ length: 11 }, (_, i) => `<button data-ptmade="${i}" style="flex:0 0 auto;min-width:52px">${i}</button>`).join("")}</div>
+      ${Rec ? `<div class="row"><button id="ptMic">🎤 Say it (“3 feet, made 8”)</button></div>` : ""}
+      ${sum.length ? `<p class="q"><b>${sum.join("<br>")}</b></p>` : ""}
+      <div style="display:grid;gap:4px">${h.slice(-12).reverse().map(x => `<div class="note" style="margin:0">${x.date} · ${x.ft} ft · ${x.made} of ${x.of}</div>`).join("") || `<p class="note">No sets yet.</p>`}</div>
+      <div class="row"><button id="ptUndo">Undo last</button><button id="ptCopy">Copy for Claude</button></div>`;
+    xtShow("Putting practice", html);
+  }
+  const NUMW = { zero: 0, none: 0, one: 1, two: 2, to: 2, too: 2, three: 3, four: 4, for: 4, five: 5, six: 6, seven: 7, eight: 8, ate: 8, nine: 9, ten: 10, all: 10 };
+  function ptParse(t) {   // "3 feet, made 8 of 10" -> { ft, made }
+    const w = t.toLowerCase().replace(/[^a-z0-9 ]/g, " ").split(/\s+/).filter(Boolean).map(x => /^\d+$/.test(x) ? +x : x in NUMW ? NUMW[x] : x);
+    let ft = null, made = null;
+    w.forEach((x, i) => { if (typeof x !== "number") return;
+      if (/^(feet|foot|ft|footer)$/.test(w[i + 1])) ft = x; else if (made == null && w[i - 1] !== "of" && x <= 10) made = x; });
+    if (ft != null && ![3, 5, 8].includes(ft)) ft = null;
+    return { ft, made };
+  }
+  function ptAdd(made, ft) {
+    S.puttLog.push({ date: today(), ft: ft || ptFt, made, of: 10 }); if (ft) ptFt = ft; save();
+    const said = `Got it. ${made} of 10 from ${ft || ptFt} feet.`; puttLog(); speakNow(said); toast(said);
+  }
+  // after a bad shot
+  function badReset() {
+    const p = S.wiz && S.wiz.step && typeof planSay === "function" ? planSay() : "";
+    const text = "That shot is over. Breathe in slowly for 4, and out for 6. Once more. "
+      + "Let it go. You can't change it, and the next shot is the only one that counts. "
+      + "Pick a safe target, the center of the fairway or green. " + (p ? p + ". " : "") + "Then your routine, and a smooth rhythm.";
+    xtShow("Reset", `<h3>Let it go</h3><ol class="say"><li>Breathe in for 4, out for 6. Twice.</li><li>That shot is over: the next shot is the only one that counts.</li>
+      <li>Pick a safe target: center of the fairway or green.</li>${p ? `<li>${esc(p)}</li>` : ""}<li>Your routine, smooth rhythm.</li></ol>`, text);
+  }
+  // simple rules help: plain-words summary of the Rules of Golf (R&A/USGA); the official text decides
+  const RULES = [
+    ["Penalty area (red or yellow stakes or lines)", "Rule 17", ["Play it as it lies: no penalty. You may ground your club.",
+      "Or, 1 penalty stroke: play again from where you last hit.",
+      "Or, 1 penalty stroke: back on the line. Keep the point where the ball last crossed the edge between you and the hole; go back on that line as far as you like and drop on it.",
+      "Red only, 1 penalty stroke: drop within two club-lengths of where it last crossed the edge, no nearer the hole."]],
+    ["Out of bounds or lost ball (white stakes; 3 minutes to search)", "Rule 18", ["1 penalty stroke: play again from where you last hit (stroke and distance).",
+      "If it might be lost or out of bounds, hit a provisional ball first and say the word \"provisional\" before you hit it.",
+      "Only if the course has the Local Rule E-5 in effect (ask the pro shop): 2 penalty strokes, drop near where it was lost or went out, out to the edge of the nearest fairway, no nearer the hole. Not if it's in a penalty area."]],
+    ["Unplayable ball (your choice, anywhere except a penalty area)", "Rule 19", ["1 penalty stroke, one of: play again from where you last hit; back on the line from the hole through the ball, as far back as you like; or drop within two club-lengths, no nearer the hole.",
+      "In a bunker: the back-on-the-line and two-club-length drops must stay in the bunker. Or, for 2 penalty strokes, back on the line outside the bunker."]],
+    ["Cart path, sprinkler, ground under repair, puddle, animal hole", "Rule 16.1", ["Free relief when it touches your ball, stance or swing.",
+      "Find the nearest point where it no longer interferes, no nearer the hole. Drop within one club-length of that point, no nearer the hole.",
+      "In a bunker: free drop in the bunker, or 1 penalty stroke back on the line outside it. No free relief in a penalty area."]],
+    ["Ball plugged in its own pitch mark", "Rule 16.3", ["In the fairway or rough: free relief. Drop within one club-length of the spot right behind the ball, no nearer the hole.",
+      "Not in a bunker or penalty area: there, play it or take penalty relief."]],
+    ["Hit the wrong ball", "Rule 6.3c", ["2 penalty strokes. The strokes with the wrong ball don't count.",
+      "Go and play your own ball. Fix it before you tee off on the next hole.", "Mark your balls with your own mark, and check it before you hit."]],
+    ["In a bunker", "Rule 12.2", ["You may move loose leaves, twigs and stones.",
+      "Don't touch the sand with your club right in front of or behind the ball, in a practice swing, or in your backswing: 2 penalty strokes."]],
+    ["On the green", "Rule 13", ["Mark, lift and clean your ball. Repair pitch marks and spike marks.",
+      "If you accidentally move your ball or marker: no penalty, put it back.", "Your putt hits the flagstick left in the hole: no penalty."]],
+    ["Your ball moved", "Rules 7.4 and 9.4", ["Moved by accident while searching: no penalty, put it back.",
+      "You picked it up or moved it on purpose when you weren't allowed to: 1 penalty stroke, put it back."]],
+    ["How to drop", "Rule 14.3", ["Stand and drop from knee height, straight down.", "It must land in, and stay in, the relief area. If it doesn't, drop again; if that fails too, place it where the second drop first touched the ground."]]
+  ];
+  function rulesHelp(i) {
+    const src = `<p class="note">Plain-words summary of the Rules of Golf (R&amp;A and USGA). The official text and the course's Local Rules decide.
+      Sources: <a href="https://www.randa.org/rog/the-rules-of-golf" target="_blank" rel="noopener">randa.org Rules of Golf</a>;
+      <a href="https://usga.org/content/usga/home-page/rules-hub/rulesarticles/rules-of-golf-articles/stroke-and-distance.html" target="_blank" rel="noopener">USGA on Local Rule E-5</a> (accessed 2026-11-12).</p>`;
+    if (i == null) return xtShow("Rules help", `<p class="q">What happened?</p><div class="opts">${RULES.map((r, k) => `<button data-rule="${k}">${esc(r[0])}</button>`).join("")}</div>${src}`);
+    const r = RULES[i];
+    xtShow("Rules help", `<h3>${esc(r[0])}</h3><p class="note" style="margin:0">${r[1]}</p><ol class="say">${r[2].map(x => `<li>${esc(x)}</li>`).join("")}</ol>
+      <div class="row"><button id="ruleList">◀ Other rules</button></div>${src}`, r[0] + ". " + r[2].join(" "));
+  }
+  // round history
+  function saveRoundSummary() {
+    if (!S.round || !Object.keys(S.round.scores).length) return;
+    const t = roundTotals(), r = roundStats(), c = S.courses[S.round.course];
+    const rec = { date: S.round.date, course: c ? c.name : S.round.course, tees: S.round.tees, holes: t.holes, strokes: t.strokes, toPar: card() ? t.toPar : null,
+      fw: r.fwHit, fwN: r.fwN, gir: r.gir, girN: r.girN, putts: r.puttsN ? r.putts : null, three: r.three, pen: r.pen };
+    const k = S.rounds.findIndex(x => x.date === rec.date && x.course === rec.course);
+    if (k >= 0) S.rounds[k] = rec; else S.rounds.push(rec);
+    save();
+  }
+  const roundLine = x => `${x.date} · ${x.course} (${x.tees}) · ${x.holes} holes · ${x.strokes}${x.toPar != null ? ` (${x.toPar >= 0 ? "+" : ""}${x.toPar})` : ""}`
+    + (x.fwN ? ` · fairways ${x.fw}/${x.fwN}` : "") + (x.girN ? ` · GIR ${x.gir}/${x.girN}` : "") + (x.putts != null ? ` · ${x.putts} putts${x.three ? ` (${x.three} three-putts)` : ""}` : "") + (x.pen ? ` · ${x.pen} penalties` : "");
+  function roundHistory() {
+    const h = S.rounds.slice().reverse();
+    xtShow("Round history", h.length ? `<div style="display:grid;gap:8px">${h.map(x => `<p class="q" style="margin:0">${esc(roundLine(x))}</p>`).join("")}</div>
+      <div class="row"><button id="rhCopy">Copy for Claude</button></div>` : `<p class="q">No rounds yet. Each round you finish in the guide is saved here.</p>`);
+  }
+  // battery saver: dark screen, screen may sleep, low-power GPS between measurements
+  let gpsWatch = null, gpsHi = null, wakeSent = null;
+  const GPS_HI = new Set(["gps", "yds", "walk", "green", "saveFront", "saveCenter", "saveBack", "hzNear", "hzFar", "measure", "after"]);
+  function gpsTune() {
+    if (!("geolocation" in navigator)) return;
+    const hi = !S.batt || $("wiz").hidden || GPS_HI.has((S.wiz || {}).step) || !!S.pending || !$("hm").hidden || !$("rf").hidden;
+    if (hi === gpsHi) return; gpsHi = hi;
+    if (gpsWatch != null) navigator.geolocation.clearWatch(gpsWatch);
+    gpsWatch = navigator.geolocation.watchPosition(gpsOk, gpsErr, hi ? { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 }
+      : { enableHighAccuracy: false, maximumAge: 30000, timeout: 60000 });
+  }
+  function wakeTune() {
+    try { if (S.batt) { if (wakeSent) { wakeSent.release(); wakeSent = null; } }
+      else if (navigator.wakeLock && !wakeSent) navigator.wakeLock.request("screen").then(w => wakeSent = w).catch(() => {}); } catch {}
+  }
+  function setBatt(on) {
+    S.batt = on; if (on) S.dark = true; save(); applyDark(); gpsTune(); wakeTune(); renderBatt();
+    toast(on ? "Battery saver on" : "Battery saver off");
+  }
+  function renderBatt() { const b = $("battBtn"); if (b) { b.setAttribute("aria-pressed", !!S.batt); b.textContent = S.batt ? "Battery saver: on (tap to turn off)" : "Battery saver: off (tap to turn on)"; }
+    if (typeof renderDarkBtn === "function") renderDarkBtn(); }
+  setInterval(gpsTune, 3000);   // catches overlays opening/closing and shots being measured
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) { wakeSent = null; wakeTune(); } });
+
+  document.addEventListener("click", e => {
+    const t = e.target.closest("#xtClose, #xtSpeak, [data-bag], [data-prc], [data-prm], [data-ptft], [data-ptmade], #ptMic, #ptUndo, #ptCopy, [data-rule], #ruleList, #rhCopy, #battBtn, #bagOpen, #prOpen, #ptOpen, #rhOpen, #rulesOpen, #pgCopy");
+    if (!t) return;
+    const id = t.id;
+    if (id === "xtClose") { $("xt").hidden = true; if (canSpeak) speechSynthesis.cancel(); }
+    else if (id === "xtSpeak") { if (xtSay) speakNow(sayable(xtSay)); else speakNow($("xtBody").innerText.slice(0, 600)); }
+    else if (t.dataset.bag != null) { const i = +t.dataset.bag; S.bag.done = t.checked ? [...new Set([...S.bag.done, i])] : S.bag.done.filter(x => x !== i); save();
+      if (S.bag.done.length === BAG_ITEMS.length) speakNow("All packed. Have a good round."); }
+    else if (t.dataset.prc) { prClub = t.dataset.prc; progress(); }
+    else if (t.dataset.prm) { prMetric = t.dataset.prm; progress(); }
+    else if (t.dataset.ptft) { ptFt = +t.dataset.ptft; puttLog(); }
+    else if (t.dataset.ptmade != null) ptAdd(+t.dataset.ptmade);
+    else if (id === "ptUndo") { S.puttLog.pop(); save(); puttLog(); }
+    else if (id === "ptCopy") copy("date,feet,made,of\n" + S.puttLog.map(x => `${x.date},${x.ft},${x.made},${x.of}`).join("\n"));
+    else if (id === "ptMic") {
+      const r = new Rec(); r.lang = "en-US"; r.interimResults = false; t.textContent = "Listening…";
+      r.onresult = ev => { const said = ev.results[0][0].transcript, p = ptParse(said);
+        if (p.made == null) { speakNow(`I heard ${said}. Say how many you made, for example: 5 feet, made 7.`); toast("Heard: " + said); }
+        else ptAdd(p.made, p.ft); };
+      r.onerror = ev => { toast("Voice: " + ev.error); }; r.onend = () => { if ($("ptMic")) $("ptMic").textContent = "🎤 Say it (“3 feet, made 8”)"; };
+      try { r.start(); } catch { toast("Voice not available"); }
+    }
+    else if (t.dataset.rule != null) rulesHelp(+t.dataset.rule);
+    else if (id === "ruleList") rulesHelp();
+    else if (id === "rhCopy") copy("date,course,tees,holes,strokes,to_par,fairways,fairways_possible,gir,gir_possible,putts,three_putts,penalties\n"
+      + S.rounds.map(x => [x.date, x.course, x.tees, x.holes, x.strokes, x.toPar ?? "", x.fw, x.fwN, x.gir, x.girN, x.putts ?? "", x.three, x.pen].join(",")).join("\n"));
+    else if (id === "battBtn") setBatt(!S.batt);
+    else if (id === "bagOpen") bagCheck();
+    else if (id === "prOpen") progress();
+    else if (id === "ptOpen") puttLog();
+    else if (id === "rhOpen") roundHistory();
+    else if (id === "rulesOpen") rulesHelp();
+    else if (id === "pgCopy") copy(pgReport());
+  });
+  gpsTune(); wakeTune(); renderBatt();
 
   function renderComp() {
     ["secWx", "secPlays", "secNotes", "secClubAvg"].forEach(id => $(id).hidden = S.comp);

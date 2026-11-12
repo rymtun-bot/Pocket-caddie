@@ -316,7 +316,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "12 Nov (c)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "13 Nov (a)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
@@ -343,6 +343,20 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   tee/ball is at the bottom and the green at the top, and the zoom is computed so the hole fills the screen height
   (falls back to north-up fitBounds if the plugin doesn't load, with a one-time notice). zoomSnap 0.1: Leaflet's default whole-level
   zoom rounded down and left some holes up to half size (golfer: 4, 12, 13, 15, 16, 17 still small). Labels go right, left or centered. Decorations are non-interactive so taps reach the map.
+- Extras (golfer's "Do all", 2026-11-12; build 13 Nov (a); overlay #xt): 🎒 Bag check (warm-up screen + guide Menu + Clubs tab;
+  counts Clubs-tab clubs + putter vs 14, Rule 4.1b; 10-item checklist ticked per day in S.bag; spoken). 📈 Progress chart (Clubs tab
+  "Practice and records", guide Menu): any MLM club with 2+ sessions, carry / club speed / smash over dates, range solid, patio dashed,
+  plus a table. ⛳ Putting practice log (S.puttLog {date, ft 3/5/8, made, of 10}; taps 0-10 or 🎤 "3 feet, made 8"; % overall and last 5;
+  Copy for Claude CSV). 😌 Reset after a bad shot (guide Menu, and "Bad one: reset me" on the left/right/on-line screen): breathing,
+  let it go, safe target, the hole plan, routine. 📘 Rules help (guide Menu, also in competition mode; Clubs tab): plain-words options for
+  penalty area (17), OB/lost/provisional + Local Rule E-5 (18), unplayable (19), abnormal conditions/cart path (16.1), embedded (16.3),
+  wrong ball (6.3c), bunker (12.2), green (13), ball moved (7.4/9.4), dropping (14.3); sources randa.org Rules of Golf and USGA's E-5
+  article (accessed 2026-11-12; usga.org/randa.org were blocked from this container, checked via search results, not the full text).
+  📋 Round history (S.rounds, saved on the guide's end screen, one per date+course: strokes, to par, fairways, GIR, putts, 3-putts,
+  penalties; Copy for Claude CSV). Patio game "Copy for Claude" (pgReport: one CSV row per hole with clubs, GIR, chip yards/lie/result).
+  🔋 Battery saver (Setup + guide Menu, S.batt): dark screen on, no screen wake lock, GPS low-power (maximumAge 30 s) except on gps,
+  yds, walk, green/save, hazard-edge, measure and after steps, while a shot is pending, the hole map or range flags are open, or the full
+  app is shown (gpsTune() every 3 s). Tested in desktop Chromium only.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 
