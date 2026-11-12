@@ -316,7 +316,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "13 Nov (c)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "13 Nov (d)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
@@ -367,6 +367,11 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (Chip went in / 1 / 2 / 3; putt on the rug or best guess); hole score = shots + chip + putts; a full 18 with putts is saved.
   Patio scores run low (every lay-up assumed in the fairway). Sources: USGA Rule 5.2a page and USGA PCC explainer via search results
   (usga.org itself blocked from this container), 2026-11-12.
+- Mock round (golfer's request 2026-11-12, build 13 Nov (d); guide Menu → "🧪 Mock round at home"): runs the whole guide at home to
+  test voice in the earpiece, 🎤 and 👂. S.mock; title prefixed "🧪 Mock ·"; starts at hole 1 of the current course/tees (or
+  "Change course or tees first", which returns to the mock start screen). Nothing saved: no S.rounds/handicap, no S.misses, no
+  greens, hazards or GPS-measured shots; yds ignores the saved-green GPS distance; "Measure? Yes" pretends the ball went the
+  club's carry and speaks it. Menu → "🧪 End the mock round" (or Close the guide at the end) restores any real S.round (S.mockKeep).
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 
