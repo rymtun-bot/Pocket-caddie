@@ -153,7 +153,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   plan's club if within 25 yd, else nearest carry), then the reminders and routine (toggle). Lay-ups leave a full-swing
   distance of 115 yd or less where possible; roll assumed 10 (woods), 5 (hybrids), 3 (irons). Approaches miss the green
   at random (1 in 4 / 2 in 5 / 3 in 5) and give a chip from 5-30 yd with a random lie; the golfer taps towel / near /
-  farther. No putting. Summary: greens in regulation and chip results. Results are not yet exported for Claude.
+  farther. Putts tapped per hole (13 Nov b). Summary: score, greens in regulation and chip results; Copy for Claude.
 - `home.html` (Home Course page, linked from Setup) runs that game: Rapsodo carry/total/start direction place the ball;
   long first putts count as a lag; assumptions (green radius, fairway width, trouble, lag leaves) are editable on the page.
 - Club list loading: one-tap link `https://rymtun-bot.github.io/Pocket-caddie/#clubs=Driver:185,8i:113` or paste
@@ -316,7 +316,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "13 Nov (a)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "13 Nov (b)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
@@ -357,6 +357,16 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   🔋 Battery saver (Setup + guide Menu, S.batt): dark screen on, no screen wake lock, GPS low-power (maximumAge 30 s) except on gps,
   yds, walk, green/save, hazard-edge, measure and after steps, while a shot is pending, the hole map or range flags are open, or the full
   app is shown (gpsTune() every 3 s). Tested in desktop Chromium only.
+- Handicap estimate (golfer's request 2026-11-12; build 13 Nov (b); top of Round history): World Handicap System method, not an
+  official Handicap Index (that needs posting via a club/GHIN). Full 18-hole rounds only; hole cap net double bogey, par + 5 before an
+  index exists; differential = 113 / slope x (AGS - rating), PCC 0; index per USGA Rules of Handicapping 5.2a table (3 scores: lowest 1
+  - 2.0; 4: lowest 1 - 1.0; 5: lowest 1; 6: lowest 2 avg - 1.0; 7-8: 2; 9-11: 3; 12-14: 4; 15-16: 5; 17-18: 6; 19: 7; 20+: best 8 of 20;
+  max 54). Ratings in CARDS[].rating (men's): Westchester Blue 60.6/95, White 59.1/91 (par 64); Rancho City figures Black 72.8/130,
+  Blue 70.9/125, White 69.1/121, Yellow 67.1/116 (par 71). Shows course handicap for Westchester Blue and Rancho White.
+  Real rounds (S.rounds, now with hole scores) and patio rounds (S.pgRounds) are separate numbers. Patio game now asks putts each hole
+  (Chip went in / 1 / 2 / 3; putt on the rug or best guess); hole score = shots + chip + putts; a full 18 with putts is saved.
+  Patio scores run low (every lay-up assumed in the fairway). Sources: USGA Rule 5.2a page and USGA PCC explainer via search results
+  (usga.org itself blocked from this container), 2026-11-12.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 
