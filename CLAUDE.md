@@ -124,7 +124,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
 - 2026-11-04: Rapsodo, patio, PW full, PW choked 1 in, PW hip to hip, 54° full, choked 1 in and hip to hip (assumed labels; tagged PW in the app) (MLM clubs "PW choked 1 in", "PW hip to hip", "54° choked 1 in", "54° hip to hip"); 6-iron 3 shots 124 and 7-iron 2 shots 122 (no gap; both low launch, ~5° right); evening set 7i 124, 6i 135, 5U 131, 4U 135, 3U 144 (app tags 5i/4i/5w), no average row on the screenshot, so mean of the rows (Supersoft; `practice/2026-11-04-rapsodo-patio.md`).
 - 2026-11-13: Rapsodo, patio, Supersoft, RSi 7 normal grip 125/129, 75 mph, smash 1.25, start 0.3° vs choked 1 in 122/126,
   74 mph, 1.25, 1.0° (choke set tagged 8i, golfer confirmed). One choked row read 95 mph / 0.95 (misread); without it ~71 mph /
-  1.29. Undecided: repeat 10 v 10 alternating; irons keep the normal grip meanwhile. Start line ~straight with the monitor
+  1.29. Golfer's decision 2026-11-14: no more choke tests; irons keep the normal grip (driver stays choked 1 in). Start line ~straight with the monitor
   aimed along a club (`practice/2026-11-13-rapsodo-patio.md`; MLM "7i" and "7i choked 1 in").
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
@@ -148,7 +148,11 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Week of 11/09: rhythm sessions with the 7-iron, no all-out swings (golfer, 11/09) (10 counting "1 - 2 (pause) - 3"; 10 to Tempo
   beeps 1.05/0.35), keep the one with the best smash and start line. Week of 11/16: with that rhythm, RSi 7 vs CB 6 and
   re-measure every club (patio + range); then update Clubs-tab carries and both plans. Week of 11/23: course prep.
-  11/13 (golfer): counting the tempo in their head felt like better swings (than the played count). App count still on; ask before changing it.
+  11/13 (golfer): counting the tempo in their head felt like better swings (than the played count).
+  11/14 (golfer's choice): Hyejin Choi's tempo (0.76/0.23 s, 3.3:1) for every full shot: S.tempo.full default and a one-time
+  migration (S.mig1114) from 1.05/0.35; build 14 Nov (a). Chips keep 0.53/0.27.
+  Setup (golfer, 11/14): weight more on the balls of the feet rather than the heels feels better, especially with the driver
+  at the range; already a cue in S.overBall ("Balls of your feet").
 - Current two-week plan and pre-shot routine: `practice/plan-2026-11.md` (first real round planned Tuesday 2026-12-01).
 - Day-by-day session list to Dec 1: `practice/daily-sessions.md`.
 - Home course game (hole-by-hole Westchester/Rancho on the patio): `practice/home-course-game.md`.
@@ -321,7 +325,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "13 Nov (k)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "14 Nov (a)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,

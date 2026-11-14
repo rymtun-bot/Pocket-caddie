@@ -13,7 +13,7 @@ Top-line average rows only (golfer's rule).
 - By the averages, choking down cost 3 yards at about the same speed (75 vs 74 mph) and smash (1.25): no strike gain.
 - One choked shot read 95 mph with smash 0.95, almost certainly a monitor misread (every other shot was 68-75 mph). Without it
   the choked set is about 71 mph and smash 1.29: slower but better strike, same ball speed, 3 yards shorter. Not settled:
-  repeat 10 normal / 10 choked, alternating every 2 balls, before deciding. Irons keep the normal grip until then.
+  golfer decided 2026-11-14 not to test further: irons keep the normal grip.
 - Start direction 0.3° and 1.0°: with the monitor aimed along a club, the start line is nearly straight, so most of the
   15-25° right read on the range 11/11 was monitor aim.
 - Smash 1.25 is at the low end of the 7-iron's patio numbers (1.26-1.36 since 11/04).

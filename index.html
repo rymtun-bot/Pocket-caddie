@@ -127,7 +127,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <a class="chip" href="swing.html?v=11c#tempo" style="font-weight:700">🎵 Tempo count</a>
     <button class="chip" id="prOpen" style="cursor:pointer;font-weight:700">📈 Progress</button>
     <button class="chip" id="ptOpen" style="cursor:pointer;font-weight:700">⛳ Putting</button>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 13 Nov (k) ⟳</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 14 Nov (a) ⟳</button>
   </div>
 </header>
 
@@ -314,7 +314,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       except on the yardage, walk-and-mark and save-the-green screens and the hole map. "👂 Keep listening" needs the screen on.</p>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 13 Nov (k). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 14 Nov (a). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -645,6 +645,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (S.thought === "Hands lead through impact") S.thought = "";
     if (S.elbowTip === "Right elbow points out") S.elbowTip = "";
     S.mig1112 = true;
+  }
+  if (!S.mig1114) {   // golfer's choice 2026-11-14: Hyejin Choi's tempo for every full shot
+    if (S.tempo && S.tempo.full === "1.05,0.35") S.tempo.full = "0.76,0.23";
+    S.mig1114 = true;
   }
   const isWedge = n => /(^|\s)(pw|gw|aw|sw|lw|p)(\s|$)|wedge|^\s*(4[5-9]|5\d|6[0-4])\s*(°|deg)?\s*$/i.test(String(n || "").trim());
   const LIES = {   // the one tip for each lie (standard coaching cues for a right-handed golfer; golfer's request 2026-11-05)
@@ -1187,7 +1191,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let last = "", k = 0;
     const order = OVERPASS.slice(ovGood).concat(OVERPASS.slice(0, ovGood));   // the server that answered last time goes first
     for (const u of order) {
-      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 13 Nov (k) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
+      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 14 Nov (a) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
       try {
         const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 25000);   // a busy server can hang: give up after 25 s
         const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: ctl.signal });
@@ -1227,7 +1231,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (cached && cached.v === 8 && Date.now() - cached.at < 7 * 864e5) return cached;
     let c = (S.coursePt || {})[id] || COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
     // the course data saved on the Pocket Caddie site (tools/fetch_osm.py) is quick; the live servers are the fallback
-    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 13 Nov (k) · Loading the course map data…";
+    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 14 Nov (a) · Loading the course map data…";
     let pre = null;
     try { const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
       const r = await fetch(`osm/${id}.json?d=${new Date().toISOString().slice(0, 10)}`, { signal: ctl.signal }); clearTimeout(tm);
@@ -1569,7 +1573,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
-    $("hmStatus").textContent = "Pocket Caddie 13 Nov (k) · Looking up the course on OpenStreetMap…";
+    $("hmStatus").textContent = "Pocket Caddie 14 Nov (a) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     hm.osmInfo = o ? `OpenStreetMap${hm.osmSrc && hm.osmSrc !== "live" ? " (" + hm.osmSrc + ")" : ""}: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
@@ -1579,7 +1583,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 13 Nov (k) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 14 Nov (a) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
@@ -1704,7 +1708,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     catch { toast("Couldn't reach the map. Try later."); }
   };
   $("thoughtIn").value = S.thought; $("thoughtIn").onchange = e => { S.thought = e.target.value.trim(); save(); };
-  { const T = S.tempo || (S.tempo = { on: true, full: "1.05,0.35", sound: "count", reps: 5, gap: 5 });
+  { const T = S.tempo || (S.tempo = { on: true, full: "0.76,0.23", sound: "count", reps: 5, gap: 5 });
     $("tpOnIn").checked = T.on; $("tpOnIn").onchange = e => { T.on = e.target.checked; save(); };
     $("tpFullIn").value = T.full; $("tpFullIn").onchange = e => { T.full = e.target.value; save(); };
     $("tpSoundIn").value = T.sound; $("tpSoundIn").onchange = e => { T.sound = e.target.value; save(); };
@@ -2746,7 +2750,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         S.autoCad ? ["🤖 Turn off the auto caddie", () => { autoStop(); step("menu"); }] : ["🤖 Auto caddie (talks when you reach your ball)", () => { autoStart(); step(back); }],
         S.mock ? ["🧪 End the mock round", () => mockEnd()] : ["🧪 Mock round at home (test run, nothing saved)", () => step("mockStart")],
         ["Change course or tees", () => step("course")],
-        ["⟳ Get the latest version (you have 13 Nov (k))", () => location.replace(location.pathname + "?v=" + Date.now())],
+        ["⟳ Get the latest version (you have 14 Nov (a))", () => location.replace(location.pathname + "?v=" + Date.now())],
         ["Show the full app", () => { $("wiz").hidden = true; renderAll(); }]]);
     }
     if (name === "yds") {   // one thing: the yardage
@@ -3399,7 +3403,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   }
   // ---- Tempo count before each shot (golfer's request 2026-11-12): after the club is chosen, the routine screen plays the
   // tempo count 5 times, 5 s apart. Same WAV method as swing.html (iPhone Safari plays <audio> reliably; speech timing isn't). ----
-  S.tempo = S.tempo || { on: true, full: "1.05,0.35", sound: "count", reps: 5, gap: 5 };
+  S.tempo = S.tempo || { on: true, full: "0.76,0.23", sound: "count", reps: 5, gap: 5 };
   const TSR = 22050, TWORDS = ["ready", "one", "and", "two", "go"], tclip = {};
   TWORDS.forEach(w => fetch("audio/" + w + ".wav").then(r => r.arrayBuffer()).then(buf => {
     const v = new DataView(buf); let o = 12;
