@@ -122,6 +122,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
 - 2026-10-30: Rapsodo, patio, 9-iron averages (`practice/2026-10-30-rapsodo-patio.md`).
 - 2026-10-31: Rapsodo + PRGR, patio, Supersoft, PW (`practice/2026-10-31-rapsodo-patio.md`).
 - 2026-11-04: Rapsodo, patio, PW full, PW choked 1 in, PW hip to hip, 54° full, choked 1 in and hip to hip (assumed labels; tagged PW in the app) (MLM clubs "PW choked 1 in", "PW hip to hip", "54° choked 1 in", "54° hip to hip"); 6-iron 3 shots 124 and 7-iron 2 shots 122 (no gap; both low launch, ~5° right); evening set 7i 124, 6i 135, 5U 131, 4U 135, 3U 144 (app tags 5i/4i/5w), no average row on the screenshot, so mean of the rows (Supersoft; `practice/2026-11-04-rapsodo-patio.md`).
+- 2026-11-13: Rapsodo, patio, Supersoft, RSi 7 normal grip 125/129, smash 1.25, start 0.3° vs choked 1 in 122/126, 1.25, 1.0°
+  (choke set tagged 8i in the app, assumed); no strike gain → irons keep the normal grip; start line ~straight with the monitor
+  aimed along a club (`practice/2026-11-13-rapsodo-patio.md`; MLM "7i" and "7i choked 1 in").
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
 - Warm-up (2026-11-10; WARM_BODY + WARM_DRILLS in index.html, also in practice/plan-2026-11.md): 5 body exercises
