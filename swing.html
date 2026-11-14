@@ -175,7 +175,7 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
     </div>
     <div class="row">
       <label for="tpSound">Sound</label>
-      <select id="tpSound"><option value="beep">Beeps</option><option value="count" selected>Spoken count: "one, and, two, and, go"</option><option value="both">Spoken count + beep on "go"</option><option value="sst">"Swing, set, thru"</option><option value="sstp">"Swing, set … thru" (set held 0.25 s)</option></select>
+      <select id="tpSound"><option value="beep">Beeps</option><option value="count" selected>Spoken count: "one, and, two, and, go"</option><option value="both">Spoken count + beep on "go"</option><option value="sst">"Swing, set, thru"</option><option value="sstp">"Swing, set … thru" (set held 0.25 s)</option><option value="bt">"Back … thru" (chips)</option></select>
     </div>
     <div id="tpCustom" class="row" hidden>
       <label for="tpDown">Downswing <span id="tpDownV"></span> s</label>
@@ -458,7 +458,7 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
   // Sound is rendered into one WAV file and played with an <audio> element (11 Nov (c)): the golfer heard neither the
   // Web Audio beeps nor the phone's speech on the iPhone; media playback is the path iPhone Safari plays reliably,
   // and the timing is exact because every word and beep sits at a fixed place in the file. Words: audio/*.wav (espeak-ng).
-  const SR = 22050, WORDS = ["ready", "one", "and", "two", "go"], SST = ["swing", "set", "thru"], clip = {};
+  const SR = 22050, WORDS = ["ready", "one", "and", "two", "go"], SST = ["swing", "set", "thru", "back"], clip = {};
   [...WORDS, ...SST].forEach(w => fetch("audio/" + w + ".wav").then(r => r.arrayBuffer()).then(buf => {
     const v = new DataView(buf); let o = 12;
     while (o < v.byteLength - 8) {
@@ -479,13 +479,15 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
     const [b, d] = times(), lead = 1.2, hold = $("tpSound").value === "sstp" ? 0.25 : 0, need = lead + b + hold + d + 0.8;
     const len = Math.max(gap || 0, need), pcm = new Float32Array(Math.round(len * SR));
     let mode = $("tpSound").value;
-    if ((mode === "sst" || mode === "sstp") && !SST.every(w => clip[w])) mode = "count";
+    if ((mode === "sst" || mode === "sstp" || mode === "bt") && !SST.every(w => clip[w])) mode = "count";
     if (mode !== "beep" && !WORDS.every(w => clip[w])) mode = "beep";   // words not loaded yet: beeps
     if (mode === "beep") {
       tone(pcm, lead - 1.0, 440, 0.05, 0.25);   // soft tick: get set
       tone(pcm, lead, 523, 0.12, 0.7);          // takeaway
       tone(pcm, lead + b, 784, 0.10, 0.7);      // top
       tone(pcm, lead + b + d, 1047, 0.18, 0.9); // impact
+    } else if (mode === "bt") {   // short game: "back" from the takeaway, "thru" at the top
+      word(pcm, 0.1, "ready"); word(pcm, lead, "back"); word(pcm, lead + b, "thru");
     } else if (mode === "sst" || mode === "sstp") {   // "swing" from the takeaway, "set" ending at the top, "thru" starting the downswing (after a 0.25 s hold for sstp)
       word(pcm, 0.1, "ready");
       word(pcm, lead, "swing"); word(pcm, lead + Math.max(clip.swing.length / SR * 0.9, b - clip.set.length / SR), "set"); word(pcm, lead + b + hold, "thru");
