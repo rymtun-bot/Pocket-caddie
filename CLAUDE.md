@@ -148,6 +148,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Week of 11/09: rhythm sessions with the 7-iron, no all-out swings (golfer, 11/09) (10 counting "1 - 2 (pause) - 3"; 10 to Tempo
   beeps 1.05/0.35), keep the one with the best smash and start line. Week of 11/16: with that rhythm, RSi 7 vs CB 6 and
   re-measure every club (patio + range); then update Clubs-tab carries and both plans. Week of 11/23: course prep.
+  11/13 (golfer): counting the tempo in their head felt like better swings (than the played count). App count still on; ask before changing it.
 - Current two-week plan and pre-shot routine: `practice/plan-2026-11.md` (first real round planned Tuesday 2026-12-01).
 - Day-by-day session list to Dec 1: `practice/daily-sessions.md`.
 - Home course game (hole-by-hole Westchester/Rancho on the patio): `practice/home-course-game.md`.
