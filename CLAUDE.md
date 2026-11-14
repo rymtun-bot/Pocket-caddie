@@ -156,6 +156,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   "swing" at the takeaway, "set" timed to end at the top, "thru" starting at the top (downswing). Clips audio/{swing,set,thru}.wav
   (espeak-ng en-us -s 190, trimmed, 22.05 kHz, peak-matched to one.wav; "thru" spoken as "through"). swing.html now starts on
   the Setup tempo and sound and saves its Sound choice back. Tempo links ?v=14c. Build 14 Nov (c).
+  4th sound (golfer's request 11/14): "Swing, set … thru" (value "sstp"): same, with "thru" 0.25 s after the top (a held "set").
+  With Choi's 0.76/0.23 that makes takeaway-to-downswing-start 1.01 s vs 0.23 s down, about 4.4 to 1 instead of 3.3 to 1.
+  Build 14 Nov (d), links ?v=14d.
   Setup (golfer, 11/14): weight more on the balls of the feet rather than the heels feels better, especially with the driver
   at the range; already a cue in S.overBall ("Balls of your feet").
 - Current two-week plan and pre-shot routine: `practice/plan-2026-11.md` (first real round planned Tuesday 2026-12-01).
@@ -330,7 +333,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "14 Nov (c)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "14 Nov (d)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
