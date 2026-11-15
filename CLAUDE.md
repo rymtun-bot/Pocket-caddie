@@ -34,6 +34,9 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   Golfer's photo 2026-11-14: black forged MILLED blade-style set 50/54/58 (not cavity back). Lazrus spec table (lazrusgolf.com
   forged 50/54/58 product page, accessed 2026-11-14): bounce 50° 8°, 54° 12°, 58° 10°; lie 63°; 35 1/4 in; D4. The 54° has the most
   bounce: candidate for bunkers and the one-wedge "anything that must fly" club (golfer's idea 2026-11-14).
+  Older wedges (golfer's photo 2026-11-14): Cleveland Tour Action REG.588 51° and 60° (no bounce stamped, worn/rusted faces).
+  Resale listings for the original Tour Action 60° show 10° bounce (2ndswing.com Cleveland Tour Action page, accessed 2026-11-14);
+  no published figure found for the 51°. They duplicate the Lazrus 50°/58°, so kept as spares, not in the bag.
   Long clubs also in the bag: 1U, 2U, 3U (20°), 4U, 5U (26°, older King Cobra Baffler), 5W, 3W, driver.
 - Driver (golfer's photos, 2026-11-01): TaylorMade SIM Max 10.5°, sleeve at STD LOFT, Fujikura Ventus 6-R shaft.
   SIM Max sleeve adjusts loft about ±2°, and adding loft opens the face (retailer and tuning-guide pages, accessed 2026-11-01).
