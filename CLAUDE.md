@@ -133,7 +133,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   1.29. Golfer's decision 2026-11-14: no more choke tests; irons keep the normal grip (driver stays choked 1 in). Start line ~straight with the monitor
   aimed along a club (`practice/2026-11-13-rapsodo-patio.md`; MLM "7i" and "7i choked 1 in").
 - 2026-11-15: Rapsodo, patio, Supersoft, Lazarus wedges with hands to hip height (tags PW/GW/SW taken as 50°/54°/58°): carry
-  35/43 total, 27 (chip only), 25/30; 58° launch 45.7°, smash 1.10; 50° started 9.9° right (`practice/2026-11-15-rapsodo-patio.md`;
+  35/43, 27/37 (launch 35.0°, smash 1.10), 25/30 (launch 45.7°, smash 1.10); 50° started 9.9° right (`practice/2026-11-15-rapsodo-patio.md`;
   MLM "50° hip high", "54° hip high", "58° hip high"). 54° and 58° only 2 yd apart at this length.
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
