@@ -459,7 +459,7 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
   // Web Audio beeps nor the phone's speech on the iPhone; media playback is the path iPhone Safari plays reliably,
   // and the timing is exact because every word and beep sits at a fixed place in the file. Words: audio/*.wav (espeak-ng).
   const SR = 22050, WORDS = ["ready", "one", "and", "two", "go"], SST = ["swing", "set", "thru", "back"], clip = {};
-  [...WORDS, ...SST].forEach(w => fetch("audio/" + w + ".wav").then(r => r.arrayBuffer()).then(buf => {
+  [...WORDS, ...SST, "swing_f", "set_f"].forEach(w => fetch("audio/" + w + ".wav").then(r => r.arrayBuffer()).then(buf => {
     const v = new DataView(buf); let o = 12;
     while (o < v.byteLength - 8) {
       const id = String.fromCharCode(v.getUint8(o), v.getUint8(o + 1), v.getUint8(o + 2), v.getUint8(o + 3)), n = v.getUint32(o + 4, true);
@@ -490,8 +490,10 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
       word(pcm, 0.1, "ready"); word(pcm, lead, "back"); word(pcm, lead + b, "thru");
     } else if (mode === "sst" || mode === "sstp") {   // "swing" from the takeaway, "set" ending at the top, "thru" starting the downswing (after a 0.25 s hold for sstp)
       word(pcm, 0.1, "ready");
-      const at = lead + Math.max(clip.swing.length / SR * 0.9, b - clip.set.length / SR);
-      word(pcm, lead, "swing"); if (at + clip.set.length / SR <= lead + b + hold + 0.05) word(pcm, at, "set"); word(pcm, lead + b + hold, "thru");   // short tempos: "swing … thru" (words overlapped)
+      let ws = "swing", wt = "set", sw = clip.swing.length / SR, st = clip.set.length / SR;
+      if (Math.max(sw * 0.9, b - st) + st > b + hold + 0.05 && clip.swing_f && clip.set_f) { ws = "swing_f"; wt = "set_f"; sw = clip.swing_f.length / SR; st = clip.set_f.length / SR; }   // short tempos: quicker "swing" and "set" so all three fit
+      const at = lead + Math.max(sw * 0.9, b - st);
+      word(pcm, lead, ws); if (at + st <= lead + b + hold + 0.05) word(pcm, at, wt); word(pcm, lead + b + hold, "thru");
     } else {
       word(pcm, 0.1, "ready");
       if (b / 3 < clip.one.length / SR - 0.05) { word(pcm, lead, "one"); word(pcm, lead + b, "two"); word(pcm, lead + b + d, "go"); }   // short tempos: "one … two … go" (words overlapped)
