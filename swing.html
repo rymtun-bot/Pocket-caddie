@@ -490,11 +490,13 @@ input[type=range] { width: 100%; accent-color: var(--accent) }
       word(pcm, 0.1, "ready"); word(pcm, lead, "back"); word(pcm, lead + b, "thru");
     } else if (mode === "sst" || mode === "sstp") {   // "swing" from the takeaway, "set" ending at the top, "thru" starting the downswing (after a 0.25 s hold for sstp)
       word(pcm, 0.1, "ready");
-      word(pcm, lead, "swing"); word(pcm, lead + Math.max(clip.swing.length / SR * 0.9, b - clip.set.length / SR), "set"); word(pcm, lead + b + hold, "thru");
+      const at = lead + Math.max(clip.swing.length / SR * 0.9, b - clip.set.length / SR);
+      word(pcm, lead, "swing"); if (at + clip.set.length / SR <= lead + b + hold + 0.05) word(pcm, at, "set"); word(pcm, lead + b + hold, "thru");   // short tempos: "swing … thru" (words overlapped)
     } else {
       word(pcm, 0.1, "ready");
-      word(pcm, lead, "one"); word(pcm, lead + b / 3, "and"); word(pcm, lead + 2 * b / 3, "two");
-      word(pcm, lead + b, "and"); word(pcm, lead + b + d, "go");
+      if (b / 3 < clip.one.length / SR - 0.05) { word(pcm, lead, "one"); word(pcm, lead + b, "two"); word(pcm, lead + b + d, "go"); }   // short tempos: "one … two … go" (words overlapped)
+      else { word(pcm, lead, "one"); word(pcm, lead + b / 3, "and"); word(pcm, lead + 2 * b / 3, "two");
+      word(pcm, lead + b, "and"); word(pcm, lead + b + d, "go"); }
       if (mode === "both") tone(pcm, lead + b + d, 1047, 0.18, 0.6);
     }
     const out = new DataView(new ArrayBuffer(44 + pcm.length * 2)), str = (o, t) => [...t].forEach((c, i) => out.setUint8(o + i, c.charCodeAt(0)));

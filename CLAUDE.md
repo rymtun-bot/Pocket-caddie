@@ -167,6 +167,10 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Chip words (golfer's request 11/14; build 14 Nov (f); S.tempo.chipSound "bt" default, or "same"): "Back … thru": "back" at
   the takeaway, "thru" at the top (at 0.53/0.27 it ends about at impact). Clip audio/back.wav (espeak-ng, same processing).
   Also "Back … thru (chips)" in swing.html's Sound list. Links ?v=14f.
+  14 Nov (g) (golfer: two recordings overlapping on chip and pitch tempo): at short tempos the words overlapped inside the
+  WAV (clips ~0.3 s, words 0.18 s apart at 0.53/0.27). Count mode now says "one … two … go" (two at the top) when b/3 is shorter
+  than the "one" clip (this includes full shots at 0.76/0.23); "Swing, set, thru" drops "set" when it can't finish before "thru".
+  Chips used the main sound until Setup was opened (chipSound unset); unset now means "back … thru". Same in swing.html. Links ?v=14g.
   Setup (golfer, 11/14): weight more on the balls of the feet rather than the heels feels better, especially with the driver
   at the range; already a cue in S.overBall ("Balls of your feet").
 - Current two-week plan and pre-shot routine: `practice/plan-2026-11.md` (first real round planned Tuesday 2026-12-01).
