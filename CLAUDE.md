@@ -121,8 +121,9 @@ Update 2026-11-15 (golfer): now uses part swings too. Go-to ~40 yd = 54° with t
 (Clubs tab "54° forearm", 37 carry). Can't make a 10 o'clock swing distinct from the full (shoulder-high) swing, so the
 42-59 yd gap needs another option (to test: PW / 9-iron at forearm parallel, 60° full at the range). Clubs-tab names with
 forearm/hip/choked/half/partial/¾ are swing variants: Bag check doesn't count them (build 15 Nov (a)); names starting with
-45-64° count as wedges (wedge tip). "Full" is hands to shoulder height (that is the golfer's full swing). Plan wedge
-yardages, ladders and lay-ups around full and choked-1-in carries only. 11/04 patio: choking 1 in took off only 2-4 yd (PW 100/96,
+45-64° count as wedges (wedge tip). MLM names match Clubs-tab names via clubKey (e.g. "54° forearm"), so the gapping
+chart shows one row. "Full" is hands to shoulder height (that is the golfer's full swing). Wedge yardages: full swings
+plus the forearm-parallel part swing (choked 1 in dropped). 11/04 patio: choking 1 in took off only 2-4 yd (PW 100/96,
 54° 81/79) with no tighter spread, so the golfer dropped the choke-down test; wedge gapping uses full swings.
 One file per session in `practice/` (date, monitor, place, ball), with raw shots and a summary.
 From Rapsodo screenshots, use only the top-line average row for each club; ignore the individual shot rows (golfer's
@@ -141,7 +142,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   35/43, 27/37 (launch 35.0°, smash 1.10), 25/30 (launch 45.7°, smash 1.10); 50° started 9.9° right (`practice/2026-11-15-rapsodo-patio.md`;
   MLM "50° hip high", "54° hip high", "58° hip high"). 54° and 58° only 2 yd apart at this length.
   Same day, second set, backswing to right forearm parallel (tags GW/SW/LW = 50°/54°/58°, golfer confirmed): carry 39 (~41 without
-  one thin 19), 37, 39; 50° started 6.7° right; lofts don't separate distance at this length (MLM "50°/54°/58° forearm parallel").
+  one thin 19), 37, 39; 50° started 6.7° right; lofts don't separate distance at this length (MLM "50° forearm", "54° forearm", "58° forearm").
 - 2026-11-14: Rapsodo, patio, Supersoft, Lazarus 50°/54°/58° full swing, length and tempo uncontrolled (tags PW/GW/SW): carry
   74/67/59 (`practice/2026-11-14-rapsodo-patio.md`; MLM "50°", "54°", "58°"). 60° full went over the net at ~6 ft.
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
