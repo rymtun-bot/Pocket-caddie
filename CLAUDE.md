@@ -367,7 +367,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "18 Nov (a)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "18 Nov (b)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
@@ -474,7 +474,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   so "Caddie, right" etc. still follows. The longer "Reset after a bad shot" now starts with the same line. Range shot log keeps
   its own meaning for fat/thin (handled before this).
 - Personal par (golfer's request 2026-11-18; build 18 Nov (a); CARDS[].myPar, Setup "Use my par", S.myParOn default on, off in
-  competition mode): 10 over par on each course, my choice of holes. Westchester (Blue) 74: +1 on 2, 3, 8, 9, 10, 11, 14, 15, 16, 17
+  competition mode; 18 Nov (b): the checkbox moved to the top of Setup (Step-by-step guide panel) and a "🎯 My par" toggle is in the
+  guide Menu, after the golfer couldn't find it): 10 over par on each course, my choice of holes. Westchester (Blue) 74: +1 on 2, 3, 8, 9, 10, 11, 14, 15, 16, 17
   (the plan's six bogey holes, the two 336-340 par 4s, the 160-yd par 3 beyond the 4U's carry, and the 515 par 5).
   Rancho (White) 81 (was 80): +1 on 1, 2, 5, 6, 8, 9, 10, 11, 12, 15 (the plan's five bogey holes plus the long par 4s by handicap:
   9, 5, 10, 1, 6). Hole title "Par 4 (yours 5)", tee announcement "Your par 5", score list marks "your par", score speech
