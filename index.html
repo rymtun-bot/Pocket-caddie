@@ -127,7 +127,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <a class="chip" href="swing.html?v=14h#tempo" style="font-weight:700">🎵 Tempo count</a>
     <button class="chip" id="prOpen" style="cursor:pointer;font-weight:700">📈 Progress</button>
     <button class="chip" id="ptOpen" style="cursor:pointer;font-weight:700">⛳ Putting</button>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 18 Nov (f) ⟳</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 18 Nov (g) ⟳</button>
   </div>
 </header>
 
@@ -248,7 +248,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <section class="panel">
       <h2>Practice and records</h2>
       <div class="row"><button id="rhOpen">📋 Round history</button><button id="bagOpen">🎒 Bag check</button></div>
-      <div class="row"><button id="rulesOpen">📘 Rules help</button></div>
+      <div class="row"><button id="rulesOpen">📘 Rules help</button><button id="cdOpen">📏 My course distances</button></div>
     </section>
     <section class="panel">
       <h2>My clubs and carry yards</h2>
@@ -328,7 +328,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       except on the yardage, walk-and-mark and save-the-green screens and the hole map. "👂 Keep listening" needs the screen on.</p>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 18 Nov (f). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 18 Nov (g). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -802,6 +802,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   function greenPoint() { return baseGreen(); }   // saved centre, else learned from your laser readings, else the hole map's green
   const greenFromMap = () => !hole().center && !learnedGreen() && !!greenPoint();
   function aimPoint() {   // the pin if you said where it is (front / back), else the middle of the green
+    if (S.wiz && S.wiz.safe > 0 && !S.comp) return greenPoint();   // playing safe: middle of the green
     const lp = pinToday(); if (lp) return lp.pt;   // your laser readings today place the pin
     const g = greenPoint(), h = hole(), pin = S.wiz && S.wiz.pin; if (!g || !pin || pin === "middle" || !fix) return g;
     if (pin === "front" && h.front) return h.front; if (pin === "back" && h.back) return h.back;
@@ -862,6 +863,9 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const top = clubs[clubs.length - 1];
     if (pl > top.carry + 15) { rec.innerHTML = `<span class="main">Beyond your clubs</span><span class="alts">${pl} yd is longer than your longest club on the list (${esc(top.name)}, ${top.carry} yd). Lay up or take more club than listed.</span>`; return; }
     let best = clubs.reduce((b, c) => Math.abs(c.carry - pl) < Math.abs(b.carry - pl) ? c : b);
+    { const j = clubs.indexOf(best), lt = lenTend(best.name);   // your own short/long pattern moves the pick one club
+      if (lt && lt.dir === "short" && clubs[j + 1] && clubs[j + 1].carry - pl <= 15) best = clubs[j + 1];
+      else if (lt && lt.dir === "long" && clubs[j - 1] && pl - clubs[j - 1].carry <= 10) best = clubs[j - 1]; }
     const i = clubs.indexOf(best);
     const diff = c => { const d = c.carry - pl; return (d >= 0 ? "+" : "−") + Math.abs(d) + " yd"; };
     const lo = clubs[i - 1], hi = clubs[i + 1];
@@ -1222,7 +1226,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let last = "", k = 0;
     const order = OVERPASS.slice(ovGood).concat(OVERPASS.slice(0, ovGood));   // the server that answered last time goes first
     for (const u of order) {
-      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 18 Nov (f) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
+      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 18 Nov (g) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
       try {
         const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 25000);   // a busy server can hang: give up after 25 s
         const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: ctl.signal });
@@ -1262,7 +1266,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (cached && cached.v === 8 && Date.now() - cached.at < 7 * 864e5) return cached;
     let c = (S.coursePt || {})[id] || COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
     // the course data saved on the Pocket Caddie site (tools/fetch_osm.py) is quick; the live servers are the fallback
-    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 18 Nov (f) · Loading the course map data…";
+    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 18 Nov (g) · Loading the course map data…";
     let pre = null;
     try { const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
       const r = await fetch(`osm/${id}.json?d=${new Date().toISOString().slice(0, 10)}`, { signal: ctl.signal }); clearTimeout(tm);
@@ -1604,7 +1608,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
-    $("hmStatus").textContent = "Pocket Caddie 18 Nov (f) · Looking up the course on OpenStreetMap…";
+    $("hmStatus").textContent = "Pocket Caddie 18 Nov (g) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     hm.osmInfo = o ? `OpenStreetMap${hm.osmSrc && hm.osmSrc !== "live" ? " (" + hm.osmSrc + ")" : ""}: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
@@ -1614,7 +1618,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 18 Nov (f) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 18 Nov (g) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
@@ -1915,7 +1919,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     [/^(pin |flag |the pin s |pin is )?(front|at the front|front pin)$/, "pin front"], [/^(pin |flag |pin is )?(back|at the back|back pin)$/, "pin back"],
     [/^(pin |flag |pin is )?(middle|center|centre)$/, "pin middle"],
     [/^(short|short putt)$/, "short"], [/^(medium|middle distance)$/, "medium"], [/^(long|long putt|lag)$/, "long"],
-    [/^(left to right|left right)$/, "left to right"], [/^(right to left|right left)$/, "right to left"],
+    [/^(left to right|left right)$/, "left to right"], [/^(pin high|hole high|on the number|right on)$/, "pin high"], [/^(right to left|right left)$/, "right to left"],
     [/^(flat|level)$/, "flat"], [/^(up|uphill|up hill)$/, "uphill"], [/^(down|downhill|down hill)$/, "downhill"],
     [/^steep (up|uphill|up hill)$/, "steep uphill"], [/^steep (down|downhill|down hill)$/, "steep downhill"]
   ];
@@ -2135,7 +2139,9 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   function teePlan(pl) {   // longest club off the tee, then the club nearest what's left (up to three more shots)
     const clubs = S.clubs.filter(c => c.carry > 0).sort((a, b) => b.carry - a.carry);
     if (!clubs.length || !(pl > clubs[0].carry + 15)) return null;   // reachable: the normal suggestion is better
-    const tee = clubs[0]; let left = pl - tee.carry; const parts = [];
+    let tee = clubs[0];
+    if (S.wiz && S.wiz.safe > 0) { const nd = clubs.find(c => !/driver|^d$/i.test(c.name)); if (nd) tee = nd; }   // playing safe: no driver
+    let left = pl - tee.carry; const parts = [];
     const deck = clubs.filter(c => !/driver|^d$|3 ?w|3 ?wood/i.test(c.name));   // off the fairway: no driver or 3-wood (golfer tees the 3W only)
     if (!deck.length) return null;
     for (let k = 0; k < 3 && left > 15; k++) {
@@ -2564,7 +2570,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     S.round.scores[S.cur.hole] = n;
     const parH = holePar(), putts = S.wiz.putts ?? null;
     (S.round.stats || (S.round.stats = {}))[S.cur.hole] = { fir: (parH || 0) >= 4 ? S.wiz.fir || null : null, putts, pen: S.wiz.pen || 0,
-      gir: parH && putts != null ? n - putts <= parH - 2 : null };
+      gir: parH && putts != null ? n - putts <= parH - 2 : null, fp: S.wiz.fp || null, score: n, par: parH || null };
+    { let sf = S.wiz.safe || 0; if (sf > 0) sf--; if (parH && n - parH >= 2 && !S.comp) sf = 2; S.wiz.safe = sf; }   // damage control for the next 2 holes
     save();
     const par = holePar(), t = roundTotals();
     const mp = holeMyPar();
@@ -2601,6 +2608,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (r.girN && r.gir / r.girN < 0.25) out.push("approach shots: start line and contact with your irons and hybrids");
     if (r.pen >= 2) out.push("course management: the safer tee club and aiming at the center of greens");
     if (r.missN >= 5 && Math.max(r.missL, r.missR) / r.missN >= 0.5) out.push(`your ${r.missR > r.missL ? "right" : "left"} start line: aim and clubface checks on the patio`);
+    { const b = roundBreakdown(); if (b && b.udN >= 3 && b.ud / b.udN < 0.3) out.push("chips and pitches: up-and-down practice with the towel game, 20 balls from 5 to 30 yards");
+      if (b && b.threeLong >= 2 && !out.some(x => /lag/.test(x))) out.push("lag putting from 30 to 50 feet"); }
     if (!out.length) out.push("short game: up-and-downs with the towel game");
     return "Next week, practice " + out.slice(0, 2).join(", and ") + ".";
   }
@@ -2610,7 +2619,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     return `Scorecard ${S.round.date}, ${c ? c.name : S.round.course}, ${S.round.tees} tees: `
       + Object.entries(S.round.scores).map(([h, n]) => { const x = (S.round.stats || {})[h] || {};
         return `#${h} ${n}` + (x.putts != null ? ` (${x.putts}p${x.fir ? ", fw " + x.fir : ""}${x.pen ? ", pen " + x.pen : ""})` : ""); }).join(", ")
-      + ` = ${t.strokes} (${t.toPar >= 0 ? "+" : ""}${t.toPar})\n${statsText()}\n${nextPractice()}`;
+      + ` = ${t.strokes} (${t.toPar >= 0 ? "+" : ""}${t.toPar})\n${statsText()}\n${breakdownText()}\n${nextPractice()}`;
   }
 
   function sayHole() {   // "Hole 4. Par 3. 145 yards from the Blue tees. Handicap 7."
@@ -2618,7 +2627,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const c = card(), i = S.cur.hole - 1, par = holePar();
     const y = c && c.tees[S.tee] ? c.tees[S.tee][i] : null;
     const mpH = holeMyPar();
-    const text = `Hole ${S.cur.hole}.` + (par ? ` Par ${par}.` : "") + (mpH && mpH !== par ? ` Your par ${mpH}.` : "") + (y ? ` ${y} yards from the ${S.tee} tees.` : "")
+    const safeTxt = S.wiz.safe > 0 && !S.comp ? ` After that last hole, let's play it safe: ${(par || 0) >= 4 ? "no driver off the tee, " : ""}aim for the middle of the green, and take your par or a bogey.` : "";
+    const text = `Hole ${S.cur.hole}.` + (par ? ` Par ${par}.` : "") + (mpH && mpH !== par ? ` Your par ${mpH}.` : "") + safeTxt + (y ? ` ${y} yards from the ${S.tee} tees.` : "")
       + (c ? ` Handicap ${c.hcp[i]}.` : "") + (teeHazards() ? ` ${teeHazards()}` : "") + (mapNote() ? ` Course map: ${mapNote()}.` : "") + (planSay() ? ` ${planSay()}.` : "") + (!S.comp && hole().notes ? " This hole has a green note." : "")
       + " " + $("wizBody").querySelector("h3").innerText;
     const pre = S.wiz.pre || ""; S.wiz.pre = ""; save();
@@ -2659,7 +2669,17 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   }
   const measuredText = name => { const m = measured(name);
     return m ? `On the course you've averaged ${m.avg} with it, over ${m.n} ${m.n === 1 ? "shot" : "shots"}.` : ""; };
+  function lenTend(name) {   // "short" / "long" once 5+ approach answers and 60% one way (golfer's request 2026-11-18)
+    const m = S.misses.filter(x => x.club === name && x.dist);
+    if (m.length < 5) return null;
+    const sh = m.filter(x => x.dist === "S").length, lg = m.filter(x => x.dist === "L").length;
+    return sh / m.length >= 0.6 ? { dir: "short", k: sh, n: m.length } : lg / m.length >= 0.6 ? { dir: "long", k: lg, n: m.length } : null;
+  }
   function tendency(name) {   // "Your 5U misses right 3 of 5. Aim a little left." once 3+ shots and 60% one way
+    const lt = lenTend(name), lenTxt = lt ? ` Your ${name} finishes ${lt.dir} ${lt.k} of ${lt.n} times.` : "";
+    return (sideTend(name) + lenTxt).trim();
+  }
+  function sideTend(name) {
     const m = S.misses.filter(x => x.club === name);
     if (m.length < 3) return "";
     const L = m.filter(x => x.side === "L").length, R = m.filter(x => x.side === "R").length;
@@ -2818,9 +2838,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         [S.dark ? "Normal screen" : "Dark screen (saves battery)", () => { S.dark = !S.dark; save(); applyDark(); step("menu"); }],
         ...(S.comp ? [] : [["Add or change this hole's green note", () => step("note")]]),
         S.autoCad ? ["🤖 Turn off the auto caddie", () => { autoStop(); step("menu"); }] : ["🤖 Auto caddie (talks when you reach your ball)", () => { autoStart(); step(back); }],
+        ["📏 My course distances", () => courseDistances()],
         S.mock ? ["🪑 End the seated round", () => mockEnd()] : ["🪑 Seated round: pretend round at Westchester or Rancho", () => step("mockStart")],
         ["Change course or tees", () => step("course")],
-        ["⟳ Get the latest version (you have 18 Nov (f))", () => location.replace(location.pathname + "?v=" + Date.now())],
+        ["⟳ Get the latest version (you have 18 Nov (g))", () => location.replace(location.pathname + "?v=" + Date.now())],
         ["Show the full app", () => { $("wiz").hidden = true; renderAll(); }]]);
     }
     if (name === "yds") {   // one thing: the yardage
@@ -2875,7 +2896,21 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       sayPlays(rows);   // always spoken, like the yardage and club (golfer's request)
       return;
     }
+    if (name === "sg1" || name === "sg2") {   // around the green (golfer's choice 2026-11-18): lie, then how much green, then the safest shot
+      if (name === "sg1") return screen(holeInfo(), `<h3>Around the green: where's the ball?</h3>`,
+        [["Fringe", "fringe"], ["Fairway", "fairway"], ["Light rough", "light"], ["Deep rough", "deep"], ["Bunker", "bunker"]].map(([l, v], i) =>
+          [l, () => { S.wiz.sgLie = v; save(); step(v === "bunker" ? "sgRec" : "sg2"); }, i === 0]));
+      return screen(holeInfo(), `<h3>How much green between the edge and the hole?</h3>`,
+        [["Lots", "lots"], ["Some", "some"], ["Little", "little"]].map(([l, v], i) => [l, () => { S.wiz.sgGreen = v; save(); step("sgRec"); }, i === 1]));
+    }
+    if (name === "sgRec") {
+      const r = sgPick(), go = club => { S.wiz.club = club; S.wiz.sgDone = true; S.wiz.lie = S.wiz.sgLie === "bunker" ? "softsand" : ""; save(); step(S.autoCad ? "routine" : "measure"); };
+      screen(holeInfo(), `<h3>${esc(r.club)}</h3><p class="q">${esc(r.why)}</p>`,
+        [[`OK, the ${esc(r.club)}`, () => go(r.club), true], ["Different club", () => { S.wiz.sgDone = true; save(); step("club"); }]]);
+      return;
+    }
     if (name === "club") {   // one thing: pick the club (the suggestion is preselected)
+      { const t0 = targetYards(); if (!S.comp && !S.wiz.sgDone && (S.wiz.strokes || 0) > 0 && t0 > 0 && t0 < 40) return step("sg1"); }
       renderPlay();
       const pl = parseInt($("playsLike").textContent), plan = !S.comp && teeShot() ? teePlan(pl) : null;
       let sug = S.comp ? "" : plan ? plan.tee.name : $("shotClub").value; const t = targetYards();
@@ -2923,7 +2958,9 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       const tipsAll = [lie, hyb].filter(Boolean).join(". ");
       screen(holeInfo(), `<h3>Your routine</h3>${tipsAll ? `<p class="q" style="font-weight:700">${esc(tipsAll)}</p>` : ""}${S.thought ? `<p class="q"><b>Swing thought:</b> ${esc(S.thought)}</p>` : ""}
         <p class="q">${routine.map((r, i) => `${i + 1}. ${r}`).join("<br>")}</p>`,
-        [["I'm over the ball", () => overBall(), true], ...(S.tempo.on && !S.comp ? [["🎵 Tempo count again", () => tempoPlay(tempoKind())]] : []), ["I've hit it", () => { S.wiz.strokes = (S.wiz.strokes || 0) + 1; S.wiz.hit = true; if (S.mock) simShot(); step(S.pending || S.wiz.mockMeasure ? "walk" : "miss"); }, true]]);
+        [["I'm over the ball", () => overBall(), true], ...(S.tempo.on && !S.comp ? [["🎵 Tempo count again", () => tempoPlay(tempoKind())]] : []), ["I've hit it", () => { S.wiz.strokes = (S.wiz.strokes || 0) + 1; S.wiz.hit = true; S.wiz.sgDone = false;
+          { const t = targetYards(), par = holePar() || 4; S.wiz.appr = t >= 40 && t <= 260 && (par === 3 || S.wiz.strokes > 1); }
+          if (S.mock) simShot(); step(S.pending || S.wiz.mockMeasure ? "walk" : "miss"); }, true]]);
       if (canSpeak) {   // always spoken, like the yardage, club and putting routine (golfer's request)
         speechSynthesis.cancel();
         const club = S.wiz.club && S.wiz.club !== "Other" ? `, with the ${sayable(S.wiz.club)}` : "";
@@ -2956,6 +2993,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       return wizLive();
     }
     if (name === "aShot") {   // auto caddie: everything a caddie says at the ball, in one go
+      { const t0 = targetYards(); if (!S.comp && !S.wiz.sgDone && (S.wiz.strokes || 0) > 0 && t0 > 0 && t0 < 40) return step("sg1"); }
       renderPlay();
       const t = targetYards(), pl = parseInt($("playsLike").textContent), plan = !S.comp && teeShot() ? teePlan(pl) : null;
       let sug = plan ? plan.tee.name : $("shotClub").value;
@@ -3045,15 +3083,27 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         ["Missed left", () => { S.wiz.fir = "left"; save(); step("putts"); }],
         ["Missed right", () => { S.wiz.fir = "right"; save(); step("putts"); }]]);
     }
-    if (name === "putts") return screen(holeInfo(), `<h3>How many putts?</h3>`,
-      [0, 1, 2, 3, 4].map(n => [`${n} ${n === 1 ? "putt" : "putts"}`, () => { S.wiz.putts = n; save(); step("score"); }, n === 2]));
+    if (name === "putts") {
+      if (S.wiz.fp == null && S.wiz.putt && S.wiz.putt.len) S.wiz.fp = S.wiz.putt.len;   // auto caddie already asked
+      if (S.wiz.fp == null && !S.comp) return screen(holeInfo(), `<h3>How long was your first putt?</h3>`,
+        [["Short, inside 10 feet", () => { S.wiz.fp = "short"; save(); step("putts"); }], ["Medium, 10 to 30 feet", () => { S.wiz.fp = "medium"; save(); step("putts"); }, true],
+         ["Long, over 30 feet", () => { S.wiz.fp = "long"; save(); step("putts"); }], ["No putt: holed from off the green", () => { S.wiz.fp = "none"; S.wiz.putts = 0; save(); step("score"); }]]);
+      return screen(holeInfo(), `<h3>How many putts?</h3>`,
+        [0, 1, 2, 3, 4].map(n => [`${n} ${n === 1 ? "putt" : "putts"}`, () => { S.wiz.putts = n; save(); step("score"); }, n === 2]));
+    }
+    if (name === "missDist") {   // approaches only (golfer's choice 2026-11-18): short, long or pin high, for the club advice
+      const after = S.autoCad ? "aWalk" : "after", set = d => () => {
+        if (!S.mock) { const m = S.misses[S.misses.length - 1]; if (m && Date.now() - m.ts < 600000) m.dist = d; }
+        S.wiz.appr = false; save(); step(after); };
+      return screen(holeInfo(), `<h3>Short, long or pin high?</h3>`, [["Pin high", set("P"), true], ["Short", set("S")], ["Long", set("L")], ["Not sure", () => { S.wiz.appr = false; save(); step(after); }]]);
+    }
     if (name === "miss") {   // one question after every full shot: start line, for the aim advice
       const club = S.wiz.club || "Other", log = side => () => {
-        if (S.mock) { save(); return step("after"); }   // mock: start lines aren't logged
-        if (S.autoCad) { S.misses.push({ club, side, ts: Date.now() }); save(); return step("aWalk"); }
+        const nextStep = S.wiz.appr && !S.comp ? "missDist" : S.autoCad ? "aWalk" : "after";
+        if (S.mock) { save(); return step(nextStep); }   // mock: start lines aren't logged
         S.misses.push({ club, side, ts: Date.now() });
-        const shot = S.shots[S.shots.length - 1]; if (shot && Date.now() - shot.id < 600000 && !shot.miss) shot.miss = side;
-        save(); step("after"); };
+        if (!S.autoCad) { const shot = S.shots[S.shots.length - 1]; if (shot && Date.now() - shot.id < 600000 && !shot.miss) shot.miss = side; }
+        save(); step(nextStep); };
       return screen(holeInfo(), `<h3>Left, right or on line?</h3>`,
         [["On line", log("C"), true], ["Left", log("L")], ["Right", log("R")], ["😌 Bad one: reset me", () => badReset()]]);
     }
@@ -3113,6 +3163,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     }
     if (name === "next") {
       S.wiz.strokes = 0; S.wiz.putts = null; S.wiz.fir = null; S.wiz.pen = 0; S.wiz.phase = "tee"; S.wiz.pin = ""; S.wiz.hit = false; S.wiz.putt = {};
+      S.wiz.fp = null; S.wiz.sgDone = false; S.wiz.appr = false;
       if (S.cur.hole < HOLES) { S.cur.hole++; changedHole(); S.wiz.newHole = true; return step("yds"); }
       return step("end");
     }
@@ -3120,7 +3171,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       const t = roundTotals(); if (!S.mock) saveRoundSummary();
       screen("Round over", `<h3>You shot ${t.strokes}${card() ? ` (${t.toPar >= 0 ? "+" : ""}${t.toPar})` : ""}</h3>
         ${t.toMy != null ? `<p class="q"><b>Your par for these ${t.holes} holes: ${t.my}. ${t.toMy <= 0 ? "You beat it" + (t.toMy < 0 ? ` by ${-t.toMy}` : " exactly") + "!" : `${t.toMy} over it.`}</b></p>` : ""}
-        ${statsText() ? `<p class="q">${esc(statsText())}</p>` : ""}<p class="q"><b>${esc(nextPractice())}</b></p>
+        ${statsText() ? `<p class="q">${esc(statsText())}</p>` : ""}${breakdownText() ? `<p class="q">${esc(breakdownText())}</p>` : ""}<p class="q"><b>${esc(nextPractice())}</b></p>
         ${S.mock ? `<p class="q"><b>Mock round: not saved to your round history or handicap.</b></p>` : ""}
         <p class="q">Copy your scorecard and shot log, then paste them in your chat with Claude.</p>`,
         [["Copy scorecard and shot log", () => { copy(scorecardText() + "\n\n" + shotLogCsv(), $("csvFallback")); step("done"); }, true]]);
@@ -3128,11 +3179,11 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       if (canSpeak && t.holes) { speechSynthesis.cancel();
         speechSynthesis.speak(new SpeechSynthesisUtterance(`${pre} Round over. You shot ${t.strokes}` + (card() ? `, ${toParWords(t.toPar)}.` : ".")
           + (t.toMy != null ? ` Your par was ${t.my}: ${t.toMy <= 0 ? (t.toMy < 0 ? `you beat it by ${-t.toMy}` : "you matched it") : `${t.toMy} over it`}.` : "")
-          + ` ${statsText()} ${nextPractice()}`)); }
+          + ` ${statsText()} ${breakdownText()} ${nextPractice()}`)); }
       return;
     }
     if (name === "done") return screen("Round over", `<h3>Nice round</h3><p class="q">5 minutes of stretching now helps you feel better tomorrow.</p>`,
-      [["🧘 Guided cool-down (5 min)", () => coolGo("done"), true], ["📋 Round history", () => roundHistory()], ["Close the guide", () => { if (S.mock) return mockEnd(); S.guide.day = ""; S.wiz.step = null; save(); $("wiz").hidden = true; renderAll(); }]]);
+      [["🧘 Guided cool-down (5 min)", () => coolGo("done"), true], ["📋 Round history", () => roundHistory()], ["📏 My course distances", () => courseDistances()], ["Close the guide", () => { if (S.mock) return mockEnd(); S.guide.day = ""; S.wiz.step = null; save(); $("wiz").hidden = true; renderAll(); }]]);
   }
 
   // ---- extras (13 Nov): bag check, progress chart, putting log, bad-shot reset, rules help, round history, battery saver ----
@@ -3147,7 +3198,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   }
   const BAG_ITEMS = ["14 clubs or fewer in the bag (count them)", "6 or more balls, marked with your own mark", "Tees", "Ball marker and pitch-mark tool",
     "Glove", "Towel", "Water and a snack", "Rangefinder (check the battery)", "Phone charged", "Hat and sunscreen"];
-  const SWING_VARIANT = /\b(forearm|hip|choked|half|partial|3\/4|¾)\b|¾/i;   // 18 Nov (f): "54° forearm" etc. are swings with a club already counted, not extra clubs
+  const SWING_VARIANT = /\b(forearm|hip|choked|half|partial|3\/4|¾)\b|¾/i;   // 18 Nov (g): "54° forearm" etc. are swings with a club already counted, not extra clubs
   function bagCheck() {
     if (S.bag.day !== today()) S.bag = { day: today(), done: [] };
     const named = S.clubs.map(c => (c.name || "").trim()).filter(Boolean).filter(n => !SWING_VARIANT.test(n)), putter = named.some(n => /putt/i.test(n)) ? 0 : 1, n = named.length + putter;
@@ -3276,13 +3327,13 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     const t = roundTotals(), r = roundStats(), c = S.courses[S.round.course];
     const rec = { date: S.round.date, course: c ? c.name : S.round.course, tees: S.round.tees, holes: t.holes, strokes: t.strokes, toPar: card() ? t.toPar : null,
       fw: r.fwHit, fwN: r.fwN, gir: r.gir, girN: r.girN, putts: r.puttsN ? r.putts : null, three: r.three, pen: r.pen,
-      courseId: S.round.course, scores: { ...S.round.scores } };
+      courseId: S.round.course, scores: { ...S.round.scores }, ud: (roundBreakdown() || {}).ud ?? null, udN: (roundBreakdown() || {}).udN ?? null };
     const k = S.rounds.findIndex(x => x.date === rec.date && x.course === rec.course);
     if (k >= 0) S.rounds[k] = rec; else S.rounds.push(rec);
     save();
   }
   const roundLine = x => `${x.date} · ${x.course} (${x.tees}) · ${x.holes} holes · ${x.strokes}${x.toPar != null ? ` (${x.toPar >= 0 ? "+" : ""}${x.toPar})` : ""}`
-    + (x.fwN ? ` · fairways ${x.fw}/${x.fwN}` : "") + (x.girN ? ` · GIR ${x.gir}/${x.girN}` : "") + (x.putts != null ? ` · ${x.putts} putts${x.three ? ` (${x.three} three-putts)` : ""}` : "") + (x.pen ? ` · ${x.pen} penalties` : "");
+    + (x.fwN ? ` · fairways ${x.fw}/${x.fwN}` : "") + (x.girN ? ` · GIR ${x.gir}/${x.girN}` : "") + (x.putts != null ? ` · ${x.putts} putts${x.three ? ` (${x.three} three-putts)` : ""}` : "") + (x.pen ? ` · ${x.pen} penalties` : "") + (x.udN ? ` · up and down ${x.ud}/${x.udN}` : "");
   // ---- handicap estimate (World Handicap System method; golfer's request 2026-11-12). Not an official Handicap Index:
   // that needs scores posted through a golf club / GHIN. Only full 18-hole rounds; PCC taken as 0.
   const HCP_TABLE = { 3: [1, -2], 4: [1, -1], 5: [1, 0], 6: [2, -1], 7: [2, 0], 8: [2, 0], 9: [3, 0], 10: [3, 0], 11: [3, 0], 12: [4, 0], 13: [4, 0], 14: [4, 0],
@@ -3363,7 +3414,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   document.addEventListener("visibilitychange", () => { if (!document.hidden) { wakeSent = null; wakeTune(); } });
 
   document.addEventListener("click", e => {
-    const t = e.target.closest("#xtClose, #xtSpeak, [data-bag], [data-prc], [data-prm], [data-ptft], [data-ptmade], #ptMic, #ptUndo, #ptCopy, [data-rule], #ruleList, #rhCopy, #battBtn, #bagOpen, #prOpen, #ptOpen, #rhOpen, #rulesOpen, #pgCopy");
+    const t = e.target.closest("#xtClose, #xtSpeak, [data-bag], [data-prc], [data-prm], [data-ptft], [data-ptmade], #ptMic, #ptUndo, #ptCopy, [data-rule], #ruleList, #rhCopy, #battBtn, #bagOpen, #prOpen, #ptOpen, #rhOpen, #rulesOpen, #cdOpen, #pgCopy");
     if (!t) return;
     const id = t.id;
     if (id === "xtClose") { $("xt").hidden = true; if (canSpeak) speechSynthesis.cancel(); }
@@ -3397,6 +3448,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     else if (id === "ptOpen") puttLog();
     else if (id === "rhOpen") roundHistory();
     else if (id === "rulesOpen") rulesHelp();
+    else if (id === "cdOpen") courseDistances();
     else if (id === "pgCopy") copy(pgReport());
   });
   gpsTune(); wakeTune(); renderBatt();
@@ -3434,6 +3486,11 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     autoArrive({ ...ac.anchor });
   }
   function autoArrive(spot) {   // you're at your ball (stood still there, or said "I'm here")
+    if (!S.mock && S.wiz.spot && S.wiz.club && (S.wiz.phase === "play" || S.wiz.phase === "tee")) {   // log the shot: last spot → here
+      const c = S.clubs.find(x => x.name === S.wiz.club), d = Math.round(dist(S.wiz.spot, spot));
+      if (c && c.carry > 0 && d >= c.carry * 0.6 && d <= c.carry * 1.4 + 20)
+        S.shots.push({ from: { ...S.wiz.spot }, to: { ...spot }, club: c.name, lie: S.wiz.lie || "", course: S.cur.course, hole: S.cur.hole, ts: Date.now(), cond: null, yards: d, note: "auto caddie", id: Date.now(), auto: true });
+    }
     const g = greenPoint(), onGreen = g && dist(spot, g) <= greenRadius();
     if (S.wiz.phase === "play" && !S.wiz.hit) S.wiz.strokes = (S.wiz.strokes || 0) + 1;   // a shot was played from the last spot
     S.wiz.hit = false; S.wiz.spot = spot;
@@ -3571,6 +3628,60 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     tAu.src = tUrl; tAu.loop = false; tAu.volume = 1;
     tAu.play().catch(() => toast("Tap the screen once to allow the tempo count"));
   }
+  // ---- short game: the safest shot (a common coaching rule: putt when you can, chip when you can't putt, pitch only when you must) ----
+  function clubLike(re, fallback) { const c = S.clubs.find(x => re.test(x.name || "")); return c ? c.name : fallback; }
+  function sgPick() {
+    const t = Math.round(targetYards() || 15), lie = S.wiz.sgLie || "fairway", g = S.wiz.sgGreen || "some";
+    const putter = clubLike(/putt/i, "Putter"), w9 = clubLike(/^9 ?i|9 iron/i, "9 iron"), pw = clubLike(/^pw$|pitching/i, "PW"),
+      w54 = clubLike(/^54/, "54°"), w58 = clubLike(/^58/, "58°"), w50 = clubLike(/^50/, "50°");
+    if (lie === "bunker") return { club: w54, why: `Bunker, ${t} yards: the 54° has the most bounce. Open the face, hit about 2 inches behind the ball, and swing through to a full finish.` };
+    if (t >= 30) {   // a pitch: the nearest part-swing or full carry from your Clubs tab
+      const near = S.clubs.filter(c => c.carry > 0 && c.carry <= 80).sort((a, b) => Math.abs(a.carry - t) - Math.abs(b.carry - t))[0];
+      if (near) return { club: near.name, why: `${t} yards: a pitch. ${near.name} carries ${near.carry}. ${lie === "deep" ? "From deep rough, grip a little firmer and accelerate through." : "Smooth tempo, land it on the green."}` };
+    }
+    if ((lie === "fringe" || lie === "fairway") && t <= 12) return { club: putter, why: `Off the green on short grass, ${t} yards: putt it. A putt is the safest shot there is.` };
+    if (lie === "deep") return { club: w58, why: `Deep rough: the 58°, open the face a little, a slightly longer swing, and accelerate through the grass.` };
+    if (g === "lots") return lie === "light" ? { club: pw, why: `Lots of green: a chip with the PW. Land it just onto the green and let it roll like a putt.` }
+      : { club: w9, why: `Lots of green: a bump and run with the 9 iron. Putting stroke, land it a few yards onto the green, let it roll.` };
+    if (g === "some") return lie === "light" ? { club: w54, why: `Some green: a chip with the 54°. Land it a third of the way to the hole.` }
+      : { club: pw, why: `Some green: a chip with the PW. Land it a third of the way to the hole and let it release.` };
+    return { club: w58, why: `Little green to work with: the 58° goes up and stops. Land it just over the edge.${lie === "fairway" || lie === "fringe" ? ` Or putt it if the grass is smooth.` : ""}` };
+  }
+  // ---- your real carries from the course (auto caddie shots and GPS-measured shots) ----
+  const ROLL = name => /driver|^d$|wood|^\d ?w$/i.test(name) ? 10 : isHybrid(name) ? 5 : isWedge(name) ? 2 : 3;   // assumed roll, same as the patio game
+  function courseCarries() {
+    return S.clubs.filter(c => (c.name || "").trim() && !/putt/i.test(c.name)).map(c => { const m = measured(c.name); if (!m || m.n < 3) return null;
+      return { name: c.name, tab: c.carry || null, n: m.n, avg: m.avg, est: Math.max(0, m.avg - ROLL(c.name)) }; }).filter(Boolean);
+  }
+  function courseDistances() {
+    const rows = courseCarries();
+    const html = rows.length ? `<div class="scroll"><table><tr><th>Club</th><th>Clubs tab</th><th>Course (total)</th><th>Est. carry</th><th></th></tr>${rows.map(r =>
+      `<tr><td>${esc(r.name)}</td><td>${r.tab ?? "–"}</td><td>${r.avg} (${r.n})</td><td><b>${r.est}</b></td><td>${r.tab == null || Math.abs(r.est - r.tab) >= 3 ? `<button data-usecarry="${esc(r.name)}" data-v="${r.est}">Use ${r.est}</button>` : "✓"}</td></tr>`).join("")}</table></div>
+      <p class="note">Course = your measured shots (carry + roll), from "Measure this shot" and the auto caddie. Est. carry takes off an assumed roll
+      (woods 10, hybrids 5, irons 3, wedges 2). Wait for 5+ shots before trusting a number; "Use" changes the carry the caddie suggests from.</p>`
+      : `<p class="q">No club has 3 measured shots on the course yet. Use "Measure this shot" or the auto caddie in your rounds.</p>`;
+    xtShow("My course distances", html, rows.length ? rows.map(r => `${r.name}: about ${r.est} carry on the course, over ${r.n} shots${r.tab ? `, Clubs tab ${r.tab}` : ""}.`).join(" ") : "");
+  }
+  document.addEventListener("click", e => { const b = e.target.closest("[data-usecarry]"); if (!b) return;
+    const c = S.clubs.find(x => x.name === b.dataset.usecarry); if (c) { c.carry = +b.dataset.v; save(); renderAll(); toast(`${c.name}: ${c.carry}`); courseDistances(); } });
+  // ---- where the strokes went (a rough count, not strokes gained) ----
+  function roundBreakdown() {
+    const st = Object.entries((S.round && S.round.stats) || {}).map(([h, x]) => x);
+    if (!st.length) return null;
+    const fw = st.filter(x => x.fir), fwMiss = fw.filter(x => x.fir !== "hit").length, pen = st.reduce((a, x) => a + (x.pen || 0), 0);
+    const girK = st.filter(x => x.gir != null), grMiss = girK.filter(x => !x.gir).length;
+    const ud = girK.filter(x => !x.gir && x.score != null && x.par != null), udMade = ud.filter(x => x.score <= x.par).length;
+    const pk = st.filter(x => x.putts != null), three = pk.filter(x => x.putts >= 3), extra = pk.reduce((a, x) => a + Math.max(0, x.putts - 2), 0);
+    const threeLong = three.filter(x => x.fp === "long").length, threeShort = three.filter(x => x.fp === "short" || x.fp === "medium").length;
+    const areas = [["Tee shots", fwMiss + pen * 2, `${fwMiss} of ${fw.length} fairways missed${pen ? `, ${pen} penalty stroke${pen > 1 ? "s" : ""}` : ""}`],
+      ["Approaches", grMiss, `${grMiss} of ${girK.length} greens missed`],
+      ["Short game", ud.length - udMade, `up and down ${udMade} of ${ud.length}`],
+      ["Putting", extra, `${three.length} three-putt${three.length === 1 ? "" : "s"}${three.length ? ` (${threeLong} from long first putts, ${threeShort} from shorter ones)` : ""}`]];
+    const worst = areas.slice().sort((a, b) => b[1] - a[1])[0];
+    return { areas, worst, ud: udMade, udN: ud.length, threeLong };
+  }
+  function breakdownText() { const b = roundBreakdown(); if (!b) return "";
+    return "Where your strokes went: " + b.areas.map(a => `${a[0]}, ${a[2]}`).join(". ") + `. Most to gain: ${b.worst[0].toLowerCase()}.`; }
   function imHere() {   // fresh GPS at the ball, then the yards and the next club
     const go = () => { if (S.autoCad && fix && !S.mock) return autoArrive({ ...fix }); S.wiz.auto = true; save(); step("yds"); };
     if (!("geolocation" in navigator) || S.mock) return go();

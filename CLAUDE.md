@@ -367,7 +367,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (75% best pairs, 9 starts: ±8° and ±10% scale) against OSM's outline ring densified every 8 m; accepted at RMS < 30 m,
   then refined on OSM greens if 6+ exist. Simulated: 5-18 m from the outline alone, ~2 m with greens.
   OSM calls go through overpass(): overpass-api.de, then overpass.kumi.systems, then overpass.private.coffee (golfer got
-  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "18 Nov (f)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
+  502 from the main server, 2026-11-04). Status box on the map (#hmStatus): build label "18 Nov (g)" (also a "v 12 Nov (c) ⟳" and on the guide Menu's Get-latest button chip in the top bar that reloads fresh) (also shown in Setup next to "⟳ Get the latest version", which reloads with ?v=time to skip the cached copy; also in the guide Menu), what OSM returned (outline/name, hole lines, greens, or
   the error) and whether the course was placed automatically. Empty OSM answers aren't cached (S.osmMap v: 4).
   COURSE_PT for Rancho was wrong (golfer's screenshot 2026-11-04: map opened on houses by the freeway). hmOsm now first
   finds the course by name ("Rancho Park" / "Westchester") in a ±0.12°/0.15° box, stores its centre in S.coursePt,
@@ -497,6 +497,25 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   runs simShot(): the club's carry ×0.90-1.04 (capped near the flag) plus 2-8 yd roll beyond 40 yd; new distance = |left − hit|.
   The "Where's your ball?" screen says "Pretend: 42 yards left to the flag…" or "on the green, about N feet"; the next yardage
   screen says "Pretend: N yards to the flag". Still nothing saved; End restores the real course, tees and round.
+- Six scoring helps (golfer's "Do all 6", 2026-11-18; build 18 Nov (g)):
+  1. Short / long: after an approach (40-260 yd to the target, par-3 tee or not the first shot) the start-line answer is followed by
+     "Short, long or pin high?" (missDist; stored as S.misses[].dist S/L/P). lenTend(): 5+ answers, 60% one way → club advice adds
+     "Your 7i finishes short 4 of 6 times" and renderPlay moves the pick one club longer (within 15 yd) or shorter (within 10 yd).
+  2. Course carries: the auto caddie now logs each shot (last spot → next spot) to S.shots (auto: true) when the distance is
+     0.6-1.4× the club's carry (+20). "📏 My course distances" (guide Menu, end of round, Clubs tab): clubs with 3+ measured shots,
+     course total average, estimated carry (minus assumed roll: woods 10, hybrids 5, irons 3, wedges 2) and a "Use N" button.
+  3. Short game: under 40 yd (not a tee shot, not competition) the club step / aShot goes to sg1 (fringe / fairway / light rough /
+     deep rough / bunker) → sg2 (lots / some / little green) → sgRec: putt from short grass within 12 yd; 30+ yd = nearest Clubs-tab
+     carry up to 80 (part swings included); lots of green = 9i bump and run (PW from light rough); some = PW (54° from rough); little or
+     deep rough = 58°; bunker = 54° (most bounce). "OK, the X" → measure / routine; "Different club" → club list.
+  4. Breakdown (roundBreakdown/breakdownText): tee (fairways missed + penalties), approaches (greens missed), short game (up and down =
+     missed GIR with score ≤ par), putting (three-putts split by first-putt length). On the end screen, spoken, in the scorecard copy;
+     S.rounds stores ud/udN, Round history shows "up and down a/b"; nextPractice adds chips (up-and-down under 30%) and lag putting.
+  5. Damage control: a hole 2+ over par sets S.wiz.safe = 2 (next two holes): tee announcement "let's play it safe: no driver …,
+     aim for the middle of the green", teePlan skips the driver, aimPoint uses the green middle (not the pin).
+  6. First putt: before "How many putts?" → "How long was your first putt?" (short / medium / long / holed from off the green);
+     auto caddie reuses its putt-length answer. Stored as stats[hole].fp (with score and par).
+  Tested in a seated round in desktop Chromium; not yet on the iPhone.
 - Competition mode (Setup tab): distance only for club/league events (Rule 4.3). Hides conditions, plays-like,
   club suggestion, club averages and green notes; keeps GPS yardages, the rangefinder box and shot measuring.
 
