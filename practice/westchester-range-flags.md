@@ -74,3 +74,21 @@ white 1, 136; orange 90, 158; yellow 47, 210 (refit). Pocket Caddie 6 Nov (e) ha
 
 Golfer tested from mat 11: the app's white-flag distance matched the laser ("good"). The model is confirmed for
 use; the earlier "mat 12, white 155" reading was most likely taken from a different mat.
+
+## 2026-11-18, mat 16
+
+Golfer's laser readings (Revasri), mat 16. Time of day and wind not given yet: the wind service can't be reached from
+the setup Claude works in, and undated web pages were not used. To add: Range conditions → Check → "Copy for Claude".
+
+| Flag | Mat 16 reading | Model for mat 16 (fit of 11/06) | Difference |
+|---|---|---|---|
+| Red | 83 | 79 | +4 |
+| Blue | 113 | 109 | +4 |
+| White | 156 | 146 | +10 |
+| Orange | 170 | 162 | +8 |
+| Yellow ("further to the right") | 218 | 210 | +8 |
+
+Every reading is 4-10 yd longer than the model. No single mat number fits them all: red fits about mat 19, white about 22-23,
+orange about mat 8. So the flags were most likely moved since 11/06 (or the yellow is a different flag; "further to the right"),
+and the model's mat table is out of date for today. Use today's readings from mat 16 directly; refit the model only after
+readings from 2 more mats on the same day.

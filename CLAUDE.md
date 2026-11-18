@@ -318,6 +318,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   that mat, else estimated), and "📍 Yards to every flag from here". rfFlags() fits each flag's position from all its
   readings (GPS + laser yards, weighted least squares, starts spread around south, solutions kept south of the mats).
   Simulated with 3 mats: estimates from a 4th mat within 1 yd.
+  2026-11-18 mat 16 (golfer): red 83, blue 113, white 156, orange 170, yellow 218 ("further to the right"): 4-10 yd past
+  the 11/06 model, no single mat fits, so flags likely moved; model not refit (needs 3 mats on one day). Wind not yet recorded.
   First real readings 2026-11-06: practice/westchester-range-flags.md. They came from 3 mats but all saved as mat 1
   with one stale GPS position, so 6 Nov (d) takes a fresh getCurrentPosition (maximumAge 0, 2.5 s fallback to the
   live fix) for every reading, warns when the GPS has not moved after a mat change, and when the golfer has moved 12+ yd
