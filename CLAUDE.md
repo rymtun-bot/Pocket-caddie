@@ -152,6 +152,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Golfer's decision 2026-11-19: Clubs-tab driver carry 195 (sent as link/paste; both plans already use 195).
   Same day, "Range - 80 Shots" (chips PW 100, 9i 100, 7i 128, 4i 152): 7i 128/137, smash 1.30, launch 17.8°, 1.3° R, side 3 L
   (first range set with believable launch and start line).
+  3U (tagged 3W) 159/170, smash 1.42, launch 15.2°, 7.8° R, side 16 R (11/11 read 170 with a misread launch).
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
 - Warm-up (2026-11-10; WARM_BODY + WARM_DRILLS in index.html, also in practice/plan-2026-11.md): 5 body exercises

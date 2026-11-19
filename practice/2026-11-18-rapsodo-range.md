@@ -49,3 +49,13 @@ App chips for the whole session: PW 100, 9i 100, 7i 128, 4i 152 (club averages t
   monitor was set up well and this carry can be trusted more than the 11/02 and 11/11 ones.
 - Smash 1.30 beats the patio (1.25 on 11/13) and side carry is only 3 yd: a tight, straight group on the chart.
 - Low launch for a 31° 7-iron (about 18°): hands ahead at impact, which fits the good strike.
+
+### 3U (King Cobra Baffler 20°), tagged 3W in the app (golfer), app average row
+
+| Carry | Total | Side carry | Smash | Launch | Launch dir | Shot type | Apex ft |
+|---|---|---|---|---|---|---|---|
+| 159 | 170 | 16 R | 1.42 | 15.2° | 7.8° R | R | 64 |
+
+- Club speed not on the screenshots. Launch looks believable (15°), so this carry is more reliable than 11/11's 170.
+- Starts right (7.8°) and finishes 16 yd right: the most right-leaning club of the session (7i: 1.3° R, 3 yd left).
+- Session chips: 4i 152 and 5w 150 (likely the 4U and 5U; averages to come). If so, 3U, 4U and 5U sit within 9 yd.
