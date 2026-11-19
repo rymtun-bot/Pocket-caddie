@@ -147,6 +147,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   74/67/59 (`practice/2026-11-14-rapsodo-patio.md`; MLM "50°", "54°", "58°"). 60° full went over the net at ~6 ft.
 - 2026-11-18: Rapsodo, Westchester range, range balls, driver 7 shots (app average): 90 mph, ball 128, smash 1.42, 19.6° R, carry 208
   (launch 33.5° misread; ~195 by ball speed). Fastest so far. Grip and monitor aim not stated (`practice/2026-11-18-rapsodo-range.md`).
+  Second set (golfer): down 1 in (D tag, 4 shots) ball 128, smash 1.41, 24.5° R vs down 2 in (3W tag, 6 shots) ball 127, smash 1.45,
+  20.5° R; both ~193-195 by ball speed. 2 in = same ball speed, better strike, straighter (small samples). MLM "Driver choked 2 in".
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
 - Warm-up (2026-11-10; WARM_BODY + WARM_DRILLS in index.html, also in practice/plan-2026-11.md): 5 body exercises
