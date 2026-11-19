@@ -1,11 +1,12 @@
 GOLF TESTS BEFORE DEC 1
-Patio Friday 11/20 + next range visit
+Patio Friday 11/20 + next range visit (about 70 balls on the patio)
 
 Current bag (12): Driver 195, 3W, 3U 159, 5U 150, 7i 128, 8i ?, 9i 111, PW 104, 50, 54, 58, putter
 PW arms parallel 88. Two free slots.
 
 EVERY SESSION
 - Choi tempo on every full swing
+- Over the ball: "Left hip turns back" (now in Pocket Caddie's cues)
 - Alternate clubs in the comparison tests
 - Send me: the average row for each club, plus the individual rows for alternated tests, plus the club speed screen
 
@@ -16,6 +17,14 @@ Patio carries run short, so these tests compare clubs: gaps, strike (smash), sta
 
 [ ] 1. Warm-up, 5 min
        Guide Menu > Guided warm-up
+
+[ ] 1b. Left hip drills, no ball, 5 min
+       Chair drill: backside touching a chair back; slow half,
+       then 3/4 swings; LEFT cheek stays on the chair through
+       the finish. 10 swings.
+       Then before each test below: one chair-drill swing,
+       step up, hit one ball with the same feel.
+       Watch hybrid start direction: from 6-8 deg R toward 0-3.
 
 [ ] 2. 6-iron vs 7-iron, 5 + 5 alternating
        Goal: 6i about 10 yd past the 7i
@@ -33,6 +42,10 @@ Patio carries run short, so these tests compare clubs: gaps, strike (smash), sta
        Compare ball speed and smash, not carry
        2U needs about 4+ mph more ball speed to be worth it
        Sole flat, aim a little left (hybrids started right on 11/18)
+
+[ ] 5b. 7-iron with the hip feel, 10 balls
+       Drill swing, then real ball, every time
+       Compare start direction and smash with the 7i in test 2
 
 [ ] 6. PW arms parallel, 10 balls
        Count "one, two" to the top, stop at arms parallel every time
