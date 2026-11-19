@@ -94,6 +94,9 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
 - Bag decision (golfer, 2026-11-19): 4U out ("feels harder to hit than the 5U"; range 11/18: 4U 152, 5U 150, 3U 159). Bag is 12:
   Driver, 3W, 3U, 5U, 7i, 8i, 9i, PW, 50°, 54°, 58°, putter; two slots free (suggested: RSi 6-iron ~140 for the 135-148 gap,
   range-test first). Both plans (md + CARDS) updated: 4U shots now 3U (145-170) or 5U (~150, or where the 3U's roll is too much).
+- Reshaft plan (golfer, 2026-11-19): 2U and 3U to get the same shaft as the 5U (N.S. Pro 950 R steel); 5U stays as is, 1U and 4U
+  not reshafted. Higher-launch option in the same Nippon family: 850GH neo R (84.5 g uncut, marketed for higher launch;
+  pluggedingolf.com/nippon-ns-pro-850gh-neo-shaft-review, accessed 2026-11-19); 950GH neo R 94.5 g, mid/mid-high. Advised after Dec 1.
 - Laser rangefinder: Revasri. Its readings go in Pocket Caddie's "type the yardage" box.
 - Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (urethane cover).
   Titleist RCT balls (radar-reflector Pro V1/V1x for indoor launch monitors) arriving 2026-11-05 (golfer; which model not
