@@ -69,3 +69,14 @@ App chips for the whole session: PW 100, 9i 100, 7i 128, 4i 152 (club averages t
 - Same carry as 11/11 (151). Best smash of the session so far (1.45).
 - Low launch for a 21° hybrid (12°) and low apex (51 ft): it runs out 13 yd (total 165).
 - 3U 159 vs 4U 152: only 7 yd apart in carry, 5 yd in total. Starts right like the 3U (6.0° vs 7.8°).
+
+### 5U (King Cobra Baffler 26°), tagged 5W in the app, app average row
+
+| Carry | Total | Side carry | Smash | Launch | Launch dir | Shot type | Apex ft |
+|---|---|---|---|---|---|---|---|
+| 150 | 161 | 8 R | 1.42 | 13.8° | 6.0° R | R | 56 |
+
+- 4U 152 / 165 vs 5U 150 / 161: 2 yd apart in carry, 4 in total. With the 3U at 159, all three hybrids carry 150-159.
+- Below them the 7-iron carries 128: a 22-yd hole (about 135-148) with no club in the bag.
+- Same pattern as the 11/04 patio (5U 131, 4U 135) and 11/11 range (5U 135, 4U 151 was the exception).
+- All three hybrids start 6-8° right; the 7-iron starts straight.

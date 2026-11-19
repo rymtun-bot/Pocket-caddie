@@ -154,6 +154,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   (first range set with believable launch and start line).
   3U (tagged 3W) 159/170, smash 1.42, launch 15.2°, 7.8° R, side 16 R (11/11 read 170 with a misread launch).
   4U (tagged 4i) 152/165, smash 1.45, launch 12.2°, 6.0° R, side 10 R: only 7 yd short of the 3U.
+  5U (tagged 5w) 150/161, smash 1.42, launch 13.8°, 6.0° R: 2 yd from the 4U. Hybrids 150-159, then a 128-150 hole to the 7i.
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
 - Warm-up (2026-11-10; WARM_BODY + WARM_DRILLS in index.html, also in practice/plan-2026-11.md): 5 body exercises
