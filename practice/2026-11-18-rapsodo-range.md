@@ -98,6 +98,19 @@ shot order: 65-75 full, 76-80 arms parallel (to confirm with the golfer). Launch
 - Arm-parallel swings were straighter (1 L vs 6 L) and struck as well (1.22).
 - Full PW 104 vs 11/02 range 91 and 9/02 100: the longest PW so far.
 
+#### PW club speed (golfer's second set of screenshots)
+
+| Swing | Club mph | Ball mph (club x smash) | Carry |
+|---|---|---|---|
+| Full (9 shots; shot 69 left out) | 70 | 84 | 104 |
+| Lead arm parallel (5) | 61 | 74 | 88 |
+
+- Shot 69 read 81 mph with smash 1.04, but its ball speed (84) equals the other full swings: the club speed was misread.
+- Arms parallel = 9 mph less club speed and 10 mph less ball speed → 16 yd less carry.
+- Across all PW shots, club speed and carry go together (correlation 0.85 without shot 69) and ball speed predicts carry almost
+  exactly (0.99). Within the full swings alone, club speed barely varies (67-71 mph), so the carry spread there comes from strike.
+- 70 mph PW vs 68 on the 11/02 range and 64 on the 10/31 patio.
+
 ### 9-iron (RSi 2 40°): full and arm-parallel swings mixed (golfer: same as the PW)
 
 Rows used (golfer's request). 10 shots, 55-64; their mean (100.4 / 106.6) matches the app's 100 / 107 average row. Split by the gap

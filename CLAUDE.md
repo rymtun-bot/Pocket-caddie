@@ -157,6 +157,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   5U (tagged 5w) 150/161, smash 1.42, launch 13.8°, 6.0° R: 2 yd from the 4U. Hybrids 150-159, then a 128-150 hole to the 7i.
   PW full and arms parallel mixed (golfer asked me to split the rows): full 104/109, smash 1.19, 6 L (10 shots, outlier out);
   arms parallel 88/93, 1.22, 1 L (5 shots); MLM "PW" and "PW arms parallel". SWING_VARIANT now also matches arms/parallel.
+  PW club speed (2nd screenshots): full 70 mph (shot 69's 81 mph / 1.04 smash misread; its ball speed matched the rest), arms parallel 61.
   9i same way (split by carry gap + apex): full 106/112, 1.20, launch 21.8°, 1.3° R (7 shots); arms parallel 87/94 (3). Only 2 yd
   past the PW full (shot-order split: 110 vs 104); arms parallel equal to PW's. Suggest a loft check and a 9i/PW alternating test.
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
