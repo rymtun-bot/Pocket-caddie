@@ -16,20 +16,3 @@ day: `practice/westchester-range-flags.md`. Wind: not recorded.
   between 11/11's normal grip (1.43) and gripped down (1.47).
 - Launch direction 19.6° right: same as 11/02 and 11/11. The golfer saw the 11/11 drives go right "but not that much", so
   part of this is likely the unit's aim on the mat.
-
-## Second session: "Range - 10 Shots" (golfer: driver gripped down 1 in, then 2 in)
-
-Golfer: "first driver 1 inch and the driver 2 inch choke". Taken as: rows tagged D (shots 1-4) = gripped down 1 in, rows
-tagged 3W (shots 5-10) = gripped down 2 in (the 3W tag was used for the choked driver on 11/11 too). App average rows only.
-Club speed column not on the photos; estimated as ball speed ÷ smash.
-
-| Grip | Shots | Ball mph | Club mph (est.) | Smash | Carry* | Total | Launch* | Launch dir | Apex ft* |
-|---|---|---|---|---|---|---|---|---|---|
-| Down 1 in (D) | 4 | 128 | ~91 | 1.41 | 207 | 208 | 36.2° | 24.5° R | 208 |
-| Down 2 in (3W tag) | 6 | 127 | ~88 | 1.45 | 203 | 203 | 34.6° | 20.5° R | 199 |
-
-- *Launch misread again, so carry and apex are inflated. By ball speed both are about 193-195 carry.
-- 2 in vs 1 in: ball speed the same (127 vs 128) with ~3 mph less club speed, because the strike was better (smash
-  1.45 vs 1.41), and it started 4° less right. Small samples (4 and 6 shots), so a lean, not proof.
-- Supports the coach's "about 1.5 in too long". Next range: 10 shots at 2 in, alternating with 1.5 in, monitor aimed along a
-  club at the flag. If 2 in holds up, have the driver cut about 1.5 in (re-weight to restore swing weight) rather than choke.
