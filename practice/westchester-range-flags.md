@@ -111,4 +111,8 @@ The board lists two flags of most colours (two columns; which column is the left
 - There are two flags of most colours (and a purple one). The 11/06 model assumed one flag per colour, which likely explains
   readings that didn't fit (the 196 "yellow" from mat 11, orange 166 vs 180) and why it is 4-10 yd off today: the flags
   were moved too. Next time: say left or right with each colour ("red right, 86") so readings go to the right flag.
+- Golfer's notes on the mat-16 readings (2026-11-19): the red lasered (83) was NOT the right-most red flag; the nearer white flag
+  was hidden behind the yellow, so the white 156 is the far-right white flag. The board lists one white (150): either the
+  far-right white isn't on the board, or the board's 150 is the hidden nearer one. Yellow 218 was also a far-right flag.
+  So red 83 = the board's red 83, and white 156 / yellow 218 are right-side flags, a little farther from mat 16.
 - The board is changed when the flags move, so a photo of it each visit gives today's yardages from mat 16 without lasering.
