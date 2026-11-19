@@ -320,6 +320,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Simulated with 3 mats: estimates from a 4th mat within 1 yd.
   2026-11-18 mat 16 (golfer): red 83, blue 113, white 156, orange 170, yellow 218 ("further to the right"): 4-10 yd past
   the 11/06 model, no single mat fits, so flags likely moved; model not refit (needs 3 mats on one day). Wind not yet recorded.
+  Range distance board behind mat 16 (golfer's photo 11/18): two flags of most colours: yellow 214/205, orange 199/170, white 150,
+  purple 142, blue 111/112, red 83/86. Laser from mat 16 matched within 0-6 yd. RANGE_MODEL assumes one flag per colour (wrong);
+  readings need left/right per colour. A board photo each visit = that day's yardages from about mat 16.
   First real readings 2026-11-06: practice/westchester-range-flags.md. They came from 3 mats but all saved as mat 1
   with one stale GPS position, so 6 Nov (d) takes a fresh getCurrentPosition (maximumAge 0, 2.5 s fallback to the
   live fix) for every reading, warns when the GPS has not moved after a mat change, and when the golfer has moved 12+ yd

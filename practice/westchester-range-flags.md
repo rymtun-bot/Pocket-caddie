@@ -92,3 +92,23 @@ Every reading is 4-10 yd longer than the model. No single mat number fits them a
 orange about mat 8. So the flags were most likely moved since 11/06 (or the yellow is a different flag; "further to the right"),
 and the model's mat table is out of date for today. Use today's readings from mat 16 directly; refit the model only after
 readings from 2 more mats on the same day.
+
+### Range's own distance board, 2026-11-18 (golfer's photo; board stands right behind mat 16)
+
+The board lists two flags of most colours (two columns; which column is the left or right flag on the range is not known):
+
+| Flag | Board, left column | Board, right column | Golfer's laser, mat 16 |
+|---|---|---|---|
+| Yellow | 214 | 205 | 218 ("further to the right") |
+| Orange | 199 | 170 | 170 |
+| White | 150 | - | 156 |
+| Purple | - | 142 | not lasered |
+| Blue | 111 | 112 | 113 |
+| Red | 83 | 86 | 83 |
+
+- The laser matches the board within 0-2 yd for red, blue and orange, and within 4-6 yd for white and yellow, so the board's
+  numbers look measured from about mat 16, and the Revasri reads true on this range.
+- There are two flags of most colours (and a purple one). The 11/06 model assumed one flag per colour, which likely explains
+  readings that didn't fit (the 196 "yellow" from mat 11, orange 166 vs 180) and why it is 4-10 yd off today: the flags
+  were moved too. Next time: say left or right with each colour ("red right, 86") so readings go to the right flag.
+- The board is changed when the flags move, so a photo of it each visit gives today's yardages from mat 16 without lasering.
