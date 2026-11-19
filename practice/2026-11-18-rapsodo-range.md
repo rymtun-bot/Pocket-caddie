@@ -97,3 +97,23 @@ shot order: 65-75 full, 76-80 arms parallel (to confirm with the golfer). Launch
   the spread (99-111) is mostly strike quality, not swing length. Side carry and carry barely relate (-0.39).
 - Arm-parallel swings were straighter (1 L vs 6 L) and struck as well (1.22).
 - Full PW 104 vs 11/02 range 91 and 9/02 100: the longest PW so far.
+
+### 9-iron (RSi 2 40°): full and arm-parallel swings mixed (golfer: same as the PW)
+
+Rows used (golfer's request). 10 shots, 55-64; their mean (100.4 / 106.6) matches the app's 100 / 107 average row. Split by the gap
+in carry (nothing between 90 and 98), which apex backs up (part swings 35-43 ft, full 49-68 ft, apex vs carry correlation 0.80).
+Shot order alone (55-58 full, 59-64 part) would put three 98-102 shots with full-swing apexes among the part swings, so the gap
+split is used (to confirm with the golfer).
+
+| Swing | Shots | Carry | Total | Side carry | Smash | Launch | Launch dir | Apex ft |
+|---|---|---|---|---|---|---|---|---|
+| Full | 7 (55-58, 60, 62, 63) | 106 | 112 | 2 L | 1.20 | 21.8° | 1.3° R | 53 |
+| Lead arm parallel | 3 (59, 61, 64) | 87 | 94 | 3 L | 1.20 | 21.4° | 0.3° L | 38 |
+
+(If the shot-order split is right instead: full 110 / 116, arms parallel 94 / 100.)
+
+- 9i full 106 vs PW full 104: only 2 yd apart (6 yd on the other split) for 5° of loft; 10-12 yd is usual. Arms parallel: 9i 87 vs
+  PW 88, the same. So at the range the 9i adds almost nothing over the PW.
+- Within the full 9i swings, smash doesn't explain the carry (correlation -0.25), unlike the PW (0.77).
+- Start line excellent: 1.3° R full, 0.3° L part; mostly ST shot types.
+- To check: lofts of the 9i and PW (a shop loft/lie check), and next range alternate 9i / PW full, 5 each, to confirm the gap.
