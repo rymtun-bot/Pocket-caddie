@@ -59,3 +59,13 @@ App chips for the whole session: PW 100, 9i 100, 7i 128, 4i 152 (club averages t
 - Club speed not on the screenshots. Launch looks believable (15°), so this carry is more reliable than 11/11's 170.
 - Starts right (7.8°) and finishes 16 yd right: the most right-leaning club of the session (7i: 1.3° R, 3 yd left).
 - Session chips: 4i 152 and 5w 150 (likely the 4U and 5U; averages to come). If so, 3U, 4U and 5U sit within 9 yd.
+
+### 4U (Lazarus 21°), tagged 4i in the app, app average row
+
+| Carry | Total | Side carry | Smash | Launch | Launch dir | Shot type | Apex ft |
+|---|---|---|---|---|---|---|---|
+| 152 | 165 | 10 R | 1.45 | 12.2° | 6.0° R | R | 51 |
+
+- Same carry as 11/11 (151). Best smash of the session so far (1.45).
+- Low launch for a 21° hybrid (12°) and low apex (51 ft): it runs out 13 yd (total 165).
+- 3U 159 vs 4U 152: only 7 yd apart in carry, 5 yd in total. Starts right like the 3U (6.0° vs 7.8°).
