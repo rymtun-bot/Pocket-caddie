@@ -80,3 +80,20 @@ App chips for the whole session: PW 100, 9i 100, 7i 128, 4i 152 (club averages t
 - Below them the 7-iron carries 128: a 22-yd hole (about 135-148) with no club in the bag.
 - Same pattern as the 11/04 patio (5U 131, 4U 135) and 11/11 range (5U 135, 4U 151 was the exception).
 - All three hybrids start 6-8° right; the 7-iron starts straight.
+
+### PW (RSi 2 45°): full swings and arm-parallel swings mixed (golfer: "calculate averages yourself")
+
+Golfer's request, so the individual rows were used (16 shots, 65-80; their mean, 99.8 / 104.2, matches the app's 100 / 104 average
+row, so all PW shots are on the screenshots). Split by the clear gap in carry (nothing between 93 and 99), which also follows the
+shot order: 65-75 full, 76-80 arms parallel (to confirm with the golfer). Launch angle and direction not on these screenshots.
+
+| Swing | Shots | Carry | Total | Side carry | Smash |
+|---|---|---|---|---|---|
+| Full | 10 (shot 70 left out: app outlier, 27 yd left) | 104 | 109 | 6 L | 1.19 |
+| Lead arm parallel | 5 | 88 | 93 | 1 L | 1.22 |
+
+- Arms parallel goes 16 yd shorter than full: a usable in-between shot (50° full carries 74 on the patio, so 88 fills 74-104).
+- Full swings: carry rises with smash (correlation 0.77 over the 10 shots; the 1.04 shot carried 99, the 1.25 shot 111), so
+  the spread (99-111) is mostly strike quality, not swing length. Side carry and carry barely relate (-0.39).
+- Arm-parallel swings were straighter (1 L vs 6 L) and struck as well (1.22).
+- Full PW 104 vs 11/02 range 91 and 9/02 100: the longest PW so far.

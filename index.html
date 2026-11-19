@@ -989,6 +989,8 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     { club: "3U", place: "Range", date: "2026-11-18", carry: 159, total: 170, smash: 1.42, launch: 15.2, dir: 7.8, note: "Tagged 3W; Westchester, range balls, app average; side carry 16 R" },
     { club: "4U", place: "Range", date: "2026-11-18", carry: 152, total: 165, smash: 1.45, launch: 12.2, dir: 6.0, note: "Tagged 4i; Westchester, range balls, app average; side carry 10 R" },
     { club: "5U", place: "Range", date: "2026-11-18", carry: 150, total: 161, smash: 1.42, launch: 13.8, dir: 6.0, note: "Tagged 5w; Westchester, range balls, app average; side carry 8 R" },
+    { club: "PW", place: "Range", date: "2026-11-18", carry: 104, total: 109, smash: 1.19, note: "Full swings: mean of shots 65-75 without the outlier (10 shots; golfer mixed full and arms-parallel); side carry 6 L" },
+    { club: "PW arms parallel", place: "Range", date: "2026-11-18", carry: 88, total: 93, smash: 1.22, note: "Backswing to lead arm parallel: mean of shots 76-80 (5 shots); side carry 1 L" },
     { club: "Driver choked 1 in", place: "Range", date: "2026-11-11", carry: 203, total: 204, mph: 86, smash: 1.47, launch: 33.5, dir: 22.2, note: "Westchester mat, range balls, sleeve STD, gripped down 1 in, tagged 3W; mean of 6 shots (app chip 203); ball speed ~126; launch not credible, so carry gain over the normal grip is probably nearer 5 yd than 20" },
     { club: "Driver HIGHER loft", place: "Range", date: "2026-11-11", carry: 172, total: 172, mph: 83, smash: 1.43, launch: 35.3, dir: 22.2, note: "Westchester mat, range balls, sleeve HIGHER, shots 31-39 (last of the day), mean of 9 rows; ball speed 118; launch not credible" },
     { club: "7i", place: "Patio", date: "2026-11-13", carry: 125, total: 129, mph: 75, smash: 1.25, launch: 25.4, dir: 0.3, note: "RSi 7, normal grip, 9 shots (app tag 7i), Supersoft; Rapsodo aimed with a club on the ground" },
@@ -3205,7 +3207,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   }
   const BAG_ITEMS = ["14 clubs or fewer in the bag (count them)", "6 or more balls, marked with your own mark", "Tees", "Ball marker and pitch-mark tool",
     "Glove", "Towel", "Water and a snack", "Rangefinder (check the battery)", "Phone charged", "Hat and sunscreen"];
-  const SWING_VARIANT = /\b(forearm|hip|choked|half|partial|3\/4|¾)\b|¾/i;   // 18 Nov (h): "54° forearm" etc. are swings with a club already counted, not extra clubs
+  const SWING_VARIANT = /\b(forearm|hip|choked|half|partial|arms|parallel|3\/4|¾)\b|¾/i;   // 18 Nov (h): "54° forearm" etc. are swings with a club already counted, not extra clubs
   function bagCheck() {
     if (S.bag.day !== today()) S.bag = { day: today(), done: [] };
     const named = S.clubs.map(c => (c.name || "").trim()).filter(Boolean).filter(n => !SWING_VARIANT.test(n)), putter = named.some(n => /putt/i.test(n)) ? 0 : 1, n = named.length + putter;
