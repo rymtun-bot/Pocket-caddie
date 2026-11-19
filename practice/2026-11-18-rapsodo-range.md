@@ -130,3 +130,18 @@ split is used (to confirm with the golfer).
 - Within the full 9i swings, smash doesn't explain the carry (correlation -0.25), unlike the PW (0.77).
 - Start line excellent: 1.3° R full, 0.3° L part; mostly ST shot types.
 - To check: lofts of the 9i and PW (a shop loft/lie check), and next range alternate 9i / PW full, 5 each, to confirm the gap.
+
+#### 9-iron club speed (golfer's second set of screenshots): the split revised
+
+Ball speed (club speed x smash) shows the shot order was right after all: shots 55-58 had 87-91 mph ball speed, shots 59-64
+only 75-84. So 55-58 = full, 59-64 = arms parallel (as the golfer said: same sequence as the PW); 60, 62 and 63 were longer
+arm-parallel swings (ball 80-84, carry 98-102). This replaces the gap split above.
+
+| Swing | Shots | Club mph | Ball mph | Carry | Total | Smash | Launch | Side |
+|---|---|---|---|---|---|---|---|---|
+| Full | 4 (55-58) | 74 | 88 | 111 | 117 | 1.21 | 21.4° | 3 L |
+| Lead arm parallel | 6 (59-64) | 66 | 79 | 94 | 100 | 1.20 | 22.0° | 2 L |
+
+- Ball speed predicts carry closely (correlation 0.96); club speed less so (0.74), because strike varied (1.10-1.28).
+- 9i vs PW: full 111 vs 104 (7 yd; 74 vs 70 mph), arms parallel 94 vs 88 (6 yd). A real but small gap; 10-12 yd is usual.
+- Arm-parallel 9i swings varied a lot in length (85-102): the PW ones were steadier (81-93).
