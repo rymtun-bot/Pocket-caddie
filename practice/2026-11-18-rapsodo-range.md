@@ -33,3 +33,19 @@ Club speed column not on the photos; estimated as ball speed ÷ smash.
   1.45 vs 1.41), and it started 4° less right. Small samples (4 and 6 shots), so a lean, not proof.
 - Supports the coach's "about 1.5 in too long". Next range: 10 shots at 2 in, alternating with 1.5 in, monitor aimed along a
   club at the flag. If 2 in holds up, have the driver cut about 1.5 in (re-weight to restore swing weight) rather than choke.
+
+## Third session: "Range - 80 Shots" (iPhone screenshots, 7:54)
+
+App chips for the whole session: PW 100, 9i 100, 7i 128, 4i 152 (club averages to come one by one; "4i" likely the 4U).
+
+### 7-iron (RSi 2), app average row
+
+| Carry | Total | Side carry | Smash | Launch | Launch dir | Shot type | Apex ft |
+|---|---|---|---|---|---|---|---|
+| 128 | 137 | 3 L | 1.30 | 17.8° | 1.3° R | ST (straight) | 56 |
+
+- Club speed not on the screenshots.
+- First range session with believable launch and direction: launch 17.8° (not 30°+) and start 1.3° R (not 15-25° R), so the
+  monitor was set up well and this carry can be trusted more than the 11/02 and 11/11 ones.
+- Smash 1.30 beats the patio (1.25 on 11/13) and side carry is only 3 yd: a tight, straight group on the chart.
+- Low launch for a 31° 7-iron (about 18°): hands ahead at impact, which fits the good strike.
