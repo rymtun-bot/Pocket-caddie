@@ -1,0 +1,94 @@
+GOLF TESTS BEFORE DEC 1
+Patio Friday 11/20 + next range visit
+
+Current bag (12): Driver 195, 3W, 3U 159, 5U 150, 7i 128, 8i ?, 9i 111, PW 104, 50, 54, 58, putter
+PW arms parallel 88. Two free slots.
+
+EVERY SESSION
+- Choi tempo on every full swing
+- Alternate clubs in the comparison tests
+- Send me: the average row for each club, plus the individual rows for alternated tests, plus the club speed screen
+
+==============================
+PATIO - FRIDAY 11/20 (about 60 balls)
+==============================
+Patio carries run short, so these tests compare clubs: gaps, strike (smash), start direction.
+
+[ ] 1. Warm-up, 5 min
+       Guide Menu > Guided warm-up
+
+[ ] 2. 6-iron vs 7-iron, 5 + 5 alternating
+       Goal: 6i about 10 yd past the 7i
+       Yes = 6i can fill the 135-148 gap
+
+[ ] 3. 8-iron, 10 balls
+       Goal: about halfway between the 7i and 9i
+       Within 3 yd of either one = tell me
+
+[ ] 4. 9-iron vs PW full, 5 + 5 alternating
+       Range 11/18: only 7 yd apart
+       Same on the patio = get a shop loft check
+
+[ ] 5. 2U vs 3U off the mat, 5 + 5 alternating
+       Compare ball speed and smash, not carry
+       2U needs about 4+ mph more ball speed to be worth it
+       Sole flat, aim a little left (hybrids started right on 11/18)
+
+[ ] 6. PW arms parallel, 10 balls
+       Count "one, two" to the top, stop at arms parallel every time
+       Goal: carry spread under 8 yd (range: 12)
+
+[ ] 7. Putting, 10 min
+       10 putts each from 3, 5 and 8 ft
+       Log: Guide Menu > Putting practice, or tell me "3 feet, made 8"
+
+Skip on the patio: 3W and 5W
+
+==============================
+RANGE - NEXT VISIT (about 70 balls)
+==============================
+Setup: Rapsodo lined up along a club pointing at the flag, as on 11/18
+Optional: photo of the distance board behind mat 16 (red 83/86, blue 111/112, white 150, purple 142, orange 199/170, yellow 214/205 on 11/18)
+Optional: Range conditions > Check, then Copy for Claude (wind)
+
+[ ] 1. Driver, 10 balls
+       Gripped down 2 in (or 1.5 vs 2 alternating)
+       Goal: smash 1.45+, start under 15 deg R
+
+[ ] 2. 3W off a tee, 10 balls
+       Goal: about 175-185 carry
+
+[ ] 3. 3W off the mat (no tee), 10 balls
+       Can it be used from the fairway?
+
+[ ] 4. 2U off the mat, 10 balls
+
+[ ] 5. 5W (Burner 18 deg) off the mat, 10 balls
+       Only if the 3W off the mat was poor
+
+[ ] 6. 6-iron, 10 balls
+
+[ ] 7. 8-iron, 10 balls
+
+[ ] 8. 9-iron vs PW full, 5 + 5 alternating
+       Only if the patio showed a small gap
+
+==============================
+DECISIONS
+==============================
+3W solid off the mat (175-185)
+   -> keep as is; no 2U or 5W needed
+
+3W fine off a tee but poor off the mat
+   -> add whichever of 2U / 5W carries 165-175 straighter and more solidly
+
+2U within 8 yd of the 3U (159)
+   -> leave the 2U out
+
+3W within 10 yd of the driver
+   -> driver gripped down instead; 3W out
+
+6-iron about 138-145
+   -> 6i goes in a free slot
+
+Then: I update the Clubs-tab carries and both course plans.
