@@ -18,7 +18,8 @@ which raises the average club speed and lowers the smash. Without them: 8i ~67 m
 - Gaps (patio): 7i 126 (11/19, same tempo) → 8i 113 (13) → 9i 104 (9) → PW 98 (6). 9i-PW gap small again (range 11/18: 7).
 - Start direction moved LEFT on every club (2-8° L; PW full and 9i hip about 7-8° L, shot types L). Before: 1-6° R.
   Either the left-hip / release work is now closing the face, or the monitor was aimed differently. Check the aim first.
-- Hip-high 9i/PW carried 74-81, far more than the 11/15 hip-high wedges (25-35). Swing length to confirm with the golfer.
+- Hip-high 9i/PW carried 74-81, far more than the 11/15 hip-high wedges (25-35). Golfer: the swing may have been "a tad longer"
+  than hip height, so these sit between hip high and arms parallel; repeatability to check at the range.
 
 ## Golfer's feel note (2026-11-20)
 "Feel like I was closing the club face on the way down, and the result felt crisper, cleaner" (8i, 9i, PW today).
