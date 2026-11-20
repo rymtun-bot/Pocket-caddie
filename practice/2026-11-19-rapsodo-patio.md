@@ -18,4 +18,15 @@ App average rows; spreads from the 5 rows visible on each screenshot. Wet mat: c
 - Held set: highest launch (26°) and the most right start of the 7i sets; no gain.
 - 6i (held set) vs 7i (held set): 124 vs 120, only 4 yd; vs the best 7i set (126) none. On the 11/04 patio the 6i was 11 yd past
   the 7i. Wet mat and tempo mixing: re-test 6i vs 7i alternating on the same tempo before deciding.
-- Session chips also show 6i 127 and a 5i set (not yet sent).
+
+## Later sets (golfer: the 6i-tagged set is also the RSi 6; the 5i-tagged set is the Titleist 690.CB 7-iron)
+
+| Club (tag) | Club mph | Ball mph | Smash | Carry | Total | Launch | Start | Apex ft | Carry spread (5 rows) |
+|---|---|---|---|---|---|---|---|---|---|
+| RSi 6 (6i), tempo not stated | 72 | 95 | 1.31 | 127 | 132 | 23.8° | 2.9° R | 73 | 118-134 (16) |
+| CB 7, 35° (5i), tempo not stated | 70 | 93 | 1.33 | 123 | 131 | 21.5° | 0.5° R | 60 | 109-138 (29) |
+
+- RSi 6 in both sets (124, 127) carried no farther than the best RSi 7 set (126): on this patio the 6i adds nothing over the 7i.
+  Same as the 11/04 morning (6i 124, 7i 122); only the 11/04 evening set showed a gap (135 vs 124). Range test needed.
+- CB 7 (35°) carried within 3 yd of the best RSi 7 (31°), launched 1° lower and started straighter (0.5° vs 2.3° R), but its
+  carry spread was the widest of the day (109-138). Same picture as 11/07: CB loft plays strong; consistency not yet better.

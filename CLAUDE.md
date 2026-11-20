@@ -168,7 +168,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   94/100, 66 mph, ball 79. 9i vs PW: 7 yd full, 6 yd arms parallel (10-12 usual). Suggest a loft check and a 9i/PW alternating test.
 - 2026-11-19: Rapsodo, patio, wet mat, tempo test with the RSi 7 (tags 7i/8i/9i/PW = four tempos; mapping assumed, to confirm)
   and RSi 6 with held set (tag GW): best 7i set (8i tag, assumed 1.05/0.35) 126/131, 71 mph, ball 95, smash 1.34, tightest spread;
-  6i 124 (only 4 yd past the held-set 7i). `practice/2026-11-19-rapsodo-patio.md`. Not used for yardages (wet mat).
+  RSi 6 124 and 127 (two sets): no longer than the best 7i set. CB 7 (tag 5i) 123/131, 70 mph, 1.33, 21.5°, 0.5° R, widest spread.
+  `practice/2026-11-19-rapsodo-patio.md`. Not used for yardages (wet mat).
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
 - Warm-up (2026-11-10; WARM_BODY + WARM_DRILLS in index.html, also in practice/plan-2026-11.md): 5 body exercises
