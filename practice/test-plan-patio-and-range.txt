@@ -1,90 +1,80 @@
-GOLF TESTS BEFORE DEC 1
-Patio Friday 11/20 + next range visit
+GOLF TESTS BEFORE DEC 1 (updated 11/20)
 
-Current bag (12): Driver 195, 3W, 3U 159, 5U 150, 7i 128, 8i ?, 9i 111, PW 104, 50, 54, 58, putter
-PW arms parallel 88. Two free slots.
+Bag (12): Driver 195, 3W, 3U 159, 5U 150, 7i 128, 8i ?, 9i 111,
+PW 104, 50, 54, 58, putter. PW arms parallel 88. Two free slots.
+Out: 4U, 6i (golfer, 11/19-20), 1U, 5W.
+140-145 = 5U gripped down 1 in, or a firm 7i to the front.
 
 EVERY SESSION
-- Choi tempo on every full swing
-- Over the ball: "Left hip turns back" (now in Pocket Caddie's cues)
+- Tempo 1.05/0.35 on every full swing (won the 11/19 patio test)
+- Over the ball: "Left hip turns back"
+- Swing at 70-80%; hold the finish 3 seconds
 - Alternate clubs in the comparison tests
-- Send me: the average row for each club, plus the individual rows for alternated tests, plus the club speed screen
+- Sit down 1 minute every 20 balls
+- Send me: average row per club, the individual rows for
+  alternated tests, and the club speed screen
 
 ==============================
-PATIO - FRIDAY 11/20 (about 70 balls)
+PATIO - NEXT SESSION (about 50 balls)
 ==============================
-Patio carries run short, so these tests compare clubs: gaps, strike (smash), start direction.
+Patio carries run short: compare clubs (gaps, smash, start).
+Dry the ball and face if the mat is wet.
 
-[ ] 1. Warm-up, 5 min
-       Guide Menu > Guided warm-up
+[ ] 1. Warm-up, 5 min (Guide Menu > Guided warm-up)
 
-[ ] 1b. Left hip drills, no ball, 5 min
-       Chair drill: backside touching a chair back; slow half,
-       then 3/4 swings; LEFT cheek stays on the chair through
-       the finish. 10 swings.
-       Then before each test below: one chair-drill swing,
-       step up, hit one ball with the same feel.
-       Watch hybrid start direction: from 6-8 deg R toward 0-3.
-
-[ ] 2. 6-iron vs 7-iron, 5 + 5 alternating
-       Goal: 6i about 10 yd past the 7i
-       Yes = 6i can fill the 135-148 gap
+[ ] 2. Chair drill, 10 slow swings, no ball
+       LEFT cheek stays on the chair through the finish.
+       Before each ball: one drill swing, then hit.
 
 [ ] 3. 8-iron, 10 balls
        Goal: about halfway between the 7i and 9i
-       Within 3 yd of either one = tell me
 
 [ ] 4. 9-iron vs PW full, 5 + 5 alternating
        Range 11/18: only 7 yd apart
-       Same on the patio = get a shop loft check
+       Same again = get a shop loft check
 
 [ ] 5. 2U vs 3U off the mat, 5 + 5 alternating
        Compare ball speed and smash, not carry
        2U needs about 4+ mph more ball speed to be worth it
-       Sole flat, aim a little left (hybrids started right on 11/18)
-
-[ ] 5b. 7-iron with the hip feel, 10 balls
-       Drill swing, then real ball, every time
-       Compare start direction and smash with the 7i in test 2
+       Sole flat, aim a little left
 
 [ ] 6. PW arms parallel, 10 balls
-       Count "one, two" to the top, stop at arms parallel every time
+       Stop at arms parallel every time
        Goal: carry spread under 8 yd (range: 12)
 
-[ ] 7. Putting, 10 min
-       10 putts each from 3, 5 and 8 ft
-       Log: Guide Menu > Putting practice, or tell me "3 feet, made 8"
+[ ] 7. Optional: 7i, 1.05/0.35 plain count vs
+       "Swing, set ... thru" at 1.05/0.35, 5 + 5 alternating
+       Keep the held set only if it matches or beats the plain count
 
-Skip on the patio: 3W and 5W
+[ ] 8. Putting, 10 min: 10 putts each from 3, 5 and 8 ft
+       Guide Menu > Putting practice
 
 ==============================
-RANGE - NEXT VISIT (about 70 balls)
+RANGE - NEXT VISIT (about 60 balls)
 ==============================
-Setup: Rapsodo lined up along a club pointing at the flag, as on 11/18
-Optional: photo of the distance board behind mat 16 (red 83/86, blue 111/112, white 150, purple 142, orange 199/170, yellow 214/205 on 11/18)
+Setup: Rapsodo lined up along a club pointing at the flag
+Optional: photo of the distance board behind mat 16
 Optional: Range conditions > Check, then Copy for Claude (wind)
 
-[ ] 1. Driver, 10 balls
-       Gripped down 2 in (or 1.5 vs 2 alternating)
+[ ] 1. Driver gripped down, 10 balls: 1.5 in vs 2 in alternating
        Goal: smash 1.45+, start under 15 deg R
 
-[ ] 2. 3W off a tee, 10 balls
+[ ] 2. Driver ball position, 10 balls alternating:
+       2 ball-widths forward of middle vs left heel (tee higher)
+       Judge by ball speed, smash, start direction
+
+[ ] 3. 3W off a tee, 10 balls
        Goal: about 175-185 carry
 
-[ ] 3. 3W off the mat (no tee), 10 balls
+[ ] 4. 3W off the mat (no tee), 10 balls
        Can it be used from the fairway?
 
-[ ] 4. 2U off the mat, 10 balls
+[ ] 5. 2U off the mat, 10 balls
 
-[ ] 5. 5W (Burner 18 deg) off the mat, 10 balls
+[ ] 6. 5W (Burner 18 deg) off the mat, 10 balls
        Only if the 3W off the mat was poor
 
-[ ] 6. 6-iron, 10 balls
-
-[ ] 7. 8-iron, 10 balls
-
-[ ] 8. 9-iron vs PW full, 5 + 5 alternating
-       Only if the patio showed a small gap
+[ ] 7. 8-iron, 10 balls (if not done on the patio)
 
 ==============================
 DECISIONS
@@ -93,7 +83,8 @@ DECISIONS
    -> keep as is; no 2U or 5W needed
 
 3W fine off a tee but poor off the mat
-   -> add whichever of 2U / 5W carries 165-175 straighter and more solidly
+   -> add whichever of 2U / 5W carries 165-175 straighter
+      and more solidly
 
 2U within 8 yd of the 3U (159)
    -> leave the 2U out
@@ -101,7 +92,12 @@ DECISIONS
 3W within 10 yd of the driver
    -> driver gripped down instead; 3W out
 
-6-iron about 138-145
-   -> 6i goes in a free slot
+Driver: grip and ball position that give the best ball speed
+   and smash without starting further right
 
 Then: I update the Clubs-tab carries and both course plans.
+
+AFTER DEC 1
+- CB 7 with a standard grip vs RSi 7, 10 alternating, 1.05/0.35
+- Reshaft 2U and 3U (950 R like the 5U, or try the 850GH neo R)
+- Loft check of 9i and PW if the gap stays small
