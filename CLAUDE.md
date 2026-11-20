@@ -99,6 +99,8 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
 - Reshaft plan (golfer, 2026-11-19): 2U and 3U to get the same shaft as the 5U (N.S. Pro 950 R steel); 5U stays as is, 1U and 4U
   not reshafted. Higher-launch option in the same Nippon family: 850GH neo R (84.5 g uncut, marketed for higher launch;
   pluggedingolf.com/nippon-ns-pro-850gh-neo-shaft-review, accessed 2026-11-19); 950GH neo R 94.5 g, mid/mid-high. Advised after Dec 1.
+  2026-11-20 (golfer): 2U and 3U taken to the shop for steel shafts close to the 5U's; back in about a week. Stand-in: 4U
+  (152/165, range 11/18). Reshafted clubs need a range test before their carries go in the Clubs tab and plans.
 - Laser rangefinder: Revasri. Its readings go in Pocket Caddie's "type the yardage" box.
 - Golf balls on hand (not yet chosen): Callaway Supersoft, PXG Xtreme Tour X, Trust Bison Soft (urethane cover).
   Titleist RCT balls (radar-reflector Pro V1/V1x for indoor launch monitors) arriving 2026-11-05 (golfer; which model not

@@ -4,6 +4,8 @@ Bag (12): Driver 195, 3W, 3U 159, 5U 150, 7i 128, 8i ?, 9i 111,
 PW 104, 50, 54, 58, putter. PW arms parallel 88. Two free slots.
 Out: 4U, 6i (golfer, 11/19-20), 1U, 5W.
 140-145 = 5U gripped down 1 in, or a firm 7i to the front.
+2U and 3U at the shop for steel shafts (from 11/20, about a week).
+Until they're back, the 4U (152 carry) stands in for the 3U.
 
 EVERY SESSION
 - Tempo 1.05/0.35 on every full swing (won the 11/19 patio test)
@@ -33,7 +35,8 @@ Dry the ball and face if the mat is wet.
        Range 11/18: only 7 yd apart
        Same again = get a shop loft check
 
-[ ] 5. 2U vs 3U off the mat, 5 + 5 alternating
+[ ] 5. 4U and 5U, 5 + 5 alternating (2U/3U are at the shop)
+       Then, once the reshafted clubs are back: 2U vs 3U off the mat, 5 + 5 alternating
        Compare ball speed and smash, not carry
        2U needs about 4+ mph more ball speed to be worth it
        Sole flat, aim a little left
@@ -69,7 +72,8 @@ Optional: Range conditions > Check, then Copy for Claude (wind)
 [ ] 4. 3W off the mat (no tee), 10 balls
        Can it be used from the fairway?
 
-[ ] 5. 2U off the mat, 10 balls
+[ ] 5. Reshafted 3U and 2U off the mat, 10 balls each (once back)
+       New shafts change distance: needed before they go in the plans
 
 [ ] 6. 5W (Burner 18 deg) off the mat, 10 balls
        Only if the 3W off the mat was poor
