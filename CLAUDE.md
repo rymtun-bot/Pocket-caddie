@@ -174,6 +174,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   and RSi 6 with held set (tag GW): best 7i set (1.05/0.35) 126/131, 71 mph, ball 95, smash 1.34, tightest spread;
   RSi 6 (one set, held set) 127 vs 7i held set 120-124 and 7i 1.05/0.35 126 (GW tag = 7i held set, golfer 11/20). CB 7 (tag 5i) 123/131, 70 mph, 1.33, 21.5°, 0.5° R, widest spread.
   `practice/2026-11-19-rapsodo-patio.md`. Not used for yardages (wet mat).
+- 2026-11-20: Rapsodo, patio, tempo 1.05/0.35: 8i 113/119, 9i 104/108, PW 98/102; hands-hip 9i 81/88 (tag GW), PW 74/82 (tag SW).
+  Every club started LEFT (2-8°; first time). Misread rows (82-98 mph, smash <0.9) removed from mph/smash in MLM.
+  `practice/2026-11-20-rapsodo-patio.md`.
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
 - Warm-up (2026-11-10; WARM_BODY + WARM_DRILLS in index.html, also in practice/plan-2026-11.md): 5 body exercises
