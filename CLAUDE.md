@@ -176,6 +176,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   `practice/2026-11-19-rapsodo-patio.md`. Not used for yardages (wet mat).
 - 2026-11-20: Rapsodo, patio, tempo 1.05/0.35: 8i 113/119, 9i 104/108, PW 98/102; hands-hip 9i 81/88 (tag GW), PW 74/82 (tag SW).
   Every club started LEFT (2-8°; first time). Misread rows (82-98 mph, smash <0.9) removed from mph/smash in MLM.
+  Golfer's feel: closing the face on the way down felt crisper and cleaner (matches the best smash and the left start).
   `practice/2026-11-20-rapsodo-patio.md`.
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.

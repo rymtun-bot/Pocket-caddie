@@ -19,3 +19,9 @@ which raises the average club speed and lowers the smash. Without them: 8i ~67 m
 - Start direction moved LEFT on every club (2-8° L; PW full and 9i hip about 7-8° L, shot types L). Before: 1-6° R.
   Either the left-hip / release work is now closing the face, or the monitor was aimed differently. Check the aim first.
 - Hip-high 9i/PW carried 74-81, far more than the 11/15 hip-high wedges (25-35). Swing length to confirm with the golfer.
+
+## Golfer's feel note (2026-11-20)
+"Feel like I was closing the club face on the way down, and the result felt crisper, cleaner" (8i, 9i, PW today).
+Fits the numbers: best 8i strike so far on the patio (smash ~1.37) and the first session with every club starting left
+(2-8° L). The feel squares the face (the old miss was an open face, start right); on the PW and the 9i hip swing it went past
+square (7-8° L). Keep the feel, dial it to "square", target start 0-2°.
