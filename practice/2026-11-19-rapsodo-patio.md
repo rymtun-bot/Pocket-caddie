@@ -11,7 +11,7 @@ App average rows; spreads from the 5 rows visible on each screenshot. Wet mat: c
 | 7i, 1.05/0.35 (8i) | 71 | 95 | 1.34 | 126 | 131 | 22.5° | 2.3° R | 68 | 121-130 (9) | 0.4-4.2 R |
 | 7i, 1.20/0.40 (9i) | 72 | 93 | 1.29 | 122 | 128 | 23.2° | 0.5° L | 68 | 114-128 (14) | 4.5 L - 1.3 R |
 | 7i, Choi + held set (PW) | 71 | 91 | 1.29 | 120 | 123 | 26.0° | 3.1° R | 75 | 117-126 (9) | 0.6-5.1 R |
-| 6i, Choi + held set (GW) | 71 | 95 | 1.34 | 124 | 130 | 21.4° | 2.2° R | 64 | 120-136 (16) | 3.6 L - 5.0 R |
+| 7i, Choi + held set, 2nd set (GW) | 71 | 95 | 1.34 | 124 | 130 | 21.4° | 2.2° R | 64 | 120-136 (16) | 3.6 L - 5.0 R |
 
 - Best 7-iron set: 1.05/0.35 (8i tag) (most ball speed, best smash, longest, tightest carry and start spread).
 - Slower tempos did not cost club speed (68-72 mph across all sets).
@@ -23,10 +23,16 @@ App average rows; spreads from the 5 rows visible on each screenshot. Wet mat: c
 
 | Club (tag) | Club mph | Ball mph | Smash | Carry | Total | Launch | Start | Apex ft | Carry spread (5 rows) |
 |---|---|---|---|---|---|---|---|---|---|
-| RSi 6 (6i), tempo not stated | 72 | 95 | 1.31 | 127 | 132 | 23.8° | 2.9° R | 73 | 118-134 (16) |
-| CB 7, 35° (5i), tempo not stated | 70 | 93 | 1.33 | 123 | 131 | 21.5° | 0.5° R | 60 | 109-138 (29) |
+| RSi 6 (6i), Choi + held set | 72 | 95 | 1.31 | 127 | 132 | 23.8° | 2.9° R | 73 | 118-134 (16) |
+| CB 7, 35° (5i), tempo not recalled | 70 | 93 | 1.33 | 123 | 131 | 21.5° | 0.5° R | 60 | 109-138 (29) |
 
 - RSi 6 in both sets (124, 127) carried no farther than the best RSi 7 set (126): on this patio the 6i adds nothing over the 7i.
   Same as the 11/04 morning (6i 124, 7i 122); only the 11/04 evening set showed a gap (135 vs 124). Range test needed.
 - CB 7 (35°) carried within 3 yd of the best RSi 7 (31°), launched 1° lower and started straighter (0.5° vs 2.3° R), but its
   carry spread was the widest of the day (109-138). Same picture as 11/07: CB loft plays strong; consistency not yet better.
+
+## Correction (golfer, 2026-11-20)
+The GW-tagged set was the RSi 7 again with the held set (not the 6-iron); the 6i-tagged set is the RSi 6 with the held set;
+the 5i-tagged set is the CB 7. So the RSi 6 has one set (127 carry), and the RSi 7 has two held-set sets (PW tag 120, GW tag 124;
+PW-tag set assumed held set as first reported). The 6-iron conclusions above that cite "124" and "two sets" are superseded:
+RSi 6 127 vs RSi 7 on the same held-set tempo 120-124 (+3 to +7 yd); vs the best 7i set (1.05/0.35) 126 (+1).
