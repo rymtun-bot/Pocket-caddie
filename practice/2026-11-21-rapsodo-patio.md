@@ -20,3 +20,14 @@ App average rows.
 
 Setup (golfer): ball about 6 ft from the net, MLM about 6 ft behind the ball. Most 58° shots were not picked up at 6 ft, so
 none were sent. At about 4 ft from the net the MLM seemed to read better but overheated.
+
+## Second session ("Net - 10 Shots"): 50° lead arm parallel, ball 6 ft from net (tag GW), pitch tempo assumed as before
+
+| Club mph | Smash | Carry | Total | Launch | Start | Apex ft |
+|---|---|---|---|---|---|---|
+| 35 | 1.16 | 30 | 41 | 34.6° | 6.5° R | 19 |
+
+Visible rows: carry 42, 15 (thin, launch 11.8°), 37, 33, 28; start up to 16.7° R. About 32 carry without the thin one.
+Club speed (35) is the same as today's hip-high swings (31-39), and the 11/15 forearm-parallel 50° carried 39: the longer
+backswing did not add speed. On 11/20 (full-swing tempo 1.05/0.35) arm-parallel PW reached 64 mph / 74 carry. The slow pitch
+tempo may be holding the speed down.
