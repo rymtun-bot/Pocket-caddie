@@ -26,3 +26,6 @@ which raises the average club speed and lowers the smash. Without them: 8i ~67 m
 Fits the numbers: best 8i strike so far on the patio (smash ~1.37) and the first session with every club starting left
 (2-8° L). The feel squares the face (the old miss was an open face, start right); on the PW and the 9i hip swing it went past
 square (7-8° L). Keep the feel, dial it to "square", target start 0-2°.
+
+Golfer, 2026-11-21: the GW/SW sets were most likely lead arm parallel, not hands hip high, and felt easier than hip-high swings.
+Relabelled in MLM as "9i arms parallel" / "PW arms parallel" (patio). Patio vs range 11/18 arms parallel: PW 74 vs 88, 9i 81 vs 94.

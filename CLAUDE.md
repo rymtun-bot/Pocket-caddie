@@ -174,7 +174,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   and RSi 6 with held set (tag GW): best 7i set (1.05/0.35) 126/131, 71 mph, ball 95, smash 1.34, tightest spread;
   RSi 6 (one set, held set) 127 vs 7i held set 120-124 and 7i 1.05/0.35 126 (GW tag = 7i held set, golfer 11/20). CB 7 (tag 5i) 123/131, 70 mph, 1.33, 21.5°, 0.5° R, widest spread.
   `practice/2026-11-19-rapsodo-patio.md`. Not used for yardages (wet mat).
-- 2026-11-20: Rapsodo, patio, tempo 1.05/0.35: 8i 113/119, 9i 104/108, PW 98/102; hands-hip 9i 81/88 (tag GW), PW 74/82 (tag SW).
+- 2026-11-20: Rapsodo, patio, tempo 1.05/0.35: 8i 113/119, 9i 104/108, PW 98/102; 9i 81/88 (tag GW), PW 74/82 (tag SW): golfer 11/21 says these were likely lead arm parallel (MLM "9i/PW arms parallel").
   Every club started LEFT (2-8°; first time). Misread rows (82-98 mph, smash <0.9) removed from mph/smash in MLM.
   Golfer's feel: closing the face on the way down felt crisper and cleaner (matches the best smash and the left start).
   `practice/2026-11-20-rapsodo-patio.md`.
