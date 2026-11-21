@@ -180,6 +180,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   `practice/2026-11-20-rapsodo-patio.md`.
 - 2026-11-21: Rapsodo, patio, hands hip high, pitch tempo (golfer: "2nd fastest", taken as 0.73/0.37): carry/total 9i 25/38,
   PW 23/34, 50° 21/30, 54° 24/31; same carry, roll decides (run-up ladder). Smash <1.1 (club speed likely misread). Start 3-9° R.
+  Arms parallel, pitch tempo: 50° 30/41, 54° 28/38, both 35 mph (no more speed than hip high); 4 ft setup gave no readings.
+  42-59 gap still open; next try arms parallel at 1.05/0.35.
   `practice/2026-11-21-rapsodo-patio.md`.
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.

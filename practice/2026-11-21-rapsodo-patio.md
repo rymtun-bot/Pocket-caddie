@@ -31,3 +31,17 @@ Visible rows: carry 42, 15 (thin, launch 11.8°), 37, 33, 28; start up to 16.7°
 Club speed (35) is the same as today's hip-high swings (31-39), and the 11/15 forearm-parallel 50° carried 39: the longer
 backswing did not add speed. On 11/20 (full-swing tempo 1.05/0.35) arm-parallel PW reached 64 mph / 74 carry. The slow pitch
 tempo may be holding the speed down.
+
+## Third session ("Net - 17 Shots"): 54° lead arm parallel, 6 ft from net (tag SW), pitch tempo assumed
+
+| Club mph | Smash | Carry | Total | Launch | Start | Apex ft |
+|---|---|---|---|---|---|---|
+| 35 | 1.08 | 28 | 38 | 35.3° | 7.0° R | 17 |
+
+Visible rows: carry 29, 34, 34 (app outlier, 10.9° L), 28, 26. A set tagged LW (31 carry) is in the session; not sent.
+4 ft tests: the MLM recorded nothing at 4 ft (golfer), so no 58° data.
+
+Summary of today's short swings (all ~31-39 mph):
+hip high 50° 21 / 54° 24; arms parallel 50° 30 / 54° 28; forearm parallel on 11/15 (no tempo) 50° 39 / 54° 37.
+Arm-parallel swings at the pitch tempo added only ~6 yd over hip high and no club speed. The 42-59 gap is still open.
+Next: 54° and 50° arms parallel at the full-swing tempo 1.05/0.35 (11/20 PW arm-parallel at that tempo: 64 mph, 74 carry).
