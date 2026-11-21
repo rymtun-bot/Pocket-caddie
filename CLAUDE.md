@@ -178,6 +178,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Every club started LEFT (2-8°; first time). Misread rows (82-98 mph, smash <0.9) removed from mph/smash in MLM.
   Golfer's feel: closing the face on the way down felt crisper and cleaner (matches the best smash and the left start).
   `practice/2026-11-20-rapsodo-patio.md`.
+- 2026-11-21: Rapsodo, patio, hands hip high, pitch tempo (golfer: "2nd fastest", taken as 0.73/0.37): carry/total 9i 25/38,
+  PW 23/34, 50° 21/30, 54° 24/31; same carry, roll decides (run-up ladder). Smash <1.1 (club speed likely misread). Start 3-9° R.
+  `practice/2026-11-21-rapsodo-patio.md`.
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
 - Warm-up (2026-11-10; WARM_BODY + WARM_DRILLS in index.html, also in practice/plan-2026-11.md): 5 body exercises
