@@ -17,3 +17,6 @@ App average rows.
 - vs 11/15 hip high (50° 35, 54° 27, 58° 25): shorter today.
 - Start direction back to the right (3-9° R) after 2-8° L on 11/20 full swings.
 - Planned arms-parallel test (42-59 gap) not done yet.
+
+Setup (golfer): ball about 6 ft from the net, MLM about 6 ft behind the ball. Most 58° shots were not picked up at 6 ft, so
+none were sent. At about 4 ft from the net the MLM seemed to read better but overheated.
