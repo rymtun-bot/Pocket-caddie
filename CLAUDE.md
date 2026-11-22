@@ -37,6 +37,9 @@ This repo is PUBLIC. Keep only golf equipment and page code here: no financial, 
   Older wedges (golfer's photo 2026-11-14): Cleveland Tour Action REG.588 51° and 60° (the golfer hits the 60° on the patio, 2026-11-14) (no bounce stamped, worn/rusted faces).
   Resale listings for the original Tour Action 60° show 10° bounce (2ndswing.com Cleveland Tour Action page, accessed 2026-11-14);
   no published figure found for the 51°. They duplicate the Lazrus 50°/58°, so kept as spares, not in the bag.
+  Also a Cleveland Tour Action REG.588 pitching wedge stamped "P SP" and "SPECIAL 47°" (golfer's photo 2026-11-22; shaft not yet
+  stated). Golfer has no feel chipping with the RSi PW and prefers the Lazrus 50° or this Cleveland 47° (2026-11-22); plans to test the
+  Cleveland 47° full and half swings as a possible PW replacement (RSi PW 45° stock).
   Long clubs also in the bag: 1U, 2U, 3U (20°), 4U, 5U (26°, older King Cobra Baffler), 5W, 3W, driver.
 - Driver (golfer's photos, 2026-11-01): TaylorMade SIM Max 10.5°, sleeve at STD LOFT, Fujikura Ventus 6-R shaft.
   SIM Max sleeve adjusts loft about ±2°, and adding loft opens the face (retailer and tuning-guide pages, accessed 2026-11-01).
