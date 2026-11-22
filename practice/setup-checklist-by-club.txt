@@ -1,4 +1,8 @@
 DRIVER (gripped down 2 in)
+Driver: aim clubface at target first
+Driver: feet, hips, shoulders parallel to target line
+Driver: stance wider than shoulders
+Driver: arms hang straight down from shoulders
 Driver: ball off the left heel
 Driver: head behind the ball, eyes on the back of the ball
 Driver: right shoulder lower, spine tilted away from target
@@ -8,6 +12,10 @@ Driver: full hip turn back (about 45 deg), full turn through
 Driver: finish on left heel, right toe, chest to target
 
 3-WOOD
+3W: aim clubface at target first
+3W: feet, hips, shoulders parallel to target line
+3W: stance a little wider than shoulders
+3W: arms hang straight down from shoulders
 3W: ball 2 ball-widths forward of middle
 3W: head slightly behind the ball
 3W: right shoulder a little lower
@@ -16,6 +24,10 @@ Driver: finish on left heel, right toe, chest to target
 3W: full hip turn back, full turn through
 
 HYBRIDS (3U, 4U, 5U)
+Hybrid: aim clubface at target first
+Hybrid: feet, hips, shoulders parallel to target line
+Hybrid: stance shoulder width
+Hybrid: arms hang straight down from shoulders
 Hybrid: ball 1 ball-width forward of middle
 Hybrid: sole flat, stand a little more upright
 Hybrid: eyes over or just behind the ball
@@ -26,6 +38,10 @@ Hybrid: full hip turn back (about 45 deg)
 Hybrid: press left, then turn
 
 IRONS 7i-8i
+7i-8i: aim clubface at target first
+7i-8i: feet, hips, shoulders parallel to target line
+7i-8i: stance shoulder width
+7i-8i: arms hang straight down from shoulders
 7i-8i: ball just forward of middle
 7i-8i: eyes over the ball
 7i-8i: shoulders almost level, right slightly lower
@@ -35,6 +51,10 @@ IRONS 7i-8i
 7i-8i: towel 3-4 in behind ball untouched
 
 IRONS 9i-PW (full)
+9i-PW: aim clubface at target first
+9i-PW: feet, hips, shoulders parallel to target line
+9i-PW: stance shoulder width, slightly narrower
+9i-PW: arms hang straight down from shoulders
 9i-PW: ball in the middle
 9i-PW: eyes over the ball
 9i-PW: shoulders almost level
@@ -44,6 +64,10 @@ IRONS 9i-PW (full)
 9i-PW: towel 2-3 in behind ball untouched
 
 WEDGES 50/54/58 (full)
+Wedge full: aim clubface at target first
+Wedge full: feet, hips, shoulders parallel to target line
+Wedge full: stance a bit narrower than shoulders
+Wedge full: arms hang straight down from shoulders
 Wedge full: ball in the middle
 Wedge full: eyes over the ball
 Wedge full: shoulders level
@@ -53,6 +77,10 @@ Wedge full: hip turn back about 35-40 deg
 Wedge full: finish facing target, hold 2 sec
 
 PITCH (hip high / arms parallel)
+Pitch: aim clubface at target first
+Pitch: feet, hips, shoulders parallel to target line
+Pitch: stance narrower than shoulders
+Pitch: arms hang straight down from shoulders
 Pitch: ball middle or a touch back
 Pitch: eyes over the ball
 Pitch: shoulders level
@@ -62,6 +90,10 @@ Pitch: small hip turn (about 20-30 deg), chest turns through
 Pitch: finish length = backswing length
 
 CHIP
+Chip: aim clubface at target first
+Chip: feet, hips, shoulders parallel to target line
+Chip: stance feet close together
+Chip: arms hang straight down from shoulders
 Chip: ball back of middle (off right big toe)
 Chip: head over or just ahead of the ball
 Chip: shoulders level
