@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 520" font-family="Helvetica, Arial, sans-serif">
+  <rect width="720" height="520" fill="#ffffff"/>
+  <text x="360" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#222">Down-the-line view: lead arm parallel on the DOWNSWING</text>
+  <text x="360" y="54" text-anchor="middle" font-size="14" fill="#555">Extend the shaft through the grip end down to the ground</text>
+
+  <!-- ground and lines -->
+  <line x1="40" y1="420" x2="690" y2="420" stroke="#999" stroke-width="2"/>
+  <line x1="200" y1="412" x2="200" y2="428" stroke="#333" stroke-width="3"/>
+  <text x="200" y="448" text-anchor="middle" font-size="13" fill="#333">Toe line (feet)</text>
+  <circle cx="420" cy="414" r="6" fill="#fff" stroke="#333" stroke-width="2"/>
+  <text x="420" y="448" text-anchor="middle" font-size="13" fill="#333">Ball / target line</text>
+
+  <!-- golfer (simple) -->
+  <circle cx="268" cy="150" r="20" fill="none" stroke="#333" stroke-width="3"/>
+  <line x1="258" y1="170" x2="222" y2="285" stroke="#333" stroke-width="4"/>
+  <line x1="222" y1="285" x2="200" y2="415" stroke="#333" stroke-width="4"/>
+  <line x1="222" y1="285" x2="215" y2="415" stroke="#333" stroke-width="4"/>
+  <line x1="255" y1="180" x2="300" y2="262" stroke="#333" stroke-width="4"/>
+  <circle cx="300" cy="265" r="7" fill="#333"/>
+  <text x="312" y="282" font-size="13" fill="#333">hands</text>
+
+  <!-- ON PLANE: points at ball -->
+  <line x1="300" y1="265" x2="190" y2="138" stroke="#1a8f3c" stroke-width="5"/>
+  <line x1="300" y1="265" x2="420" y2="414" stroke="#1a8f3c" stroke-width="2" stroke-dasharray="6 5"/>
+  <!-- TOO STEEP: points at toes -->
+  <line x1="300" y1="265" x2="370" y2="112" stroke="#c62828" stroke-width="5"/>
+  <line x1="300" y1="265" x2="200" y2="414" stroke="#c62828" stroke-width="2" stroke-dasharray="6 5"/>
+  <!-- TOO FLAT: points beyond ball -->
+  <line x1="300" y1="265" x2="150" y2="190" stroke="#e08a00" stroke-width="5"/>
+  <line x1="300" y1="265" x2="600" y2="414" stroke="#e08a00" stroke-width="2" stroke-dasharray="6 5"/>
+
+  <!-- labels -->
+  <text x="380" y="100" font-size="14" font-weight="bold" fill="#c62828">TOO STEEP</text>
+  <text x="380" y="117" font-size="12" fill="#c62828">grip points at your feet</text>
+  <text x="380" y="132" font-size="12" fill="#c62828">(over the top: pulls, slices)</text>
+
+  <text x="60" y="118" font-size="14" font-weight="bold" fill="#1a8f3c">ON PLANE</text>
+  <text x="60" y="135" font-size="12" fill="#1a8f3c">grip points at the target line</text>
+
+  <text x="40" y="200" font-size="14" font-weight="bold" fill="#e08a00">TOO FLAT</text>
+  <text x="40" y="217" font-size="12" fill="#e08a00">grip points beyond the ball</text>
+  <text x="40" y="232" font-size="12" fill="#e08a00">(stuck: pushes, hooks)</text>
+
+  <text x="360" y="480" text-anchor="middle" font-size="13" fill="#333">Downswing goal: at the target line, or a touch beyond it (shallow).</text>
+  <text x="360" y="500" text-anchor="middle" font-size="13" fill="#333">Same rule on the backswing at lead arm parallel.</text>
+</svg>
