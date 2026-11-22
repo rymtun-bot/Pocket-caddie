@@ -237,6 +237,12 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   build 22 Nov (a)), after arm-parallel wedges at the pitch tempo stayed at ~35 mph on 11/21. Chips and putts unchanged.
   Setup (golfer, 11/14): weight more on the balls of the feet rather than the heels feels better, especially with the driver
   at the range; already a cue in S.overBall ("Balls of your feet").
+- Open items as of 2026-11-22 (for a new chat): patio wedge test today = 54° and 50° arms parallel at 1.05/0.35, 10 each
+  (ball ~6 ft from net, 58° skipped), to see if club speed rises from ~35 mph and carry fills 42-59 yd; save as
+  practice/2026-11-22-rapsodo-patio.md + MLM rows. Still to answer from the golfer: soft practice-ball type (foam / plastic /
+  limited-flight) for driver swings on the mat (suggested 7i check: 5 Supersoft vs 5 soft, compare club speed); 11/18 range
+  wind; whether the 11/21 LW-tagged set (31 yd) was the 58°. Session checklists: practice/test-plan-patio-and-range.txt,
+  practice/setup-checklist-by-club.txt, practice/preshot-routine.txt.
 - Current two-week plan and pre-shot routine: `practice/plan-2026-11.md` (first real round planned Tuesday 2026-12-01).
 - Day-by-day session list to Dec 1: `practice/daily-sessions.md`.
 - Home course game (hole-by-hole Westchester/Rancho on the patio): `practice/home-course-game.md`.
