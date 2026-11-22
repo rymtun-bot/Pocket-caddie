@@ -186,6 +186,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
 - 2026-11-22: Rapsodo, patio, 50°/54° lead arm parallel at the full-swing tempo 1.05/0.35 (tags GW/SW taken as 50°/54°), ~10 each in
   two sets, early shanks included in the averages: 50° 40/48, 41 mph, 1.13, 12.1° R; 54° 38/47, 41 mph, 1.11, 11.4° R.
   +6 mph and +10 yd vs the pitch tempo (11/21). MLM "50°/54° arms parallel" (2026-11-22). `practice/2026-11-22-rapsodo-patio.md`.
+  Second set, new setup (ball middle, hands inner left thigh, ~60-65% left, chest turns through, club let fall), length uncertain
+  (golfer: maybe right hand to hip, not lead arm parallel; will redo both lengths): 9i 52/64, PW 41/53 (smash 1.30), 50° 27/40,
+  54° 30/39, 58° 29/38; no shanks, start lines ~straight. MLM "<club> half (new setup)".
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
 - Warm-up (2026-11-10; WARM_BODY + WARM_DRILLS in index.html, also in practice/plan-2026-11.md): 5 body exercises
@@ -241,7 +244,7 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Setup (golfer, 11/14): weight more on the balls of the feet rather than the heels feels better, especially with the driver
   at the range; already a cue in S.overBall ("Balls of your feet").
 - Open items as of 2026-11-22 (for a new chat): arms-parallel wedges at 1.05/0.35 done (40/38 carry, shanks included);
-  ask whether to delete the shank rows for a clean average, and confirm GW/SW = 50°/54°. Still to answer from the golfer: soft practice-ball type (foam / plastic /
+  golfer to redo hip high and lead arm parallel with the new setup (no-shank setup, second set 11/22) at set lengths. Still to answer from the golfer: soft practice-ball type (foam / plastic /
   limited-flight) for driver swings on the mat (suggested 7i check: 5 Supersoft vs 5 soft, compare club speed); 11/18 range
   wind; whether the 11/21 LW-tagged set (31 yd) was the 58°. Session checklists: practice/test-plan-patio-and-range.txt,
   practice/setup-checklist-by-club.txt, practice/preshot-routine.txt.
