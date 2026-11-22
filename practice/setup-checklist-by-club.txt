@@ -89,18 +89,19 @@ Pitch: weight 70-80% front at impact
 Pitch: small hip turn (about 20-30 deg), chest turns through
 Pitch: finish length = backswing length
 
-CHIP
+CHIP (golfer's chip setup, 2026-11-22; main club PW, 54 deg when it must fly, 9i for lots of green)
 Chip: aim clubface at target first
 Chip: feet, hips, shoulders parallel to target line
-Chip: stance feet close together
-Chip: arms hang straight down from shoulders
-Chip: ball back of middle (off right big toe)
-Chip: head over or just ahead of the ball
-Chip: shoulders level
-Chip: weight 60-70% front at setup, stays there
-Chip: weight 70-80% front at impact
-Chip: almost no hip turn, chest and arms turn together
-Chip: hands ahead, no flick
+Chip: stance narrower, feet close together
+Chip: grip down 1-2 in, grip pressure 3-4 of 10
+Chip: ball in the middle (a touch back for a lower, rolling chip)
+Chip: hands slightly ahead, at the inner left thigh
+Chip: head over the ball or a touch ahead, still until the ball is gone
+Chip: weight 70% front at setup, stays there the whole stroke
+Chip: chest turns back and through; arms and club follow, very little wrist
+Chip: backswing length = through length; length sets the distance
+Chip: let the club fall (gravity), chest keeps turning through: no slowing down at the ball
+Chip drill: 10 balls PW to one target, count inside 3 ft; then 10 / 15 / 20 yd by length only, note each backswing length
 
 EVERY FULL SWING
 All: balls of the feet
