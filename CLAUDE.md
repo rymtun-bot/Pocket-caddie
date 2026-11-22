@@ -527,6 +527,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   S.routine rewritten to practice/preshot-routine.txt (behind the ball + spot 2-3 ft ahead; two practice swings to the tempo;
   clubface to the spot first, then feet/hips/shoulders; one look at target, one at spot; go). One-time migration S.mig1122d
   overwrites both on the phone; previous text kept in S.overBallOld / S.routineOld.
+- Practice-only cue (golfer's request 2026-11-22): "Right elbow drops to the right hip" at the start of the downswing (shallowing;
+  grip end at lead arm parallel down points at the target line or a little beyond, never closer to the feet than going back;
+  diagram practice/swing-plane-grip-pointing.svg). In practice/test-plan-patio-and-range.txt, not in Pocket Caddie's cues.
 - Wedge reminder split (golfer's request 2026-11-22; build 22 Nov (b)): S.wedgeTip ("70 percent of your weight on your front foot") now
   only for chips and pitches (target under 60 yd); new S.wedgeTipFull "55 to 60 percent of your weight on your front foot" for full
   wedge swings (60+ yd or no yardage). wedgeTipFor(club, yds); both editable in Setup.
