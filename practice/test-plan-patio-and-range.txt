@@ -106,6 +106,47 @@ Driver: grip and ball position that give the best ball speed
 
 Then: I update the Clubs-tab carries and both course plans.
 
+
+SHORT GAME (added 11/23; setup that stopped the shanks on 11/22)
+Setup for pitches: ball in the middle, hands at the inner left thigh,
+60-65% weight left over the arches, head over or just ahead of the ball.
+Chips: see the CHIP section in setup-checklist-by-club.txt (50 deg main club).
+
+Clubs and lengths (carries to confirm on the redo):
+  54 hip high ~30 | 54 lead arm parallel ~38-40 | 9i hip high ~52
+  Full: 58 ~59, 54 ~67, 50 ~74 (11/14), PW ~98-104
+  50 and 58: choose for height and roll, not for distance.
+
+Positions
+- Hip high: half hinge (shaft about 45 deg up), shaft in line
+  with the toe line, toe up, clubhead not tucked behind the hands.
+- Lead arm parallel: full hinge ("L"), grip end points at the
+  target line.
+- Grip end points at or along the target line at every stage,
+  never at the feet. Finish at least as long as the backswing.
+
+Speed: chest and hips turn through together; let the club fall;
+keep the 1.05/0.35 count. No added hand or arm speed. Want more
+distance: use the longer swing, don't swing harder.
+
+Drills
+- Headcovers under the armpits: both for hip high and lead arm
+  parallel; left armpit only for full swings (right elbow must
+  leave the body at the top).
+- Ball between the forearms (soccer ball size or smaller, light
+  squeeze): hip high and lead arm parallel; full swing only as
+  practice swings or 3/4 swings.
+- Use each drill as: 3 drill swings, then 1 real ball with the
+  same feel, x5 rounds per length.
+- Stop and check: swing to the position, hold 1 s, check hinge
+  and shaft, then hit. 5 with the stop, 5 without.
+- Two-ball check: tee or headcover 1 in outside the ball; hitting
+  it = hands moved out toward the ball (shank pattern).
+- Face marks: marker or foot powder at the start of the session.
+- Launch check (same setup and speed): 50 ~31 deg, 54 ~36 deg,
+  58 ~40 deg; club speed within ~2 mph across the three.
+- Film face-on once: does the lead arm really reach parallel?
+
 AFTER DEC 1
 - CB 7 with a standard grip vs RSi 7, 10 alternating, 1.05/0.35
 - Reshaft 2U and 3U (950 R like the 5U, or try the 850GH neo R)
