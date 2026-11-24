@@ -54,3 +54,15 @@ Tags SW / LW, taken as 54° / Cleveland 47° (the LW set launched lower). App av
 - Smash below 1.0 is not physically likely on solid contact: club speed is probably misread at these speeds; carry/total usable.
 - The 47° and 54° carry the same at this length; the 47° rolls 2 yd more. It does not fill the 42-55 gap with this swing.
 - As a shot: a ~20-yd carry, ~33-yd total low pitch-and-run, very repeatable.
+
+## Fourth session ("Net - 10 Shots", ~3:40 pm): Lazrus 50° hip high (tag GW)
+
+No average row on the screenshot: carry 18 from the app's club chip; the rest is the mean of visible shots 5-10.
+
+| Club mph | Smash | Carry | Total | Launch | Start | Apex ft | Visible carries |
+|---|---|---|---|---|---|---|---|
+| ~35 | ~0.88 | 18 | ~34 | ~30° | ~1.9° R | ~8 | 16-21 |
+
+- Shot type ST (straight) on every visible row: the straightest set today.
+- Same as the 54° (20/33) and Cleveland 47° (19/34) in the third session: with this swing all three wedges carry 18-20 and
+  total 33-34. Loft doesn't change the distance at this length.
