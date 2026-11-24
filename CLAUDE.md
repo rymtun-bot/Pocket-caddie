@@ -192,6 +192,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Second set, new setup (ball middle, hands inner left thigh, ~60-65% left, chest turns through, club let fall), length uncertain
   (golfer: maybe right hand to hip, not lead arm parallel; will redo both lengths): 9i 52/64, PW 41/53 (smash 1.30), 50° 27/40,
   54° 30/39, 58° 29/38; no shanks, start lines ~straight. MLM "<club> half (new setup)".
+- 2026-11-24: Rapsodo, patio, full swings RSi PW (tag PW) 102/106, smash 1.18, launch 28.7°, 5.7° R vs Cleveland 47° (tag GW) 89/92,
+  1.25, 35.0°, 8.3° R; ~6 shots each, not alternated, no club speed. Cleveland fills 9i (~104) to 50° (74); RSi PW duplicates the 9i.
+  MLM "PW" and "47° Cleveland". `practice/2026-11-24-rapsodo-patio.md`.
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
 - Warm-up (2026-11-10; WARM_BODY + WARM_DRILLS in index.html, also in practice/plan-2026-11.md): 5 body exercises
