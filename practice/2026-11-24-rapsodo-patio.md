@@ -39,3 +39,18 @@ outlier in GW (24 carry, 34.9° start) and one in SW (29.7° L).
 - 54° arm parallel is the tightest (56-63). 9i hip high is wide (23 yd) and overlaps the 50° full (74, 11/14).
 - Gaps: 54° hip 38 -> 54° arm parallel 59 (21 yd) -> 50° full 74 -> 47° Cleveland full 89.
 - Start lines right on all three (4-11°).
+
+## Third session ("Net - 13 Shots", ~3:38 pm): 54° and Cleveland 47° hip high
+
+Tags SW / LW, taken as 54° / Cleveland 47° (the LW set launched lower). App average rows.
+
+| Swing (tag) | Club mph | Smash | Carry | Total | Roll | Launch | Start | Apex ft | Visible carries |
+|---|---|---|---|---|---|---|---|---|---|
+| 54° hip high (SW) | 32 | 0.99 | 20 | 33 | 13 | 33.1° | 9.1° R | 10 | 19-21 |
+| Cleveland 47° hip high (LW) | 35 | 0.91 | 19 | 34 | 15 | 29.4° | 4.7° R | 8 | 17-19 |
+
+- Very consistent (2-yd spreads) but half the carry of the first 54° hip-high set today (38, 37 mph, apex 25).
+  Same pattern as 11/21 hip high at the pitch tempo (21-25 carry, smash < 1.1): a shorter or slower swing than the first set.
+- Smash below 1.0 is not physically likely on solid contact: club speed is probably misread at these speeds; carry/total usable.
+- The 47° and 54° carry the same at this length; the 47° rolls 2 yd more. It does not fill the 42-55 gap with this swing.
+- As a shot: a ~20-yd carry, ~33-yd total low pitch-and-run, very repeatable.
