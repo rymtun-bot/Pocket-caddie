@@ -200,6 +200,9 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   Third session (tags SW/LW = 54° / Cleveland 47°, hip high): 20/33 and 19/34, 32-35 mph, smash < 1 (misread), 2-yd spreads; half the
   first 54° hip set (38): shorter/slower swing, to confirm. MLM "54° hip high (set 2)", "47° Cleveland hip high".
   Fourth session: 50° hip high (tag GW) 18/~34, ~35 mph, starts straight (no average row; chip + visible rows). MLM "50° hip high" (11/24).
+- 2026-11-26: Rapsodo, patio, lead arm parallel for the 42-55 gap: 58° (tag LW) 33/40, 40 mph, 40.4° launch; 54° gripped down 2 in
+  (tag SW) 33/43, 36 mph, start 0.2° (all straight). Slower than 11/24's 54° arm parallel (46 mph, 59). Gap still open.
+  MLM "58° arms parallel", "54° arms parallel choked 2 in". `practice/2026-11-26-rapsodo-patio.md`.
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
 - Warm-up (2026-11-10; WARM_BODY + WARM_DRILLS in index.html, also in practice/plan-2026-11.md): 5 body exercises
