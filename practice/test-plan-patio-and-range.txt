@@ -134,6 +134,17 @@ Driver: grip and ball position that give the best ball speed
 Then: I update the Clubs-tab carries and both course plans.
 
 
+GRIP-END CHECK (patio 11/27, golfer's plan)
+At lead arm parallel, back AND down, the grip end points at the
+target line (golfer's hands were over mid-foot, a little deep).
+Diagram: practice/hand-positions-backswing.png
+[ ] 5 stop-and-check swings, no ball: stop at lead arm parallel,
+    look down, grip end at the ball line
+[ ] 7i: 10 normal, then 10 with the grip-end feel (1.05/0.35)
+[ ] 54 deg lead arm parallel: same, 10 + 10
+[ ] Film one of each from behind; send the averages (smash,
+    start line, carry spread) for both sets
+
 SHORT GAME (added 11/23; setup that stopped the shanks on 11/22)
 Setup for pitches: ball in the middle, hands at the inner left thigh,
 60-65% weight left over the arches, head over or just ahead of the ball.
