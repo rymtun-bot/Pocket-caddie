@@ -16,3 +16,21 @@ Golfer: tests for the 42-55 yd gap. 58° at lead arm parallel (tag LW, shots 1-5
 - Launch steps up with loft as expected (54° 35°, 58° 40°).
 - 42-55 still open. The lead-arm-parallel swing gave 59 (11/24) and 33 (today) with the same club family: speed
   consistency at that length is the bigger issue than club choice.
+
+## Second session ("Net - 23 Shots", ~3:55 pm): lead arm parallel with a full wrist hinge
+
+Golfer: "52" (tag SW; the bag has a 54°, taken as the 54°, to confirm), Cleveland 47° (tag PW) and RSi 9i (tag 9i), lead arm
+parallel, full wrist hinge (after this morning's slower, very connected set). Many PW and 9i shots hit the mat before the ball.
+
+| Swing (tag) | Club mph | Smash | Carry | Total | Launch | Start | Apex ft | Visible carries |
+|---|---|---|---|---|---|---|---|---|
+| 54° (SW) | 46 | 1.18 | 54 | 61 | 34.9° | 4.5° R | 35 | 46-60 |
+| Cleveland 47° (PW) | 44 | 1.27 | 57 | 63 | 34.6° | 5.7° R | 36 | 50-62 |
+| RSi 9i (9i) | 58 | 1.15 | 71 | 81 | 26.7° | 3.4° R | 35 | 68-72 |
+
+- The full hinge brought the speed back: 54° 46 mph (36 this morning gripped down, 46 on 11/24), carry 54 (59 on 11/24).
+- 54° lead arm parallel is now 54-59 over two sessions: it covers the upper part of the 42-55 gap. Ladder: 54° hip 38,
+  54° arm parallel ~56, 50° full 74.
+- Cleveland 47° at arm parallel (57) duplicates the 54° at this length; 9i arm parallel (71) sits on the 50° full (74).
+- Starts drifted back right (3-6°) against 0.2° this morning: more hinge, a bit more open face at impact.
+- Fat contact (mat first) on PW and 9i: the mat lets fat shots bounce into the ball, so on grass these would come up short.
