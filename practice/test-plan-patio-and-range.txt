@@ -170,6 +170,11 @@ Pitch swings (names fixed 11/27; Clubs tab and My yardages):
 Full swings (Clubs tab 11/27): 9i ~104-111, PW (Cleveland 47) 89, 50 72.
   50 and 58: choose for height and roll, not for distance.
 
+Diagrams: practice/hand-positions-backswing.png (face-on + from behind:
+  half and full hinge) and practice/hand-path-top-view.png (from above:
+  hands stay in front of the chest; chest turns ~2x the hips going back;
+  coming down the hips lead, chest follows, hands a little inside, then
+  around to the left).
 Positions
 - Half hinge (hip high): shaft about 45 deg up, shaft in line
   with the toe line, toe up, clubhead not tucked behind the hands.

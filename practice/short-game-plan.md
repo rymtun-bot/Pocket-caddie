@@ -3,6 +3,7 @@
 Golfer's goal (2026-11-27): get better at pitching and chipping; not tied to the Dec 1 round.
 Setups: practice/setup-checklist-by-club.txt (CHIP) and practice/test-plan-patio-and-range.txt (SHORT GAME: half / full hinge).
 Pitch swings: 54° half hinge (38 carry), 54° full hinge (56 carry); tempo 1.05/0.35.
+Diagrams: [face-on and from behind](hand-positions-backswing.png), [hand path from above](hand-path-top-view.png).
 
 ## Each session (45-60 min, 3-4 times a week)
 
