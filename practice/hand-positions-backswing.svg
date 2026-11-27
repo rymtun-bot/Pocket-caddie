@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 760" font-family="Helvetica, Arial, sans-serif">
-  <rect width="960" height="760" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 775" font-family="Helvetica, Arial, sans-serif">
+  <rect width="960" height="775" fill="#ffffff"/>
   <text x="480" y="32" text-anchor="middle" font-size="22" font-weight="bold" fill="#222">Pitch swings: half hinge and full hinge (right-handed)</text>
-  <text x="480" y="56" text-anchor="middle" font-size="14" fill="#555">Rough checkpoints, not exact measurements. Red dot = hands. Through-swing: same length as the backswing.</text>
+  <text x="480" y="56" text-anchor="middle" font-size="14" fill="#555">Your hands stay in front of your chest all the way back: the chest turns, so the camera sees them move right.</text>
 
   <!-- column headings -->
   <text x="170" y="92" text-anchor="middle" font-size="16" font-weight="bold" fill="#222">1. Address</text>
@@ -9,7 +9,7 @@
   <text x="790" y="92" text-anchor="middle" font-size="16" font-weight="bold" fill="#222">3. Full hinge: 54° carries 56</text>
 
   <!-- ============ ROW 1: FACE-ON ============ -->
-  <text x="20" y="122" font-size="15" font-weight="bold" fill="#1a5fb4">FACE-ON (camera in front of you; target to the right of the picture)</text>
+  <text x="20" y="122" font-size="15" font-weight="bold" fill="#1a5fb4">FACE-ON (camera in front of you; target to the right): where the camera sees your hands</text>
   <g id="faceon" stroke="#333" stroke-width="4" fill="none" stroke-linecap="round">
     <!-- panel 1 address, center 170 -->
     <line x1="40" y1="380" x2="300" y2="380" stroke="#aaa" stroke-width="2"/>
@@ -51,10 +51,10 @@
   <line x1="756" y1="226" x2="756" y2="372" stroke="#d62828" stroke-width="1.5" stroke-dasharray="5,5"/>
   <text x="170" y="420" text-anchor="middle" font-size="13" fill="#222">Hands at the inner left thigh,</text>
   <text x="170" y="437" text-anchor="middle" font-size="13" fill="#222">slightly ahead of the ball</text>
-  <text x="480" y="420" text-anchor="middle" font-size="13" fill="#222">Hands at the right hip; left arm a bit</text>
-  <text x="480" y="437" text-anchor="middle" font-size="13" fill="#222">below level; shaft about 45° up</text>
-  <text x="790" y="420" text-anchor="middle" font-size="13" fill="#222">Left arm level, hands a little higher,</text>
-  <text x="790" y="437" text-anchor="middle" font-size="13" fill="#222">about above the right foot; shaft straight up</text>
+  <text x="480" y="420" text-anchor="middle" font-size="13" fill="#222">Hands in front of the chest (camera: at</text>
+  <text x="480" y="437" text-anchor="middle" font-size="13" fill="#222">the right hip); shaft about 45° up</text>
+  <text x="790" y="420" text-anchor="middle" font-size="13" fill="#222">Hands in front of the chest, left arm level</text>
+  <text x="790" y="437" text-anchor="middle" font-size="13" fill="#222">(camera: above the right foot); shaft up</text>
 
   <!-- ============ ROW 2: DOWN THE LINE ============ -->
   <text x="20" y="478" font-size="15" font-weight="bold" fill="#1a5fb4">FROM BEHIND (camera behind you, looking at the target; the ball is to the right of you)</text>
@@ -115,5 +115,5 @@
   <text x="808" y="580" font-size="12" fill="#2a9d3f">grip end points</text>
   <text x="808" y="595" font-size="12" fill="#2a9d3f">at the ball line</text>
 
-  <text x="480" y="760" text-anchor="middle" font-size="13" fill="#222"></text>
+  <text x="480" y="760" text-anchor="middle" font-size="13" fill="#222">Through-swing: same length as the backswing. Rough checkpoints, not exact measurements.</text>
 </svg>
