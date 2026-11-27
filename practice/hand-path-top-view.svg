@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 700" font-family="Helvetica, Arial, sans-serif">
+<rect width="960" height="700" fill="#fff"/>
+<text x="480" y="30" text-anchor="middle" font-size="22" font-weight="bold" fill="#222">Hand path from above: hands, chest and hips (right-handed)</text>
+<text x="480" y="54" text-anchor="middle" font-size="14" fill="#555">Camera overhead looking down. Your back is at the top, the ball line at the bottom, the target to the right. Angles are rough.</text>
+<g font-size="13"><line x1="250" y1="76" x2="280" y2="76" stroke="#1a5fb4" stroke-width="5"/><text x="286" y="81">shoulders / chest</text>
+<line x1="420" y1="76" x2="450" y2="76" stroke="#e66100" stroke-width="5"/><text x="456" y="81">hips</text>
+<circle cx="520" cy="76" r="6" fill="#d62828"/><text x="532" y="81">hands</text>
+<line x1="590" y1="76" x2="620" y2="76" stroke="#999" stroke-width="2" stroke-dasharray="4,4"/><text x="626" y="81">hand path</text></g>
+<text x="20" y="110" font-size="15" font-weight="bold" fill="#1a5fb4">BACKSWING: hands stay in front of the chest; the chest turns about twice as much as the hips</text>
+<text x="170" y="140" text-anchor="middle" font-size="15" font-weight="bold" fill="#222">1. Address</text>
+<line x1="40" y1="310" x2="300" y2="310" stroke="#999" stroke-dasharray="6,5"/>
+<text x="42" y="327" font-size="11" fill="#777">ball line</text>
+<text x="298" y="327" font-size="11" fill="#777" text-anchor="end">target →</text>
+<circle cx="170" cy="310" r="5" fill="#fff" stroke="#333" stroke-width="2"/>
+<ellipse cx="125" cy="260" rx="9" ry="16" fill="#ddd" stroke="#888"/>
+<ellipse cx="215" cy="260" rx="9" ry="16" fill="#ddd" stroke="#888"/>
+<polyline points="178.0,247.0 114.8,234.7 99.3,222.7" fill="none" stroke="#bbb" stroke-width="2" stroke-dasharray="4,4"/>
+<line x1="140.0" y1="205.0" x2="200.0" y2="205.0" stroke="#e66100" stroke-width="7" stroke-linecap="round"/>
+<line x1="124.0" y1="205.0" x2="216.0" y2="205.0" stroke="#1a5fb4" stroke-width="7" stroke-linecap="round"/>
+<line x1="170" y1="205" x2="170.0" y2="227.0" stroke="#1a5fb4" stroke-width="2"/>
+<circle cx="170.0" cy="229.0" r="3" fill="#1a5fb4"/>
+<circle cx="170" cy="201" r="13" fill="#fff" stroke="#333" stroke-width="2"/>
+<circle cx="178.0" cy="247.0" r="7" fill="#d62828"/>
+<text x="170" y="350" text-anchor="middle" font-size="13" fill="#222">Chest and hips square to the ball line</text>
+<text x="480" y="140" text-anchor="middle" font-size="15" font-weight="bold" fill="#222">2. Club level (half hinge)</text>
+<line x1="350" y1="310" x2="610" y2="310" stroke="#999" stroke-dasharray="6,5"/>
+<text x="352" y="327" font-size="11" fill="#777">ball line</text>
+<text x="608" y="327" font-size="11" fill="#777" text-anchor="end">target →</text>
+<circle cx="480" cy="310" r="5" fill="#fff" stroke="#333" stroke-width="2"/>
+<ellipse cx="435" cy="260" rx="9" ry="16" fill="#ddd" stroke="#888"/>
+<ellipse cx="525" cy="260" rx="9" ry="16" fill="#ddd" stroke="#888"/>
+<polyline points="488.0,247.0 424.8,234.7 409.3,222.7" fill="none" stroke="#bbb" stroke-width="2" stroke-dasharray="4,4"/>
+<line x1="451.8" y1="194.7" x2="508.2" y2="215.3" stroke="#e66100" stroke-width="7" stroke-linecap="round"/>
+<line x1="447.5" y1="172.5" x2="512.5" y2="237.5" stroke="#1a5fb4" stroke-width="7" stroke-linecap="round"/>
+<line x1="480" y1="205" x2="464.4" y2="220.6" stroke="#1a5fb4" stroke-width="2"/>
+<circle cx="463.0" cy="222.0" r="3" fill="#1a5fb4"/>
+<circle cx="480" cy="201" r="13" fill="#fff" stroke="#333" stroke-width="2"/>
+<circle cx="424.8" cy="234.7" r="7" fill="#d62828"/>
+<text x="480" y="350" text-anchor="middle" font-size="13" fill="#222">Chest ~45° back, hips ~20°</text>
+<text x="790" y="140" text-anchor="middle" font-size="15" font-weight="bold" fill="#222">3. Lead arm parallel (full hinge)</text>
+<line x1="660" y1="310" x2="920" y2="310" stroke="#999" stroke-dasharray="6,5"/>
+<text x="662" y="327" font-size="11" fill="#777">ball line</text>
+<text x="918" y="327" font-size="11" fill="#777" text-anchor="end">target →</text>
+<circle cx="790" cy="310" r="5" fill="#fff" stroke="#333" stroke-width="2"/>
+<ellipse cx="745" cy="260" rx="9" ry="16" fill="#ddd" stroke="#888"/>
+<ellipse cx="835" cy="260" rx="9" ry="16" fill="#ddd" stroke="#888"/>
+<polyline points="798.0,247.0 734.8,234.7 719.3,222.7" fill="none" stroke="#bbb" stroke-width="2" stroke-dasharray="4,4"/>
+<line x1="765.4" y1="187.8" x2="814.6" y2="222.2" stroke="#e66100" stroke-width="7" stroke-linecap="round"/>
+<line x1="770.6" y1="163.3" x2="809.4" y2="246.7" stroke="#1a5fb4" stroke-width="7" stroke-linecap="round"/>
+<line x1="790" y1="205" x2="770.1" y2="214.3" stroke="#1a5fb4" stroke-width="2"/>
+<circle cx="768.2" cy="215.1" r="3" fill="#1a5fb4"/>
+<circle cx="790" cy="201" r="13" fill="#fff" stroke="#333" stroke-width="2"/>
+<circle cx="719.3" cy="222.7" r="7" fill="#d62828"/>
+<text x="790" y="350" text-anchor="middle" font-size="13" fill="#222">Chest ~65° back, hips ~35°</text>
+<text x="20" y="410" font-size="15" font-weight="bold" fill="#1a5fb4">DOWNSWING AND THROUGH: hips turn first, chest follows, hands stay in front of the chest</text>
+<text x="170" y="440" text-anchor="middle" font-size="15" font-weight="bold" fill="#222">4. Club level coming down</text>
+<line x1="40" y1="610" x2="300" y2="610" stroke="#999" stroke-dasharray="6,5"/>
+<text x="42" y="627" font-size="11" fill="#777">ball line</text>
+<text x="298" y="627" font-size="11" fill="#777" text-anchor="end">target →</text>
+<circle cx="170" cy="610" r="5" fill="#fff" stroke="#333" stroke-width="2"/>
+<ellipse cx="125" cy="560" rx="9" ry="16" fill="#ddd" stroke="#888"/>
+<ellipse cx="215" cy="560" rx="9" ry="16" fill="#ddd" stroke="#888"/>
+<polyline points="110.2,526.6 184.0,547.0 243.3,519.4" fill="none" stroke="#bbb" stroke-width="2" stroke-dasharray="4,4"/>
+<line x1="140.5" y1="510.2" x2="199.5" y2="499.8" stroke="#e66100" stroke-width="7" stroke-linecap="round"/>
+<line x1="128.3" y1="485.6" x2="211.7" y2="524.4" stroke="#1a5fb4" stroke-width="7" stroke-linecap="round"/>
+<line x1="170" y1="505" x2="160.7" y2="524.9" stroke="#1a5fb4" stroke-width="2"/>
+<circle cx="159.9" cy="526.8" r="3" fill="#1a5fb4"/>
+<circle cx="170" cy="501" r="13" fill="#fff" stroke="#333" stroke-width="2"/>
+<circle cx="110.2" cy="526.6" r="7" fill="#d62828"/>
+<text x="170" y="650" text-anchor="middle" font-size="13" fill="#222">Hips already open ~10°; chest still ~25°</text>
+<text x="170" y="666" text-anchor="middle" font-size="13" fill="#222">back; hands a little inside</text>
+<text x="480" y="440" text-anchor="middle" font-size="15" font-weight="bold" fill="#222">5. Impact</text>
+<line x1="350" y1="610" x2="610" y2="610" stroke="#999" stroke-dasharray="6,5"/>
+<text x="352" y="627" font-size="11" fill="#777">ball line</text>
+<text x="608" y="627" font-size="11" fill="#777" text-anchor="end">target →</text>
+<circle cx="480" cy="610" r="5" fill="#fff" stroke="#333" stroke-width="2"/>
+<ellipse cx="435" cy="560" rx="9" ry="16" fill="#ddd" stroke="#888"/>
+<ellipse cx="525" cy="560" rx="9" ry="16" fill="#ddd" stroke="#888"/>
+<polyline points="420.2,526.6 494.0,547.0 553.3,519.4" fill="none" stroke="#bbb" stroke-width="2" stroke-dasharray="4,4"/>
+<line x1="454.0" y1="520.0" x2="506.0" y2="490.0" stroke="#e66100" stroke-width="7" stroke-linecap="round"/>
+<line x1="434.0" y1="505.0" x2="526.0" y2="505.0" stroke="#1a5fb4" stroke-width="7" stroke-linecap="round"/>
+<line x1="480" y1="505" x2="480.0" y2="527.0" stroke="#1a5fb4" stroke-width="2"/>
+<circle cx="480.0" cy="529.0" r="3" fill="#1a5fb4"/>
+<circle cx="480" cy="501" r="13" fill="#fff" stroke="#333" stroke-width="2"/>
+<circle cx="494.0" cy="547.0" r="7" fill="#d62828"/>
+<text x="480" y="650" text-anchor="middle" font-size="13" fill="#222">Hips open ~30°, chest about square,</text>
+<text x="480" y="666" text-anchor="middle" font-size="13" fill="#222">hands just ahead of the ball</text>
+<text x="790" y="440" text-anchor="middle" font-size="15" font-weight="bold" fill="#222">6. Through (lead arm level)</text>
+<line x1="660" y1="610" x2="920" y2="610" stroke="#999" stroke-dasharray="6,5"/>
+<text x="662" y="627" font-size="11" fill="#777">ball line</text>
+<text x="918" y="627" font-size="11" fill="#777" text-anchor="end">target →</text>
+<circle cx="790" cy="610" r="5" fill="#fff" stroke="#333" stroke-width="2"/>
+<ellipse cx="745" cy="560" rx="9" ry="16" fill="#ddd" stroke="#888"/>
+<ellipse cx="835" cy="560" rx="9" ry="16" fill="#ddd" stroke="#888"/>
+<polyline points="730.2,526.6 804.0,547.0 863.3,519.4" fill="none" stroke="#bbb" stroke-width="2" stroke-dasharray="4,4"/>
+<line x1="775.0" y1="531.0" x2="805.0" y2="479.0" stroke="#e66100" stroke-width="7" stroke-linecap="round"/>
+<line x1="774.3" y1="548.2" x2="805.7" y2="461.8" stroke="#1a5fb4" stroke-width="7" stroke-linecap="round"/>
+<line x1="790" y1="505" x2="810.7" y2="512.5" stroke="#1a5fb4" stroke-width="2"/>
+<circle cx="812.6" cy="513.2" r="3" fill="#1a5fb4"/>
+<circle cx="790" cy="501" r="13" fill="#fff" stroke="#333" stroke-width="2"/>
+<circle cx="863.3" cy="519.4" r="7" fill="#d62828"/>
+<text x="790" y="650" text-anchor="middle" font-size="13" fill="#222">Chest and hips facing the target side;</text>
+<text x="790" y="666" text-anchor="middle" font-size="13" fill="#222">hands swing left, around you</text>
+<text x="480" y="690" text-anchor="middle" font-size="13" fill="#555">Arrow = the way your chest faces. The hands never leave the space in front of the chest; the turn carries them around.</text>
+</svg>
