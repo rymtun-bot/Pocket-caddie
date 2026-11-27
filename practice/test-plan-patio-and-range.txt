@@ -150,15 +150,23 @@ Setup for pitches: ball in the middle, hands at the inner left thigh,
 60-65% weight left over the arches, head over or just ahead of the ball.
 Chips: see the CHIP section in setup-checklist-by-club.txt (50 deg main club).
 
-Clubs and lengths (carries to confirm on the redo):
-  54 hip high ~30 | 54 lead arm parallel ~38-40 | 9i hip high ~52
-  Full: 58 ~59, 54 ~67, 50 ~74 (11/14), PW ~98-104
+Pitch swings (names fixed 11/27; Clubs tab and My yardages):
+  54 HALF HINGE = 38 carry. Back: hands at the right hip, shaft about
+    45 deg up. Through: hands to the left hip, same length ("hip to
+    hip"). Tempo 1.05/0.35.
+  54 FULL HINGE = 56 carry. Back: lead arm level, full hinge (the "L",
+    shaft pointing up). Through: same length. Tempo 1.05/0.35.
+  Same arm swing for both: the wrist hinge sets the distance.
+  Old names in My Rapsodo numbers ("hip", "hip high", "hip to hip")
+  are the same backswing as the half hinge, made with different hinge
+  and tempo (21-38 carry); "arm parallel" = full hinge.
+Full swings (Clubs tab 11/27): 9i ~104-111, PW (Cleveland 47) 89, 50 72.
   50 and 58: choose for height and roll, not for distance.
 
 Positions
-- Hip high: half hinge (shaft about 45 deg up), shaft in line
+- Half hinge (hip high): shaft about 45 deg up, shaft in line
   with the toe line, toe up, clubhead not tucked behind the hands.
-- Lead arm parallel: full hinge ("L"), grip end points at the
+- Full hinge (lead arm parallel): the "L", grip end points at the
   target line.
 - Grip end points at or along the target line at every stage,
   never at the feet. Finish at least as long as the backswing.
