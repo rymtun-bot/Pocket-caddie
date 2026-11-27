@@ -205,6 +205,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   MLM "58° arms parallel", "54° arms parallel choked 2 in". `practice/2026-11-26-rapsodo-patio.md`.
   Second session, lead arm parallel with a full wrist hinge: 54° (tag SW; golfer wrote "52") 54/61, 46 mph; Cleveland 47° (tag PW)
   57/63, 44 mph; 9i 71/81, 58 mph (tight 68-72). Starts 3-6° R; many PW/9i shots hit the mat first. Full hinge = speed back.
+  Clubs tab (golfer, 2026-11-27): added "54° hip" 38 and "54° arm parallel" 56; 50° stays 72 (full-swing readings 69-77); PW unchanged
+  until the Cleveland 47° decision (~89).
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
 - Warm-up (2026-11-10; WARM_BODY + WARM_DRILLS in index.html, also in practice/plan-2026-11.md): 5 body exercises
