@@ -264,8 +264,10 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   build 22 Nov (a)), after arm-parallel wedges at the pitch tempo stayed at ~35 mph on 11/21. Chips and putts unchanged.
   Setup (golfer, 11/14): weight more on the balls of the feet rather than the heels feels better, especially with the driver
   at the range; already a cue in S.overBall ("Balls of your feet").
-- Open items as of 2026-11-27 (for a new chat): Clubs tab confirmed by the golfer (My yardages correct): PW 89 (Cleveland 47°),
-  50° 72, 54° full hinge 56, 54° half hinge 38. Before Dec 1: range check of the Cleveland PW and 50° full on turf; fat contact
+- Open items as of 2026-11-27 (for a new chat): golfer's Clubs-tab screenshots (11/27 evening) still showed PW 104, Driver 207, 5W, 1U,
+  4U, 6i and old choked/forearm/hip rows (earlier links likely went to Safari's storage, not the Home Screen app). Sent one clean list
+  for "Replace my whole list" (13 rows): Driver 195, 3W 180, 3U 159, 5U 150, 7i 128, 8i 113, 9i 111, PW 89, 50° 72, 54° 67 (was 81;
+  11/14 full swing), 58° 59, 54° full hinge 56, 54° half hinge 38. If the 3U is still at the shop, 4U 152 stands in. Before Dec 1: range check of the Cleveland PW and 50° full on turf; fat contact
   (mat first) on full-hinge PW/9i pitches (press left, hands lead, towel/tape line); grip-end check (practice/hand-positions-backswing.png);
   chip drills with the 50°, lag putting. Still unanswered: soft practice-ball type, 11/18 range wind, the 11/21 LW-tagged set.
   Session checklists: practice/test-plan-patio-and-range.txt, practice/setup-checklist-by-club.txt, practice/preshot-routine.txt.
