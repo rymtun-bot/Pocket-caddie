@@ -210,6 +210,10 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   57/63, 44 mph; 9i 71/81, 58 mph (tight 68-72). Starts 3-6° R; many PW/9i shots hit the mat first. Full hinge = speed back.
   Clubs tab (golfer, 2026-11-27): added "54° hip" 38 and "54° arm parallel" 56; 50° stays 72 (full-swing readings 69-77); PW unchanged
   until the Cleveland 47° decision (~89).
+- 2026-11-27: Rapsodo, patio, full swings with a full hinge: 54° (SW) 66/71, 58 mph; 50° (GW) 70/77, 60 mph (best compression);
+  9i 96/103, 71 mph, smash 1.12; 8i 100/108, ~70 mph, ~1.16 (one 92 mph misread row out). Wedges match the Clubs tab; 8i/9i 12-13 yd
+  short on weaker strike, still ~4 yd apart (loft check). Clubs tab unchanged. Golfer's working feels saved in the session file and
+  practice/test-plan-patio-and-range.txt. `practice/2026-11-27-rapsodo-patio.md`.
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
 - Warm-up (2026-11-10; WARM_BODY + WARM_DRILLS in index.html, also in practice/plan-2026-11.md): 5 body exercises
