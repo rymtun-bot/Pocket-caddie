@@ -26,3 +26,23 @@ Golfer: full swings with the full hinge (the "L" set by lead arm parallel), 54°
 5. Handle (grip end) pointing at the target line helps the full hinge.
 6. Weight shift to the front foot in the downswing.
 7. Right forearm controlling the downswing and closing the face.
+
+## Second session ("Net - 24 Shots", ~2:35 pm): full hinge, focus on smash
+
+Golfer: 50° (tag GW), 54° (tag SW; golfer wrote "LW"), 9i, full swings. App average rows (this screen shows ball speed, no total).
+
+| Club (tag) | Ball mph | Club mph | Smash | Carry | Launch | Start | Apex ft | Visible carries |
+|---|---|---|---|---|---|---|---|---|
+| 54° (SW) | 74 | 60 | 1.24 | 88 | 31.7° | 0.8° L | 61 | 80-98 |
+| 50° (GW) | 71 | 68* | 1.05* | 81 | 27.7° | 0.5° L | 45 | 69-90 |
+| 9i | 86 | 71 | 1.22 | 103 | 17.7° | 1.8° R | 38 | 92-109 |
+
+*50° club-speed rows erratic (58-79 mph; two rows smash 0.87/0.93): ball speed (71) is the reliable number.
+
+- Smash up from the morning on the 54° (1.06 → 1.24) and 9i (1.12 → 1.22): goal reached on the 54°, close on the 9i.
+- Start lines about straight on all three (0.8° L to 1.8° R), from 3-5° R this morning.
+- Ball speed up: 54° ~61 → 74 mph, 9i ~80 → 86 mph; carries up with it (54° 66 → 88, 9i 96 → 103).
+- 54° carried 7 yd past the 50° today (88 vs 81), with a higher launch: the 50° set was the weaker strike. One day, patio.
+- 9i launch 17.7° (26.5° this morning, ~21° at the range 11/18): much more shaft lean / a closed face at impact. Gives a low,
+  boring flight; worth watching that it doesn't become a hook or a ball that won't hold greens.
+- Clubs tab not changed: patio estimates, one session, and the 54° figure would sit level with the PW (89).

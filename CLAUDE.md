@@ -216,6 +216,8 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   practice/test-plan-patio-and-range.txt. `practice/2026-11-27-rapsodo-patio.md`.
   Golfer's decision (11/27): full hinge on every swing and club; no more hinge comparisons (declined the alternating 9i test);
   focus = smash (irons 1.25-1.35, wedges 1.15-1.25).
+  Second 11/27 session (Net - 24 Shots, smash focus): 54° (SW) 88 carry, ball 74, smash 1.24, 31.7°; 50° (GW) 81, ball 71, ~1.05
+  (club speed erratic); 9i 103, ball 86, 71 mph, 1.22, launch 17.7° (very low). Starts ~straight on all. Clubs tab unchanged.
 - 2026-11-02: Rapsodo, Westchester range, range balls: driver (two sets), Cleveland 3W, 1U, PW, 50°, 54° (`practice/2026-11-02-rapsodo-range.md`).
   Long-club launch angles misread that day; carries estimated from ball speed in the session file.
 - Warm-up (2026-11-10; WARM_BODY + WARM_DRILLS in index.html, also in practice/plan-2026-11.md): 5 body exercises
