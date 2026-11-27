@@ -156,7 +156,9 @@ Pitch swings (names fixed 11/27; Clubs tab and My yardages):
     hip"). Tempo 1.05/0.35.
   54 FULL HINGE = 56 carry. Back: lead arm level, full hinge (the "L",
     shaft pointing up). Through: same length. Tempo 1.05/0.35.
-  Same arm swing for both: the wrist hinge sets the distance.
+  Almost the same arm swing: half hinge = left arm slightly below level
+  (hands at the hip); full hinge = left arm level (hands a little higher).
+  The wrist hinge is the main difference you feel.
   Old names in My Rapsodo numbers ("hip", "hip high", "hip to hip")
   are the same backswing as the half hinge, made with different hinge
   and tempo (21-38 carry); "arm parallel" = full hinge.
