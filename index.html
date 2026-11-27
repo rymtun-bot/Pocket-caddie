@@ -128,7 +128,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <a class="chip" href="swing.html?v=14h#tempo" style="font-weight:700">🎵 Tempo count</a>
     <button class="chip" id="prOpen" style="cursor:pointer;font-weight:700">📈 Progress</button>
     <button class="chip" id="ptOpen" style="cursor:pointer;font-weight:700">⛳ Putting</button>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 27 Nov (g) ⟳</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 27 Nov (h) ⟳</button>
   </div>
 </header>
 
@@ -333,7 +333,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       except on the yardage, walk-and-mark and save-the-green screens and the hole map. "👂 Keep listening" needs the screen on.</p>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 27 Nov (g). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 27 Nov (h). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -1313,7 +1313,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let last = "", k = 0;
     const order = OVERPASS.slice(ovGood).concat(OVERPASS.slice(0, ovGood));   // the server that answered last time goes first
     for (const u of order) {
-      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 27 Nov (g) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
+      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 27 Nov (h) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
       try {
         const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 25000);   // a busy server can hang: give up after 25 s
         const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: ctl.signal });
@@ -1353,7 +1353,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (cached && cached.v === 8 && Date.now() - cached.at < 7 * 864e5) return cached;
     let c = (S.coursePt || {})[id] || COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
     // the course data saved on the Pocket Caddie site (tools/fetch_osm.py) is quick; the live servers are the fallback
-    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 27 Nov (g) · Loading the course map data…";
+    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 27 Nov (h) · Loading the course map data…";
     let pre = null;
     try { const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
       const r = await fetch(`osm/${id}.json?d=${new Date().toISOString().slice(0, 10)}`, { signal: ctl.signal }); clearTimeout(tm);
@@ -1695,7 +1695,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
-    $("hmStatus").textContent = "Pocket Caddie 27 Nov (g) · Looking up the course on OpenStreetMap…";
+    $("hmStatus").textContent = "Pocket Caddie 27 Nov (h) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     hm.osmInfo = o ? `OpenStreetMap${hm.osmSrc && hm.osmSrc !== "live" ? " (" + hm.osmSrc + ")" : ""}: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
@@ -1705,7 +1705,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 27 Nov (g) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 27 Nov (h) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
@@ -2954,7 +2954,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         ["📏 My course distances", () => courseDistances()],
         S.mock ? ["🪑 End the seated round", () => mockEnd()] : ["🪑 Seated round: pretend round at Westchester or Rancho", () => step("mockStart")],
         ["Change course or tees", () => step("course")],
-        ["⟳ Get the latest version (you have 27 Nov (g))", () => location.replace(location.pathname + "?v=" + Date.now())],
+        ["⟳ Get the latest version (you have 27 Nov (h))", () => location.replace(location.pathname + "?v=" + Date.now())],
         ["Show the full app", () => { $("wiz").hidden = true; renderAll(); }]]);
     }
     if (name === "yds") {   // one thing: the yardage
@@ -3340,6 +3340,10 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     ["Putt", "Eyes closed", "Putt, keep your eyes shut, guess where it stopped, then look. 10 balls."],
     ["Putt", "Same rhythm, longer stroke", "Putting tempo 0.60 and 0.30. Only the backstroke length changes."],
     ["Putt", "Practice green before Dec 1", "Lags of 20, 30 and 40 feet. Note how far back the putter goes for each."],
+    // full-swing feels that worked (golfer, 2026-11-27 patio; best compression with the 50 degree)
+    ["Feel", "Setup", "Weight on the balls of your feet. Stand closer, with the sole flatter. Weight balanced right and left."],
+    ["Feel", "Takeaway and hinge", "Left hand leads the takeaway, about 90 percent. Then the right hand lets the club hinge on plane. Grip end points at the target line: full hinge."],
+    ["Feel", "Downswing", "Shift to the front foot first. Then the right forearm controls the downswing and closes the face."],
     // short-game plan (golfer's request 2026-11-27; practice/short-game-plan.md)
     ["Swing", "Full-swing hinge test", "7 iron, Rapsodo on. 10 normal swings, then 10 with the full L set by lead arm parallel and kept to the top. Compare club speed, smash and start line."],
     ["Pitch", "Contact line", "Towel 6 inches behind the ball and a tape line in front of it. 54 degree half hinge: brush the mat after the line."],
@@ -3354,7 +3358,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (S.drills.day !== today()) S.drills = { day: today(), done: [] };
     const n = S.drills.done.length;
     const html = `<p class="q">Tap 🔊 to hear a drill. Tick it when done (ticks are kept for today). Done today: <b id="drN">${n}</b> of ${DRILLS.length}.</p>`
-      + ["Swing", "Chip", "Pitch", "Putt", "Test"].map(g => `<h3 style="margin:4px 0 0">${g}</h3>` + DRILLS.map((d, i) => d[0] !== g ? "" : `<div style="display:flex;gap:10px;align-items:flex-start">
+      + ["Feel", "Swing", "Chip", "Pitch", "Putt", "Test"].map(g => `<h3 style="margin:4px 0 0">${g}</h3>` + DRILLS.map((d, i) => d[0] !== g ? "" : `<div style="display:flex;gap:10px;align-items:flex-start">
         <input type="checkbox" data-drill="${i}" ${S.drills.done.includes(i) ? "checked" : ""} style="width:26px;height:26px;flex:none;margin-top:4px" aria-label="${esc(d[1])} done">
         <div style="flex:1"><b>${esc(d[1])}</b><br><span class="note">${esc(d[2])}</span></div>
         <button data-drsay="${i}" aria-label="Read ${esc(d[1])}" style="flex:none">🔊</button></div>`).join("")).join("")
