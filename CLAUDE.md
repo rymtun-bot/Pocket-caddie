@@ -264,11 +264,11 @@ instruction, 2026-10-31). The golfer sends each club's averages separately.
   build 22 Nov (a)), after arm-parallel wedges at the pitch tempo stayed at ~35 mph on 11/21. Chips and putts unchanged.
   Setup (golfer, 11/14): weight more on the balls of the feet rather than the heels feels better, especially with the driver
   at the range; already a cue in S.overBall ("Balls of your feet").
-- Open items as of 2026-11-22 (for a new chat): arms-parallel wedges at 1.05/0.35 done (40/38 carry, shanks included);
-  golfer to redo hip high and lead arm parallel with the new setup (no-shank setup, second set 11/22) at set lengths. Still to answer from the golfer: soft practice-ball type (foam / plastic /
-  limited-flight) for driver swings on the mat (suggested 7i check: 5 Supersoft vs 5 soft, compare club speed); 11/18 range
-  wind; whether the 11/21 LW-tagged set (31 yd) was the 58°. Session checklists: practice/test-plan-patio-and-range.txt,
-  practice/setup-checklist-by-club.txt, practice/preshot-routine.txt.
+- Open items as of 2026-11-27 (for a new chat): Clubs tab confirmed by the golfer (My yardages correct): PW 89 (Cleveland 47°),
+  50° 72, 54° full hinge 56, 54° half hinge 38. Before Dec 1: range check of the Cleveland PW and 50° full on turf; fat contact
+  (mat first) on full-hinge PW/9i pitches (press left, hands lead, towel/tape line); grip-end check (practice/hand-positions-backswing.png);
+  chip drills with the 50°, lag putting. Still unanswered: soft practice-ball type, 11/18 range wind, the 11/21 LW-tagged set.
+  Session checklists: practice/test-plan-patio-and-range.txt, practice/setup-checklist-by-club.txt, practice/preshot-routine.txt.
 - Current two-week plan and pre-shot routine: `practice/plan-2026-11.md` (first real round planned Tuesday 2026-12-01).
 - Day-by-day session list to Dec 1: `practice/daily-sessions.md`.
 - Home course game (hole-by-hole Westchester/Rancho on the patio): `practice/home-course-game.md`.
