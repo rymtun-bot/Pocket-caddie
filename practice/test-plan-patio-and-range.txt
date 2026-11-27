@@ -85,7 +85,7 @@ Dry the ball and face if the mat is wet.
        Guide Menu > Putting practice
 
 ==============================
-RANGE - NEXT VISIT (about 60 balls)
+RANGE - NEXT VISIT (about 90 balls)
 ==============================
 Setup: Rapsodo lined up along a club pointing at the flag
 Optional: photo of the distance board behind mat 16
@@ -110,7 +110,12 @@ Optional: Range conditions > Check, then Copy for Claude (wind)
 [ ] 6. 5W (Burner 18 deg) off the mat, 10 balls
        Only if the 3W off the mat was poor
 
-[ ] 7. 8-iron, 10 balls (if not done on the patio)
+[ ] 7. Scoring-club check (added 11/27), full swings, 1.05/0.35, 10 balls each:
+       8i (Clubs tab 113; only range number is from 9/02; sits ~4 yd from the 9i)
+       PW = Cleveland 47 (89), 50 deg (72), 54 deg (67)
+       Then 5 each: 54 full hinge (56), 54 half hinge (38)
+       Mats forgive fat shots: leave out any shot that felt heavy.
+       Send the average rows; any club 5+ yd off gets a new Clubs-tab number.
 
 ==============================
 DECISIONS
