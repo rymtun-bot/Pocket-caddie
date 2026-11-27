@@ -10,3 +10,9 @@ Putt - Edge drill: stop the ball within 6 in of the rug's far edge from 3, 5, 7 
 Putt - Eyes closed: putt, guess where it stopped, then look, 10 balls
 Putt - Same rhythm, longer stroke: putting tempo 0.60/0.30, change only the backstroke length
 Putt - Before Dec 1: one practice-green session, lags of 20, 30, 40 ft, note stroke length for each
+Swing - Full-swing hinge test: 7i, 10 normal vs 10 with the full L at lead arm parallel; compare speed, smash, start
+Pitch - Contact line: towel 6 in behind, tape line in front; 54° half hinge, brush after the line
+Pitch - Hinge ladder: 54° half hinge 10, full hinge 10 (Rapsodo every few sessions)
+Test - Chip score: landing ladder, 15 balls; goal 10+ on the towel
+Test - Pitch score (Rapsodo): 10 half + 10 full hinge; spread 6 yd or less, start ±3°, smash 1.20+
+Test - Contact score: 10 half-hinge balls, towel behind; goal 9 of 10 untouched
