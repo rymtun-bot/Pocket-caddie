@@ -128,7 +128,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     <a class="chip" href="swing.html?v=14h#tempo" style="font-weight:700">🎵 Tempo count</a>
     <button class="chip" id="prOpen" style="cursor:pointer;font-weight:700">📈 Progress</button>
     <button class="chip" id="ptOpen" style="cursor:pointer;font-weight:700">⛳ Putting</button>
-    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 27 Nov (c) ⟳</button>
+    <button class="chip" id="verChip" title="Get the latest version" style="cursor:pointer">v 27 Nov (d) ⟳</button>
   </div>
 </header>
 
@@ -333,7 +333,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       except on the yardage, walk-and-mark and save-the-green screens and the hole map. "👂 Keep listening" needs the screen on.</p>
       <p class="note" style="margin:8px 0 0">Text size (all Pocket Caddie pages, including the guide and Swing Frames)</p>
       <div class="row"><button id="updBtn">⟳ Get the latest version of Pocket Caddie</button></div>
-      <p class="note" style="margin:0">Version: 27 Nov (c). Your clubs, greens and notes are kept.</p>
+      <p class="note" style="margin:0">Version: 27 Nov (d). Your clubs, greens and notes are kept.</p>
       <div class="row" role="group" aria-label="Text size"><button data-ts="1">Normal</button><button data-ts="1.2">Large</button><button data-ts="1.4">Extra large</button></div>
       <p class="note">Dark screen uses less battery on iPhones with OLED displays. Lowering screen brightness helps most.</p>
     </section>
@@ -1309,7 +1309,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     let last = "", k = 0;
     const order = OVERPASS.slice(ovGood).concat(OVERPASS.slice(0, ovGood));   // the server that answered last time goes first
     for (const u of order) {
-      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 27 Nov (c) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
+      k++; if (label && $("hmStatus")) $("hmStatus").textContent = `Pocket Caddie 27 Nov (d) · ${label} (OpenStreetMap server ${k} of ${OVERPASS.length})…`;
       try {
         const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 25000);   // a busy server can hang: give up after 25 s
         const r = await fetch(u, { method: "POST", body: "data=" + encodeURIComponent(q), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: ctl.signal });
@@ -1349,7 +1349,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     if (cached && cached.v === 8 && Date.now() - cached.at < 7 * 864e5) return cached;
     let c = (S.coursePt || {})[id] || COURSE_PT[id] || (fix && { lat: fix.lat, lon: fix.lon }); if (!c) return null;
     // the course data saved on the Pocket Caddie site (tools/fetch_osm.py) is quick; the live servers are the fallback
-    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 27 Nov (c) · Loading the course map data…";
+    if ($("hmStatus")) $("hmStatus").textContent = "Pocket Caddie 27 Nov (d) · Loading the course map data…";
     let pre = null;
     try { const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
       const r = await fetch(`osm/${id}.json?d=${new Date().toISOString().slice(0, 10)}`, { signal: ctl.signal }); clearTimeout(tm);
@@ -1691,7 +1691,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
     hm.shown = true;   // moving to a hole the map knows nothing about keeps the current view instead of zooming out
     setTimeout(() => hm.map.invalidateSize(), 50);
     $("hmOut").textContent = "Tap the map to measure.";
-    $("hmStatus").textContent = "Pocket Caddie 27 Nov (c) · Looking up the course on OpenStreetMap…";
+    $("hmStatus").textContent = "Pocket Caddie 27 Nov (d) · Looking up the course on OpenStreetMap…";
     const o = await hmOsm(S.cur.course);   // hole lines and numbers, where OpenStreetMap has them
     hm.osmInfo = o ? `OpenStreetMap${hm.osmSrc && hm.osmSrc !== "live" ? " (" + hm.osmSrc + ")" : ""}: course outline ${o.outline.length ? "found" + (o.name ? ` (${o.name})` : "") : "not found" + ((o.courses || []).length ? ` (courses nearby: ${o.courses.join(", ")})` : "")}, ${o.holes.length} hole lines, ${(o.greens || []).length} greens.` : (hm.osmErr || "OpenStreetMap: couldn't load.");
     $("hmCredit").innerHTML = HM_LAYERS[hm.layer][2] + "<br>" + hm.osmInfo + ((S.georefAuto || {})[S.cur.course] ? " Placed automatically." : (S.georef[S.cur.course] || []).length ? " Lined up from your taps." : "");
@@ -1701,7 +1701,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
       else auto = "Couldn't place it automatically from that.";
     } else if ((S.georefAuto || {})[S.cur.course] && (S.georef[S.cur.course] || []).length) auto = `Placed automatically from ${S.georefAuto[S.cur.course].how}.`;
     else if ((S.georef[S.cur.course] || []).length) auto = "Lined up from your taps.";
-    $("hmStatus").textContent = `Pocket Caddie 27 Nov (c) · ${hm.osmInfo} ${auto}`;
+    $("hmStatus").textContent = `Pocket Caddie 27 Nov (d) · ${hm.osmInfo} ${auto}`;
     if (o && hm.map) {
       if (hm.osm) { hm.map.removeLayer(hm.osm); hm.osm = null; }   // only the current hole is drawn
       if (!o.holes.length && !(S.georef[S.cur.course] || []).length) toast(o.nearby ? `OpenStreetMap's hole lines here belong to other courses. Use 🧭 Set up this course.` : "OpenStreetMap has no hole lines for this course. Use 🧭 Set up this course.");
@@ -1725,12 +1725,16 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   }
   // Club list from Claude: "Driver 185, 8i 113" (pasted) or #clubs=Driver:185,8i:113 (one-tap link)
   function parseClubList(text) {
-    return text.split(/[,;\n]+/).map(t => t.trim()).filter(Boolean).map(t => {
+    parseClubList.lastBad = "";
+    text = String(text || "").replace(/[\u00a0\u2007\u202f]/g, " ").replace(/[º˚]/g, "°").replace(/[‘’`]/g, "'");   // iPhone paste: odd spaces / degree marks
+    return text.split(/[,;\n]+/).map(t => t.trim().replace(/[.]+$/, "")).filter(Boolean).map(t => {
       const m = t.match(/^(.+?)[\s:=]+(\d{2,3})\s*(?:yds?|yards?)?$/i);
+      if (!m) parseClubList.lastBad = t;
       return m ? { name: m[1].trim(), carry: +m[2] } : null;
     });
   }
   function loadClubList(text) {
+    if (!String(text || "").trim()) { toast("Paste the club list into the box first"); return false; }
     const items = parseClubList(text);
     if (!items.length || items.some(x => !x)) { toast("Couldn't read that list"); return false; }
     const list = items.map(c => `${c.name} ${c.carry}`).join(", ");
@@ -1747,8 +1751,9 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
   // Replace the whole list (golfer's request 2026-11-27): #setclubs=... link or the "Replace my whole list" button.
   // Clubs not named are removed; the previous list is kept in S.clubsBackup for one-tap undo.
   function replaceClubList(text) {
+    if (!String(text || "").trim()) { toast("Paste the club list into the box first, then tap Replace"); return false; }
     const items = parseClubList(text);
-    if (!items.length || items.some(x => !x)) { toast("Couldn't read that list"); return false; }
+    if (!items.length || items.some(x => !x)) { const bad = parseClubList.lastBad || ""; toast("Couldn't read that list" + (bad ? `: check "${bad}"` : "")); return false; }
     const gone = S.clubs.filter(c => !items.some(x => x.name.toLowerCase() === (c.name || "").toLowerCase())).map(c => c.name);
     if (!confirm(`Replace your whole club list with these ${items.length}?\n${items.map(c => `${c.name} ${c.carry}`).join(", ")}`
       + (gone.length ? `\n\nThese will be removed: ${gone.join(", ")}` : "") + `\n\n(You can undo this on the Clubs tab.)`)) return false;
@@ -2945,7 +2950,7 @@ nav button[aria-selected=true] { color: var(--ink); background: var(--bg) }
         ["📏 My course distances", () => courseDistances()],
         S.mock ? ["🪑 End the seated round", () => mockEnd()] : ["🪑 Seated round: pretend round at Westchester or Rancho", () => step("mockStart")],
         ["Change course or tees", () => step("course")],
-        ["⟳ Get the latest version (you have 27 Nov (c))", () => location.replace(location.pathname + "?v=" + Date.now())],
+        ["⟳ Get the latest version (you have 27 Nov (d))", () => location.replace(location.pathname + "?v=" + Date.now())],
         ["Show the full app", () => { $("wiz").hidden = true; renderAll(); }]]);
     }
     if (name === "yds") {   // one thing: the yardage
