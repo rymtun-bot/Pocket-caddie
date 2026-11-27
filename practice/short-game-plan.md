@@ -32,3 +32,4 @@ Once a week if possible: chips and pitches from real grass or a bunker (a practi
 ## Results log
 | Date | Chip score /15 | Pitch half: spread / start / smash | Pitch full: spread / start / smash | Contact /10 | Notes |
 |---|---|---|---|---|---|
+| 2026-11-27 | not done | not done | not done | 8 (goal 9) | Baseline contact score. No chipping that day. Full-swing smash session same day (54° 1.24, 9i 1.22). |
