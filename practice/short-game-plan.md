@@ -26,6 +26,7 @@ Diagrams: [face-on and from behind](hand-positions-backswing.png), [hand path fr
 - Contact score: 10 half-hinge balls with the towel behind. Goal: towel untouched 9 of 10.
 - Full-swing hinge test (7i, Rapsodo, 1.05/0.35): 10 normal, then 10 with the full "L" set by lead arm parallel and kept to the top.
   Compare club speed, smash, start. Watch for mat-first contact (early release) and right starts (open face).
+- 9i launch check (added 11/27): aim for 22-26°; 17.7° on 11/27 cost carry at a record ball speed.
 
 Once a week if possible: chips and pitches from real grass or a bunker (a practice green / short-game area).
 
